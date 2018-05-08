@@ -1,0 +1,125 @@
+﻿@model LidLaunchWebsite.Models.ProductPageProduct
+@{
+    ViewBag.Title = Model.Product.Name + " - Custom Hat By " + @Model.Designer.ShopName;
+}
+<div id="productDetails">
+    <div id="productImages">
+        <div id="imageHolder">
+            @foreach (LidLaunchWebsite.Models.HatType hatType in Model.lstHatTypes)
+        {
+            if (hatType.Id == Model.Product.TypeId)
+            {
+                <img src="~/Images/DesignImages/InUse/@hatType.ImagePreview" id="productImage" class="@("type" + hatType.Id.ToString())" />
+        }
+        else
+        {
+            <img src="~/Images/DesignImages/InUse/@hatType.ImagePreview" id="productImage" class="@("type" + hatType.Id.ToString()) hidden" />
+    }
+
+}
+
+        </div><!--/imageHolder-->
+        <div id="childProducts">
+            @foreach (LidLaunchWebsite.Models.Product prod in Model.lstChildProducts)
+        {
+            <div class="productListed" onclick="window.location='/Product?id=@prod.Id'">
+                <img src="~/Images/DesignImages/InUse/@prod.Design.PreviewImage" width="250" class="productImage" /><br />
+                <span class="prodName">@prod.Name</span><br />
+            </div>
+
+    }
+        </div><!--/childProducts-->
+    </div><!--/productImages-->
+    
+    <div id="productInfo">
+        <span id="typeId" class="hidden">@Model.Product.TypeId</span>
+        <span id="colorId" class="hidden">@Model.Product.ColorId</span>
+        <div id="productName">
+            <span id="lblProductName">@Model.Product.Name</span>
+            <span id="lblProductId" class="hidden">@Model.Product.Id</span>
+        </div><!--/productName-->
+        <div class="productText">
+            <span id="lblProductText">@Model.Product.Description</span>
+        </div><!--productText--->
+        <div class="productText">
+            <span id="lblProductText"><b>By:</b> @Model.Designer.ShopName</span>
+        </div><!--productText--->
+        <div id="productOptionsBox">
+            <div class="inputLabel">Hat Type:</div>
+            <div id="hatTypeSelect" onclick="$('#productHatStyleSelect').show();"><img src="/Images/HatAssets/@Model.lstHatTypes.Single(h => h.Id == Model.Product.TypeId).ProductImage" id="selectedHatTypeImg" /><div id="selectedHatTypeInfo">@Model.lstHatTypes.Single(h => h.Id == Model.Product.TypeId).Name</div><div id="expandArrow"></div></div>
+            <div id="productHatStyleSelect" class="hidden">
+                @foreach (LidLaunchWebsite.Models.HatType hatType in Model.lstHatTypes)
+                {
+                    <div class="hatStyle" id="@hatType.Id" onclick="changeHatTypeProduct(@hatType.Id, this);">
+                        @if (hatType.Id == Model.Product.TypeId)
+                        {
+                            <img src="@Url.Content("~/Images/Check.png")" class="hatCheck" />
+                            <input type="checkbox" class="selectedHatType hidden" checked />
+                        }
+                        else
+                        {
+                            <img src="@Url.Content("~/Images/CheckGray.png")" class="hatCheck" />
+                            <input type="checkbox" class="selectedHatType hidden" />
+                        }
+                        <img class="hatStyleImg" src="~/Images/HatAssets/@hatType.ProductImage" />
+                        <div class="hatStyleName">
+                            @hatType.Name
+                        </div>
+                        <div class="hatStyleDescription">
+                            @hatType.Desscription
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="clear"></div>
+            <div class="inputLabel">Size:</div>
+            @if (Model.Product.TypeId != 2)
+            {
+                <select id="selectSize" class="hidden">
+                    <option value="L/XL">L/XL</option>
+                    <option value="S/M">S/M</option>
+                </select>
+            }
+            else
+            {
+                <select id="selectSize">
+                    <option value="L/XL">L/XL</option>
+                    <option value="S/M">S/M</option>
+                </select>
+            }
+            @if (Model.Product.TypeId != 2)
+            {
+                <div id="oneSizeFitsAll">One Size Fits All</div>
+            }
+            else
+            {
+                <div id="oneSizeFitsAll" class="hidden">One Size Fits All</div>
+            }
+            <div class="inputLabel">Quantity</div>
+            <input type="number" min="1" max="150" id="txtQty" value="1" />
+            <div class="inputLabel">Price:</div>
+            <div id="priceText">$25.00</div>
+        </div><!--/productOptionsBox-->
+        @if (Request["showApproval"] != "1")
+        {
+            <div class="AddToCartButton" onclick="AddItemToCart();">Add To Cart</div><!--/AddToCartButton-->
+        }
+
+        <div class="productText">
+            Please allow 7-10 days for your hat(s) to be created then shipped. Hats are custom embroidered here in the USA!
+        </div><!--productText--->
+    </div><!--/productInfo-->
+    <div id="relatedProducts" class="hidden">
+        related products here
+    </div>
+</div><!--/productDetails-->
+@if (Request["showApproval"] == "1")
+{
+    <div id="approvalPopup">
+        <div id="approvalContent">
+            Your design has been submitted for approval by Lid Launch.<br /><br />During this time we will check your artwork to ensure it is suitable for embroidery and that it adheres to our policies. This may take up to 24 hours but we try and get this done within an hour!<br /><br />If there are any issues we will contact you at your email address.
+            <p id="closeError" onclick="$('#approvalPopup').hide();" style="margin-top:15px;">Close</p>
+        </div>
+    </div>
+}
+

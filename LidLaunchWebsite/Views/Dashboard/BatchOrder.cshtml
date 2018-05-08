@@ -1,0 +1,33 @@
+﻿@model LidLaunchWebsite.Models.BatchDashboard
+@{
+    ViewBag.Title = "Batch Order";
+}
+<table>
+
+    @foreach (LidLaunchWebsite.Models.BatchSale batchSale in Model.lstReadySales)
+    {
+    <tr style="background:#ddd; border:0;">
+        <td>@batchSale.ProductName</td>
+        <td><img src="~/Images/DesignImages/InUse/@batchSale.PreviewImage" width="200" /></td>
+        <td><img src="~/Images/DesignImages/InUse/@batchSale.ArtSource" width="200" /></td>
+        <td><a href="~/Images/DesignImages/Digitizing/DST/@batchSale.DigitizedFile" target="_blank">DST File</a></td>
+        <td><a href="~/Images/DesignImages/Digitizing/Info/@batchSale.DigitizedInfoImage" target="_blank">Stitch Out</a></td>
+        <td><a href="~/Images/DesignImages/Digitizing/Preview/@batchSale.DigitizedPreview" target="_blank">Coming Soon</a></td>
+    </tr>
+
+        foreach (LidLaunchWebsite.Models.HatTypeSize hatTypeSize in batchSale.lstHatTypeSizes)
+        {
+    <tr>
+        <td>@hatTypeSize.Type</td>
+        <td>@hatTypeSize.Size</td>
+        <td>@hatTypeSize.Count</td>
+        <td></td>
+        <td></td>
+    </tr>
+        }
+                
+            
+            
+        }
+    </table>
+

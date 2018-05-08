@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="Create and Sell custom emdroiderd hats on Lidlaunch.com. Make money selling hats online today.">
+    <meta name="keywords" content="Custom Flexfit hats, Custom emdroidered hats, Sell hats online, Sell custome hats, Make money selling hats online">
+    <link rel="apple-touch-icon" sizes="57x57" href="~/Images/Icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="~/Images/Icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="~/Images/Icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="~/Images/Icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="~/Images/Icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="~/Images/Icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="~/Images/Icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="~/Images/Icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/Images/Icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="~/Images/Icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/Images/Icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="~/Images/Icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Images/Icons/favicon-16x16.png">
+    <link rel="manifest" href="~/Images/Icons/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="~/Images/Icons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/Scripts/User.js")
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/cupertino/jquery-ui.css" />
+    @Scripts.Render("~/Scripts/CommonFunctions.js")
+    @Scripts.Render("~/Scripts/HatCreation.js")
+    @Scripts.Render("~/Scripts/Designer.js")
+    @Scripts.Render("~/Scripts/Product.js")
+    @Scripts.Render("~/Scripts/Cart.js")
+    @Scripts.Render("~/Scripts/Dashboard.js")
+</head>
+<body>
+    <div>
+        <div id="wrapper">
+            <div id="InnerWrapperContent">
+                <div id="header">
+                    <div id="logo">
+                        <a href="@Url.Action("Index","Home")"><img src="@Url.Content("~/Images/logo.jpg")" /></a>
+                    </div><!--/logo-->
+                    <div id="topSearch">
+                        <input type="text" id="searchTop" placeholder="search..." />
+                    </div>
+                    <div id="navigation">
+                        <ul>
+                            <li>@Html.ActionLink("Shop", "Index", "Shop")</li>
+                            <li id="desktopCreate">@Html.ActionLink("Create", "GetStarted", "Create")</li>
+                            <li id="mobileCreate" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);"><a href="#">Create</a></li>
+                            @if (Convert.ToInt32(Session["UserID"]) > 0)
+                            {
+                            <li>
+                                <a href="#" onclick="showProfileLinks();">Profile</a>
+                                <ul id="profileMenu">
+                                    <li>@Html.ActionLink("Dashboard", "Designer", "Dashboard")</li>
+                                    <li>@Html.ActionLink("Logout", "Logout", "User")</li>
+                                    @if (Convert.ToInt32(Session["UserID"]) == 1)
+    {
+                                <li>@Html.ActionLink("Profit", "Profit", "Dashboard")</li>
+                                <li>@Html.ActionLink("Approval", "PendingProducts", "Dashboard")</li>
+                                <li>@Html.ActionLink("Orders", "Orders", "Dashboard")</li>
+                                <li>@Html.ActionLink("Needs Digitizing", "NeedsDigitizing", "Dashboard")</li>
+                                <li>@Html.ActionLink("Order Batching", "CreateBatch", "Dashboard")</li>
+}
+                                </ul>   
+                            </li>
+                                                               
+                            }
+                            else
+                            {
+                                <li>@Html.ActionLink("Login", "Login", "User")</li>
+                            }
+                            <li class="last">
+                                <div onclick="window.location = '/Cart/Cart'">
+                                    <img src="~/Images/shopping-cart (1).png" style="width:35px; height:35px" class="cartIcon" />
+                                    <div><span id="cartTotal">@Convert.ToInt32(@Session["TotalCartQuantity"])</span> Items</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="mobileNav" onclick="showNav();">
+                    <div id="categoryLable">||| Categories</div>
+                </div>
+                <div class="mainNavigation">
+                    @{
+                        Html.RenderAction("Menu", "Home");
+                    }                    
+                    @*<div class="dropdown">
+            <div class="dropbtn"> Locations </div>
+        </div>
+        <div class="dropdown">
+            <div class="dropbtn"> Sports </div>
+        </div>*@
+                    @*<div class="dropdown">
+            <div class="dropbtn"> Entertainment </div>
+            <div class="dropdown-content">
+                <div class="">Basketball</div>
+                <div class="">Baseball</div>
+            </div><!-- end ngIf: pCat.ChildCategories.length > 0 -->
+        </div><!-- end ngRepeat: pCat in $ctrl.list -->*@
+                </div>
+
+                <div id="content">
+                    @RenderBody()
+                </div><!--/content-->
+
+            </div>
+        </div>
+        
+        <div id="footer">
+            <div id="footerContent">
+                <div class="left50">
+                    <ul>
+                        <li><a href="~/Shop">Shop</a></li>
+                        <li><a href="~/Create/GetStarted">Create</a></li>
+                        <li><a href="~/Terms/TermsAndConditions">Terms & Conditions</a></li>
+                        <li><a href="~/Terms/Returns">Returns</a></li>
+                        <li><a href="~/Terms/Privacy">Privacy</a></li>
+                        <li><a href="~/Terms/TermsOfSalesAndDelivery">Terms of Sales and Delivery</a></li>
+                        <li><a href="~/Terms/DesignerPayouts">Designer Payouts</a></li>
+                    </ul>
+                </div>
+                <div class="left50">
+                    <div style="margin:0 auto; width:175px; text-align:center;">
+                        <p>Embroidered in the <b>USA</b>!</p>
+                        <img src="~/Images/America.png" height="100" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="minFooter">
+            <img src="@Url.Content("~/Images/min.png")" height="30" />
+        </div><!--/footer-->
+    </div>
+    <div id="errorNotifcation" title="Error" style="display:none;">
+        <div id="errorContent">
+
+        </div>
+    </div>
+    <div id="loadingPanel" style="display:none;">
+    </div>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

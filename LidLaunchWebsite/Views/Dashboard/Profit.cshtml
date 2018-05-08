@@ -1,0 +1,20 @@
+﻿@model LidLaunchWebsite.Models.AdminDashboard
+@{
+    ViewBag.Title = "Profit";
+}
+
+<h2>Profit</h2>
+
+
+<div>Total Sales: @Model.TotalSales</div>
+<div>Total Hats Sold: @Model.TotalSalesCount</div>
+<div>Total Sales Less Shipping: @Model.TotalSalesWithoutShipping</div>
+<div>Total Shipping Collected: @Model.TotalShippingCollected</div>
+<div>Estimated Shipping Costs: @Model.EstimatedShippingCosts</div>
+<div>Estimated Excess Shipping: @Model.EstimatedExcessShipping</div>
+<div>Total Shipping Actual: @Model.TotalShippingActual</div>
+<div>Total Digitzing Costs: @Model.DigitizingTotal</div>
+<div>Total Digitzing Excess: @Model.DigitizingExcess</div>
+<div>Total Designer Profit: @Model.TotalDesignerProfits</div>
+<div>Estimate Profit (Based off of $25 per hat sold): @Model.EstimatedTotalProfit</div>
+

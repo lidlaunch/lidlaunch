@@ -1,0 +1,23 @@
+﻿@model LidLaunchWebsite.Models.Designer
+@{
+    ViewBag.Title = "Lid Launch Designer Profile - " + Model.ShopName;
+}
+<div id="designerProfile">
+    <div class="designerBackground">
+        <div class="desingerProfilePic">
+            <img src="~/Images/UserDefaults/defaultProfile.png" />
+        </div>
+        <div class="designerInfo">
+            <p class="desingerName">@Model.ShopName</p>
+        </div>
+    </div>
+    <div class="designerContact">
+        <p>@Model.City, @Model.State</p>
+    </div>
+    <div class="designerSales">
+        Summary of total sales
+    </div>
+    <div class="designerProducts">
+        prod list, expand to see sales records for each prod in list.
+    </div>
+</div>

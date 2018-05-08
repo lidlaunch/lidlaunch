@@ -1,0 +1,421 @@
+﻿using LidLaunchWebsite.Classes;
+using LidLaunchWebsite.Models;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Script.Serialization;
+
+namespace LidLaunchWebsite.Controllers
+{
+    public class DashboardController : Controller
+    {
+        // GET: Terms
+        public ActionResult Designer()
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["DesignerID"]) > 0)
+                {
+                    DashboardData data = new DashboardData();
+                    DesignerDashboard dashboard = data.GetDesignerDashboard((Int32)Session["DesignerId"]);
+                    Session["PayoutAmmount"] = dashboard.TotalAvailableForPayout;
+                    return View(dashboard);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Designer", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+           
+        }
+
+        public ActionResult Profit()
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["UserID"]) == 1)
+                {
+                    DashboardData data = new DashboardData();
+                    AdminDashboard dashboard = data.GetAdminDashboard();
+
+                    for (int i = dashboard.lstSales.Count - 1; i >= 0; i--)
+                    {
+                        // Do processing here, then...
+                        if (dashboard.lstSales[i].HasPaid == false)
+                        {
+                            dashboard.lstSales.RemoveAt(i);
+                        }
+                    }
+
+                    return View(dashboard);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+
+        }
+
+        public ActionResult Orders()
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["UserID"]) == 1)
+                {
+                    DashboardData data = new DashboardData();
+                    AdminDashboard dashboard = data.GetAdminDashboard();
+                    return View(dashboard);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+
+        }
+        public ActionResult BatchOrder(string batchId)
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["UserID"]) == 1)
+                {
+                    DashboardData data = new DashboardData();
+                    BatchDashboard dashboard = data.GetBatch(Convert.ToInt32(batchId));
+                    return View(dashboard);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+
+        }
+        public ActionResult CreateBatch()
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["UserID"]) == 1)
+                {
+                    DashboardData data = new DashboardData();
+                    BatchDashboard dashboard = data.GetBatches();
+                    return View(dashboard);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+
+        }
+        public ActionResult PendingProducts()
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["UserID"]) == 1)
+                {
+                    List<Product> lstProducts = new List<Product>();
+                    ProductData data = new ProductData();
+                    lstProducts = data.GetProductsToApprove();
+                    return View(lstProducts);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+
+        }
+
+        public ActionResult NeedsDigitizing()
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["UserID"]) == 1)
+                {
+                    List<Product> lstProducts = new List<Product>();
+                    ProductData data = new ProductData();
+                    lstProducts = data.GetArtworkForDigitizing();
+                    return View(lstProducts);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+
+        }
+
+        public ActionResult EditProduct(string id)
+        {
+            if (Convert.ToInt32(id) > 0)
+            {
+                UpdateProduct updateProd = new UpdateProduct();
+                List<Category> lstCategories = new List<Category>();
+                List<Product> lstParentProducts = new List<Product>();
+                ProductData data = new ProductData();
+                Product product = new Product();
+                product = data.GetProduct(Convert.ToInt32(id),0);
+                lstCategories = data.GetCategories();
+                lstParentProducts = data.GetDesignerProductsForParentList((Int32)Session["DesignerID"]);
+                updateProd.lstParentProducts = lstParentProducts;
+
+                updateProd.lstCategories = lstCategories;
+                updateProd.Product = product;
+
+                if (product.DesignerId == (Int32)Session["DesignerID"] || (Int32)Session["UserID"] == 1)
+                {
+                    Session["ProductID"] = Convert.ToInt32(id);
+                    return View(updateProd);
+                }
+                else
+                {
+                    Session["ProductID"] = null;
+                    return RedirectToAction("Login", "User", null);
+                }                
+            }
+            else
+            {
+                Session["ProductID"] = null;
+                return RedirectToAction("Index", "Home", null);
+            }
+        }
+
+        public string CreateBatchOrder()
+        {
+            DashboardData dashboardData = new DashboardData();
+
+            var batchId = dashboardData.CreateOrderBatch();
+
+            var json = new JavaScriptSerializer().Serialize(batchId);
+
+            return json;
+        }
+
+        public string RequestPayout()
+        {
+            DashboardData dashboardData = new DashboardData();
+            DesignerData designerData = new DesignerData();
+            Designer designer = designerData.GetDesigner((Int32)Session["UserID"]);
+
+            var payoutId = dashboardData.CreateDesignerPayout(designer.Id, (decimal)Session["PayoutAmmount"], designer.PaypalAddress);
+
+            if (payoutId > 0)
+            {                
+                EmailFunctions email = new EmailFunctions();
+                User user = new User();
+                UserData userData = new UserData();
+                user = userData.GetUser((Int32)Session["UserID"]);
+                var success = email.sendEmail(user.Email, user.FirstName + ' ' + user.LastName, email.payoutEmail(designer.PaypalAddress, Session["PayoutAmmount"].ToString()), "Your Payout Request Has Been Submitted", designer.PaypalAddress);
+                Session["PayoutAmmount"] = null;
+            }
+
+            var json = new JavaScriptSerializer().Serialize(payoutId);
+
+            return json;
+        }
+
+
+        public string ApproveProduct(string id)
+        {
+            bool success = false;
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["UserID"]) == 1)
+                {
+                    ProductData prodData = new ProductData();                    
+
+                    success = prodData.ApproveProduct(Convert.ToInt32(id));                    
+                }
+                else
+                {
+                    success = false;
+                }
+            }
+            else
+            {
+                success = false;
+            }
+            var json = new JavaScriptSerializer().Serialize(success);
+
+            return json;
+
+        }
+        public bool checkLoggedIn()
+        {
+            if (Convert.ToInt32(Session["UserID"]) == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public string UploadDigitizedFile(string designId)
+        {
+            var returnValue = "";
+            try
+            {
+                if (!checkLoggedIn())
+                {
+                    //do nothing
+                }
+                else
+                {
+                    var fileContent = Request.Files[0];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        var extension = Path.GetExtension(fileContent.FileName);
+                        
+                        var fileName = Guid.NewGuid().ToString() + extension;
+                        var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Digitizing/DST"), fileName);
+
+                        fileContent.SaveAs(path);                                
+                        returnValue = fileName;
+
+                        //update design digitized file in database
+                        DesignData data = new DesignData();
+                        var success = data.UpdateDesignDigitizedFile(Convert.ToInt32(designId), fileName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+            var json = new JavaScriptSerializer().Serialize(returnValue);
+            return json;
+        }
+        public string UpdateDesignDigitizedPreview(string designId)
+        {
+            var returnValue = "";
+            try
+            {
+                if (!checkLoggedIn())
+                {
+                    //do nothing
+                }
+                else
+                {
+                    var fileContent = Request.Files[0];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        var extension = Path.GetExtension(fileContent.FileName);
+
+                        var fileName = Guid.NewGuid().ToString() + extension;
+                        var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Digitizing/Preview"), fileName);
+
+                        fileContent.SaveAs(path);
+                        returnValue = fileName;
+
+                        //update design digitized file in database
+                        DesignData data = new DesignData();
+                        var success = data.UpdateDesignDigitizedPreview(Convert.ToInt32(designId), fileName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+            var json = new JavaScriptSerializer().Serialize(returnValue);
+            return json;
+        }
+        public string UpdateDesignDigitizedInfoImage(string designId)
+        {
+            var returnValue = "";
+            try
+            {
+                if (!checkLoggedIn())
+                {
+                    //do nothing
+                }
+                else
+                {
+                    var fileContent = Request.Files[0];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        var extension = Path.GetExtension(fileContent.FileName);
+
+                        var fileName = Guid.NewGuid().ToString() + extension;
+                        var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Digitizing/Info"), fileName);
+
+                        fileContent.SaveAs(path);
+                        returnValue = fileName;
+
+                        //update design digitized file in database
+                        DesignData data = new DesignData();
+                        var success = data.UpdateDesignDigitizedInfoImage(Convert.ToInt32(designId), fileName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+            var json = new JavaScriptSerializer().Serialize(returnValue);
+            return json;
+        }
+        public string UpdateTracking(string orderProductId, string trackingNumber, string customerEmail)
+        {
+            DashboardData dashboardData = new DashboardData();
+
+            var success = dashboardData.UpdateTracking(Convert.ToInt32(orderProductId), trackingNumber);
+
+            if (success)
+            {
+                EmailFunctions email = new EmailFunctions();
+                email.sendEmail(customerEmail, "Lid Launch Customer", email.orderShippedEmail(trackingNumber), "Your Order Is On It's Way!", "");
+            }
+
+            var json = new JavaScriptSerializer().Serialize(success);
+
+            return json;
+        }
+
+    }
+}

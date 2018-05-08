@@ -1,0 +1,108 @@
+﻿@model LidLaunchWebsite.Models.CompleteModel
+<style typx="text/css">
+    body{
+        background:url('@Url.Content("~/Images/BrickBG.jpg")')  no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        background-position-y: 100px;
+    }
+    .mainNavigation{display:none;}
+</style>
+@{
+    ViewBag.Title = "Lid Launch - Hat Creation";
+}
+<div id="CreateDetails">
+    <div id="detailsPane">
+        <div id="detailsHeader">Product Information</div>
+        <input type="text" class="productDetailsText textBox" id="txtName" placeholder="Product Name" />
+        <textarea class="productDetailsTextMulti textBoxMulti" id="txtDescription" placeholder="Product Description" rows="10"></textarea>
+        <p class="productDetailsText">Category</p>
+        <select id="category" class="productDetailsText">
+            @foreach (LidLaunchWebsite.Models.Category category in Model.lstCategories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </select>
+        <p class="productDetailsText"><input type="checkbox" id="privateProduct" /> Private Product</p>
+        <p class="productDetailsText" style="margin-bottom:0;">Select Other Hat Type Options</p>
+        <div id="scrollHatTypeSelect">
+            @foreach (LidLaunchWebsite.Models.HatType hatType in Model.lstHatTypes)
+    {
+            <div class="hatType" onclick="selectHatType(@hatType.Id, this, @Session["HatTypeID"]);">
+                <div class="hatTypeId hidden">@hatType.Id</div>
+                <div class="hatTypeImage">
+                    @if (hatType.Id == Convert.ToInt32(Session["HatTypeID"]))
+        {
+            <img src="@Url.Content("~/Images/Check.png")" class="hatCheck" />
+            <input type="checkbox" class="selectedHatType hidden" checked />
+}
+else
+{
+            <img src="@Url.Content("~/Images/CheckGray.png")" class="hatCheck" />
+            <input type="checkbox" class="selectedHatType hidden" />
+}
+
+                    @if (hatType.Id == 2)
+        {
+            <img class="hatStyleImg" src="@Url.Content("~/Images/HatAssets/Flex.png")" />
+}
+                    @if (hatType.Id == 3)
+        {
+            <img class="hatStyleImg" src="@Url.Content("~/Images/HatAssets/Trucker.png")" />
+}
+                    @if (hatType.Id == 4)
+        {
+            <img class="hatStyleImg" src="@Url.Content("~/Images/HatAssets/DadBlack.png")" />
+}
+                    @if (hatType.Id == 5)
+        {
+            <img class="hatStyleImg" src="@Url.Content("~/Images/HatAssets/CurveSnap.png")" />
+}
+                    @if (hatType.Id == 6)
+        {
+            <img class="hatStyleImg" src="@Url.Content("~/Images/HatAssets/FlatSnap.png")" />
+}
+                </div><!--/hatTypeImage-->
+                <div class="hatTypeName">
+                    @hatType.Name
+                </div><!--/hatTypeName-->
+                <div class="hatColors hidden">
+                    <span class="color black"></span>
+                    <span class="color red"></span>
+                    <span class="color greeb"></span>
+                    <span class="color blue"></span>
+                    <span class="color yellow"></span>
+                    <span class="color orange"></span>
+                    <span class="color purple"></span>
+                    <span class="color"><span style="margin-left:3px; margin-top:-2px;">+</span></span>
+                </div><!--/hatColors-->
+            </div><!--/hatType-->
+}            
+        </div><!--/scrollHatTypeSelect-->
+        <div id="parentHat">
+            <p class="productDetailsText">Parent Product (use this if ONLY color has changed in the design)</p>
+            <select id="parentProducts" class="productDetailsText">
+                <option value="0">No Parent</option>
+                @foreach (LidLaunchWebsite.Models.Product prod in Model.lstParentProducts)
+    {
+            <option value="@prod.Id">@prod.Name</option>
+}
+            </select>
+        </div>
+    </div><!--/detailsPane-->
+    <div id="previewPane">
+        <div id="previewImageComplete">
+            <img src="@Url.Content("~/Images/DesignImages/InUse/" + Session["FullImagePreview"].ToString())" />
+        </div><!--/previewImage-->
+        <a href="#" onclick="UpdateProduct();"><div id="LaunchButton">Launch Product!</div></a>
+    </div><!--/previewPane-->
+</div><!--/GetStarted-->
+<style type="text/css">
+    #content {
+        padding-top: 0;
+        min-height: 820px;
+        background: #fff;
+    }
+</style>

@@ -1,0 +1,49 @@
+﻿@model LidLaunchWebsite.Models.AdminDashboard
+@{
+    ViewBag.Title = "Orders";
+}
+<table>
+    <thead>
+        <tr>            
+            <td>Order ID</td>
+            <td>Order Date</td>
+            <td>Total</td>
+            <td>Customer Name</td>
+            <td>Customer Email</td>
+            <td>Shipping Address</td>
+            <td>Has Paid</td>
+            <td>OrderStatus</td>
+            <td>Product Name</td>
+            <td>Size</td>
+            <td>Produced</td>
+            <td>Shipped</td>
+        </tr>
+    </thead>
+
+    @foreach (LidLaunchWebsite.Models.Sale sale in Model.lstSales)
+    {
+    <tr>
+        <td>@sale.OrderId</td>
+        <td class="hidden orderProductId">@sale.OrderProductId</td>
+        <td>@sale.OrderDate</td>
+        <td>@sale.OrderTotal</td>
+        <td>@sale.CustomerName</td>
+        <td class="customerEmail">@sale.CustomerEmail</td>
+        <td>@sale.ShippingAddress</td>
+        <td>@sale.HasPaid</td>
+        <td>@sale.OrderStaus</td>
+        <td><a href="/Product?id=@sale.ProductId" target="_blank">@sale.ProductName</a></td>
+        <td>@sale.Size</td>
+        <td>@sale.Produced</td>
+        <td>@sale.Shipped</td>
+        <td><input type="text" class="txtTrackingNumber" value="@sale.TrackingNumber" /><a href="#" onclick="saveTracking(this);">Save Tracking</a></td>
+    </tr>
+    }
+</table>
+
+<style type="text/css">
+    td {
+        border-bottom: 8px solid #000;
+    }
+</style>
+

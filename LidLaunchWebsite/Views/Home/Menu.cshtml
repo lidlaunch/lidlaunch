@@ -1,0 +1,9 @@
+﻿@model LidLaunchWebsite.Models.Home
+@foreach (LidLaunchWebsite.Models.Category cat in Model.Categories)
+{
+    <div class="dropdown">
+        <div class="dropbtn" onclick="window.location = '/Shop?category=@cat.Id'"> @cat.Name </div>
+    </div>
+}
+
+

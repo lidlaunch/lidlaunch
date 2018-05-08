@@ -1,0 +1,29 @@
+﻿@model List<LidLaunchWebsite.Models.Product>
+@{
+    ViewBag.Title = "Orders";
+}
+<table>
+    <thead>
+        <tr>
+            <td>Designer</td>
+            <td>Product Name</td>
+            <td>Product Description</td>
+            <td>Artwork</td>
+            <td>Preview</td>
+            <td>Approve</td>
+        </tr>
+    </thead>
+
+    @foreach (LidLaunchWebsite.Models.Product product in Model)
+    {
+        <tr>
+            <td>@product.DesignerId</td>
+            <td>@product.Name</td>
+            <td>@product.Description</td>
+            <td><a href="~/Images/DesignImages/InUse/@product.Design.PreviewImage" target="_blank"><img src="~/Images/DesignImages/InUse/@product.Design.PreviewImage" width="100" /></a></td>
+            <td><a href="~/Images/DesignImages/InUse/@product.Design.ArtSource" target="_blank">Artwork</a></td>
+            <td><a href="#" onclick="ApproveProduct(@product.Id)">Approve</a></td>
+        </tr>
+    }
+</table>
+

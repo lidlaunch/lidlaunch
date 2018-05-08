@@ -1,0 +1,40 @@
+﻿<style typx="text/css">
+    body{
+        background:url('@Url.Content("~/Images/GetStartedBG.jpg")')  no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        background-position-y: 100px;
+    }
+    .mainNavigation{display:none;}
+</style>
+@{
+    ViewBag.Title = "Lid Launch - Create and Sell custom Flexfit hats online. Get paid selling your own designs!";
+}
+<div id="GetStarted">
+    <div id="GetStartedContent">
+
+        <div id="GetStartedLeft" class="GetStartedBlock">
+            <div class="StartedText">I am a designer and can create artwork in an embroidery friendly format.</div>
+            <div class="StartedImg"><img src="~/Images/GetStartedOver.png" width="400" /></div>
+            <div><a href="@Url.Action("Index","Create")"><div id="GetStartedButton">Start Designing</div></a></div>
+        </div>
+        <div id="GetStartedRight" class="GetStartedBlock">
+            <div class="StartedText">I have a logo or artwork but it needs to be converted to an embroidery friendly format.</div>
+            <div class="StartedImg"><img src="~/Images/Conversion.png" width="400" /></div>
+            <div><a href="@Url.Action("ConvertArtwork","Create")"><div id="GetStartedButton">Get Help</div></a></div>
+        </div>
+
+
+    </div>
+</div><!--/GetStarted-->
+<style type="text/css">
+    #content {
+        padding-top: 0;
+    }
+
+    #footer {
+        display: none;
+    }
+</style>

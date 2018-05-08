@@ -1,0 +1,74 @@
+﻿@model LidLaunchWebsite.Models.UpdateProduct
+<style typx="text/css">
+    body{
+        background:url('@Url.Content("~/Images/BrickBG.jpg")')  no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        background-position-y: 100px;
+    }
+    .mainNavigation{display:none;}
+</style>
+
+<div id="CreateDetails">
+    <div id="detailsPane">
+        <div id="detailsHeader">Product Information</div>
+        <input type="text" class="productDetailsText textBox" id="txtName" placeholder="Product Name" value="@Model.Product.Name" />
+        <textarea class="productDetailsTextMulti textBoxMulti" id="txtDescription" placeholder="Product Description" rows="10">@Model.Product.Description</textarea>
+        <p class="productDetailsText">Category</p>
+        <select id="category" class="productDetailsText">
+            @foreach (LidLaunchWebsite.Models.Category category in Model.lstCategories)
+        {
+            if (category.Id == Model.Product.CategoryId)
+            {
+                <option value="@category.Id" selected>@category.Name</option>
+        }
+        else
+        {
+            <option value="@category.Id">@category.Name</option>
+    }
+}
+        </select>
+
+        @if (Model.Product.Private)
+    {
+        <p class="productDetailsText">
+            <input type="checkbox" id="privateProduct" checked />Private Product
+        </p>
+}
+else
+{
+    <p class="productDetailsText">
+        <input type="checkbox" id="privateProduct" />Private Product
+    </p>
+}
+        <p class="productDetailsText">
+            <input type="checkbox" id="removeProduct" />Remove Product
+        </p>
+
+        <select id="parentProducts" class="productDetailsText">
+            <option value="0">No Parent</option>
+            @foreach (LidLaunchWebsite.Models.Product prod in Model.lstParentProducts)
+        {
+            <option value="@prod.Id">@prod.Name</option>
+    }
+        </select>
+
+
+
+    </div><!--/detailsPane-->
+    <div id="previewPane">
+        <div id="previewImageComplete">
+            <img src="@Url.Content("~/Images/DesignImages/InUse/" + Model.Product.Design.PreviewImage)"/>
+        </div><!--/previewImage-->
+        <a href="#" onclick="UpdateProductExisting();"><div id="LaunchButton"> Update Product</div></a>
+    </div><!--/previewPane-->
+</div><!--/GetStarted-->
+<style type="text/css">
+    #content {
+        padding-top: 0;
+        min-height: 700px;
+        background: #fff;
+    }
+</style>

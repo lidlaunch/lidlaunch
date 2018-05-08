@@ -1,0 +1,31 @@
+﻿@model List<LidLaunchWebsite.Models.Product>
+<table>
+    <thead>
+        <tr>
+            <td>Design ID</td>
+            <td>Name</td>
+            <td>Preview</td>
+            <td>Art Source</td>
+            <td>Height</td>
+            <td>Width</td>
+            <td>Embroidery File</td>
+            <td>Transparent Preview</td>
+            <td>Info File</td>            
+        </tr>
+    </thead>
+
+    @foreach (LidLaunchWebsite.Models.Product product in Model)
+    {
+    <tr>
+        <td class="designId">@product.Design.Id</td>
+        <td>@product.Name</td>
+        <td><a href="~/Images/DesignImages/InUse/@product.Design.PreviewImage" target="_blank">Preview</a></td>
+        <td><a href="~/Images/DesignImages/InUse/@product.Design.ArtSource" target="_blank">Art Source</a></td>
+        <td>@product.Design.EmbroideredHeight</td>
+        <td>@product.Design.EmbroideredWidth</td>
+        <td><input type="file" class="EmbroideryFile" /><br/><span class="EmbroideryFileName">@product.Design.DigitizedFile</span></td>
+        <td><input type="file" class="TransparentPreview" /><br /><span class="TransparentPreviewName">@product.Design.DigitizedPreview</span></td>
+        <td><input type="file" class="InfoFile" /><br /><span class="InfoFileName">@product.Design.DigitizedInfoImage</span></td>        
+    </tr>
+    }
+</table>

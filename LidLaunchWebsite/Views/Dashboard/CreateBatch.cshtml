@@ -1,0 +1,121 @@
+﻿@model LidLaunchWebsite.Models.BatchDashboard
+@{
+    ViewBag.Title = "Create Batch";
+}
+<table>
+    <h1>Created Batches</h1>
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Batch Date</td>
+            <td>Status</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (LidLaunchWebsite.Models.OrderBatch orderBatch in Model.lstOrderBatches)
+        {
+        <tr onclick="window.location = '/Dashboard/BatchOrder?batchId=' + @orderBatch.BatchId;">
+            <td>@orderBatch.BatchId</td>
+            <td>@orderBatch.DateBatched</td>
+            <td>@orderBatch.Status</td>
+        </tr>
+        }
+
+    </tbody>
+</table>
+<table>
+    <h1>Ready For Production</h1>
+    <a href="#" onclick="CreateBatch()">Create Batch</a>
+    @foreach (LidLaunchWebsite.Models.BatchSale batchSale in Model.lstReadySales)
+    {
+        <tr style="background:#ddd; border:0;">
+            <td>@batchSale.ProductName</td>
+            <td><img src="~/Images/DesignImages/InUse/@batchSale.PreviewImage" width="200" /></td>
+            <td><img src="~/Images/DesignImages/InUse/@batchSale.ArtSource" width="200" /></td>
+            <td><a href="~/Images/DesignImages/Digitizing/DST/@batchSale.DigitizedFile" target="_blank">DST File</a></td>
+            <td><a href="~/Images/DesignImages/Digitizing/Info/@batchSale.DigitizedInfoImage" target="_blank">Stitch Out</a></td>
+            <td><a href="~/Images/DesignImages/Digitizing/Preview/@batchSale.DigitizedPreview" target="_blank">Coming Soon</a></td>
+        </tr>
+        <tr>
+            <td>Order Id</td>
+            <td>Order Date</td>
+            <td>Order Total</td>
+            <td>Customer Name</td>
+            <td>Customer Phone</td>
+            <td>Shipping</td>
+            <td>Has Paid</td>
+            <td>Status</td>
+            <td>Type</td>
+            <td>Color</td>
+            <td>Size</td>
+            <td>Produced</td>
+            <td>Shipped</td>
+        </tr>
+        foreach (LidLaunchWebsite.Models.Sale sale in batchSale.lstSales)
+        {
+            <tr>
+                <td>@sale.OrderId</td>
+                <td>@sale.OrderDate</td>
+                <td>@sale.OrderTotal</td>
+                <td>@sale.CustomerName</td>
+                <td>@sale.CustomerPhone</td>
+                <td>@sale.ShippingAddress</td>
+                <td>@sale.HasPaid</td>
+                <td>@sale.OrderStaus</td>
+                <td>@sale.TypeText</td>
+                <td>@sale.HatColor</td>
+                <td>@sale.Size</td>
+                <td>@sale.Produced</td>
+                <td>@sale.Shipped</td>
+            </tr>
+        }
+
+    }
+</table>
+
+<table>
+    <h1>Awaiting Digitizing</h1>    
+    @foreach (LidLaunchWebsite.Models.BatchSale batchSale in Model.lstNotReadySales)
+    {
+        <tr style="background:#ddd; border:0;">
+            <td>@batchSale.ProductName</td>
+            <td><img src="~/Images/DesignImages/InUse/@batchSale.PreviewImage" width="200" /></td>
+            <td><img src="~/Images/DesignImages/InUse/@batchSale.ArtSource" width="200" /></td>
+        </tr>
+        <tr>
+            <td>Order Id</td>
+            <td>Order Date</td>
+            <td>Order Total</td>
+            <td>Customer Name</td>
+            <td>Customer Phone</td>
+            <td>Shipping</td>
+            <td>Has Paid</td>
+            <td>Status</td>
+            <td>Type</td>
+            <td>Color</td>
+            <td>Size</td>
+            <td>Produced</td>
+            <td>Shipped</td>
+        </tr>
+        foreach (LidLaunchWebsite.Models.Sale sale in batchSale.lstSales)
+        {
+        <tr>
+            <td>@sale.OrderId</td>
+            <td>@sale.OrderDate</td>
+            <td>@sale.OrderTotal</td>
+            <td>@sale.CustomerName</td>
+            <td>@sale.CustomerPhone</td>
+            <td>@sale.ShippingAddress</td>
+            <td>@sale.HasPaid</td>
+            <td>@sale.OrderStaus</td>
+            <td>@sale.TypeText</td>
+            <td>@sale.HatColor</td>
+            <td>@sale.Size</td>
+            <td>@sale.Produced</td>
+            <td>@sale.Shipped</td>
+        </tr>
+        }
+
+    }
+</table>
+

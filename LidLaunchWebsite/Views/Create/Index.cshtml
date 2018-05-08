@@ -1,0 +1,159 @@
+﻿@model LidLaunchWebsite.Models.HatCreationHats
+<style typx="text/css">
+    body{
+        background:url('@Url.Content("~/Images/BrickBG.jpg")')  no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        background-position-y: 100px;
+    }
+    .mainNavigation{display:none;}
+</style>
+@{
+    ViewBag.Title = "Lid Launch - Hat Creation";
+}
+<div id="HatCreation">
+    <div id="HatCreationTop">
+        <div id="toolbar">
+            <span class="hidden" id="designImageLabel">@Session["TempDesignArtworkImagePath"]</span>
+            <input id="fileClick" type="file" class="hidden" />
+            <img onClick="$('#fileClick').click();" src="@Url.Content("~/Images/Upload.png")" id="uploadIcon" />
+            <div onClick="$('#fileClick').click();" id="UpdloadHeader">Upload your Artwork.</div>
+            <ul>
+                <li>6.5"x2.5" Design Area.</li>
+                <li>No more than 5 colors.</li>
+                <li style="display:none;">Use only the colors found on our color sheet here.</listyle="display:none;">
+                <li>Simplified designs work best for embroidery.</li>
+                <li>Graphics must be 300 DPI in PNG format with a transparent background.</li>
+                <li>Download our design Template <a href="~/Images/DesignTemplate.zip">Here</a>.</li>
+            </ul>
+            <img src="@Url.Content("~/Images/HatAssets/HatLayout.png")" id="exampleLayout" />
+        </div><!--/toolbar-->
+        <div id="previewImage">
+            <div id="previewLoading">Design Preview:</div>
+            <div class="colorPicker">
+                @if (Convert.ToInt32(Session["ColorID"]) == 1)
+                {
+                <div class="cp color black selected" onclick="$('#lblColorId').text(1); changePreviewColor(1, this);"></div>
+                <div class="cp color white" onclick="$('#lblColorId').text(2); changePreviewColor(2, this);"></div>
+                }
+                else if (Convert.ToInt32(Session["ColorID"]) == 2)
+                {
+                <div class="cp color black" onclick="$('#lblColorId').text(1); changePreviewColor(1, this);"></div>
+                <div class="cp color white selected" onclick="$('#lblColorId').text(2); changePreviewColor(2, this);"></div>
+                }
+
+            </div>
+            <div id="artworkAreaContainer">
+                <div id="dragHelper" style="display:inline-block">
+                    <img class="artworkImage onHat" id="previewDesign" src="@Url.Content("~/Images/DesignImages/Temp/" + Session["TempDesignArtworkImagePath"])" />
+                </div>
+            </div>
+@if (Convert.ToInt32(Session["HatTypeID"]) == 2)
+{
+        if (Convert.ToInt32(Session["ColorID"]) == 1)
+        {
+                <img src="@Url.Content("~/Images/HatAssets/HatFrontBlack.png")" id="hat" />
+        }
+        else if (Convert.ToInt32(Session["ColorID"]) == 2)
+        {
+                <img src="@Url.Content("~/Images/HatAssets/HatFrontWhite.png")" id="hat" />
+        }
+
+}
+else if (Convert.ToInt32(Session["HatTypeID"]) == 3)
+{
+        if (Convert.ToInt32(Session["ColorID"]) == 1)
+        {
+                <img src="@Url.Content("~/Images/HatAssets/TruckFrontBlack.png")" id="hat" />
+        }
+        else if (Convert.ToInt32(Session["ColorID"]) == 2)
+        {
+                <img src="@Url.Content("~/Images/HatAssets/TruckFrontWhite.png")" id="hat" />
+        }
+
+}
+else if (Convert.ToInt32(Session["HatTypeID"]) == 4)
+{
+        if (Convert.ToInt32(Session["ColorID"]) == 1)
+        {
+                <img src="@Url.Content("~/Images/HatAssets/DadCapFrontBlack.png")" id="hat" />
+        }
+        else if (Convert.ToInt32(Session["ColorID"]) == 2)
+        {
+                <img src="@Url.Content("~/Images/HatAssets/DadCapFrontWhite.png")" id="hat" />
+        }
+
+}
+else if (Convert.ToInt32(Session["HatTypeID"]) == 5)
+{
+        if (Convert.ToInt32(Session["ColorID"]) == 1)
+        {
+                <img src="@Url.Content("~/Images/HatAssets/CurveSnapFrontBlack.png")" id="hat" />
+        }
+        else if (Convert.ToInt32(Session["ColorID"]) == 2)
+        {
+                <img src="@Url.Content("~/Images/HatAssets/CurveSnapFrontWhite.png")" id="hat" />
+        }
+
+}
+else if (Convert.ToInt32(Session["HatTypeID"]) == 6)
+{
+        if (Convert.ToInt32(Session["ColorID"]) == 1)
+        {
+                <img src="@Url.Content("~/Images/HatAssets/FlatSnapFrontBlack.png")" id="hat" />
+        }
+        else if (Convert.ToInt32(Session["ColorID"]) == 2)
+        {
+                <img src="@Url.Content("~/Images/HatAssets/FlatSnapFrontWhite.png")" id="hat" />
+        }
+
+}
+
+
+
+        </div><!--/workspace-->
+        <div id="selectionBox">
+            <div id="SelectionHeader">Hat Style & Color</div>
+            <span id="lblTypeId" class="hidden">@Session["HatTypeID"]</span>
+            <span id="lblColorId" class="hidden">@Session["ColorID"]</span>
+            <div id="hatStyleSelect">
+                @foreach (LidLaunchWebsite.Models.HatType hatType in Model.lstHatTypes)
+        {
+            <div class="hatStyle" id="@hatType.Id" onclick="changeHatType(@hatType.Id);">
+
+                <img class="hatStyleImg" src="~/Images/HatAssets/@hatType.ProductImage" />
+                <div class="hatStyleName">
+                    @hatType.Name
+                </div>
+                <div class="hatStyleDescription">
+                    @hatType.Desscription
+                </div>
+            </div>
+}
+
+            </div>
+
+        </div><!--/toolbar-->
+    </div>
+    <a href="#" onclick="CreateDesign();"><div id="ContinueButton">Continue ></div></a>
+</div><!--/HatCreation-->
+<div id="previewPopup" style="display:none;">
+    <div id="previewHatContent">
+        <div id="close" onclick="$('#previewPopup').hide();">X</div>
+        <h1>Here is your hat!</h1>
+        <p>We will Create and Ship every hat that you sell for you!</p>
+        <p>You will reiceve $8 profit for each hat sold.*</p>
+        <img src="~/Images/DesignImages/Temp/48c14b61-3178-4d66-b96a-9e60610f0505.png" id="renderedPreview" height="450" />
+        <p style="font-size:10px;">*Your $8 profit from the first hat sale for every design you create will go towards digitizing your artwork. Every product sold after the first will be $8 profit.*</p>
+        <p style="font-size:10px;">**note: artwork will follow the natural bends of the hat. For an example of this click <a href="~/Images/HatBends.jpg" target="_blank" style="color:#39b91c;">here</a>**</p>
+        <p><input type="checkbox" id="agreeToTerms" /> I agree to the <a href="/Terms/TermsAndConditions" target="_blank" style="color:#39b91c;">Terms & Conditions</a></p>
+        <input type="button" id="acceptDesign" onclick="AcceptDesign();" value="Accept & Start Selling!">
+    </div>
+</div>
+<style type="text/css">
+    #content {
+        padding-top: 0;
+    }
+</style>

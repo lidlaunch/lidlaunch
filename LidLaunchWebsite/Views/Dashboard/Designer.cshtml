@@ -1,0 +1,73 @@
+﻿@model LidLaunchWebsite.Models.DesignerDashboard
+<div id="designerDashboard">
+    <div id="profits">
+        <div id="totalProfit">Total Profit: $@Model.Profit</div>
+        <div id="totalSold">Total Products Sold: @Model.TotalProductsSold</div>
+        <div id="totalSold">Available For Payout: $@Model.TotalAvailableForPayout</div>
+    </div>
+    <div id="requestPayout">
+        <a href="#" onclick="RequestPayout();">Request A Payout</a>
+    </div>
+
+    <div id="designerSales">
+        <h2>Sales</h2>
+        <table>
+            <thead>
+                <tr>
+                    <td>Image</td>
+                    <td>Name</td>
+                    <td>Sales</td>
+                    <td>Profit</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (LidLaunchWebsite.Models.DesignerDashboardSales sales in Model.lstSales)
+                {
+                    <tr>
+                        <td>
+                            <img src="~/Images/DesignImages/InUse/@sales.ProductImage" height="80" />
+                        </td>
+                        <td>
+                            @sales.ProductName
+                        </td>
+                        <td>
+                            Total Sold: @sales.TotalSales
+                        </td>
+                        <td>
+                            Total Profit: $@(sales.SaleProfitNumber * 8)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+    <div id="designerProducts">
+        <h2>Current Products</h2>
+        <table>
+            <thead>
+                <tr>
+                    <td>Image</td>
+                    <td>Name</td>
+                    <td>Private</td>
+                    <td>Approve</td>
+                    <td>Edit</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (LidLaunchWebsite.Models.DesignerDashboardProduct product in Model.lstProducts)
+                {
+                    <tr>
+                        <td onclick="window.location = '/Product?id=@product.ProductId'"><img src="~/Images/DesignImages/InUse/@product.ProductImage" height="80" /></td>
+                        <td>@product.ProductName</td>
+                        <td>Private: @product.Private</td>
+                        <td>Approved: @product.Approved</td>
+                        <td><a href="/Dashboard/EditProduct?id=@product.ProductId" target="_blank">Edit</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Lid Launch - Login";
+}
+<div id="UserSignUp">
+    <div class="formInput"><h1>Welcome back!</h1></div>
+    <div class="formInput">
+        Email:
+    </div>
+    <div class="formInput">
+        <input type="text" id="txtEmail" />
+    </div>
+    <div class="formInput">
+        Password:
+    </div>
+    <div class="formInput">
+        <input type="password" id="txtPassword" />
+    </div>
+    <div class="formInput">
+        <input type="button" value="Login" onclick="login();" id="loginButton" />
+        <a href="/User" id="createAccountLink">Create An Account</a><br />
+        <a href="#" onclick="SendForgotPasswordEmail();" id="createAccountLink">Forgot Password?</a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#txtPassword').keypress(function (e) {
+            var key = e.which;
+            if (key == 13)  // the enter key code
+            {
+                $('#createAccountLink').click();
+                return false;
+            }
+        });
+        $('#txtEmail').keypress(function (e) {
+            var key = e.which;
+            if (key == 13)  // the enter key code
+            {
+                $('#createAccountLink').click();
+                return false;
+            }
+        });
+    });
+</script>
