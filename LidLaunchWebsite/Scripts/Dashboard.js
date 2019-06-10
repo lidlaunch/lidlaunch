@@ -117,9 +117,89 @@
             displayPopupNotification('Only one file can be uploaded.', 'error', false);
         }
     });
-
+    $('.hatTypePreviewUpload').on('change', function (e) {
+        var that = this;
+        var files = e.target.files;
+        if (files.length > 0 & files.length < 2) {
+            if (window.FormData !== undefined) {
+                var data = new FormData();
+                for (var x = 0; x < files.length; x++) {
+                    data.append("file" + x, files[x]);
+                }
+                showLoading();
+                $.ajax({
+                    type: "POST",
+                    url: '/Dashboard/UploadHatTypePreviewImage',
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        if (result == "") {
+                            //do nothing
+                            displayPopupNotification('Error uploading hat type preview image please try again.', 'error', false);
+                        } else {
+                            //set the url for the file link and show the link 
+                            hideLoading();
+                            var filename = result.replace(new RegExp('"', 'g'), "");
+                            $(".hatTypePreview").val(filename);
+                            $(".hatTypePreviewImg").attr('src', '/Images/HatAssets/' + filename + "?test");
+                        }
+                    },
+                    error: function (xhr, status, p3, p4) {
+                        displayPopupNotification('Error uploading hat type preview image please try again.', 'error', false);
+                    }
+                });
+            } else {
+                displayPopupNotification('Use Google Chrome browser or Firefox!', 'error', false);
+            }
+        } else {
+            displayPopupNotification('Only one file can be uploaded.', 'error', false);
+        }
+    });
+    bindHatPreviewInputs();
 });
-
+function bindHatPreviewInputs() {
+    $('.creationImageUpload').on('change', function (e) {
+        var that = this;
+        var files = e.target.files;
+        if (files.length > 0 & files.length < 2) {
+            if (window.FormData !== undefined) {
+                var data = new FormData();
+                for (var x = 0; x < files.length; x++) {
+                    data.append("file" + x, files[x]);
+                }
+                showLoading();
+                $.ajax({
+                    type: "POST",
+                    url: '/Dashboard/UploadHatCreationImage',
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        if (result == "") {
+                            //do nothing
+                            displayPopupNotification('Error uploading hat creation image please try again.', 'error', false);
+                        } else {
+                            //set the url for the file link and show the link 
+                            hideLoading();
+                            var filename = result.replace(new RegExp('"', 'g'), "");
+                            $(that).closest('.hatTypeEditRow').find(".creationImage").val(filename);
+                            $(that).closest('.hatTypeEditRow').find(".hatStyleImg").attr('src', '/Images/HatAssets/' + filename + "?test");
+                        }
+                    },
+                    error: function (xhr, status, p3, p4) {
+                        displayPopupNotification('Error uploading hat creation image please try again.', 'error', false);
+                    }
+                });
+            } else {
+                displayPopupNotification('Use Google Chrome browser or Firefox!', 'error', false);
+            }
+        } else {
+            displayPopupNotification('Only one file can be uploaded.', 'error', false);
+        }
+    });
+    
+}
 function RequestPayout() {
     showLoading();
     $.ajax({
@@ -183,5 +263,62 @@ function saveTracking(that) {
             //error: displayPopupNotification('User create failed please try again.', 'error', false)
         });
     }
+}
+
+function updatePreviewImage(image, that) {
+    $(that).closest('tr').find('.hatStyleImg').attr("src", image);
+}
+
+function addNewHatTypeColorRow() {    
+    $('#hatTypeColors').append($('.hatTypeEditRowTemplate').html());
+    bindHatPreviewInputs();
+}
+
+function saveHatType() {
+    var hatTypeColors = [];
+    var hatTypeId = 0;
+    var hatTypeName = '';
+    var hatTypePreview = '';
+
+    $('#hatTypeColors .hatTypeEditRow').each(function () {
+        var hatTypeColor = {
+            'colorId': $(this).find('.colorId').text(),
+            'color': $(this).find('.colorName').val(),
+            'availableToCreate': $(this).find('.availableToCreate').is(':checked'),
+            'colorCode': $(this).find('.colorCode').val(),
+            'creationImage': $(this).find('.creationImage').val()
+        };
+        hatTypeColors.push(hatTypeColor);
+    });
+    hatTypeId = $('#hatTypeId').text();
+    hatTypeName = $('#hatTypeName').val();
+    hatTypePreview = $('.hatTypePreview').val();
+
+    console.log(hatTypeColors);
+    console.log(hatTypeId + ' ' + hatTypeName + ' ' + hatTypePreview);
+
+
+    if ('' == 'this') {
+        displayPopupNotification('One of the fields didnt work!?!?', 'error', false);
+    } else {
+        $.ajax({
+            type: "POST",
+            url: '/Dashboard/SaveHatType',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+                "hatTypeColors": hatTypeColors, "hatTypeId": hatTypeId, "hatTypeName": hatTypeName, "hatTypePreview": hatTypePreview
+            }),
+            dataType: "json",
+            success: function (data) {
+                //it worked
+                window.location = "/Dashboard/HatManager";
+            },
+            error: function (err) {
+                displayPopupNotification('Error creating/updating hat type.', 'error', false);
+            }
+            //error: displayPopupNotification('User create failed please try again.', 'error', false)
+        });
+    }
+
 }
 

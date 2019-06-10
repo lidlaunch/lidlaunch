@@ -21,17 +21,20 @@
                             //do nothing
                             displayPopupNotification('Error uploading artwork please try again.', 'error', false);
                         } else {
-                            if (result == '"PNG"') {
+                            if (result == 'PNG') {
                                 displayPopupNotification('Your artwork MUST be in PNG format.', 'error', false);
                             }
-                            else if (result == '"SIZE"') {
+                            else if (result == 'SIZE') {
                                 displayPopupNotification('Your artwork is too small. Download our template for a good starting point.', 'error', false);
                             }
-                            else if (result == '"COLORS"') {
+                            else if (result == 'COLORS') {
                                 displayPopupNotification('Your artwork contains more than 5 colors. Remember this is for embroidery. Designs need to be simple with no gradients.', 'error', false);
                             }
                             else {
-                                location.reload();
+                                //set image on screen
+                                $('#designImageLabel').text(result);
+                                $('#previewDesign').attr('src', 'Images/DesignImages/Temp/' + result);
+                                hideLoading();
                             }                                 
                         }
                     },
@@ -46,6 +49,9 @@
             displayPopupNotification('Only one file can be used per design.', 'error', false);
         }
     });
+
+
+
     $('#previewDesign').load(function () {
         $("#dragHelper").draggable({ containment: "#artworkAreaContainer" });
         $('#previewDesign').resizable({ aspectRatio: true });
@@ -54,6 +60,12 @@
     if ($('#previewDesign').attr('src') == '/Images/DesignImages/Temp/') {
         $('#previewDesign').hide();
     }
+
+    $('.hatColorsPicker .color').first().addClass('selected');
+    $('.hatColorsPicker').first().removeClass('hidden');
+    $('.hatTypePreview .hatColorPreview').first().removeClass('hideHat');
+    $('#lblTypeId').text($('.hatColorsPicker').first().attr('id'));
+    $('#lblColorId').text($('.hatColorsPicker').first().find('.color').first().attr('id'));
     
 });
 
@@ -124,8 +136,15 @@ function UpdateProduct() {
     var privateProduct = $('#privateProduct').prop('checked');
     var hatTypes = [];
     $('.selectedHatType').each(function() {
-        if($(this).prop('checked') == true){
-            hatTypes.push($(this).closest('.hatType').find('.hatTypeId').text());
+        if ($(this).prop('checked') == true) {
+            var hatTypeId = $(this).closest('.hatType').find('.hatTypeId').text();
+            var colorIds = '';
+            $(this).closest('.hatType').find('.selectedHatColor').each(function () {
+                if ($(this).prop('checked') == true) {
+                    colorIds += $(this).attr('id') + ',';
+                }
+            });
+            hatTypes.push(hatTypeId + ':' + colorIds);
         }
     });
 
@@ -204,79 +223,36 @@ function UpdateProductExisting() {
 
 function changeHatType(typeId) {
     showLoading();
-    var colorId = $('#lblColorId').text();
-    if (typeId == 2) {
-        if (colorId == 1) {
-            $('#hat').attr('src', '/Images/HatAssets/HatFrontBlack.png');
-        } else if (colorId == 2) {
-            $('#hat').attr('src', '/Images/HatAssets/HatFrontWhite.png');
-        }
-    } else if (typeId == 3) {
-        if (colorId == 1) {
-            $('#hat').attr('src', '/Images/HatAssets/TruckFrontBlack.png');
-        } else if (colorId == 2) {
-            $('#hat').attr('src', '/Images/HatAssets/TruckFrontWhite.png');
-        }
-    } else if (typeId == 4) {
-        if (colorId == 1) {
-            $('#hat').attr('src', '/Images/HatAssets/DadCapFrontBlack.png');
-        } else if (colorId == 2) {
-            $('#hat').attr('src', '/Images/HatAssets/DadCapFrontWhite.png');
-        }
-    } else if (typeId == 5) {
-        if (colorId == 1) {
-            $('#hat').attr('src', '/Images/HatAssets/CurveSnapFrontBlack.png');
-        } else if (colorId == 2) {
-            $('#hat').attr('src', '/Images/HatAssets/CurveSnapFrontWhite.png');
-        }
-    } else if (typeId == 6) {
-        if (colorId == 1) {
-            $('#hat').attr('src', '/Images/HatAssets/FlatSnapFrontBlack.png');
-        } else if (colorId == 2) {
-            $('#hat').attr('src', '/Images/HatAssets/FlatSnapFrontWhite.png');
-        }
-    }
+
+    //get hat type and colors from controller..
+    var previousSelectedColorId = $('#lblColorId').text();
+    var previousSelectedType = $('#lblTypeId').text();
+
+    $('.colorPicker #' + previousSelectedType + '.hatColorsPicker').addClass('hidden');
+    $('.colorPicker #' + previousSelectedType + '.hatColorsPicker').find('#' + previousSelectedColorId + '.color').removeClass('selected');
+    $('.colorPicker #' + typeId + '.hatColorsPicker').removeClass('hidden');
+
+    $('.hatTypePreview.' + previousSelectedType).find('.hatColorPreview.' + previousSelectedColorId).addClass('hideHat');
+    $('.hatTypePreview.' + typeId).find('.hatColorPreview').first().removeClass('hideHat');
+    
+    $('#lblColorId').text($('#' + typeId + '.hatColorsPicker').find('.color').first().attr('id'));
+    $('#' + typeId + '.hatColorsPicker').find('.color').first().addClass('selected');
+
     $('#lblTypeId').text(typeId);
     saveHatTypeChange(typeId);    
 }
 function changePreviewColor(colorId, that) {
     var typeId = $('#lblTypeId').text();
+    var previousSelectedColorId = $('#lblColorId').text();
     showLoading();
-    if (typeId == 2) {
-        if (colorId == 1) {
-            $('#hat').attr('src', '/Images/HatAssets/HatFrontBlack.png');
-        } else if (colorId == 2) {
-            $('#hat').attr('src', '/Images/HatAssets/HatFrontWhite.png');
-        }        
-    } else if (typeId == 3) {
-        if (colorId == 1) {
-            $('#hat').attr('src', '/Images/HatAssets/TruckFrontBlack.png');
-        } else if (colorId == 2) {
-            $('#hat').attr('src', '/Images/HatAssets/TruckFrontWhite.png');
-        }  
-    } else if (typeId == 4) {
-        if (colorId == 1) {
-            $('#hat').attr('src', '/Images/HatAssets/DadCapFrontBlack.png');
-        } else if (colorId == 2) {
-            $('#hat').attr('src', '/Images/HatAssets/DadCapFrontWhite.png');
-        }  
-    } else if (typeId == 5) {
-        if (colorId == 1) {
-            $('#hat').attr('src', '/Images/HatAssets/CurveSnapFrontBlack.png');
-        } else if (colorId == 2) {
-            $('#hat').attr('src', '/Images/HatAssets/CurveSnapFrontWhite.png');
-        }  
-    } else if (typeId == 6) {
-        if (colorId == 1) {
-            $('#hat').attr('src', '/Images/HatAssets/FlatSnapFrontBlack.png');
-        } else if (colorId == 2) {
-            $('#hat').attr('src', '/Images/HatAssets/FlatSnapFrontWhite.png');
-        }  
-    }
-    $('.colorPicker').find('.color').each(function () {
-        $(this).removeClass('selected');
-    });
+
+    $('.colorPicker #' + typeId + '.hatColorsPicker').find('#' + previousSelectedColorId + '.color').removeClass('selected');
+    $('.hatTypePreview.' + typeId).find('.hatColorPreview.' + previousSelectedColorId).addClass('hideHat');
+    $('.hatTypePreview.' + typeId).find('.hatColorPreview.' + colorId).removeClass('hideHat');
+
+
     $(that).addClass('selected');
+    $('#lblColorId').text(colorId);
     saveColorChange(colorId);
 }
 function saveHatTypeChange(typeId) {
@@ -326,4 +302,18 @@ function selectHatType(typeId, that, currentHatTypeId) {
         }
         
     }    
+}
+function addColor(colorId, hatTypeId, currentColorId, that) {
+    if (colorId == currentColorId) {
+        //do nothing
+    } else {
+        if ($(that).parent().find('.selectedHatColor#' + colorId).prop('checked') == true) {
+            $(that).parent().find('.color.' + colorId).removeClass('selected');
+            $(that).parent().find('.selectedHatColor#' + colorId).prop('checked', false);
+        } else {
+            $(that).parent().find('.color.' + colorId).addClass('selected');
+            $(that).parent().find('.selectedHatColor#' + colorId).prop('checked', true);
+        }
+
+    }
 }

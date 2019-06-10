@@ -8,5 +8,7 @@ namespace LidLaunchWebsite.Models
         public int Id { get; set; }
         public List<Product> lstProducts { get; set; }
         public decimal Total { get; set; }
+        public decimal TotalWithShipping { get; set; }
+        public decimal Shipping { get; set; }
     }
 }

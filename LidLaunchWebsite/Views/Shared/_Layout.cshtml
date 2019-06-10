@@ -34,7 +34,38 @@
     @Scripts.Render("~/Scripts/Designer.js")
     @Scripts.Render("~/Scripts/Product.js")
     @Scripts.Render("~/Scripts/Cart.js")
+    @Scripts.Render("~/Scripts/Bulk.js")
     @Scripts.Render("~/Scripts/Dashboard.js")
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116128249-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-116128249-1');
+    </script>
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '450717395469044');
+        fbq('track', 'PageView');
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none"
+             src="https://www.facebook.com/tr?id=450717395469044&ev=PageView&noscript=1" />
+    </noscript>
+    <!-- End Facebook Pixel Code -->
 </head>
 <body>
     <div>
@@ -50,26 +81,28 @@
                     <div id="navigation">
                         <ul>
                             <li>@Html.ActionLink("Shop", "Index", "Shop")</li>
-                            <li id="desktopCreate">@Html.ActionLink("Create", "GetStarted", "Create")</li>
+                            <li id="desktopCreate">@Html.ActionLink("Create", "GetStarted", "Create")</li>                            
                             <li id="mobileCreate" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);"><a href="#">Create</a></li>
+                            <li>@Html.ActionLink("Order", "Index", "Bulk")</li>
                             @if (Convert.ToInt32(Session["UserID"]) > 0)
                             {
-                            <li>
-                                <a href="#" onclick="showProfileLinks();">Profile</a>
-                                <ul id="profileMenu">
-                                    <li>@Html.ActionLink("Dashboard", "Designer", "Dashboard")</li>
-                                    <li>@Html.ActionLink("Logout", "Logout", "User")</li>
-                                    @if (Convert.ToInt32(Session["UserID"]) == 1)
-    {
-                                <li>@Html.ActionLink("Profit", "Profit", "Dashboard")</li>
-                                <li>@Html.ActionLink("Approval", "PendingProducts", "Dashboard")</li>
-                                <li>@Html.ActionLink("Orders", "Orders", "Dashboard")</li>
-                                <li>@Html.ActionLink("Needs Digitizing", "NeedsDigitizing", "Dashboard")</li>
-                                <li>@Html.ActionLink("Order Batching", "CreateBatch", "Dashboard")</li>
-}
-                                </ul>   
-                            </li>
-                                                               
+                                <li>
+                                    <a href="#" onclick="showProfileLinks();">Profile</a>
+                                    <ul id="profileMenu">
+                                        <li>@Html.ActionLink("Dashboard", "Designer", "Dashboard")</li>
+                                        <li>@Html.ActionLink("Logout", "Logout", "User")</li>
+                                        @if (Convert.ToInt32(Session["UserID"]) == 1)
+                                        {
+                                            <li>@Html.ActionLink("Profit", "Profit", "Dashboard")</li>
+                                            <li>@Html.ActionLink("Approval", "PendingProducts", "Dashboard")</li>
+                                            <li>@Html.ActionLink("Orders", "Orders", "Dashboard")</li>
+                                            <li>@Html.ActionLink("Needs Digitizing", "NeedsDigitizing", "Dashboard")</li>
+                                            <li>@Html.ActionLink("Order Batching", "CreateBatch", "Dashboard")</li>
+                                            <li>@Html.ActionLink("Hat Manager", "HatManager", "Dashboard")</li>
+                                        }
+                                    </ul>
+                                </li>
+
                             }
                             else
                             {
@@ -90,20 +123,20 @@
                 <div class="mainNavigation">
                     @{
                         Html.RenderAction("Menu", "Home");
-                    }                    
+                    }
                     @*<div class="dropdown">
-            <div class="dropbtn"> Locations </div>
-        </div>
-        <div class="dropdown">
-            <div class="dropbtn"> Sports </div>
-        </div>*@
+                            <div class="dropbtn"> Locations </div>
+                        </div>
+                        <div class="dropdown">
+                            <div class="dropbtn"> Sports </div>
+                        </div>*@
                     @*<div class="dropdown">
-            <div class="dropbtn"> Entertainment </div>
-            <div class="dropdown-content">
-                <div class="">Basketball</div>
-                <div class="">Baseball</div>
-            </div><!-- end ngIf: pCat.ChildCategories.length > 0 -->
-        </div><!-- end ngRepeat: pCat in $ctrl.list -->*@
+                            <div class="dropbtn"> Entertainment </div>
+                            <div class="dropdown-content">
+                                <div class="">Basketball</div>
+                                <div class="">Baseball</div>
+                            </div><!-- end ngIf: pCat.ChildCategories.length > 0 -->
+                        </div><!-- end ngRepeat: pCat in $ctrl.list -->*@
                 </div>
 
                 <div id="content">
@@ -112,7 +145,7 @@
 
             </div>
         </div>
-        
+
         <div id="footer">
             <div id="footerContent">
                 <div class="left50">
@@ -129,7 +162,8 @@
                 <div class="left50">
                     <div style="margin:0 auto; width:175px; text-align:center;">
                         <p>Embroidered in the <b>USA</b>!</p>
-                        <img src="~/Images/America.png" height="100" />
+                        <img src="~/Images/America.png" height="100" /><br/>
+                        <p>Contact us - info@lidlaunch.com</p>
                     </div>
                 </div>
             </div>

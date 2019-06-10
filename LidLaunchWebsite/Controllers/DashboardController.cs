@@ -176,7 +176,155 @@ namespace LidLaunchWebsite.Controllers
             }
 
         }
+        public ActionResult HatManager()
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["UserID"]) == 1)
+                {
+                    HatData data = new HatData();
+                    HatManager hatManager = new HatManager();
+                    hatManager.lstHatTypes = data.GetHatTypes();
+                    return View(hatManager);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
 
+        }
+        public ActionResult HatTypeEdit(int hatTypeId = 0)
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["UserID"]) == 1)
+                {
+                    HatData data = new HatData();
+                    HatType hatType = new HatType();
+                    if (hatTypeId > 0)
+                    {
+                        hatType = data.GetHatType(hatTypeId);
+                    }                    
+                    return View(hatType);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+            
+        }
+        public string UploadHatCreationImage()
+        {
+            var returnValue = "";
+            try
+            {
+                if (!checkLoggedIn())
+                {
+                    //do nothing
+                }
+                else
+                {
+                    var fileContent = Request.Files[0];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        //var extension = Path.GetExtension(fileContent.FileName);
+
+                        var fileName = Request.Files[0].FileName;
+                        var path = Path.Combine(Server.MapPath("~/Images/HatAssets/"), fileName);
+
+                        fileContent.SaveAs(path);
+                        returnValue = fileName;                        
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+            var json = new JavaScriptSerializer().Serialize(returnValue);
+            return json;
+        }
+        public string UploadHatTypePreviewImage()
+        {
+            var returnValue = "";
+            try
+            {
+                if (!checkLoggedIn())
+                {
+                    //do nothing
+                }
+                else
+                {
+                    var fileContent = Request.Files[0];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        //var extension = Path.GetExtension(fileContent.FileName);
+
+                        var fileName = Request.Files[0].FileName;
+                        var path = Path.Combine(Server.MapPath("~/Images/HatAssets/"), fileName);
+
+                        fileContent.SaveAs(path);
+                        returnValue = fileName;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+            var json = new JavaScriptSerializer().Serialize(returnValue);
+            return json;
+        }
+        
+        public string SaveHatType (List<HatColor> hatTypeColors, int hatTypeId, string hatTypeName, string hatTypePreview, string description, string manufacturer, string productIdentifier, string basePrice)
+        {
+            HatData hatData = new HatData();
+            HatType hatType = new HatType();
+            hatType.Description = "test";
+            hatType.ProductImage = hatTypePreview;
+            hatType.ManufacturerId = 1;
+            hatType.Name = hatTypeName;
+            hatType.ProductIdentifier = "abc123";
+            if (hatTypeId == 0)
+            {
+                //create new hat type from scratch                
+                hatTypeId = hatData.CreateHatType(hatType);
+                hatType.Id = hatTypeId;
+            }
+            else
+            {
+                //update existing hat type
+                hatData.UpdateHatType(hatType);
+                hatType.Id = hatTypeId;
+            }
+
+            foreach(HatColor hatTypeColor in hatTypeColors)
+            {
+                //update / create hat type color
+                hatTypeColor.typeId = hatType.Id;
+                hatData.CreateTypeColor(hatTypeColor);
+            }
+
+            return "";
+        }
         public ActionResult EditProduct(string id)
         {
             if (Convert.ToInt32(id) > 0)
@@ -186,7 +334,7 @@ namespace LidLaunchWebsite.Controllers
                 List<Product> lstParentProducts = new List<Product>();
                 ProductData data = new ProductData();
                 Product product = new Product();
-                product = data.GetProduct(Convert.ToInt32(id),0);
+                product = data.GetProduct(Convert.ToInt32(id),0,0);
                 lstCategories = data.GetCategories();
                 lstParentProducts = data.GetDesignerProductsForParentList((Int32)Session["DesignerID"]);
                 updateProd.lstParentProducts = lstParentProducts;

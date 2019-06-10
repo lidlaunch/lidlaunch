@@ -33,86 +33,33 @@
         <div id="previewImage">
             <div id="previewLoading">Design Preview:</div>
             <div class="colorPicker">
-                @if (Convert.ToInt32(Session["ColorID"]) == 1)
+
+                @foreach (LidLaunchWebsite.Models.HatType hatType in Model.lstHatTypes)
                 {
-                <div class="cp color black selected" onclick="$('#lblColorId').text(1); changePreviewColor(1, this);"></div>
-                <div class="cp color white" onclick="$('#lblColorId').text(2); changePreviewColor(2, this);"></div>
-                }
-                else if (Convert.ToInt32(Session["ColorID"]) == 2)
-                {
-                <div class="cp color black" onclick="$('#lblColorId').text(1); changePreviewColor(1, this);"></div>
-                <div class="cp color white selected" onclick="$('#lblColorId').text(2); changePreviewColor(2, this);"></div>
+                    <div class="hatColorsPicker hidden" id="@hatType.Id">
+                        @foreach (LidLaunchWebsite.Models.HatColor hatColor in hatType.lstColors)
+                        {
+                            <div class="cp color @hatColor.colorId" id="@hatColor.colorId" style="background-color:#@hatColor.colorCode" onclick="changePreviewColor(@hatColor.colorId, this);"></div>
+                        }
+                    </div>  
                 }
 
             </div>
             <div id="artworkAreaContainer">
                 <div id="dragHelper" style="display:inline-block">
-                    <img class="artworkImage onHat" id="previewDesign" src="@Url.Content("~/Images/DesignImages/Temp/" + Session["TempDesignArtworkImagePath"])" />
+                    <img class="artworkImage onHat" id="previewDesign" src="@Url.Content("~/Images/DesignImages/Temp/")" />
                 </div>
             </div>
-@if (Convert.ToInt32(Session["HatTypeID"]) == 2)
-{
-        if (Convert.ToInt32(Session["ColorID"]) == 1)
-        {
-                <img src="@Url.Content("~/Images/HatAssets/HatFrontBlack.png")" id="hat" />
-        }
-        else if (Convert.ToInt32(Session["ColorID"]) == 2)
-        {
-                <img src="@Url.Content("~/Images/HatAssets/HatFrontWhite.png")" id="hat" />
-        }
-
-}
-else if (Convert.ToInt32(Session["HatTypeID"]) == 3)
-{
-        if (Convert.ToInt32(Session["ColorID"]) == 1)
-        {
-                <img src="@Url.Content("~/Images/HatAssets/TruckFrontBlack.png")" id="hat" />
-        }
-        else if (Convert.ToInt32(Session["ColorID"]) == 2)
-        {
-                <img src="@Url.Content("~/Images/HatAssets/TruckFrontWhite.png")" id="hat" />
-        }
-
-}
-else if (Convert.ToInt32(Session["HatTypeID"]) == 4)
-{
-        if (Convert.ToInt32(Session["ColorID"]) == 1)
-        {
-                <img src="@Url.Content("~/Images/HatAssets/DadCapFrontBlack.png")" id="hat" />
-        }
-        else if (Convert.ToInt32(Session["ColorID"]) == 2)
-        {
-                <img src="@Url.Content("~/Images/HatAssets/DadCapFrontWhite.png")" id="hat" />
-        }
-
-}
-else if (Convert.ToInt32(Session["HatTypeID"]) == 5)
-{
-        if (Convert.ToInt32(Session["ColorID"]) == 1)
-        {
-                <img src="@Url.Content("~/Images/HatAssets/CurveSnapFrontBlack.png")" id="hat" />
-        }
-        else if (Convert.ToInt32(Session["ColorID"]) == 2)
-        {
-                <img src="@Url.Content("~/Images/HatAssets/CurveSnapFrontWhite.png")" id="hat" />
-        }
-
-}
-else if (Convert.ToInt32(Session["HatTypeID"]) == 6)
-{
-        if (Convert.ToInt32(Session["ColorID"]) == 1)
-        {
-                <img src="@Url.Content("~/Images/HatAssets/FlatSnapFrontBlack.png")" id="hat" />
-        }
-        else if (Convert.ToInt32(Session["ColorID"]) == 2)
-        {
-                <img src="@Url.Content("~/Images/HatAssets/FlatSnapFrontWhite.png")" id="hat" />
-        }
-
-}
-
-
-
+            @foreach (LidLaunchWebsite.Models.HatType hatType in Model.lstHatTypes)
+            {
+                <div class="hatTypePreview @hatType.Id">
+                    @foreach (LidLaunchWebsite.Models.HatColor hatColor in hatType.lstColors)
+                    {
+                        <img src="@Url.Content("~/Images/HatAssets/" + hatColor.creationImage)" id="@hatColor.colorId" class="hatColorPreview @hatColor.colorId hideHat hat" />
+                    }
+                </div>
+            }
+            
         </div><!--/workspace-->
         <div id="selectionBox">
             <div id="SelectionHeader">Hat Style & Color</div>
@@ -128,7 +75,7 @@ else if (Convert.ToInt32(Session["HatTypeID"]) == 6)
                     @hatType.Name
                 </div>
                 <div class="hatStyleDescription">
-                    @hatType.Desscription
+                    @hatType.Description
                 </div>
             </div>
 }
@@ -144,9 +91,9 @@ else if (Convert.ToInt32(Session["HatTypeID"]) == 6)
         <div id="close" onclick="$('#previewPopup').hide();">X</div>
         <h1>Here is your hat!</h1>
         <p>We will Create and Ship every hat that you sell for you!</p>
-        <p>You will reiceve $8 profit for each hat sold.*</p>
+        <p>You will reiceve $5 profit for each hat sold.*</p>
         <img src="~/Images/DesignImages/Temp/48c14b61-3178-4d66-b96a-9e60610f0505.png" id="renderedPreview" height="450" />
-        <p style="font-size:10px;">*Your $8 profit from the first hat sale for every design you create will go towards digitizing your artwork. Every product sold after the first will be $8 profit.*</p>
+        <p style="font-size:10px;">*Your $5 profit from the first hat sale for every design you create will go towards digitizing your artwork. Every product sold after the first will be $5 profit.*</p>
         <p style="font-size:10px;">**note: artwork will follow the natural bends of the hat. For an example of this click <a href="~/Images/HatBends.jpg" target="_blank" style="color:#39b91c;">here</a>**</p>
         <p><input type="checkbox" id="agreeToTerms" /> I agree to the <a href="/Terms/TermsAndConditions" target="_blank" style="color:#39b91c;">Terms & Conditions</a></p>
         <input type="button" id="acceptDesign" onclick="AcceptDesign();" value="Accept & Start Selling!">

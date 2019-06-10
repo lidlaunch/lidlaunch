@@ -24,7 +24,7 @@
     </div>
 </div><!--/searchBox-->
 
-<div id="banner">
+<div id="banner" style="display:none;">
 
 </div>
 <div id="paypalCreditBanner">
@@ -41,7 +41,7 @@
             <div class="productListed" onclick="window.location='/Product?id=@prod.ProductId'">
                 <img src="~/Images/DesignImages/InUse/@prod.Image" width="250" class="productImage" /><br />
                 <span class="prodName">@prod.Name</span><br />
-                <span class="prodPrice">$25</span>
+                <span class="prodPrice">$19.99</span>
                 @if (prod.ParentCount > 0)
                 {
                     <div class="multiOptionsIcon">

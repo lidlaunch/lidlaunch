@@ -13,14 +13,14 @@
                 foreach (LidLaunchWebsite.Models.Product product in Model.lstProducts)
                 {
 
-                    productList = productList + "{\"name\":\"" + product.Name + " - " + product.TypeText + " - Size: " + product.Size + "\",\"quantity\":\"" + product.Quantity + "\",\"price\":\"" + (product.Quantity * 25) + "\",\"currency\":\"USD\"},";
+                    productList = productList + "{\"name\":\"" + product.Name + " - " + product.TypeText + " - Size: " + product.Size + "\",\"quantity\":\"" + product.Quantity + "\",\"price\":\"" + 19.99 + "\",\"currency\":\"USD\"},";
 
                     <div class="productRow">
                         <img src="~/Images/DesignImages/InUse/@product.Design.PreviewImage" width="100" class="productImage" />
                         <span class="productDetails">
                             <div class="cartGuid hidden">@product.CartGuid</div>
                             <div class="productName">@product.Name</div>
-                            <div class="productPrice">$@(product.Quantity * 25)</div>
+                            <div class="productPrice">$@(product.Quantity * 19.99)</div>
                             <div class="productType">Type: @product.TypeText</div>
                             <div class="productQty">Quantity: @product.Quantity</div>
                             <div class="productSize">Size: @product.Size</div>
@@ -28,7 +28,7 @@
                         </span>
                     </div>
                 }
-                productList = productList + "{\"name\":\"Shipping\",\"quantity\":\"1\",\"price\":\"5\",\"currency\":\"USD\"}]";
+                productList = productList + "{\"name\":\"Shipping\",\"quantity\":\"1\",\"price\":\"" + Model.Shipping + "\",\"currency\":\"USD\"}]";
                 <span id="productList" class="hidden">@productList</span>
             }
             else
@@ -53,14 +53,14 @@
                     </tr>
                     <tr>
                         <td>Shipping:</td>
-                        <td style="text-align:right;">$5</td>
+                        <td style="text-align:right;">$@Model.Shipping</td>
                     </tr>
                     <tr>
                         <td style="font-weight:bold;">Total:</td>
-                        <td style="text-align:right; font-weight:bold;">$<span id="lblTotal">@(Model.Total + 5)</span></td>
+                        <td style="text-align:right; font-weight:bold;">$<span id="lblTotal">@Model.TotalWithShipping</span></td>
                     </tr>
                 </table>
-                <a href="#logo" onclick="$('#customerInfoPopup').show();"><div id="PayNow">Complete Order</div></a>
+                <a href="javascript:void(0);" onclick="$('#customerInfoPopup').show(); $(window).scrollTop(0);"><div id="PayNow">Complete Order</div></a>
             </div>
         }
 
@@ -249,7 +249,7 @@
                     </tr>
                     <tr id="priceRow">
                         <td colspan="2">
-                            <h2>TOTAL - $@(Model.Total + 5)</h2>
+                            <h2>TOTAL - $@Model.TotalWithShipping</h2>
                         </td>
                     </tr>
                 </table>
@@ -284,7 +284,7 @@
         <tr><td><input type="text" name="os0" id="orderInformation" maxlength="200"></td></tr>
     </table>
     <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" id="paypalButton">
-    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">    
 </form>
 
 

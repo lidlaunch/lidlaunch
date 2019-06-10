@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "HatManager";
+}
+
+<h2>HatManager</h2>
+
+<table>
+    <tr>
+        <td>HatTypeID</td>
+        <td>Name</td>
+        <td>ImagePreview</td>
+        <td>ProductImage</td>
+        <td>Colors</td>
+    </tr>
+    @foreach (LidLaunchWebsite.Models.HatType hatType in Model.lstHatTypes)
+    {
+        <tr id="@hatType.Id">
+            <td>
+                @hatType.Id
+            </td>
+            <td>
+                @hatType.Name
+            </td>
+            <td>                
+                <img class="hatStyleImg" src="~/Images/HatAssets/@hatType.lstColors[0].creationImage" width="240"/>
+            </td>
+            <td>
+                <img class="hatStylePreview" src="~/Images/HatAssets/@hatType.ProductImage" width="240" />
+            </td>
+            <td>
+                @foreach (LidLaunchWebsite.Models.HatColor hatColor in hatType.lstColors)
+                {
+                    <div class="cp color @hatColor.colorId" id="@hatColor.colorId" style="background-color:#@hatColor.colorCode" onclick="updatePreviewImage('/Images/HatAssets/@hatColor.creationImage', this);"></div>
+                }
+            </td>
+            <td>
+                <span onclick="window.location = '/Dashboard/HatTypeEdit?hatTypeId=@hatType.Id'">Edit</span>
+            </td>
+        </tr>
+    }
+</table>
+
+<div class="button" onclick="window.location='/Dashboard/HatTypeEdit'">Add New Type</div>

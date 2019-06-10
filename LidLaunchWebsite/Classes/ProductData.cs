@@ -223,7 +223,71 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
-        public Product GetProduct(int productId, int typeId)
+        public Product GetProductForProductPage(int productId)
+        {
+            Product model = new Product();
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetProductForProductPage", data.conn);
+                    sqlComm.Parameters.AddWithValue("@id", productId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+                }
+
+                if (ds.Tables.Count > 0)
+                {
+                    Product product = new Product();
+                    Design design = new Design();
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        DataRow dr = ds.Tables[0].Rows[0];
+                        product.Id = Convert.ToInt32(dr["Id"]);
+                        product.DesignerId = Convert.ToInt32(dr["DesignerId"]);
+                        product.Name = Convert.ToString(dr["Name"]);
+                        product.Description = Convert.ToString(dr["Description"]);
+                        product.Private = Convert.ToBoolean(dr["Private"].ToString());
+                        product.Hidden = Convert.ToBoolean(dr["Hidden"].ToString());
+                        if (!(dr["ParentProductId"] is DBNull))
+                        {
+                            product.ParentProductId = Convert.ToInt32(dr["ParentProductId"]);
+                        }
+                        else
+                        {
+                            product.ParentProductId = 0;
+                        }
+                    }                   
+
+                    model = product;
+                    return model;
+                }
+                else
+                {
+                    return model;
+                }
+            }
+            catch (Exception ex)
+            {
+                return model;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+        public Product GetProduct(int productId, int typeId, int colorId)
         {
             Product model = new Product();
             var data = new SQLData();
@@ -236,6 +300,7 @@ namespace LidLaunchWebsite.Classes
                     SqlCommand sqlComm = new SqlCommand("GetProduct", data.conn);
                     sqlComm.Parameters.AddWithValue("@id", productId);
                     sqlComm.Parameters.AddWithValue("@typeId", typeId);
+                    sqlComm.Parameters.AddWithValue("@colorId", colorId);
                     //sqlComm.Parameters.AddWithValue("@TimeRange", TimeRange);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
@@ -259,7 +324,7 @@ namespace LidLaunchWebsite.Classes
                         product.Description = Convert.ToString(dr["Description"]);
                         product.Private = Convert.ToBoolean(dr["Private"].ToString());
                         product.Hidden = Convert.ToBoolean(dr["Hidden"].ToString());
-                        product.TypeId = Convert.ToInt32(dr["TypeId"]);
+                        product.TypeId = Convert.ToInt32(dr["TypeId"]); ;
                         product.TypeText = dr["TypeText"].ToString();
                         if (!(dr["ParentProductId"] is DBNull))
                         {
@@ -717,58 +782,7 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
-        public List<HatType> GetHatTypes()
-        {
-            List<HatType> model = new List<HatType>();
-            var data = new SQLData();
-            try
-            {
-
-                DataSet ds = new DataSet();
-                using (data.conn)
-                {
-                    SqlCommand sqlComm = new SqlCommand("GetHatTypes", data.conn);
-                    //sqlComm.Parameters.AddWithValue("@TimeRange", TimeRange);
-
-                    sqlComm.CommandType = CommandType.StoredProcedure;
-
-                    SqlDataAdapter da = new SqlDataAdapter();
-                    da.SelectCommand = sqlComm;
-
-                    da.Fill(ds);
-                }
-
-                if (ds.Tables.Count > 0)
-                {
-                    foreach (DataRow dr in ds.Tables[0].Rows)
-                    {
-                        HatType hatType = new HatType();
-                        hatType.Id = Convert.ToInt32(dr["Id"]);
-                        hatType.Name = Convert.ToString(dr["Name"]);
-                        hatType.Desscription = dr["Description"].ToString();
-                        hatType.ProductImage = dr["ProductImage"].ToString();
-                        model.Add(hatType);
-                    }
-                    return model;
-                }
-                else
-                {
-                    return model;
-                }
-            }
-            catch (Exception ex)
-            {
-                return model;
-            }
-            finally
-            {
-                if (data.conn != null)
-                {
-                    data.conn.Close();
-                }
-            }
-
-        }        
+                
         public List<HatType> GetProductHatTypes(int productId)
         {
             List<HatType> model = new List<HatType>();
@@ -797,9 +811,20 @@ namespace LidLaunchWebsite.Classes
                         HatType hatType = new HatType();
                         hatType.Id = Convert.ToInt32(dr["Id"]);
                         hatType.Name = Convert.ToString(dr["Name"]);
-                        hatType.Desscription = dr["Description"].ToString();
-                        hatType.ImagePreview = dr["ImagePreview"].ToString();
+                        hatType.Description = dr["Description"].ToString();
                         hatType.ProductImage = dr["ProductImage"].ToString();
+                        var lstColors = new List<HatColor>();
+
+                        foreach (DataRow dr2 in ds.Tables[1].Rows)
+                        {
+                            if (Convert.ToInt32(dr2["TypeId"]) == hatType.Id)
+                            {
+                                lstColors.Add(new HatColor { color = Convert.ToString(dr2["Color"]), colorCode = Convert.ToString(dr2["ColorCode"]), availableToCreate = Convert.ToBoolean(dr2["AvailableToCreate"]), colorId = Convert.ToInt32(dr2["ColorId"]), creationImage = Convert.ToString(dr2["ImagePreview"]) });
+                            }
+                        }
+                        lstColors = lstColors.OrderBy(c => c.colorId).ToList();
+                        hatType.lstColors = lstColors;
+
                         model.Add(hatType);
                     }
                     return model;

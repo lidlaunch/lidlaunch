@@ -26,6 +26,32 @@ namespace LidLaunchWebsite.Controllers
                 lstProducts = new List<Product>();
             }
             cart.lstProducts = lstProducts;
+
+            //check if this product is setup for free shipping
+            var productHasFreeShipping = false;
+
+            OrderData orderData = new OrderData();
+
+            foreach (Product prod in cart.lstProducts)
+            {
+                if (orderData.CheckProductHasFreeShipping(prod.Id))
+                {
+                    productHasFreeShipping = true;
+                }
+            }
+
+            //add shipping
+            if (!productHasFreeShipping)
+            {
+                cart.TotalWithShipping = cart.Total + 5;
+                cart.Shipping = 5;
+            }
+            else
+            {
+                cart.TotalWithShipping = cart.Total;
+                cart.Shipping = 0;
+            }
+
             return View(cart);
         }
 
@@ -46,7 +72,7 @@ namespace LidLaunchWebsite.Controllers
 
             ProductData productData = new ProductData();
             Product product = new Product();
-            product = productData.GetProduct(Convert.ToInt32(productId), Convert.ToInt32(typeId));
+            product = productData.GetProduct(Convert.ToInt32(productId), Convert.ToInt32(typeId), Convert.ToInt32(colorId));
             product.Quantity = Convert.ToInt32(qty);
             product.CartGuid = Guid.NewGuid().ToString();
             product.TypeId = Convert.ToInt32(typeId);
@@ -66,7 +92,7 @@ namespace LidLaunchWebsite.Controllers
                 totalProducts += prod.Quantity;
             }
 
-            cart.Total = totalProducts * 25;
+            cart.Total = totalProducts * 19.99M;
 
             cart.lstProducts = lstProducts;
             Session["Cart"] = cart;
@@ -111,7 +137,7 @@ namespace LidLaunchWebsite.Controllers
                 lstProducts.Remove(lstProducts[indexToRemove]);
             }
 
-            cart.Total = totalProducts * 25;
+            cart.Total = totalProducts * 19.99M;
 
             cart.lstProducts = lstProducts;
             Session["Cart"] = cart;
@@ -143,8 +169,23 @@ namespace LidLaunchWebsite.Controllers
 
             decimal orderTotal = 0;
             orderTotal = cart.Total;
+
+            //check if this product is setup for free shipping
+            var productHasFreeShipping = false;
+
+            foreach (Product prod in cart.lstProducts)
+            {
+                if (orderData.CheckProductHasFreeShipping(prod.Id))
+                {
+                    productHasFreeShipping = true;
+                }
+            }
+
             //add shipping
-            orderTotal += 5;
+            if (!productHasFreeShipping)
+            {
+                orderTotal += 5;
+            }            
 
             String paymentGuid = Guid.NewGuid().ToString();
             var orderId = orderData.CreateOrder(orderTotal, firstName, lastName, email, phone, address, city, state, zip, addressBill, cityBill, stateBill, zipBill, paymentGuid, Convert.ToInt32(Session["UserID"]));

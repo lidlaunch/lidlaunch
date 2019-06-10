@@ -122,4 +122,9 @@ namespace LidLaunchWebsite.Models
         public string ProductIdentifier { get; set; }
         public string HatColor { get; set; }
     }
+    public class HatManager
+    {
+        public List<HatType> lstHatTypes { get; set; }
+    }
+
 }

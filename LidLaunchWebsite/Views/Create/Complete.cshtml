@@ -30,53 +30,45 @@
         <div id="scrollHatTypeSelect">
             @foreach (LidLaunchWebsite.Models.HatType hatType in Model.lstHatTypes)
     {
-            <div class="hatType" onclick="selectHatType(@hatType.Id, this, @Session["HatTypeID"]);">
-                <div class="hatTypeId hidden">@hatType.Id</div>
-                <div class="hatTypeImage">
-                    @if (hatType.Id == Convert.ToInt32(Session["HatTypeID"]))
-        {
-            <img src="@Url.Content("~/Images/Check.png")" class="hatCheck" />
-            <input type="checkbox" class="selectedHatType hidden" checked />
-}
-else
-{
-            <img src="@Url.Content("~/Images/CheckGray.png")" class="hatCheck" />
-            <input type="checkbox" class="selectedHatType hidden" />
-}
+            <div class="hatType">
+                <div class="hatClickWrapper" onclick="selectHatType(@hatType.Id, this, @Session["HatTypeID"]);">
+                    <div class="hatTypeId hidden">@hatType.Id</div>
+                    <div class="hatTypeImage">
 
-                    @if (hatType.Id == 2)
-        {
-            <img class="hatStyleImg" src="@Url.Content("~/Images/HatAssets/Flex.png")" />
-}
-                    @if (hatType.Id == 3)
-        {
-            <img class="hatStyleImg" src="@Url.Content("~/Images/HatAssets/Trucker.png")" />
-}
-                    @if (hatType.Id == 4)
-        {
-            <img class="hatStyleImg" src="@Url.Content("~/Images/HatAssets/DadBlack.png")" />
-}
-                    @if (hatType.Id == 5)
-        {
-            <img class="hatStyleImg" src="@Url.Content("~/Images/HatAssets/CurveSnap.png")" />
-}
-                    @if (hatType.Id == 6)
-        {
-            <img class="hatStyleImg" src="@Url.Content("~/Images/HatAssets/FlatSnap.png")" />
-}
-                </div><!--/hatTypeImage-->
-                <div class="hatTypeName">
-                    @hatType.Name
-                </div><!--/hatTypeName-->
-                <div class="hatColors hidden">
-                    <span class="color black"></span>
-                    <span class="color red"></span>
-                    <span class="color greeb"></span>
-                    <span class="color blue"></span>
-                    <span class="color yellow"></span>
-                    <span class="color orange"></span>
-                    <span class="color purple"></span>
-                    <span class="color"><span style="margin-left:3px; margin-top:-2px;">+</span></span>
+
+                        @if (hatType.Id == Convert.ToInt32(Session["HatTypeID"]))
+                        {
+                            <img src="@Url.Content("~/Images/Check.png")" class="hatCheck" />
+                            <input type="checkbox" class="selectedHatType hidden" checked />
+                        }
+                        else
+                        {
+                            <img src="@Url.Content("~/Images/CheckGray.png")" class="hatCheck" />
+                            <input type="checkbox" class="selectedHatType hidden" />
+                        }
+                        <img class="hatStyleImg" src="@Url.Content("~/Images/HatAssets/" + hatType.ProductImage)" />
+
+                    </div><!--/hatTypeImage-->
+                    <div class="hatTypeName">
+                        @hatType.Name
+                    </div><!--/hatTypeName-->
+                </div>
+                <div class="hatColors">
+                    @foreach (LidLaunchWebsite.Models.HatColor hatColor in hatType.lstColors)
+                    {
+                        if (hatColor.colorId == Convert.ToInt32(Session["ColorID"]))
+                        {
+                            <span class="color @hatColor.colorId selected" id="@hatColor.colorId" style="background-color:#@hatColor.colorCode" onclick="addColor(@hatColor.colorId, @hatType.Id, @Convert.ToInt32(Session["ColorID"]), this);"></span>
+                            <input type="checkbox" class="selectedHatColor hidden" id="@hatColor.colorId" checked />
+                        }
+                        else
+                        {
+                            <span class="color @hatColor.colorId" id="@hatColor.colorId" style="background-color:#@hatColor.colorCode" onclick="addColor(@hatColor.colorId, @hatType.Id, @Convert.ToInt32(Session["ColorID"]), this);"></span>
+                            <input type="checkbox" class="selectedHatColor hidden" id="@hatColor.colorId" />
+                        }
+
+
+                    }
                 </div><!--/hatColors-->
             </div><!--/hatType-->
 }            
