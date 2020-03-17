@@ -257,6 +257,7 @@ namespace LidLaunchWebsite.Classes
                         product.Description = Convert.ToString(dr["Description"]);
                         product.Private = Convert.ToBoolean(dr["Private"].ToString());
                         product.Hidden = Convert.ToBoolean(dr["Hidden"].ToString());
+                        product.ApplyMethod = Convert.ToString(dr["ApplyMethod"].ToString());
                         if (!(dr["ParentProductId"] is DBNull))
                         {
                             product.ParentProductId = Convert.ToInt32(dr["ParentProductId"]);
@@ -326,6 +327,7 @@ namespace LidLaunchWebsite.Classes
                         product.Hidden = Convert.ToBoolean(dr["Hidden"].ToString());
                         product.TypeId = Convert.ToInt32(dr["TypeId"]); ;
                         product.TypeText = dr["TypeText"].ToString();
+                        product.ApplyMethod = dr["ApplyMethod"].ToString();
                         if (!(dr["ParentProductId"] is DBNull))
                         {
                             product.ParentProductId = Convert.ToInt32(dr["ParentProductId"]);
@@ -641,6 +643,7 @@ namespace LidLaunchWebsite.Classes
                         webProd.DesignerId = Convert.ToInt32(row["DesignerId"]);
                         webProd.ProductId = Convert.ToInt32(row["ProductID"]);
                         webProd.ParentCount = Convert.ToInt32(row["ParentCount"]);
+                        webProd.ApplyMethod = Convert.ToString(row["ApplyMethod"]);
 
                         lstWebsiteProducts.Add(webProd);
                     }
@@ -700,6 +703,7 @@ namespace LidLaunchWebsite.Classes
                         webProd.DesignerId = Convert.ToInt32(row["DesignerId"]);
                         webProd.ProductId = Convert.ToInt32(row["ProductID"]);
                         webProd.ParentCount = Convert.ToInt32(row["ParentCount"]);
+                        webProd.ApplyMethod = Convert.ToString(row["ApplyMethod"]);
 
                         lstWebsiteProducts.Add(webProd);
                     }

@@ -40,27 +40,30 @@ input[type=text], input[type=password], select {
 .formInput {
     margin:10px 0;
 }
+
 #wrapper {
     width: 100%;
     height: 100%;
     position: relative;
     min-width: 960px;
     display: block;
-    max-width: 1300px;
-    min-width: 1300px;
     margin: 0 auto;
 }
 
 #InnerWrapperContent {
-    padding-left: 20px;
-    padding-right: 20px;
 }
 
 .hidden{display:none;}
 
 #header {
-    height: 80px;
+    height: 100px;
     width: 100%;
+    background: #39b91c;
+}
+.centerInner {
+    max-width: 1300px;
+    min-width: 1300px;
+    margin: 0 auto;
 }
 
 #logo {
@@ -127,13 +130,13 @@ input[type=text], input[type=password], select {
 }
 
 #navigation ul li a {
-    color: #39b91c;
+    color: #fff;
     text-decoration: none;
     font-weight: normal;
 }
 
 #navigation ul li div {
-    color: #39b91c;
+    color: #fff;
     text-decoration: none;
     font-weight: normal;
 }
@@ -154,6 +157,10 @@ input[type=text], input[type=password], select {
     float: none !important;
     border-right: 0 !important;
     padding: 10px !important;
+}
+
+#profileMenu li a {
+    color:#7f7f7f !important;
 }
 
 .cartIcon {
@@ -225,6 +232,9 @@ input[type=text], input[type=password], select {
 #searchBox {
     height: 370px;
     width: 100%;
+    background: url(/Images/TopImage2.jpg) no-repeat;
+    background-position-y: -200px;
+    background-size: cover;
 }
 #banner {
     height: 300px;
@@ -238,78 +248,112 @@ input[type=text], input[type=password], select {
 #searchBoxTop {
     height: 300px;
     width: 100%;
-    background: #39b91c;
-    background: url(/Images/SearchBack.jpg) no-repeat;
-    background-size: 100% 100%;
+    /*background:url(/Images/SearchBack2.png) no-repeat;*/
+}
+.introText {
+    width: 50%;
+    color: #fff;
+    font-size: 32px;
+    text-align:center;
+    margin-top:50px;
+}
+.introText .icon {
+    font-size: 60px;
 }
 
-    #searchBoxTop #searhHolder {
-        width: 750px;
-        height: 50px;
-        margin: 0 auto;
-    }
+.introButtons {
+    width: 50%;
+    color: #fff;
+    font-size: 32px;
+    text-align: center;
+}
 
-        #searchBoxTop #searhHolder #searchButton {
-            width: 40px;
-            height: 40px;
-            background: #22790f;
-            float: left;
-            padding: 5px;
-            cursor: pointer;
-        }
+#searchHome #searhHolder {
+    width: 752px;
+    height: 50px;
+    margin: 0 auto;
+}
 
-        #searchBoxTop #searhHolder #search {
-            width: 695px;
-            height: 50px;
-            display: inline-block;
-            font-size: 32px;
-            float: left;
-            border: 0;
-            padding: 0;
-            padding-left: 5px;
-        }
+#searchHome #searhHolder #searchButton {
+    width: 40px;
+    height: 40px;
+    background: #22790f;
+    float: left;
+    padding: 5px;
+    cursor: pointer;
+}
 
-    #searchBoxTop .SearchTag {
-        font-size: 50px;
-        font-weight: bold;
-        text-align: center;
-        width: 100%;
-        display: block;
-        padding-top: 80px;
-        padding-bottom: 48px;
-        color: #fff;
-    }
+#searchHome #searhHolder #search {
+    width: 695px;
+    height: 50px;
+    display: inline-block;
+    font-size: 32px;
+    float: left;
+    border: 1px solid #000;
+    padding: 0;
+    padding-left: 5px;
+}
+
+#searchHome .SearchTag {
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    display: block;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #39b91c;
+}
 
 #searchBoxBottom {
-    height: 48px;
+    height: 52px;
     width: 100%;
     background: #39b91c;
-    padding-top: 22px;
+    padding-top: 13px;
     border-top: 2px solid #227910;
     border-bottom: 2px solid #227910;
+    text-align:center;
 }
 
-    #searchBoxBottom #tagLine {
-        font-size: 26px;
-        color: #fff;
-        margin-left: 20px;
-        float: left;
-    }
 
-    #searchBoxBottom #button {
-        float: right;
-        background: #fff;
-        height: 40px;
-        margin-right: 20px;
-        margin-top: -12px;
-        padding-left: 20px;
-        padding-right: 20px;
-        padding-top: 10px;
-        color: #7f7f7f;
-        font-size: 26px;
-        cursor: pointer;
-    }
+#searchBoxBottom #button {
+    display: inline-block;
+    background: #fff;
+    height: 40px;
+    margin-right: 20px;
+    margin-top: -12px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    color: #39b91c;
+    font-size: 26px;
+    cursor: pointer;
+}
 
+#examples {
+    width:100%;
+    height:300px;
+    background:url(/Images/Examples1.jpg) no-repeat;
+    background-size:cover;
+}
+
+#videoSection {
+    text-align: center;
+    padding-top: 20px;
+    background: url(/Images/VideoBg.jpg) no-repeat;
+    background-size: 100%;
+    background-position-y:-300px;
+    width: 100%;
+    height: 340px;
+    color:#fff;
+}
+#asideVideo {
+    float:left;
+    font-size:22px;
+}
+#videoSection iframe {
+    float: right;
+}
 .twoThirds {
     width: 66%;
     float: left;
@@ -690,7 +734,6 @@ input[type=text], input[type=password], select {
         background: #39b91c;
         display: block;
         float: right;
-        position: absolute;
         top: 618px;
         right: 24px;
         font-size: 30px;
@@ -699,6 +742,7 @@ input[type=text], input[type=password], select {
         padding-top: 22px;
         cursor: pointer;
         margin-top: 20px;
+        margin-right:50px;
     }
 #previewPopup {
     background: rgba(0,0,0,0.8);
@@ -867,16 +911,17 @@ input[type=text], input[type=password], select {
     margin: 0 auto;
     background: #fff;
     margin-top: 40px;
+    padding-bottom: 20px;
 }
 
 #detailsPane {
-    width: 600px;
-    float: left;
+    width: 50%;
+    display: inline-block;
 }
 
 #previewPane {
-    width: 400px;
-    float: left;
+    width: 48%;
+    display: inline-block;
 }
 
 .productDetailsText {
@@ -912,6 +957,7 @@ input[type=text], input[type=password], select {
     width: 360px;
     padding: 20px;
     height: 360px;
+    margin: 0 auto;
 }
 
     #previewImageComplete img {
@@ -1399,6 +1445,9 @@ input[type=text], input[type=password], select {
 #mobileCreate {
     display: none;
 }
+#mobileGetStarted {
+    display: none;
+}
 #mobileNav {
     display:none;
 }
@@ -1655,6 +1704,18 @@ input[type=text], input[type=password], select {
   cursor:pointer;
 }
 /*******************************************END BULK ORDERING****************************************************/
+
+
+/*******************************************BEGIN HAT MANAGER STYLING*******************************************/
+
+.addHatTypeColor {
+    background-color: greenyellow;
+    color:#000;
+    padding:10px;
+    cursor:pointer;
+}
+
+
 @media only screen and (max-height: 840px) {
     #previewHatContent {
     height: 600px;
@@ -1663,7 +1724,12 @@ input[type=text], input[type=password], select {
     
 }
 @media only screen and (max-width: 1100px) {
-        #wrapper {
+    #wrapper {
+        min-width: 100%;
+        max-width: 100%;
+    }
+    .centerInner {
+        width: 100%;
         min-width: 100%;
         max-width: 100%;
     }
@@ -1693,8 +1759,8 @@ input[type=text], input[type=password], select {
         left:0px;
         right:0px;
         background:#fff;
-        padding-left:20px;
-        padding-right:20px;
+        padding-left:0;
+        padding-right:0;
         border:0;
         display:none;
     }
@@ -1718,8 +1784,22 @@ input[type=text], input[type=password], select {
         padding-left: 10px;
         font-weight:bold;
     }
+    #searchBox {
+        background-position-y: 0;
+        height: 308px;
+    }
+    .introText {
+        font-size:26px;
+        margin-top:30px;
+    }
+    .introText .icon {
+        font-size:40px;
+    }
+    #searchBoxTop {
+        height: 240px;
+    }
     #searchBoxTop #searhHolder {
-        width:80%;
+        width: 80%;
     }
     #searchBoxTop #searhHolder #search {
         width:90%;
@@ -1731,17 +1811,47 @@ input[type=text], input[type=password], select {
         font-size:16px;
         margin-top:6px;
     }
+    #searchBoxBottom #button {
+        font-size: 18px;
+        height: 28px;
+    }
     #searchTop {
-        margin-top:20px;
+        margin-top: 20px;
         margin-left: 0;
         width: 100%;
-        
+    }
+    #examples {
+        height: 120px;
+        background-size:cover;
+    }
+    #videoSection {
+        background-position-y: 0;        
+    }
+    #asideVideo table {
+        width: 80% !important;
+        margin: 0 auto;
+        margin-top: 0px !important;
+        font-size: 16px !important;
+    }
+    #asideVideo table img {
+        width:130px;    
+    }
+    #videoSection iframe {
+        width: 100%;
+    }
+    #searchHome .SearchTag {
+        font-size:32px;
+    }
+    #searchHome #searhHolder {
+        width: 80%;
+    }
+    #searchHome #searhHolder #search {
+        width:80%;
     }
     #topSearch {
         position: absolute;
         top: 240px;
         width: 90%;
-        
     }
     #shopWrapper {
         margin-top: 86px;
@@ -1796,11 +1906,13 @@ input[type=text], input[type=password], select {
     #mobileCreate {
         display:inline;
     }
-    #searchBoxBottom {
-        display:none;
+    .desktopStartSelling {
+        display:none !important;
     }
-    #searchBox {
-        height:300px;
+    .mobileStartSelling {
+        display: inline-block !important;
+    }
+    #searchBoxBottom {
     }
     #banner {
         display:none;
@@ -1881,6 +1993,18 @@ input[type=text], input[type=password], select {
     }
     #bulkArtworkStep .productDetailsTextMulti {
         width: auto;
+    }
+    #designUploadContent {
+        padding:0 10px;
+    }
+    #designPlacement {
+        padding: 0 10px;
+    }
+    #designComments {
+        padding: 0 10px;
+    }
+    #designProcessExplained {
+        padding: 0 10px;
     }
 }
 @media only screen and (max-width: 750px) {

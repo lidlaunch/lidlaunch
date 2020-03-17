@@ -1,23 +1,23 @@
 ﻿$(document).ready(function () {
 
-    $("#chkSameAsShipping").change(function () {
-        if (this.checked) {
-            var address = $('#txtAddress').val();
-            var city = $('#txtCity').val();
-            var state = $('#txtState').val();
-            var zip = $('#txtZip').val();
+    //$("#chkSameAsShipping").change(function () {
+    //    if (this.checked) {
+    //        var address = $('#txtAddress').val();
+    //        var city = $('#txtCity').val();
+    //        var state = $('#txtState').val();
+    //        var zip = $('#txtZip').val();
 
-            $('#txtAddressBill').val(address);
-            $('#txtCityBill').val(city);
-            $('#txtStateBill').val(state);
-            $('#txtZipBill').val(zip);
-        } else {
-            $('#txtAddressBill').val('');
-            $('#txtCityBill').val('');
-            $('#txtStateBill').val('');
-            $('#txtZipBill').val('');
-        }
-    });
+    //        $('#txtAddressBill').val(address);
+    //        $('#txtCityBill').val(city);
+    //        $('#txtStateBill').val(state);
+    //        $('#txtZipBill').val(zip);
+    //    } else {
+    //        $('#txtAddressBill').val('');
+    //        $('#txtCityBill').val('');
+    //        $('#txtStateBill').val('');
+    //        $('#txtZipBill').val('');
+    //    }
+    //});
 
 });
 function SubmitOrder() {
@@ -28,15 +28,16 @@ function SubmitOrder() {
     var lastName = $('#txtLastName').val();
     var email = $('#txtEmail').val();
     var phone = $('#txtPhone').val();
-    var address = $('#txtAddress').val();
-    var city = $('#txtCity').val();
-    var state = $('#txtState').val();
-    var zip = $('#txtZip').val();
-    var addressBill = $('#txtAddressBill').val();
-    var cityBill = $('#txtCityBill').val();
-    var stateBill = $('#txtStateBill').val();
-    var zipBill = $('#txtZipBill').val();   
-    if (firstName == '' || lastName == '' || email == '' || phone == '' || address == '' || city == '' || state == '' || zip == '' || addressBill == '' || cityBill == '' || stateBill == '' || zipBill == '')
+    //var address = $('#txtAddress').val();
+    //var city = $('#txtCity').val();
+    //var state = $('#txtState').val();
+    //var zip = $('#txtZip').val();
+    //var addressBill = $('#txtAddressBill').val();
+    //var cityBill = $('#txtCityBill').val();
+    //var stateBill = $('#txtStateBill').val();
+    //var zipBill = $('#txtZipBill').val();   
+    //if (firstName == '' || lastName == '' || email == '' || phone == '' || address == '' || city == '' || state == '' || zip == '' || addressBill == '' || cityBill == '' || stateBill == '' || zipBill == '')
+    if (firstName == '' || lastName == '' || email == '' || phone == '')
     {
         displayPopupNotification('You must enter in all required fields to continue.', 'error', false);
     } else {
@@ -48,7 +49,8 @@ function SubmitOrder() {
                     url: '/Cart/SubmitOrder',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: JSON.stringify({ "total": total, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "address": address, "city": city, "state": state, "zip": zip, "addressBill": addressBill, "cityBill": cityBill, "stateBill": stateBill, "zipBill": zipBill }),
+                    //data: JSON.stringify({ "total": total, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "address": address, "city": city, "state": state, "zip": zip, "addressBill": addressBill, "cityBill": cityBill, "stateBill": stateBill, "zipBill": zipBill }),
+                    data: JSON.stringify({ "total": total, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone}),
                     success: function (result) {
                         //$('#ReturnURL').val('http://lidlaunch.com/cart/payment?PaymentCode=' + result[0]);
                         //$('#orderInformation').val('Order ID: ' + result[1]);
@@ -108,8 +110,8 @@ function RemoveItemFromCart(that) {
         }
     });
 }
-
-function renderPaypalButtons(price, items, name, line1, city, zip, phone, state) {
+//function renderPaypalButtons(price, items, name, line1, city, zip, phone, state) {
+function renderPaypalButtons(price, items, name) {
     // Render the PayPal button
 
      paypal.Button.render({
@@ -176,22 +178,23 @@ function showPaypalButtons() {
     var lastName = $('#txtLastName').val();
     var email = $('#txtEmail').val();
     var phone = $('#txtPhone').val();
-    var address = $('#txtAddress').val();
-    var city = $('#txtCity').val();
-    var state = $('#txtState').val();
-    var zip = $('#txtZip').val();
-    var addressBill = $('#txtAddressBill').val();
-    var cityBill = $('#txtCityBill').val();
-    var stateBill = $('#txtStateBill').val();
-    var zipBill = $('#txtZipBill').val();
-    if (firstName == '' || lastName == '' || email == '' || phone == '' || address == '' || city == '' || state == '' || zip == '' || addressBill == '' || cityBill == '' || stateBill == '' || zipBill == '') {
+    //var address = $('#txtAddress').val();
+    //var city = $('#txtCity').val();
+    //var state = $('#txtState').val();
+    //var zip = $('#txtZip').val();
+    //var addressBill = $('#txtAddressBill').val();
+    //var cityBill = $('#txtCityBill').val();
+    //var stateBill = $('#txtStateBill').val();
+    //var zipBill = $('#txtZipBill').val();
+    //if (firstName == '' || lastName == '' || email == '' || phone == '' || address == '' || city == '' || state == '' || zip == '' || addressBill == '' || cityBill == '' || stateBill == '' || zipBill == '') {
+    if (firstName == '' || lastName == '' || email == '' || phone == '') {
         displayPopupNotification('You must enter in all required fields to continue.', 'error', false);
     } else {
         if (validateEmail(email)) {
             if (validatePhone(phone)) {
                 $('#customerInfo').hide();
                 $('#paypalButtons').show();
-                renderPaypalButtons(total, productList, firstName + ' ' + lastName, address, city, zip, phone, state);
+                renderPaypalButtons(total, productList, firstName + ' ' + lastName);
             } else {
                 displayPopupNotification('Please enter a valid phone.', 'error', false);
             }

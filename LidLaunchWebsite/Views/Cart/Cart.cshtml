@@ -12,15 +12,24 @@
                 string productList = "[";
                 foreach (LidLaunchWebsite.Models.Product product in Model.lstProducts)
                 {
+                    var price = "";
+                    if (product.ApplyMethod.ToLower() == "embroidery")
+                    {
+                        price = "19.99";
+                    }
+                    if (product.ApplyMethod.ToLower() == "leatherpatch")
+                    {
+                        price = "29.99";
+                    }
 
-                    productList = productList + "{\"name\":\"" + product.Name + " - " + product.TypeText + " - Size: " + product.Size + "\",\"quantity\":\"" + product.Quantity + "\",\"price\":\"" + 19.99 + "\",\"currency\":\"USD\"},";
+                    productList = productList + "{\"name\":\"" + product.Name + " - " + product.TypeText + " - Size: " + product.Size + "\",\"quantity\":\"" + product.Quantity + "\",\"price\":\"" + price + "\",\"currency\":\"USD\"},";
 
                     <div class="productRow">
                         <img src="~/Images/DesignImages/InUse/@product.Design.PreviewImage" width="100" class="productImage" />
                         <span class="productDetails">
                             <div class="cartGuid hidden">@product.CartGuid</div>
                             <div class="productName">@product.Name</div>
-                            <div class="productPrice">$@(product.Quantity * 19.99)</div>
+                            <div class="productPrice">$@(product.Quantity * Convert.ToDecimal(price))</div>
                             <div class="productType">Type: @product.TypeText</div>
                             <div class="productQty">Quantity: @product.Quantity</div>
                             <div class="productSize">Size: @product.Size</div>
@@ -94,6 +103,11 @@
                         <td><input type="text" id="txtPhone" /></td>
                     </tr>
                     <tr>
+                        <td colspan="2">
+                            <p><b>Your order will ship to your Paypal Confirmed Shipping address!</b></p>
+                        </td>
+                    </tr>
+                    @*<tr>
                         <td colspan="2"><b>Shipping Address:</b></td>
                     </tr>
                     <tr>
@@ -246,7 +260,7 @@
                                 </tr>
                             </table>
                         </td>
-                    </tr>
+                    </tr>*@
                     <tr id="priceRow">
                         <td colspan="2">
                             <h2>TOTAL - $@Model.TotalWithShipping</h2>

@@ -11,6 +11,7 @@ namespace LidLaunchWebsite.Models
         public string Image { get; set; }
         public int DesignerId { get; set; }
         public string DesignerName { get; set; }
+        public string ApplyMethod { get; set; }
         public DateTime AdddedDate { get; set; }
         public int ParentCount { get; set; }
     }

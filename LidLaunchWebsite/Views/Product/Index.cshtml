@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = Model.Product.Name + " - Custom Hat By " + @Model.Designer.ShopName;
 }
-<div id="productDetails">
+<div id="productDetails" class="centerInner">
     <div id="productImages">
         <div id="imageHolder">
             @foreach (LidLaunchWebsite.Models.HatType hatType in Model.lstHatTypes)
@@ -128,7 +128,15 @@
             <div class="inputLabel">Quantity</div>
             <input type="number" min="1" max="150" id="txtQty" value="1" />
             <div class="inputLabel">Price:</div>
-            <div id="priceText">$19.99</div>
+            <div id="priceText">
+            @if (Model.Product.ApplyMethod.ToLower() == "embroidery")
+            { 
+                <span>$19.99</span>
+            } else if(Model.Product.ApplyMethod.ToLower() == "leatherpatch")
+            { 
+                <span>$29.99</span>
+            }
+            </div><!--/priceText-->
         </div><!--/productOptionsBox-->
         @if (Request["showApproval"] != "1")
         {

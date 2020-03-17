@@ -23,6 +23,7 @@ namespace LidLaunchWebsite.Models
         public string TypeText { get; set; }
         public int ParentProductId { get; set; }
         public int ParentCount { get; set; }
+        public string ApplyMethod { get; set; }
     }
     public class ProductPageProduct
     {

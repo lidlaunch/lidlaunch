@@ -13,13 +13,13 @@ function updateBulkTotals() {
             var currentSizeIndex = 0;
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
-                    if (parseInt($(this).val()) % 12 == 0) {
-                        //do nothing its okay
-                    } else {
-                        displayPopupNotification('FlexFit/Yupoong hats must be ordered in quantities of 12.', 'error', false);
-                        var val = parseInt($(this).val()) + (12 - (parseInt($(this).val()) % 12));
-                        $(this).val(val);
-                    }  
+                    //if (parseInt($(this).val()) % 12 == 0) {
+                    //    //do nothing its okay
+                    //} else {
+                    //    displayPopupNotification('FlexFit/Yupoong hats must be ordered in quantities of 12.', 'error', false);
+                    //    var val = parseInt($(this).val()) + (12 - (parseInt($(this).val()) % 12));
+                    //    $(this).val(val);
+                    //}  
                     totalHats += parseInt($(this).val());
                     var hatName = '';
                     if (currentSizeIndex == 0) {
@@ -42,13 +42,13 @@ function updateBulkTotals() {
             var hatColorText = $(this).find('.colorOption').text();
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
-                    if (parseInt($(this).val()) % 12 == 0) {
-                        //do nothing its okay
-                    } else {
-                        displayPopupNotification('FlexFit/Yupoong hats must be ordered in quantities of 12.', 'error', false);
-                        var val = parseInt($(this).val()) + (12 - (parseInt($(this).val()) % 12));
-                        $(this).val(val);
-                    }
+                    //if (parseInt($(this).val()) % 12 == 0) {
+                    //    //do nothing its okay
+                    //} else {
+                    //    displayPopupNotification('FlexFit/Yupoong hats must be ordered in quantities of 12.', 'error', false);
+                    //    var val = parseInt($(this).val()) + (12 - (parseInt($(this).val()) % 12));
+                    //    $(this).val(val);
+                    //}
                     totalHats += parseInt($(this).val());
                     hatName = 'FlexFit Trucker  - ' + hatColorText + ' - OSFA';
                    
@@ -63,13 +63,13 @@ function updateBulkTotals() {
             var currentSizeIndex = 0;
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
-                    if (parseInt($(this).val()) % 12 == 0) {
-                        //do nothing its okay
-                    } else {
-                        displayPopupNotification('FlexFit/Yupoong hats must be ordered in quantities of 12.', 'error', false);
-                        var val = parseInt($(this).val()) + (12 - (parseInt($(this).val()) % 12));
-                        $(this).val(val);
-                    }
+                    //if (parseInt($(this).val()) % 12 == 0) {
+                    //    //do nothing its okay
+                    //} else {
+                    //    displayPopupNotification('FlexFit/Yupoong hats must be ordered in quantities of 12.', 'error', false);
+                    //    var val = parseInt($(this).val()) + (12 - (parseInt($(this).val()) % 12));
+                    //    $(this).val(val);
+                    //}
                     totalHats += parseInt($(this).val());
                     var hatName = '';
                     if (currentSizeIndex == 0) {
@@ -105,10 +105,11 @@ function updateBulkTotals() {
 
     if (currentTotalBulkHatsCount >= 120) {
         currentPrice = 10;
+        currentShippingTotal = 50;
     }
     else if (currentTotalBulkHatsCount >= 96) {
         currentPrice = 11;
-        currentShippingTotal = 30;
+        currentShippingTotal = 35;
     }
     else if (currentTotalBulkHatsCount >= 72) {
         currentPrice = 12;

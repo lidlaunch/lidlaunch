@@ -4,48 +4,106 @@
 
 
 <div id="searchBox">
-    <div id="searchBoxTop">
-        <span class="SearchTag">
-            Find new hats you'll love.
-        </span>
-        <div id="searhHolder">
-            <input type="text" id="search" placeholder="search..." />
-            <div id="searchButton"><img src="@Url.Content("~/Images/search.jpg")" width="40" height="40" /></div>
+    <div class="centerInner">
+        <div id="searchBoxTop">
+            <!--/nothing now-->
+            <div class="introText left">
+                <i class="far fa-edit icon"></i>
+                <br />
+                <br />
+                Create your own designs
+                <br />
+                & earn $5 per sale!
+            </div>
+            <div class="introText right">
+                <i class="fas fa-boxes icon"></i>
+                <br />
+                <br />
+                Order hats in bulk starting
+                <br />
+                at $15 each!
+            </div>
         </div>
-
-    </div>
+    </div><!--/centerInner-->
+    <div class="clear"></div>
     <div id="searchBoxBottom">
-        <div id="tagLine">
-            Can't find that hat that fits you? Make your own...FREE!
-        </div><!--/tagLine-->
-        <div id="button" onclick="window.location = '/Create/GetStarted'">
-            Start Selling
-        </div><!--/button-->
-    </div>
+        <div class="centerInner">
+            <div class="introButtons left">
+                <div id="button" onclick="window.location = '/Create/GetStarted'" class="desktopStartSelling">
+                    Start Selling <i class="fas fa-rocket"></i>
+                </div><!--/button-->
+                <div id="button" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);" class="mobileStartSelling" style="display:none;">
+                    Start Selling <i class="fas fa-rocket"></i>
+                </div><!--/button-->
+            </div>
+            <div class="introButtons right">
+                <div id="button" onclick="window.location = '/Bulk'">
+                    Buy Bulk <i class="fas fa-rocket"></i>
+                </div><!--/button-->
+            </div>
+        </div><!--/centerInner-->
+    </div><!--/searchBoxBottom-->
 </div><!--/searchBox-->
-
-<div id="banner" style="display:none;">
+<div id="examples">
 
 </div>
-<div id="paypalCreditBanner">
+
+<div id="paypalCreditBanner" style="display:none;">
     <script type="text/javascript" data-pp-payerid="YGM642QKHYWE8" data-pp-placementtype="728x90" data-pp-style="BLKWHTYLRG">
         (function (d, t) { "use strict"; var s = d.getElementsByTagName(t)[0], n = d.createElement(t); n.src = "//www.paypalobjects.com/upstream/bizcomponents/js/merchant.js"; s.parentNode.insertBefore(n, s); }(document, "script"));
     </script>
 </div>
-
+<div id="videoSection">
+    <div class="centerInner">
+        <div id="asideVideo">
+        <table style="width:500px; margin-top:55px;text-align:right;">
+            <tr>
+                <td>
+                    Lid Launch is a husband and wife owned and operated business. We are located in the St.Louis area.
+                </td>
+                <td>
+                    <img src="@Url.Content("~/Images/fam.jpg")" width="200" />
+                </td>
+            </tr>
+        </table>
+            
+        </div><!--asideVideo-->
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/yqeF8mT2jm4?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+</div>
+<div class="clear"></div>
 <div>
     <div id="ProductListSection">
-        <h2>Recently Added Hats</h2>
+        <div id="searchHome">
+            <span class="SearchTag">
+                Find new hats you will love..
+            </span>
+            <div id="searhHolder">
+                <input type="text" id="search" placeholder="search..." />
+                <div id="searchButton"><img src="@Url.Content("~/Images/search.jpg")" width="40" height="40" /></div>
+            </div>
+        </div>
+        <div class="clear"></div>
         @foreach (LidLaunchWebsite.Models.WebsiteProduct prod in Model)
         {
             <div class="productListed" onclick="window.location='/Product?id=@prod.ProductId'">
                 <img src="~/Images/DesignImages/InUse/@prod.Image" width="250" class="productImage" /><br />
                 <span class="prodName">@prod.Name</span><br />
-                <span class="prodPrice">$19.99</span>
+                <span class="prodPrice">
+                    @if (@prod.ApplyMethod.ToLower() == "embroidery")
+                    {
+                        <span>$19.99</span>
+                    }
+                    else if (@prod.ApplyMethod.ToLower() == "leatherpatch")
+                    {
+                        <span>$29.99</span>
+                    }
+
+                </span>
                 @if (prod.ParentCount > 0)
                 {
                     <div class="multiOptionsIcon">
-                        <img src="~/Images/MoreColors.png" height="20"/><br/>More color options available
+                        <img src="~/Images/MoreColors.png" height="20" /><br />More color options available
                     </div>
                 }
             </div>

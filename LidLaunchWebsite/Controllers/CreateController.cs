@@ -112,13 +112,13 @@ namespace LidLaunchWebsite.Controllers
                         //var fileName = Path.GetFileName(file);
                         var extension = Path.GetExtension(fileContent.FileName);
                         System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
-                        if (extension != ".png")
+                        if (extension.ToLower() != ".png")
                         {
                             returnValue = "PNG";
                         }
                         else
                         {
-                            if (image.Width < 500 || image.Height < 500)
+                            if (image.Width < 500 && image.Height < 500)
                             {
                                 returnValue = "SIZE";
                             }

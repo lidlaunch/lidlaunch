@@ -32,11 +32,21 @@ namespace LidLaunchWebsite.Controllers
 
             OrderData orderData = new OrderData();
 
+            cart.Total = 0.00M;
+
             foreach (Product prod in cart.lstProducts)
             {
                 if (orderData.CheckProductHasFreeShipping(prod.Id))
                 {
                     productHasFreeShipping = true;
+                }
+                if (prod.ApplyMethod.ToLower() == "embroidery")
+                {
+                    cart.Total += prod.Quantity * 19.99M;
+                }
+                if (prod.ApplyMethod.ToLower() == "leatherpatch")
+                {
+                    cart.Total += prod.Quantity * 29.99M;
                 }
             }
 
@@ -86,13 +96,22 @@ namespace LidLaunchWebsite.Controllers
             lstProducts.Add(product);
 
             var totalProducts = 0;
+            cart.Total = 0.00M;
 
             foreach (Product prod in lstProducts)
             {
                 totalProducts += prod.Quantity;
+                if(prod.ApplyMethod.ToLower() == "embroidery")
+                {
+                    cart.Total += prod.Quantity * 19.99M;
+                }
+                if(prod.ApplyMethod.ToLower() == "leatherpatch")
+                {
+                    cart.Total += prod.Quantity * 29.99M;
+                }
             }
 
-            cart.Total = totalProducts * 19.99M;
+            //cart.Total = totalProducts * 19.99M;
 
             cart.lstProducts = lstProducts;
             Session["Cart"] = cart;
@@ -117,7 +136,8 @@ namespace LidLaunchWebsite.Controllers
                 lstProducts = new List<Product>();
             }
 
-            
+            cart.Total = 0.00M;
+
             var totalProducts = 0;
             var indexToRemove = -1;
             foreach (Product prod in lstProducts)
@@ -129,7 +149,15 @@ namespace LidLaunchWebsite.Controllers
                 else
                 {
                     totalProducts += prod.Quantity;
-                }                
+                }
+                if (prod.ApplyMethod.ToLower() == "embroidery")
+                {
+                    cart.Total += prod.Quantity * 19.99M;
+                }
+                if (prod.ApplyMethod.ToLower() == "leatherpatch")
+                {
+                    cart.Total += prod.Quantity * 29.99M;
+                }
             }
 
             if(indexToRemove != -1)
@@ -137,7 +165,7 @@ namespace LidLaunchWebsite.Controllers
                 lstProducts.Remove(lstProducts[indexToRemove]);
             }
 
-            cart.Total = totalProducts * 19.99M;
+            //cart.Total = totalProducts * 19.99M;
 
             cart.lstProducts = lstProducts;
             Session["Cart"] = cart;
@@ -146,8 +174,8 @@ namespace LidLaunchWebsite.Controllers
             var json = new JavaScriptSerializer().Serialize(totalProducts);
             return json;
         }
-
-        public string SubmitOrder(string total, string firstName, string lastName, string email, string phone, string address, string city, string state, string zip, string addressBill, string cityBill, string stateBill, string zipBill)
+        //public string SubmitOrder(string total, string firstName, string lastName, string email, string phone, string address, string city, string state, string zip, string addressBill, string cityBill, string stateBill, string zipBill)
+        public string SubmitOrder(string total, string firstName, string lastName, string email, string phone)
         {
             OrderData orderData = new OrderData();
             Order order = new Order();
@@ -188,7 +216,8 @@ namespace LidLaunchWebsite.Controllers
             }            
 
             String paymentGuid = Guid.NewGuid().ToString();
-            var orderId = orderData.CreateOrder(orderTotal, firstName, lastName, email, phone, address, city, state, zip, addressBill, cityBill, stateBill, zipBill, paymentGuid, Convert.ToInt32(Session["UserID"]));
+            //var orderId = orderData.CreateOrder(orderTotal, firstName, lastName, email, phone, address, city, state, zip, addressBill, cityBill, stateBill, zipBill, paymentGuid, Convert.ToInt32(Session["UserID"]));
+            var orderId = orderData.CreateOrder(orderTotal, firstName, lastName, email, phone, "", "", "", "", "", "", "", "", paymentGuid, Convert.ToInt32(Session["UserID"]));
             
             foreach (Product prod in cart.lstProducts)
             {
@@ -205,7 +234,6 @@ namespace LidLaunchWebsite.Controllers
                 }                
             }
             
-
             if (orderId > 0)
             {
                 EmailFunctions emailFunc = new EmailFunctions();
