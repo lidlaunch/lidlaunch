@@ -15,15 +15,19 @@ namespace LidLaunchWebsite.Controllers
         // GET: Bulk
         public ActionResult Index()
         {
-            return View();
+            BulkOrder bulkOrder = new BulkOrder();
+            bulkOrder.PaymentCompleteGuid = Guid.NewGuid().ToString();
+            return View(bulkOrder);
         }
 
-        public ActionResult Payment()
+        public ActionResult Payment(string id)
         {
+            BulkData data = new BulkData();
+            var success = data.UpdateBulkOrderPaidByPaymentCompleteGuid(id);
             return View();
         }
 
-        public string CreateBulkOrder(string items, string name, string email, string phone, string artworkPlacement, string orderNotes, string orderTotal)
+        public string CreateBulkOrder(string items, string name, string email, string phone, string artworkPlacement, string orderNotes, string orderTotal, string paymentCompleteGuid)
         {
             var jss = new JavaScriptSerializer();
             var cartItems = jss.Deserialize<List<PaypalItem>>(items);
@@ -44,7 +48,7 @@ namespace LidLaunchWebsite.Controllers
             }
 
             BulkData bulkData = new BulkData();
-            var orderId = bulkData.CreateBulkOrder(name, email, phone, Convert.ToDecimal(orderTotal), orderNotes, artworkPath, artworkPlacement, cartItems);
+            var orderId = bulkData.CreateBulkOrder(name, email, phone, Convert.ToDecimal(orderTotal), orderNotes, artworkPath, artworkPlacement, cartItems, paymentCompleteGuid);
 
             if(orderId > 0)
             {
@@ -56,6 +60,14 @@ namespace LidLaunchWebsite.Controllers
                 return "";
             }
             
+        }
+
+        public ActionResult ProcessPayment(string id)
+        {
+                BulkOrder bulkOrder = new BulkOrder();
+                BulkData data = new BulkData();
+                bulkOrder = data.GetBulkOrderByPaymentGuid(id);
+                return View(bulkOrder);
         }
     }
 }

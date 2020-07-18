@@ -421,8 +421,8 @@ namespace LidLaunchWebsite.Controllers
 
         }
         public bool checkLoggedIn()
-        {
-            if (Convert.ToInt32(Session["UserID"]) == 1)
+        {            
+            if (Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 643)
             {
                 return true;
             }
@@ -563,6 +563,50 @@ namespace LidLaunchWebsite.Controllers
             var json = new JavaScriptSerializer().Serialize(success);
 
             return json;
+        }
+
+
+        public ActionResult ViewBulkOrders()
+        {
+
+            if (!checkLoggedIn())
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
+            else
+            {
+                List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
+                BulkData data = new BulkData();
+                lstBulkOrders = data.GetBulkOrderData();
+                lstBulkOrders = lstBulkOrders.OrderByDescending(bo => bo.OrderPaid).ToList();
+                return View(lstBulkOrders);
+            }
+        }
+
+        public string UpdateBulkOrderPaid(string bulkOrderId, string orderPaid)
+        {
+
+            if (!checkLoggedIn())
+            {
+                return "false";
+            } else
+            {
+                BulkData data = new BulkData();
+                bool orderHasBeenPaid = Convert.ToBoolean(orderPaid);
+
+                if (orderHasBeenPaid)
+                {
+                    data.UpdateBulkOrderPaid(Convert.ToInt32(bulkOrderId), false);
+                    return "true";
+                }
+                else
+                {
+                    data.UpdateBulkOrderPaid(Convert.ToInt32(bulkOrderId), true);
+                    return "true";
+                }
+            }
+            
+
         }
 
     }

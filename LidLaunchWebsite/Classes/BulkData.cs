@@ -10,7 +10,7 @@ namespace LidLaunchWebsite.Classes
 {
     public class BulkData
     {
-        public int CreateBulkOrder(string name, string email, string phoneNumber, decimal orderTotal, string artworkNotes, string artworkImage, string artworkPosition, List<PaypalItem> items)
+        public int CreateBulkOrder(string name, string email, string phoneNumber, decimal orderTotal, string artworkNotes, string artworkImage, string artworkPosition, List<PaypalItem> items, string paymentCompleteGuid)
         {
             var data = new SQLData();
             var orderId = 0;
@@ -28,7 +28,9 @@ namespace LidLaunchWebsite.Classes
                     sqlComm.Parameters.AddWithValue("@orderTotal", orderTotal);
                     sqlComm.Parameters.AddWithValue("@artworkNotes", artworkNotes);
                     sqlComm.Parameters.AddWithValue("@artworkImage", artworkImage);
-                    sqlComm.Parameters.AddWithValue("@artworkPosition", artworkPosition);                    
+                    sqlComm.Parameters.AddWithValue("@artworkPosition", artworkPosition);
+                    sqlComm.Parameters.AddWithValue("@paymentCompleteGuid", paymentCompleteGuid);
+                    sqlComm.Parameters.AddWithValue("@paymentGuid", Guid.NewGuid().ToString());                    
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();
@@ -57,6 +59,250 @@ namespace LidLaunchWebsite.Classes
             catch (Exception ex)
             {
                 return orderId;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public List<BulkOrder> GetBulkOrderData()
+        {
+            var data = new SQLData();
+            List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetBulkOrders", data.conn);
+                    //sqlComm.Parameters.AddWithValue("@startDate", startDate);
+                    //sqlComm.Parameters.AddWithValue("@endDate", endDate);             
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in ds.Tables[0].Rows)
+                            {
+                                BulkOrder bulkOrder = new BulkOrder();
+
+
+                                bulkOrder.Id = Convert.ToInt32(dr["Id"].ToString());
+                                bulkOrder.CustomerName = Convert.ToString(dr["CustomerName"].ToString());
+                                bulkOrder.CustomerEmail = Convert.ToString(dr["CustomerEmail"].ToString());
+                                bulkOrder.CustomerPhone = Convert.ToString(dr["CustomerPhone"].ToString());
+                                bulkOrder.OrderTotal = Convert.ToDecimal(dr["OrderTotal"].ToString());
+                                bulkOrder.HatsOrdered = Convert.ToBoolean(dr["HatsOrdered"].ToString());
+                                bulkOrder.OrderDate = Convert.ToDateTime(dr["OrderDate"].ToString());
+                                if(dr["ShipDate"].ToString() != "")
+                                {
+                                    bulkOrder.ShipDate = Convert.ToDateTime(dr["ShipDate"].ToString());
+                                }                                
+                                bulkOrder.TrackingNumber = Convert.ToString(dr["TrackingNumber"].ToString());
+                                bulkOrder.OrderComplete = Convert.ToBoolean(dr["OrderComplete"].ToString());
+                                bulkOrder.OrderNotes = Convert.ToString(dr["OrderNotes"].ToString());
+                                bulkOrder.ArtworkImage = Convert.ToString(dr["ArtworkImage"].ToString());
+                                bulkOrder.HatsOrderedSource = Convert.ToString(dr["HatsOrderedSource"].ToString());
+                                bulkOrder.HatsOrderedTracking = Convert.ToString(dr["HatsOrderedTracking"].ToString());
+                                bulkOrder.OrderCanceled = Convert.ToBoolean(dr["OrderCanceled"].ToString());
+                                bulkOrder.ArtworkPosition = Convert.ToString(dr["ArtworkPosition"].ToString());
+                                bulkOrder.OrderPaid = Convert.ToBoolean(dr["OrderPaid"].ToString());
+                                bulkOrder.PaymentCompleteGuid = Convert.ToString(dr["PaymentCompleteGuid"].ToString());
+                                bulkOrder.PaymentGuid = Convert.ToString(dr["PaymentGuid"].ToString());
+                                bulkOrder.lstItems = new List<BulkOrderItem>();
+
+                                if (ds.Tables[1].Rows.Count > 0)
+                                {
+                                    foreach (DataRow dr2 in ds.Tables[1].Rows)
+                                    {
+                                        if(Convert.ToInt32(dr2["BulkOrderId"].ToString()) == bulkOrder.Id)
+                                        {
+                                            BulkOrderItem item = new BulkOrderItem();
+                                            item.BulkOrderId = bulkOrder.Id;
+                                            item.Id = Convert.ToInt32(dr2["Id"].ToString());
+                                            item.ItemName = Convert.ToString(dr2["ItemName"].ToString());
+                                            item.ItemQuantity = Convert.ToInt32(dr2["ItemQuantity"].ToString());
+                                            item.ItemCost = Convert.ToDecimal(dr2["ItemCost"].ToString());
+                                            bulkOrder.lstItems.Add(item);
+                                        }
+                                    }
+                                }
+
+                                lstBulkOrders.Add(bulkOrder);
+                            }                                  
+                        }
+                    }                        
+
+                }
+
+                return lstBulkOrders;
+            }
+            catch (Exception ex)
+            {
+                return lstBulkOrders;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+        public bool UpdateBulkOrderPaid(int bulkOrderId, bool hasPaid)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderPaid", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@hasPaid", hasPaid);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool UpdateBulkOrderPaidByPaymentCompleteGuid(string paymentCompleteGuid)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderPaidByPaymentCompleteGuid", data.conn);
+                    sqlComm.Parameters.AddWithValue("@paymentCompleteGuid", paymentCompleteGuid);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        
+
+        public BulkOrder GetBulkOrderByPaymentGuid(string paymentGuid)
+        {
+            var data = new SQLData();
+            BulkOrder bulkOrder = new BulkOrder();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetBulkOrderByPaymentGuid", data.conn);
+                    sqlComm.Parameters.AddWithValue("@paymentGuid", paymentGuid);           
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            DataRow dr = ds.Tables[0].Rows[0];
+
+                            bulkOrder.Id = Convert.ToInt32(dr["Id"].ToString());
+                            bulkOrder.CustomerName = Convert.ToString(dr["CustomerName"].ToString());
+                            bulkOrder.CustomerEmail = Convert.ToString(dr["CustomerEmail"].ToString());
+                            bulkOrder.CustomerPhone = Convert.ToString(dr["CustomerPhone"].ToString());
+                            bulkOrder.OrderTotal = Convert.ToDecimal(dr["OrderTotal"].ToString());
+                            bulkOrder.HatsOrdered = Convert.ToBoolean(dr["HatsOrdered"].ToString());
+                            bulkOrder.OrderDate = Convert.ToDateTime(dr["OrderDate"].ToString());
+                            if (dr["ShipDate"].ToString() != "")
+                            {
+                                bulkOrder.ShipDate = Convert.ToDateTime(dr["ShipDate"].ToString());
+                            }
+                            bulkOrder.TrackingNumber = Convert.ToString(dr["TrackingNumber"].ToString());
+                            bulkOrder.OrderComplete = Convert.ToBoolean(dr["OrderComplete"].ToString());
+                            bulkOrder.OrderNotes = Convert.ToString(dr["OrderNotes"].ToString());
+                            bulkOrder.ArtworkImage = Convert.ToString(dr["ArtworkImage"].ToString());
+                            bulkOrder.HatsOrderedSource = Convert.ToString(dr["HatsOrderedSource"].ToString());
+                            bulkOrder.HatsOrderedTracking = Convert.ToString(dr["HatsOrderedTracking"].ToString());
+                            bulkOrder.OrderCanceled = Convert.ToBoolean(dr["OrderCanceled"].ToString());
+                            bulkOrder.ArtworkPosition = Convert.ToString(dr["ArtworkPosition"].ToString());
+                            bulkOrder.OrderPaid = Convert.ToBoolean(dr["OrderPaid"].ToString());
+                            bulkOrder.lstItems = new List<BulkOrderItem>();
+                            bulkOrder.PaymentCompleteGuid = Convert.ToString(dr["PaymentCompleteGuid"].ToString());
+                            bulkOrder.PaymentGuid = Convert.ToString(dr["PaymentGuid"].ToString());
+
+                            if (ds.Tables[1].Rows.Count > 0)
+                            {
+                                foreach (DataRow dr2 in ds.Tables[1].Rows)
+                                {
+                                    if (Convert.ToInt32(dr2["BulkOrderId"].ToString()) == bulkOrder.Id)
+                                    {
+                                        BulkOrderItem item = new BulkOrderItem();
+                                        item.BulkOrderId = bulkOrder.Id;
+                                        item.Id = Convert.ToInt32(dr2["Id"].ToString());
+                                        item.ItemName = Convert.ToString(dr2["ItemName"].ToString());
+                                        item.ItemQuantity = Convert.ToInt32(dr2["ItemQuantity"].ToString());
+                                        item.ItemCost = Convert.ToDecimal(dr2["ItemCost"].ToString());
+                                        bulkOrder.lstItems.Add(item);
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
+
+                }
+
+                return bulkOrder;
+            }
+            catch (Exception ex)
+            {
+                return bulkOrder;
             }
             finally
             {

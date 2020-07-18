@@ -14,7 +14,7 @@ a {
     text-decoration: none;
 }
 
-input[type=button] {   
+input[type=button] {
     background: #39b91c;
     display: block;
     font-size: 22px;
@@ -22,23 +22,27 @@ input[type=button] {
     text-align: center;
     padding: 22px;
     cursor: pointer;
-    border:0;
-    margin:10px 0;
+    border: 0;
+    margin: 10px 0;
 }
+
 input[type=text], input[type=password], select {
     font-size: 18px;
     border: 1px solid #ddd;
     padding-left: 5px;
     height: 30px;
 }
+
 .left {
     float: left;
 }
+
 .right {
     float: right;
 }
+
 .formInput {
-    margin:10px 0;
+    margin: 10px 0;
 }
 
 #wrapper {
@@ -53,16 +57,20 @@ input[type=text], input[type=password], select {
 #InnerWrapperContent {
 }
 
-.hidden{display:none;}
+.hidden {
+    display: none;
+}
 
 #header {
     height: 100px;
     width: 100%;
     background: #39b91c;
 }
+
 .centerInner {
     max-width: 1300px;
-    min-width: 1300px;
+    /*min-width: 1300px;*/
+    width: 100%;
     margin: 0 auto;
 }
 
@@ -72,9 +80,9 @@ input[type=text], input[type=password], select {
     margin-top: 6px;
 }
 
-#logo img {
-    width: 350px;
-}
+    #logo img {
+        width: 350px;
+    }
 
 #topSearch {
     float: left;
@@ -101,45 +109,46 @@ input[type=text], input[type=password], select {
     width: 540px;
 }
 
-#navigation ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    height: 40px;
-    margin-top: 30px;
-    float: right;
-}
+    #navigation ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        height: 40px;
+        margin-top: 30px;
+        float: right;
+    }
 
-#navigation ul li {
-    padding: 0;
-    margin: 0;
-    float: left;
-    padding-left: 10px;
-    padding-right: 10px;
-    border-right: 1px solid #9eeb8c;
-    height: 100%;
-    font-size: 32px;
-    position:relative;
-}
+        #navigation ul li {
+            padding: 0;
+            margin: 0;
+            float: left;
+            padding-left: 10px;
+            padding-right: 10px;
+            border-right: 1px solid #9eeb8c;
+            height: 100%;
+            font-size: 32px;
+            position: relative;
+        }
 
-#navigation ul li.last {
-    margin-right: 25px;
-    border-right: 0;
-    font-size: 18px;
-    cursor: pointer;
-}
+            #navigation ul li.last {
+                margin-right: 25px;
+                border-right: 0;
+                font-size: 18px;
+                cursor: pointer;
+            }
 
-#navigation ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: normal;
-}
+            #navigation ul li a {
+                color: #fff;
+                text-decoration: none;
+                font-weight: normal;
+            }
 
-#navigation ul li div {
-    color: #fff;
-    text-decoration: none;
-    font-weight: normal;
-}
+            #navigation ul li div {
+                color: #fff;
+                text-decoration: none;
+                font-weight: normal;
+            }
+
 #profileMenu {
     position: absolute;
     margin: 0 !important;
@@ -148,20 +157,20 @@ input[type=text], input[type=password], select {
     z-index: 100;
     margin-top: 10px !important;
     margin-left: -10px !important;
-    display:none;
+    display: none;
 }
 
-#profileMenu li {
-    font-size: 18px !important;
-    display: block;
-    float: none !important;
-    border-right: 0 !important;
-    padding: 10px !important;
-}
+    #profileMenu li {
+        font-size: 18px !important;
+        display: block;
+        float: none !important;
+        border-right: 0 !important;
+        padding: 10px !important;
+    }
 
-#profileMenu li a {
-    color:#7f7f7f !important;
-}
+        #profileMenu li a {
+            color: #7f7f7f !important;
+        }
 
 .cartIcon {
     margin-left: 10px;
@@ -175,7 +184,7 @@ input[type=text], input[type=password], select {
     color: #7f7f7f;
     position: relative;
 }
-        
+
 .dropbtn {
     padding: 10px;
     font-size: 18px;
@@ -208,7 +217,7 @@ input[type=text], input[type=password], select {
         .dropdown-content div:hover {
             background-color: rgba(75,150,80,1);
             color: white;
-            cursor:pointer;
+            cursor: pointer;
         }
 
 .dropdown:hover .dropdown-content {
@@ -224,11 +233,13 @@ input[type=text], input[type=password], select {
     clear: both;
     height: auto;
     width: 100%;
-    padding-top:20px;
+    padding-top: 20px;
 }
+
 #productDetails {
-    min-height:1000px;
+    min-height: 1000px;
 }
+
 #searchBox {
     height: 370px;
     width: 100%;
@@ -236,13 +247,14 @@ input[type=text], input[type=password], select {
     background-position-y: -200px;
     background-size: cover;
 }
+
 #banner {
     height: 300px;
     width: 100%;
     background: #39b91c;
     background: url(/Images/BannerImages.jpg) no-repeat;
     background-size: 100% 100%;
-    margin-top:10px;
+    margin-top: 10px;
 }
 
 #searchBoxTop {
@@ -250,16 +262,18 @@ input[type=text], input[type=password], select {
     width: 100%;
     /*background:url(/Images/SearchBack2.png) no-repeat;*/
 }
+
 .introText {
     width: 50%;
     color: #fff;
     font-size: 32px;
-    text-align:center;
-    margin-top:50px;
+    text-align: center;
+    margin-top: 50px;
 }
-.introText .icon {
-    font-size: 60px;
-}
+
+    .introText .icon {
+        font-size: 60px;
+    }
 
 .introButtons {
     width: 50%;
@@ -274,25 +288,25 @@ input[type=text], input[type=password], select {
     margin: 0 auto;
 }
 
-#searchHome #searhHolder #searchButton {
-    width: 40px;
-    height: 40px;
-    background: #22790f;
-    float: left;
-    padding: 5px;
-    cursor: pointer;
-}
+    #searchHome #searhHolder #searchButton {
+        width: 40px;
+        height: 40px;
+        background: #22790f;
+        float: left;
+        padding: 5px;
+        cursor: pointer;
+    }
 
-#searchHome #searhHolder #search {
-    width: 695px;
-    height: 50px;
-    display: inline-block;
-    font-size: 32px;
-    float: left;
-    border: 1px solid #000;
-    padding: 0;
-    padding-left: 5px;
-}
+    #searchHome #searhHolder #search {
+        width: 695px;
+        height: 50px;
+        display: inline-block;
+        font-size: 32px;
+        float: left;
+        border: 1px solid #000;
+        padding: 0;
+        padding-left: 5px;
+    }
 
 #searchHome .SearchTag {
     font-size: 50px;
@@ -312,29 +326,29 @@ input[type=text], input[type=password], select {
     padding-top: 13px;
     border-top: 2px solid #227910;
     border-bottom: 2px solid #227910;
-    text-align:center;
+    text-align: center;
 }
 
 
-#searchBoxBottom #button {
-    display: inline-block;
-    background: #fff;
-    height: 40px;
-    margin-right: 20px;
-    margin-top: -12px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10px;
-    color: #39b91c;
-    font-size: 26px;
-    cursor: pointer;
-}
+    #searchBoxBottom #button {
+        display: inline-block;
+        background: #fff;
+        height: 40px;
+        margin-right: 20px;
+        margin-top: -12px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 10px;
+        color: #39b91c;
+        font-size: 26px;
+        cursor: pointer;
+    }
 
 #examples {
-    width:100%;
-    height:300px;
-    background:url(/Images/Examples1.jpg) no-repeat;
-    background-size:cover;
+    width: 100%;
+    height: 300px;
+    background: url(/Images/Examples1.jpg) no-repeat;
+    background-size: cover;
 }
 
 #videoSection {
@@ -342,18 +356,21 @@ input[type=text], input[type=password], select {
     padding-top: 20px;
     background: url(/Images/VideoBg.jpg) no-repeat;
     background-size: 100%;
-    background-position-y:-300px;
+    background-position-y: -300px;
     width: 100%;
     height: 340px;
-    color:#fff;
+    color: #fff;
 }
+
 #asideVideo {
-    float:left;
-    font-size:22px;
+    float: left;
+    font-size: 22px;
 }
+
 #videoSection iframe {
     float: right;
 }
+
 .twoThirds {
     width: 66%;
     float: left;
@@ -363,6 +380,7 @@ input[type=text], input[type=password], select {
     width: 33%;
     float: left;
 }
+
 #footer {
     height: 232px;
     clear: both;
@@ -370,30 +388,37 @@ input[type=text], input[type=password], select {
     background: #eee;
     color: #7f7f7f;
 }
+
 #footerContent {
     max-width: 1300px;
     min-width: 1300px;
-    margin:0 auto;
+    margin: 0 auto;
 }
+
 #minFooter {
     position: fixed;
     bottom: 0;
     right: 0;
 }
+
 .left50 {
-    float:left;
-    width:50%;
+    float: left;
+    width: 50%;
 }
-#footer ul{
-    list-style-type:none;
-    margin-top:30px;
+
+#footer ul {
+    list-style-type: none;
+    margin-top: 30px;
 }
-#footer ul a{
-    color: #7f7f7f;
-}
-#footer ul li {
-    margin:10px;
-}
+
+    #footer ul a {
+        color: #7f7f7f;
+    }
+
+    #footer ul li {
+        margin: 10px;
+    }
+
 .productListHeader {
     height: 30px;
     font-size: 24px;
@@ -432,57 +457,62 @@ input[type=text], input[type=password], select {
     width: 50%;
     float: left;
 }
+
 #childProducts {
-    height:auto;
-}
-#childProducts .productListed {
-    width: 120px;
     height: auto;
 }
-#childProducts .productImage {
-    max-width:100%;
-}
+
+    #childProducts .productListed {
+        width: 120px;
+        height: auto;
+    }
+
+    #childProducts .productImage {
+        max-width: 100%;
+    }
+
 #productDetails #productImages #imageHolder {
     width: 400px;
     height: 400px;
     margin: 0 auto;
     text-align: center;
 }
-        #productDetails #productImages #imageHolder img {
-            width:100%;
-            margin-top:100px;
-        }
-        
-        #productDetails #productImages #moreImageSlider {
-            height: 60px;
-            width: 300px;
-            margin: 0 auto;
-        }
 
-        #productDetails #productImages #moreImageSlider ul {
-            list-style-type: none;
+    #productDetails #productImages #imageHolder img {
+        width: 100%;
+        margin-top: 100px;
+    }
+
+#productDetails #productImages #moreImageSlider {
+    height: 60px;
+    width: 300px;
+    margin: 0 auto;
+}
+
+    #productDetails #productImages #moreImageSlider ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 300px;
+        overflow-x: scroll;
+        overflow-y: hidden;
+    }
+
+        #productDetails #productImages #moreImageSlider ul li {
             margin: 0;
             padding: 0;
-            width: 300px;
-            overflow-x: scroll;
-            overflow-y: hidden;
+            float: left;
+            margin-left: 5px;
+            margin-right: 5px;
+            cursor: pointer;
         }
 
-            #productDetails #productImages #moreImageSlider ul li {
-                margin: 0;
-                padding: 0;
-                float: left;
-                margin-left: 5px;
-                margin-right: 5px;
-                cursor: pointer;
+            #productDetails #productImages #moreImageSlider ul li:hover {
+                border: 1px solid #000;
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
             }
-
-                #productDetails #productImages #moreImageSlider ul li:hover {
-                    border: 1px solid #000;
-                    box-sizing: border-box;
-                    -moz-box-sizing: border-box;
-                    -webkit-box-sizing: border-box;
-                }
 
 #productDetails #productInfo {
     width: 50%;
@@ -493,7 +523,7 @@ input[type=text], input[type=password], select {
 #productDetails #productName {
     font-size: 24px;
     font-weight: bold;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 #productDetails .productText {
@@ -505,33 +535,35 @@ input[type=text], input[type=password], select {
     background: #e5e5e5;
     padding: 20px;
     margin-top: 20px;
-    position:relative;
+    position: relative;
 }
 
-#productDetails #productOptionsBox select {
-    width: 100%;
-    height: 54px;
-    -webkit-appearance: none;
-    overflow: hidden;
-    background: url("/Images/DropArrow.png") no-repeat right #fff;
-}
-#productDetails #productOptionsBox input {
-    height: 54px;
-    font-size: 18px;
-    width: 60px;
-    text-align: center;
-    border: 1px solid #ddd;
-}
-#productDetails #productOptionsBox .inputLabel {
-    margin: 10px 0;
-    font-weight: bold;
-}
+    #productDetails #productOptionsBox select {
+        width: 100%;
+        height: 54px;
+        -webkit-appearance: none;
+        overflow: hidden;
+        background: url("/Images/DropArrow.png") no-repeat right #fff;
+    }
 
-#productDetails #productOptionsBox #priceText {
-    font-size: 32px;
-    color: #39b91c;
-    font-weight: bold;
-}
+    #productDetails #productOptionsBox input {
+        height: 54px;
+        font-size: 18px;
+        width: 60px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    #productDetails #productOptionsBox .inputLabel {
+        margin: 10px 0;
+        font-weight: bold;
+    }
+
+    #productDetails #productOptionsBox #priceText {
+        font-size: 32px;
+        color: #39b91c;
+        font-weight: bold;
+    }
 
 #productDetails .AddToCartButton {
     width: 100%;
@@ -579,17 +611,19 @@ input[type=text], input[type=password], select {
     top: 60px;
     height: 440px;
     overflow-y: scroll;
-    overflow-x:hidden;
+    overflow-x: hidden;
     width: 250px;
 }
+
 .hatStyle {
     width: 200px;
     height: 170px;
     display: block;
     position: relative;
     margin: 0 auto;
-    cursor:pointer;
+    cursor: pointer;
 }
+
 .hatStyleDescription {
     background: rgba(0,0,0,0.6);
     color: #fff;
@@ -602,14 +636,16 @@ input[type=text], input[type=password], select {
     z-index: 99;
     display: none;
 }
+
 .hatStyle:hover .hatStyleDescription {
     display: block;
 }
 
 .hatStyleImg {
     max-width: 200px;
-    max-height:140px;
+    max-height: 140px;
 }
+
 .hatStyleName {
     background: #39b91c;
     color: #fff;
@@ -617,9 +653,10 @@ input[type=text], input[type=password], select {
     position: absolute;
     right: 0;
     bottom: 12px;
-    width:100%;
-    text-align:center;
+    width: 100%;
+    text-align: center;
 }
+
 .hideHat {
     display: none !important;
 }
@@ -699,51 +736,57 @@ input[type=text], input[type=password], select {
     background: #fff;
 }
 
-    .hat {
-        width: 600px;
-        height: 480px;
-        margin: 0 auto;
-        display: block;
-    }
-#artworkAreaContainer {
-    border:1px dashed red;
-    width:468px;
-    height:180px;
-    display:block;
-    position:absolute;
-    top:165px;
-    left:110px;
+.hat {
+    width: 600px;
+    height: 480px;
+    margin: 0 auto;
+    display: block;
 }
+
+#artworkAreaContainer {
+    border: 1px dashed red;
+    width: 468px;
+    height: 180px;
+    display: block;
+    position: absolute;
+    top: 165px;
+    left: 110px;
+}
+
 #previewDesign {
     max-width: 475px;
     max-height: 183px;
-    float:left;
-    display:block;
+    float: left;
+    display: block;
 }
+
 #dragHelper {
     max-width: 475px;
     max-height: 183px;
 }
-#dragHelper .ui-wrapper {
-    max-width: 475px;
-    max-height: 183px;
-}
-#ContinueButton {
-        width: 250px;
-        height: 60px;
-        background: #39b91c;
-        display: block;
-        float: right;
-        top: 618px;
-        right: 24px;
-        font-size: 30px;
-        color: #fff;
-        text-align: center;
-        padding-top: 22px;
-        cursor: pointer;
-        margin-top: 20px;
-        margin-right:50px;
+
+    #dragHelper .ui-wrapper {
+        max-width: 475px;
+        max-height: 183px;
     }
+
+#ContinueButton {
+    width: 250px;
+    height: 60px;
+    background: #39b91c;
+    display: block;
+    float: right;
+    top: 618px;
+    right: 24px;
+    font-size: 30px;
+    color: #fff;
+    text-align: center;
+    padding-top: 22px;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-right: 50px;
+}
+
 #previewPopup {
     background: rgba(0,0,0,0.8);
     position: fixed;
@@ -753,9 +796,11 @@ input[type=text], input[type=password], select {
     height: 100%;
     z-index: 99;
 }
+
 #previewHatContent h1 {
-    color:#fff;
+    color: #fff;
 }
+
 #previewHatContent {
     width: 600px;
     margin: 0 auto;
@@ -766,22 +811,24 @@ input[type=text], input[type=password], select {
     background: url(../Images/BG2.jpg) #000 no-repeat;
     color: #ddd;
     border: 1px solid #ddd;
-    background-size:cover;
+    background-size: cover;
     /*background-position: bottom right;
     background-size: 300px;*/
-    position:relative;
+    position: relative;
 }
-#previewHatContent #close {
-    width:30px;
-    height:30px;
-    position:absolute;
-    top:5px;
-    right:5px;
-    font-size:26px;
-    font-weight:bold;
-    color:#fff;
-    cursor:pointer;
-}
+
+    #previewHatContent #close {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 26px;
+        font-weight: bold;
+        color: #fff;
+        cursor: pointer;
+    }
+
 .close {
     width: 30px;
     height: 30px;
@@ -793,8 +840,9 @@ input[type=text], input[type=password], select {
     color: #fff;
     cursor: pointer;
 }
+
 #previewHatContent #acceptDesign {
-    margin:0 auto;
+    margin: 0 auto;
 }
 
 /*GET STARTED PAGE*/
@@ -826,22 +874,25 @@ input[type=text], input[type=password], select {
     padding-top: 22px;
     cursor: pointer;
     margin: 0 auto;
-    margin-top:20px;
+    margin-top: 20px;
 }
+
 .GetStartedBlock {
     text-align: center;
     color: #fff;
     width: 560px;
     float: left;
-    padding:20px;
+    padding: 20px;
 }
+
 .StartedText {
     background: rgba(0,0,0,0.5);
     font-size: 22px;
     padding: 20px;
 }
+
 .StartedImg {
-    margin-top:20px;
+    margin-top: 20px;
 }
 /*SignUp*/
 #SignUpPanel {
@@ -889,20 +940,22 @@ input[type=text], input[type=password], select {
     margin: 0 auto;
     margin-top: 50px;
 }
+
 #UserSignUp {
     width: 300px;
     margin: 0 auto;
-    text-align:left;
-    margin-top:20px;
-    min-height:600px;
+    text-align: left;
+    margin-top: 20px;
+    min-height: 600px;
+}
 
-}
-#UserSignUp .formInput input {
-    width:100%;
-}
+    #UserSignUp .formInput input {
+        width: 100%;
+    }
+
 #loginButton {
-    margin:0 auto;
-    margin-top:30px;
+    margin: 0 auto;
+    margin-top: 30px;
 }
 /*Create Details*/
 #CreateDetails {
@@ -967,7 +1020,7 @@ input[type=text], input[type=password], select {
 
 #scrollHatTypeSelect {
     margin: 20px 20px;
-    margin-top:0;
+    margin-top: 0;
     width: 550px;
     height: 210px;
     border: 1px solid #bebebe;
@@ -975,7 +1028,7 @@ input[type=text], input[type=password], select {
     overflow: auto;
     overflow-y: hidden;
     white-space: nowrap;
-    padding-right:10px;
+    padding-right: 10px;
 }
 
 .hatType {
@@ -1009,10 +1062,11 @@ input[type=text], input[type=password], select {
     max-width: 80px;
     max-height: 80px;
 }
+
 .hatCheck {
-    position:absolute;
-    top:0;
-    right:0;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .hatColors {
@@ -1032,9 +1086,11 @@ input[type=text], input[type=password], select {
     border: 1px solid #000;
     cursor: pointer;
 }
+
     .color.selected {
         border: 3px solid #39b91c;
     }
+
 .red {
     background: red;
 }
@@ -1134,14 +1190,15 @@ input[type=text], input[type=password], select {
         border: 2px solid black;
         margin: 5px;
     }
+
     .colorPicker .selected {
         border: 4px solid #39b91c;
     }
 
-#detailsHeader{
-    font-weight:bold;
-    font-size:32px;
-    padding:20px;
+#detailsHeader {
+    font-weight: bold;
+    font-size: 32px;
+    padding: 20px;
 }
 
 #shopWrapper {
@@ -1152,7 +1209,7 @@ input[type=text], input[type=password], select {
 .cartContainer {
     width: 95%;
     margin-left: 2.5%;
-    margin-top:85px;
+    margin-top: 85px;
     /*background-color:red;*/
     min-height: 500px
 }
@@ -1179,7 +1236,7 @@ input[type=text], input[type=password], select {
 
 .cartDetails .productImage {
     float: left;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .cartDetails .productDetails {
@@ -1191,7 +1248,6 @@ input[type=text], input[type=password], select {
     font-weight: bold;
     margin-bottom: 8px;
     cursor: pointer;
-    
 }
 
 .cartDetails .productQty {
@@ -1202,8 +1258,9 @@ input[type=text], input[type=password], select {
 
 .cartDetails .productSize {
 }
-.cartDetails .productPrice{
-    font-weight:bold;
+
+.cartDetails .productPrice {
+    font-weight: bold;
 }
 
 .cartDetails .removeButton {
@@ -1213,39 +1270,45 @@ input[type=text], input[type=password], select {
     border: 0;
     color: #fff;
     padding: 5px;
-    cursor:pointer;
+    cursor: pointer;
 }
+
 #totalHeader {
-    background-color:#efefef;
-    color:#626262;
-    text-align:center;
-    padding:20px;
-    font-weight:bold;
-    font-size:32px;
+    background-color: #efefef;
+    color: #626262;
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+    font-size: 32px;
 }
-#totalTable tr td{
-    padding:10px;
+
+#totalTable tr td {
+    padding: 10px;
 }
-#cartHeader{
-    font-weight:bold;
-    font-size:32px;
-    margin-bottom:20px;
+
+#cartHeader {
+    font-weight: bold;
+    font-size: 32px;
+    margin-bottom: 20px;
 }
-#totalTable{
-    width:100%;
-    margin:20px 0;
+
+#totalTable {
+    width: 100%;
+    margin: 20px 0;
 }
+
 #PayNow {
-    background-color:#39b91c;
-    color:#fff;
-    text-align:center;
-    padding:20px;
-    font-weight:bold;
-    font-size:32px;
-    cursor:pointer;
+    background-color: #39b91c;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+    font-size: 32px;
+    cursor: pointer;
 }
-.paypalImage{
-    margin-top:20px;
+
+.paypalImage {
+    margin-top: 20px;
 }
 /************************ Designer Profile *****************/
 
@@ -1268,7 +1331,7 @@ input[type=text], input[type=password], select {
 
 .designerInfo {
     text-align: center;
-    color:#fff;
+    color: #fff;
 }
 
 .designerSales {
@@ -1276,9 +1339,10 @@ input[type=text], input[type=password], select {
 
 .designerProducts {
 }
+
 .desingerName {
-    font-size:32px;
-    font-weight:bold;   
+    font-size: 32px;
+    font-weight: bold;
 }
 
 /* COMMON */
@@ -1303,6 +1367,7 @@ input[type=text], input[type=password], select {
     height: 100%;
     z-index: 99;
 }
+
 #customerInformation {
     background: #fff;
     border: #ddd 1px solid;
@@ -1316,26 +1381,31 @@ input[type=text], input[type=password], select {
     margin-top: 10px;
     position: relative;
 }
-#customerInformation .formInput {
-    float:left;
-    width:200px;
-}
-#customerInformation .formInput.formInputLabel {
-    width: 100px !important;
-    float: left;
-}
-#customerInformation #PayNow {
-    margin:10px 0;
-}
+
+    #customerInformation .formInput {
+        float: left;
+        width: 200px;
+    }
+
+        #customerInformation .formInput.formInputLabel {
+            width: 100px !important;
+            float: left;
+        }
+
+    #customerInformation #PayNow {
+        margin: 10px 0;
+    }
+
 #paymentContainer {
-    width:600px;
-    margin:0 auto;
-    margin-top:20px;
-    background:url(../Images/LogoBG.jpg) no-repeat;
-    background-size:cover;
-    height:400px;
-    padding-top:200px;
+    width: 600px;
+    margin: 0 auto;
+    margin-top: 20px;
+    background: url(../Images/LogoBG.jpg) no-repeat;
+    background-size: cover;
+    height: 400px;
+    padding-top: 200px;
 }
+
     #paymentContainer h1 {
         font-size: 32px;
     }
@@ -1343,6 +1413,7 @@ input[type=text], input[type=password], select {
     #paymentContainer p {
         font-size: 22px;
     }
+
 .productListed {
     width: 250px;
     height: 275px;
@@ -1352,26 +1423,30 @@ input[type=text], input[type=password], select {
     text-align: center;
     cursor: pointer;
     margin-top: 40px;
-    position:relative;
+    position: relative;
 }
+
 .multiOptionsIcon {
     background: rgba(0,0,0,0.6);
     color: #fff;
-    padding:5px;
-    width:70px;
-    margin:0 auto;
-    position:absolute;
-    top:0;
-    left:0;
-    font-size:10px;
+    padding: 5px;
+    width: 70px;
+    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 10px;
 }
+
 .productListed .prodName {
     color: #39b91c;
     font-size: 22px;
     font-weight: bold;
 }
-    .productListed .prodPrice {
-    }
+
+.productListed .prodPrice {
+}
+
 #errorNotifcation {
     background: rgba(0,0,0,0.4);
     position: fixed;
@@ -1381,6 +1456,7 @@ input[type=text], input[type=password], select {
     height: 100%;
     z-index: 1000;
 }
+
 #errorContent {
     width: 200px;
     height: auto;
@@ -1389,8 +1465,9 @@ input[type=text], input[type=password], select {
     background: #fff;
     padding: 20px;
     text-align: center;
-    border:1px solid #000;
+    border: 1px solid #000;
 }
+
 #closeError {
     cursor: pointer;
     background: #000;
@@ -1399,6 +1476,7 @@ input[type=text], input[type=password], select {
     color: #fff;
     margin: 0 auto;
 }
+
 #loadingPanel {
     position: fixed;
     top: 0;
@@ -1408,11 +1486,13 @@ input[type=text], input[type=password], select {
     z-index: 1000;
     background: url('../Images/loading.gif') 50% 50% no-repeat rgba(0,0,0,0.4);
 }
+
 #createAccountLink {
     margin-top: 20px;
     display: block;
     text-align: center;
 }
+
 #approvalPopup {
     background: rgba(0,0,0,0.4);
     position: fixed;
@@ -1442,33 +1522,43 @@ input[type=text], input[type=password], select {
     color: #fff;
     margin: 0 auto;
 }
+
 #mobileCreate {
     display: none;
 }
+
 #mobileGetStarted {
     display: none;
 }
+
 #mobileNav {
-    display:none;
+    display: none;
 }
+
 #designerDashboard {
 }
-#designerDashboard table{
-    width:100%;
-}
-#designerDashboard table tr{
-    width: 100%;
-}
-#designerDashboard table thead {
-    font-weight:bold;
-}
+
+    #designerDashboard table {
+        width: 100%;
+    }
+
+        #designerDashboard table tr {
+            width: 100%;
+        }
+
+        #designerDashboard table thead {
+            font-weight: bold;
+        }
+
 #paypalCreditBanner {
     margin-top: 20px;
 }
+
 #paypalButtons {
     margin-bottom: 20px;
     text-align: center;
 }
+
 #productHatStyleSelect {
     background: #fff;
     height: auto;
@@ -1479,39 +1569,45 @@ input[type=text], input[type=password], select {
     width: 445px;
     border: 1px solid #ddd;
 }
-#productHatStyleSelect .hatStyle {
-    display: inline-block;
-    margin: 10px;
-}
+
+    #productHatStyleSelect .hatStyle {
+        display: inline-block;
+        margin: 10px;
+    }
+
 .clear {
-    clear:both;
+    clear: both;
 }
+
 #hatTypeSelect {
     height: 42px;
     background: #fff;
     font-size: 18px;
     border: 1px solid #ddd;
     padding-left: 5px;
-    padding:5px;
-    cursor:pointer;
+    padding: 5px;
+    cursor: pointer;
 }
-#hatTypeSelect img{
-    max-width:60px;
-    float:left;
-    display:block;
-}
+
+    #hatTypeSelect img {
+        max-width: 60px;
+        float: left;
+        display: block;
+    }
+
 #selectedHatTypeInfo {
     margin-top: 10px;
     float: left;
-    margin-left:10px;
+    margin-left: 10px;
 }
+
 #expandArrow {
     float: right;
     margin-top: 10px;
     background: url("/Images/DropArrow.png") no-repeat right #fff;
     width: 20px;
-    height:20px;
-    display:block;
+    height: 20px;
+    display: block;
 }
 
 
@@ -1523,79 +1619,95 @@ input[type=text], input[type=password], select {
     color: #fff;
     font-size: 22px;
 }
+
 #bulkIntroInner {
     margin: 5%;
     display: inline-block;
-    width:90%;
+    width: 90%;
 }
+
 .bulkSectionHeader {
     width: 100%;
     height: 200px;
     border-top: 10px solid #39b91c;
 }
+
 .bulkSectionHeaderH1 {
     margin-top: 60px !important;
     margin-left: 60px !important;
 }
+
 #bulkTypeSelectTop {
     background: url("/Images/TypeSelectTop.jpg");
 }
+
 #designUploadTop {
     background: url("/Images/designUploadTop.jpg");
 }
+
 #bulkOrderingContainer h1 {
     color: #39b91c;
     font-size: 68px;
     clear: both;
     margin: 0;
 }
-.priceList{
-    font-size:22px;
+
+.priceList {
+    font-size: 22px;
 }
-.priceList td {
-    width: 100px;
-    display: inline-block;
-}
+
+    .priceList td {
+        width: 100px;
+        display: inline-block;
+    }
 
 .hatBrandStyleRegion {
     margin: 20px;
     height: 36px;
 }
+
 .hatStyleSelectArea {
     clear: both;
-    
 }
+
 .hatTypeSelectRegion {
     display: inline-block;
     width: 100%;
 }
+
 .hatBrand {
     height: 60px;
     font-size: 22px;
-    padding:30px;
-    background:#efefef;
-    cursor:pointer;
+    padding: 30px;
+    background: #efefef;
+    cursor: pointer;
 }
+
 .hatTitle {
     display: inline-block;
     width: 100%;
-    cursor:pointer;
+    cursor: pointer;
 }
-.hatTitle .title{
-    color:#39b91c;
-    font-weight:bold;
-    font-size:30px;
-}
+
+    .hatTitle .title {
+        color: #39b91c;
+        font-weight: bold;
+        font-size: 30px;
+    }
+
 .hatStyleImage {
     width: 100%;
 }
+
 .hatStyleSetQty {
-    width:100%;
+    width: 100%;
 }
-.hatStyleSetQty input {
-    width:40px;
-    height:40px;
-}
+
+    .hatStyleSetQty input {
+        width: 40px;
+        height: 40px;
+    }
+
 .numberCircle {
     border-radius: 50%;
     behavior: url(PIE.htc);
@@ -1608,23 +1720,27 @@ input[type=text], input[type=password], select {
     text-align: center;
     font: 68px Arial, sans-serif;
 }
+
 .placementOption {
-    width:33%;
-    height:auto;
-    float:left;
-    text-align:center;
-    position:relative;
-}
-.placementOption.selected {
-    border: 2px solid #39b91c;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-}
-.placementOption .placementImage {
-    width: 75%;
+    width: 33%;
     height: auto;
+    float: left;
+    text-align: center;
+    position: relative;
 }
+
+    .placementOption.selected {
+        border: 2px solid #39b91c;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+    }
+
+    .placementOption .placementImage {
+        width: 75%;
+        height: auto;
+    }
+
 #bulkPaymentButton {
     width: 350px;
     height: 60px;
@@ -1637,71 +1753,81 @@ input[type=text], input[type=password], select {
     cursor: pointer;
     margin: 0 auto;
 }
+
 #totalBottomBar {
     background: #39b91c;
-    color:#fff;
-    position:fixed;
-    width:100%;
-    height:80px;
-    bottom:0;
-    left:0;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    height: 80px;
+    bottom: 0;
+    left: 0;
 }
+
 .currentTotalContent {
-    margin-top:20px;
-    text-align:center;
+    margin-top: 20px;
+    text-align: center;
 }
+
 #bulkCartContainer {
     background: #fff;
     width: 88%;
     height: auto;
     margin: 3%;
-    padding:3%;
+    padding: 3%;
     display: inline-block;
-    position:relative;
+    position: relative;
 }
-#bulkItemCartList {
-    float:left;
-    width:60%;
-    margin:3%;
-}
-.bulkItemCartListItem {
-    border-bottom:1px solid #ddd;
-    padding:20px;
-    font-size:20px;
-    width:90%;
-    clear:both;
-    height:25px;
-}
-.bulkItemCartListItemDetials {
-    width:50%;
-    float:left;
 
+#bulkItemCartList {
+    float: left;
+    width: 60%;
+    margin: 3%;
 }
+
+.bulkItemCartListItem {
+    border-bottom: 1px solid #ddd;
+    padding: 20px;
+    font-size: 20px;
+    width: 90%;
+    clear: both;
+    height: 25px;
+}
+
+.bulkItemCartListItemDetials {
+    width: 50%;
+    float: left;
+}
+
 .bulkItemCartListItemQuantity {
     width: 25%;
     float: left;
 }
+
 .bulkItemCartListItemPrice {
     width: 25%;
     float: left;
 }
+
 #paypalPaymentButtonsPopup {
     background: rgba(0,0,0,0.9);
     position: fixed;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    width:100%;
-    height:100%;
-    text-align:center;
-    color:#fff;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: #fff;
 }
+
 #paypalPaymentButtonsInner {
-    margin-top:30px;
+    margin-top: 30px;
 }
+
 .placementOption {
-  cursor:pointer;
+    cursor: pointer;
 }
 /*******************************************END BULK ORDERING****************************************************/
 
@@ -1710,173 +1836,210 @@ input[type=text], input[type=password], select {
 
 .addHatTypeColor {
     background-color: greenyellow;
-    color:#000;
-    padding:10px;
-    cursor:pointer;
+    color: #000;
+    padding: 10px;
+    cursor: pointer;
 }
 
 
 @media only screen and (max-height: 840px) {
     #previewHatContent {
-    height: 600px;
-    overflow-y: scroll;
+        height: 600px;
+        overflow-y: scroll;
+    }
 }
-    
-}
+
 @media only screen and (max-width: 1100px) {
     #wrapper {
         min-width: 100%;
         max-width: 100%;
     }
+
     .centerInner {
         width: 100%;
         min-width: 100%;
         max-width: 100%;
     }
+
     #header {
         height: 202px;
     }
+
     #logo {
         float: none;
         margin: 0 auto;
     }
+
     #navigation {
         float: none;
         margin: 0 auto;
         width: auto;
-        text-align:center;
+        text-align: center;
     }
-    #navigation ul {
-        float: unset;
-        display:inline-block;
-    }
-    #navigation ul li.last {
-        margin-right: 0;
-    }
+
+        #navigation ul {
+            float: unset;
+            display: inline-block;
+        }
+
+            #navigation ul li.last {
+                margin-right: 0;
+            }
+
     .mainNavigation {
-        position:absolute;
-        top:242px;
-        left:0px;
-        right:0px;
-        background:#fff;
-        padding-left:0;
-        padding-right:0;
-        border:0;
-        display:none;
+        position: absolute;
+        top: 242px;
+        left: 0px;
+        right: 0px;
+        background: #fff;
+        padding-left: 0;
+        padding-right: 0;
+        border: 0;
+        display: none;
     }
+
     .dropdown {
-        display:block;
-        height:30px;
-        background:#fff;
-        padding:10px 0;
-        border-bottom:1px #ddd solid;
+        display: block;
+        height: 30px;
+        background: #fff;
+        padding: 10px 0;
+        border-bottom: 1px #ddd solid;
     }
+
     #mobileNav {
         display: block;
         height: 40px;
         width: 100%;
         background: #ddd;
-        color:#7f7f7f;
-        cursor:pointer;
+        color: #7f7f7f;
+        cursor: pointer;
     }
+
     #categoryLable {
         padding-top: 10px;
         padding-left: 10px;
-        font-weight:bold;
+        font-weight: bold;
     }
+
     #searchBox {
         background-position-y: 0;
         height: 308px;
     }
+
     .introText {
-        font-size:26px;
-        margin-top:30px;
+        font-size: 26px;
+        margin-top: 30px;
     }
-    .introText .icon {
-        font-size:40px;
-    }
+
+        .introText .icon {
+            font-size: 40px;
+        }
+
     #searchBoxTop {
         height: 240px;
     }
-    #searchBoxTop #searhHolder {
-        width: 80%;
-    }
-    #searchBoxTop #searhHolder #search {
-        width:90%;
-    }
-    #searchBoxTop .SearchTag {
-        font-size:38px;
-    }
+
+        #searchBoxTop #searhHolder {
+            width: 80%;
+        }
+
+            #searchBoxTop #searhHolder #search {
+                width: 90%;
+            }
+
+        #searchBoxTop .SearchTag {
+            font-size: 38px;
+        }
+
     #searchBoxBottom #tagLine {
-        font-size:16px;
-        margin-top:6px;
+        font-size: 16px;
+        margin-top: 6px;
     }
+
     #searchBoxBottom #button {
         font-size: 18px;
         height: 28px;
     }
+
     #searchTop {
         margin-top: 20px;
         margin-left: 0;
         width: 100%;
     }
+
     #examples {
         height: 120px;
-        background-size:cover;
+        background-size: cover;
     }
+
     #videoSection {
-        background-position-y: 0;        
+        background-position-y: 0;
     }
+
     #asideVideo table {
         width: 80% !important;
         margin: 0 auto;
         margin-top: 0px !important;
         font-size: 16px !important;
     }
-    #asideVideo table img {
-        width:130px;    
-    }
+
+        #asideVideo table img {
+            width: 130px;
+        }
+
     #videoSection iframe {
         width: 100%;
     }
+
     #searchHome .SearchTag {
-        font-size:32px;
+        font-size: 32px;
     }
+
     #searchHome #searhHolder {
         width: 80%;
     }
-    #searchHome #searhHolder #search {
-        width:80%;
-    }
+
+        #searchHome #searhHolder #search {
+            width: 80%;
+        }
+
     #topSearch {
         position: absolute;
         top: 240px;
         width: 90%;
     }
+
     #shopWrapper {
         margin-top: 86px;
     }
+
     .productListed {
-        width:45%;
+        width: 45%;
     }
+
     #productDetails #productImages {
-        float:none;
-        margin:0 auto;
+        float: none;
+        margin: 0 auto;
     }
-    #productDetails #productImages #imageHolder img {
-        margin-top:30px;
-    }
+
+        #productDetails #productImages #imageHolder img {
+            margin-top: 30px;
+        }
+
     #productDetails #productInfo {
         float: none;
         margin: 0 auto;
         clear: both;
     }
+
     #productName {
-        text-align:center;
+        text-align: center;
     }
+
     .productText {
         text-align: center;
     }
+
     .cartDetails {
         float: none;
         height: auto;
@@ -1884,310 +2047,400 @@ input[type=text], input[type=password], select {
         margin: 0 auto;
         margin-bottom: 50px;
     }
+
     #cartHeader {
-        text-align:center;
-        margin-bottom:60px;
+        text-align: center;
+        margin-bottom: 60px;
     }
+
     .cartSummary {
         float: none;
         width: 450px;
         margin: 0 auto;
     }
+
     #CreateDetails {
-        width:100%;
-        height:auto;
+        width: 100%;
+        height: auto;
     }
+
     .cartContainer {
-        margin-top:20px;
+        margin-top: 20px;
     }
+
     #desktopCreate {
-        display:none;
+        display: none;
     }
+
     #mobileCreate {
-        display:inline;
+        display: inline;
     }
+
     .desktopStartSelling {
-        display:none !important;
+        display: none !important;
     }
+
     .mobileStartSelling {
         display: inline-block !important;
     }
+
     #searchBoxBottom {
     }
+
     #banner {
-        display:none;
+        display: none;
     }
+
     #searchBoxTop {
         background-size: 150% 300px;
     }
+
     #footerContent {
         max-width: 100%;
         min-width: 100%;
     }
+
     #footer {
-        height:240px;
+        height: 240px;
     }
-    #footer ul {
-        padding-left: 0;
-    }
+
+        #footer ul {
+            padding-left: 0;
+        }
+
     .cartDetails .productPrice {
         font-size: 21px;
     }
+
     #customerInfoPopup {
-        position:absolute;
+        position: absolute;
     }
+
     .multiOptionsIcon {
-        width:150px;
-        padding:10px;
-        font-size:12px;
+        width: 150px;
+        padding: 10px;
+        font-size: 12px;
     }
+
     #bulkIntro {
         height: auto;
-        text-align:center;
+        text-align: center;
     }
+
     .priceList {
-        margin:0 auto;
+        margin: 0 auto;
     }
+
     #bulkIntroInner {
         display: inline-block;
         height: auto;
     }
-    #bulkIntroInner .left {
-        float:unset;
-    }
-    #bulkIntroInner .right {
-        float: unset;
-    }
-    #bulkIntroInner iframe {
-        max-width:100%;
-    }
+
+        #bulkIntroInner .left {
+            float: unset;
+        }
+
+        #bulkIntroInner .right {
+            float: unset;
+        }
+
+        #bulkIntroInner iframe {
+            max-width: 100%;
+        }
+
     #bulkOrderingContainer h1 {
         font-size: 40px;
     }
+
     .numberCircle {
         padding: 10px 20px;
         font: 40px Arial, sans-serif;
     }
+
     .bulkSectionHeader {
-        height:155px;
+        height: 155px;
     }
+
     .hatBrandStyleOptions {
         display: inline-block;
         width: 100%;
     }
+
     #bulkCartContainer #cartSummary {
-        clear:both;
+        clear: both;
     }
+
     #bulkItemCartList {
-        width:94%;
-        float:unset;
+        width: 94%;
+        float: unset;
     }
+
     .bulkItemCartListItem {
         font-size: 15px;
     }
+
     .bulkItemCartListItemQuantity {
-        text-align:center;
+        text-align: center;
     }
+
     .bulkItemCartListItemPrice {
         text-align: center;
     }
+
     #bulkArtworkStep .productDetailsTextMulti {
         width: auto;
     }
+
     #designUploadContent {
-        padding:0 10px;
+        padding: 0 10px;
     }
+
     #designPlacement {
         padding: 0 10px;
     }
+
     #designComments {
         padding: 0 10px;
     }
+
     #designProcessExplained {
         padding: 0 10px;
     }
 }
+
 @media only screen and (max-width: 750px) {
     #logo img {
-        width:250px;
-        margin:0 auto;
-        
+        width: 250px;
+        margin: 0 auto;
     }
+
     #logo {
         text-align: center;
     }
+
     #navigation {
         /*width:300px;*/
     }
-    #navigation ul li {
-        font-size:20px;
-        padding-left:6px;
-        padding-right:6px;
-    }
-    #navigation ul {
-        height:24px;
-    }
-    #navigation .last img {
-        width:25px !important;
-        height:25px !important;
-    }
-        #navigation ul li.last {
-            font-size:15px;
+
+        #navigation ul li {
+            font-size: 20px;
+            padding-left: 6px;
+            padding-right: 6px;
         }
+
+        #navigation ul {
+            height: 24px;
+        }
+
+        #navigation .last img {
+            width: 25px !important;
+            height: 25px !important;
+        }
+
+        #navigation ul li.last {
+            font-size: 15px;
+        }
+
     #header {
-        height:164px;
+        height: 164px;
     }
+
     .mainNavigation {
-        top:204px;
+        top: 204px;
     }
+
     #searchBoxTop #searhHolder #search {
-        width:70%;
+        width: 70%;
     }
+
     #searchBoxTop {
         background-size: 260% 300px;
         background-position: -99px;
     }
+
     .productListed {
         width: 100%;
+        margin: 10px 0;
     }
+
     #ProductListSection {
-        text-align:center;
+        text-align: center;
     }
+
     #productDetails #productInfo {
-        width:100%;
+        width: 100%;
     }
+
     #productDetails #productImages {
-        width:100%;
+        width: 100%;
     }
-    #productDetails #productImages #imageHolder {
-        width:100%;
-        height:auto;
-    }
+
+        #productDetails #productImages #imageHolder {
+            width: 100%;
+            height: auto;
+        }
+
     .cartDetails {
-        font-size:21px;
-    }    
+        font-size: 21px;
+    }
+
     .cartSummary {
-        width:100%;
+        width: 100%;
     }
+
     #customerInformation {
-        width:100%;
-        padding:0;
+        width: 100%;
+        padding: 0;
     }
+
     #infoContent {
         padding-left: 10px;
         padding-right: 10px;
     }
+
     #logo {
-        width:auto;
+        width: auto;
     }
+
     #topSearch {
-        top:220px;
+        top: 220px;
     }
+
     .cartDetails {
-        width:100%;
+        width: 100%;
     }
-    .cartDetails .productRow {
-        height: auto;
-        text-align: center;
-        margin-bottom: 10px;
+
+        .cartDetails .productRow {
+            height: auto;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .cartDetails .productImage {
+            float: none;
+        }
+
+        .cartDetails .productDetails {
+            0.00 display: block;
+            margin-left: 0;
+            float: none;
+        }
+
+        .cartDetails .removeButton {
+            display: inline;
+        }
+
+    #paypalCreditBanner img {
+        max-width: 100%;
     }
-    .cartDetails .productImage {
-        float: none;
-    }
-    .cartDetails .productDetails {0.00
-        display: block;
-        margin-left: 0;
-        float:none;
-    }
-    .cartDetails .removeButton {
-        display:inline;
-    }
-    #paypalCreditBanner img{
-        max-width:100%;
-    }
+
     #bulkOrderingContainer h1 {
-        font-size:24px;
+        font-size: 24px;
     }
+
     .bulkSectionHeader {
-        height:100px;
+        height: 100px;
     }
+
     .bulkSectionHeaderH1 {
         margin-top: 33px !important;
         margin-left: 14px !important;
     }
+
     .numberCircle {
         padding: 2px 10px;
         font: 30px Arial, sans-serif;
     }
-    .hatBrandLogo img{
-        height:40px;
+
+    .hatBrandLogo img {
+        height: 40px;
     }
+
     .hatBrand {
         height: 38px;
-        font-size:14px;
+        font-size: 14px;
     }
+
     .hatBrandCollapser {
-        margin-top:12px;
+        margin-top: 12px;
     }
+
     .hatBrandStyleRegion {
         display: inline-block;
-        width:90%;
+        width: 90%;
     }
-    .hatBrandStyleRegion .hatTitle .title {
-        font-size: 16px;
+
+        .hatBrandStyleRegion .hatTitle .title {
+            font-size: 16px;
+        }
+
+        .hatBrandStyleRegion .hatTitle .left {
+            width: 60%;
+        }
+
+        .hatBrandStyleRegion .hatTitle .right {
+            width: 40%;
+            text-align: right;
+            font-size: 12px;
+        }
+
+    .hatStyleSelectArea .hatStyleImage img {
+        width: 100%;
     }
-    .hatBrandStyleRegion .hatTitle .left {
-        width:60%;
-    }
-    .hatBrandStyleRegion .hatTitle .right {
-        width: 40%;
-        text-align:right;
-        font-size:12px;
-    }
-    .hatStyleSelectArea .hatStyleImage img{
-        width:100%;
-    }
+
     .hatStyleSetQty {
-        display:inline-block;
-    }
-    .hatStyleSetQty table {
-        width: 100% !important;
-        float: unset !important;
         display: inline-block;
     }
-    .hatStyleSetQty table .hatPreviewImage img{
-        width:80px;
-    }
-    .hatStyleSetQty table .colorOption {
-        width: 40px;
-        font-size: 12px;
-        word-break: break-all;
-    }
+
+        .hatStyleSetQty table {
+            width: 100% !important;
+            float: unset !important;
+            display: inline-block;
+        }
+
+            .hatStyleSetQty table .hatPreviewImage img {
+                width: 80px;
+            }
+
+            .hatStyleSetQty table .colorOption {
+                width: 40px;
+                font-size: 12px;
+                word-break: break-all;
+            }
+
     #bulkArtworkStep h2 {
         font-size: 16px;
     }
+
     #bulkArtworkStep {
         font-size: 16px;
     }
+
     #bulkPaymentButton {
-        width:auto;
+        width: auto;
     }
+
     #designComments {
-        font-size:12px;
+        font-size: 12px;
     }
+
     .currentTotalContent {
-        margin-bottom:20px;
+        margin-bottom: 20px;
     }
+
     #totalBottomBar {
         width: 100%;
         height: auto;
     }
+
     .cartSummary {
         height: auto;
     }
+
     #bulkIntroInner h2 {
-        font-size:20px;
+        font-size: 20px;
     }
+
     #bulkIntroInner {
         font-size: 20px;
     }

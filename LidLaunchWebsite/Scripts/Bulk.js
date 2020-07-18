@@ -84,6 +84,30 @@ function updateBulkTotals() {
             });
         });
     });
+    $('#FlexFit110 table').each(function () {
+        $(this).find('tr').each(function () {
+            var hatColorText = $(this).find('.colorOption').text();
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalHats += parseInt($(this).val());
+                    var hatName = 'FlexFit 110 Trucker Snapback  - ' + hatColorText + ' - OSFA';
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+                }
+            });
+        });
+    });
+    $('#6089FlatbillSnapback table').each(function () {
+        $(this).find('tr').each(function () {
+            var hatColorText = $(this).find('.colorOption').text();
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalHats += parseInt($(this).val());
+                    var hatName = 'Yupoong Flat Bill Snapback  - ' + hatColorText + ' - OSFA';
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+                }
+            });
+        });
+    });
     $('#Richardson112 table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
@@ -183,11 +207,11 @@ function showBulkCart() {
     }
     $('.bulkCartPopup').show();
     $('#paypal-button-container-bulk').empty();
-    renderBulkCartPaypalButtons(currentGrandTotalCost, currentBulkProductList);
+    renderBulkCartPaypalButtons(currentGrandTotalCost, currentBulkProductList, $('#paymentCompleteGuid').text());
 }
 
 
-function renderBulkCartPaypalButtons(price, items) {
+function renderBulkCartPaypalButtons(price, items, paymentCompleteGuid) {
     // Render the PayPal button
 
     paypal.Button.render({
@@ -240,7 +264,7 @@ function renderBulkCartPaypalButtons(price, items) {
 
         onAuthorize: function (data, actions) {
             return actions.payment.execute().then(function () {
-                window.location = 'http://lidlaunch.com/bulk/payment';
+                window.location = 'http://lidlaunch.com/bulk/payment?id=' + paymentCompleteGuid;
             });
         }
 
@@ -264,6 +288,7 @@ function verifyAndShowPaypal() {
                 data.append("orderNotes", $('#txtDetails').val());
                 data.append("orderTotal", currentGrandTotalCost);
                 data.append("items", JSON.stringify(currentBulkProductList));
+                data.append("paymentCompleteGuid", $('#paymentCompleteGuid').text());
                 showLoading();
                 $.ajax({
                     type: "POST",
@@ -295,4 +320,11 @@ function verifyAndShowPaypal() {
     } else {
         displayPopupNotification('Please enter all contact information.', 'error', false);
     }
+}
+
+function processBulkPaymentShowPaypal(total, paymentCompleteGuid) {
+    var items = JSON.parse($('#productList').text());    
+
+    renderBulkCartPaypalButtons(total, items, paymentCompleteGuid);
+    $('#paypalPaymentButtonsPopup').show();
 }

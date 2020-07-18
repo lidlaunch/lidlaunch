@@ -259,3 +259,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/LidLaunchWebsite/Images/BulkOrderArtwork
+/LidLaunchWebsite/Images/DesignImages/Digitizing/DST
+/LidLaunchWebsite/Images/DesignImages/Digitizing/Info
+/LidLaunchWebsite/Images/DesignImages/InUse

@@ -322,3 +322,23 @@ function saveHatType() {
 
 }
 
+
+function updateBulkOrderPaid(bulkOrderId, orderPaid, that) {
+    $.ajax({
+        type: "POST",
+        url: '/Dashboard/UpdateBulkOrderPaid',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            "bulkOrderId": bulkOrderId, "orderPaid": orderPaid
+        }),
+        dataType: "json",
+        success: function (data) {
+            window.location.reload();
+        },
+        error: function (err) {
+            displayPopupNotification('Error updating order paid.', 'error', false);
+        }
+    });
+}
+
+
