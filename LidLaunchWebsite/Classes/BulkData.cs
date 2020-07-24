@@ -139,6 +139,54 @@ namespace LidLaunchWebsite.Classes
                                     }
                                 }
 
+                                bulkOrder.lstDesigns = new List<Design>();
+                                if (ds.Tables[2].Rows.Count > 0)
+                                {
+                                    foreach (DataRow dr3 in ds.Tables[2].Rows)
+                                    {
+                                        if (Convert.ToInt32(dr3["BulkOrderId"].ToString()) == bulkOrder.Id)
+                                        {
+                                            Design design = new Design();
+                                            design.Id = Convert.ToInt32(dr3["Id"].ToString());
+                                            design.ArtSource = Convert.ToString(dr3["ArtSource"].ToString());
+                                            design.PreviewImage = Convert.ToString(dr3["PreviewImage"].ToString());
+                                            design.DigitizedFile = Convert.ToString(dr3["DigitizedFile"].ToString());
+                                            design.DigitizedInfoImage = Convert.ToString(dr3["DigitizedInfoImage"].ToString());
+                                            design.DigitizedPreview = Convert.ToString(dr3["DigitizedPreview"].ToString());
+                                            design.Width = Convert.ToDecimal(dr3["Width"].ToString());
+                                            design.Height = Convert.ToDecimal(dr3["Height"].ToString());
+                                            design.X = Convert.ToDecimal(dr3["X"].ToString());
+                                            design.Y = Convert.ToDecimal(dr3["Y"].ToString());
+                                            design.EmbroideredWidth = Convert.ToDecimal(dr3["EmbroideredWidth"].ToString());
+                                            design.EmbroideredHeight = Convert.ToDecimal(dr3["EmbroideredHeight"].ToString());
+                                            design.EmbroideredX = Convert.ToDecimal(dr3["EmbroideredX"].ToString());
+                                            design.EmbroideredY = Convert.ToDecimal(dr3["EmbroideredY"].ToString());
+                                            bulkOrder.lstDesigns.Add(design);
+                                        }
+                                    }
+                                }
+
+                                bulkOrder.lstNotes = new List<Note>();
+                                if (ds.Tables[3].Rows.Count > 0)
+                                {
+                                    foreach (DataRow dr4 in ds.Tables[3].Rows)
+                                    {
+                                        if (Convert.ToInt32(dr4["BulkOrderId"].ToString()) == bulkOrder.Id)
+                                        {
+                                            Note note = new Note();
+                                            note.Id = Convert.ToInt32(dr4["Id"].ToString());
+                                            note.Text = Convert.ToString(dr4["Text"].ToString());
+                                            note.UserAdded = Convert.ToBoolean(dr4["UserAdded"].ToString());
+                                            note.Attachment = Convert.ToString(dr4["Attachment"].ToString());
+                                            note.CreatedDate = Convert.ToDateTime(dr4["CreatedDate"].ToString());
+                                            note.CreatedUserId = Convert.ToInt32(dr4["CreatedUserId"].ToString());
+                                            bulkOrder.lstNotes.Add(note);
+                                        }
+                                    }
+                                }
+
+
+
                                 lstBulkOrders.Add(bulkOrder);
                             }                                  
                         }
@@ -312,5 +360,81 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
+
+        public bool CreateBulkOrderDesign(int bulkOrderId, int designId)
+        {
+            var data = new SQLData();
+
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("CreateBulkOrderDesign", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@designId", designId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                    //updload the individual line items
+
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool DeleteBulkOrderDesign(int bulkOrderId, int designId)
+        {
+            var data = new SQLData();
+
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("DeleteBulkOrderDesign", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@designId", designId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                    //updload the individual line items
+
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+
+
+
+
+
     }
 }

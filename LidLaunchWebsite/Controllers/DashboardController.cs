@@ -420,6 +420,8 @@ namespace LidLaunchWebsite.Controllers
             return json;
 
         }
+
+
         public bool checkLoggedIn()
         {            
             if (Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 643)
@@ -606,6 +608,29 @@ namespace LidLaunchWebsite.Controllers
                 }
             }
             
+
+        }
+
+        public ActionResult BulkDigitizing()
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["UserID"]) == 1)
+                {
+                    List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
+                    BulkData data = new BulkData();
+                    lstBulkOrders = data.GetBulkOrderData();
+                    return View(lstBulkOrders);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
 
         }
 

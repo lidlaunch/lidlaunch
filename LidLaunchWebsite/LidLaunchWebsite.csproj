@@ -218,6 +218,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BulkOrder.cs" />
+    <Compile Include="Models\BulkOrderItem.cs" />
+    <Compile Include="Models\Note.cs" />
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\Dashboard.cs" />
     <Compile Include="Models\HatColor.cs" />
@@ -607,6 +610,7 @@
     <Content Include="Views\Bulk\Orders.cshtml" />
     <Content Include="Views\Dashboard\ViewBulkOrders.cshtml" />
     <Content Include="Views\Bulk\ProcessPayment.cshtml" />
+    <Content Include="Views\Dashboard\BulkDigitizing.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

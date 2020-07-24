@@ -18,6 +18,7 @@ namespace LidLaunchWebsite.Models
         public string DigitizedFile { get; set; }
         public string DigitizedPreview { get; set; }
         public string DigitizedInfoImage { get; set; }
+        public List<Note> lstNotes { get; set; }
 
     }
 }

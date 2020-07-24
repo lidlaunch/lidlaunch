@@ -50,6 +50,11 @@ namespace LidLaunchWebsite.Controllers
             BulkData bulkData = new BulkData();
             var orderId = bulkData.CreateBulkOrder(name, email, phone, Convert.ToDecimal(orderTotal), orderNotes, artworkPath, artworkPlacement, cartItems, paymentCompleteGuid);
 
+            DesignData designData = new DesignData();
+            var designId = designData.CreateDesign(artworkPath, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M);
+
+            bulkData.CreateBulkOrderDesign(orderId, designId);
+
             if(orderId > 0)
             {
                 EmailFunctions emailFunc = new EmailFunctions();
