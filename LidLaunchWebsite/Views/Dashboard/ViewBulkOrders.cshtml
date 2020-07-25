@@ -2,8 +2,11 @@
 @{
     ViewBag.Title = "ViewBulkOrders";
 }
-
+<script type="text/javascript">
+    var url = '@Url.Action("BulkOrderDetailsPopup", "DashBoard")';
+</script>
 <h2>View Bulk Orders</h2>
+<h3>Paid Orders</h3>
 <table>
     <tbody>
         <tr>
@@ -18,47 +21,91 @@
             <td><b>Order Total</b></td>
             <td><b>Order Paid</b></td>
             <td><b>Payment Link</b></td>
+            <td><b>View</b></td>
         </tr>
         @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model)
-        {        
-        <tr style="background:#ccc;">
-            <td>@bulkOrder.Id</td>
-            <td>@bulkOrder.OrderDate</td>
-            <td>@bulkOrder.CustomerName</td>
-            <td>@bulkOrder.CustomerEmail</td>
-            <td>@bulkOrder.CustomerPhone</td>
-            <td>@bulkOrder.OrderNotes</td>
-            <td>@bulkOrder.ArtworkPosition</td>
-            <td><a href="~/Images/BulkOrderArtwork/@bulkOrder.ArtworkImage" target="_blank"><img src="~/Images/BulkOrderArtwork/@bulkOrder.ArtworkImage" style="max-height:100px;max-width:100px;" /></a></td>
-            <td>@bulkOrder.OrderTotal</td>
-            @if (bulkOrder.OrderPaid)
+        {
+            if (bulkOrder.OrderPaid)
             {
-                <td style="background:green;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','true',this)">@bulkOrder.OrderPaid</a></td>
-            }
-            else
-            {
-                <td style="background:red;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','false',this)">@bulkOrder.OrderPaid</a></td>
-            }
-            <td><a href="https://lidlaunch.com/bulk/processpayment?id=@bulkOrder.PaymentGuid" target="_blank">Pay Link</a></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td colspan="9">
-                <table>
-                    <tbody>
-                    @foreach (LidLaunchWebsite.Models.BulkOrderItem item in bulkOrder.lstItems)
+                <tr style="background:#ccc;">
+                    <td>@bulkOrder.Id</td>
+                    <td>@bulkOrder.OrderDate</td>
+                    <td>@bulkOrder.CustomerName</td>
+                    <td>@bulkOrder.CustomerEmail</td>
+                    <td>@bulkOrder.CustomerPhone</td>
+                    <td>@bulkOrder.OrderNotes</td>
+                    <td>@bulkOrder.ArtworkPosition</td>
+                    <td><a href="~/Images/BulkOrderArtwork/@bulkOrder.ArtworkImage" target="_blank"><img src="~/Images/BulkOrderArtwork/@bulkOrder.ArtworkImage" style="max-height:100px;max-width:100px;" /></a></td>
+                    <td>@bulkOrder.OrderTotal</td>
+                    @if (bulkOrder.OrderPaid)
                     {
-                        <tr>
-                            <td>@item.ItemName</td>
-                            <td>@item.ItemQuantity</td>
-                            <td>$@item.ItemCost</td>
-                        </tr>
+                        <td style="background:green;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','true',this)">@bulkOrder.OrderPaid</a></td>
                     }
-                    </tbody>
-                </table>
-            </td>
-        </tr>
+                    else
+                    {
+                        <td style="background:red;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','false',this)">@bulkOrder.OrderPaid</a></td>
+                    }
+                    <td><a href="https://lidlaunch.com/bulk/processpayment?id=@bulkOrder.PaymentGuid" target="_blank">Pay Link</a></td>
+                    <td><a href="javascript:void();" onclick="$('#popUpHolder').load(url, { bulkOrderId: @bulkOrder.Id });">view</a></td>
+                </tr>                
+            }
         }
     </tbody>
 </table>
+<h3>Not Paid Orders</h3>
+<table>
+    <tbody>
+        <tr>
+            <td><b>Id</b></td>
+            <td><b>Order Date</b></td>
+            <td><b>Customer Name</b></td>
+            <td><b>Customer Email</b></td>
+            <td><b>Customer Phone</b></td>
+            <td><b>Order Notes</b></td>
+            <td><b>Artwork Position</b></td>
+            <td><b>Art Source</b></td>
+            <td><b>Order Total</b></td>
+            <td><b>Order Paid</b></td>
+            <td><b>Payment Link</b></td>
+            <td><b>View</b></td>
+        </tr>
+        @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model)
+        {
+            if (!bulkOrder.OrderPaid)
+            {
+                <tr style="background:#ccc;">
+                    <td>@bulkOrder.Id</td>
+                    <td>@bulkOrder.OrderDate</td>
+                    <td>@bulkOrder.CustomerName</td>
+                    <td>@bulkOrder.CustomerEmail</td>
+                    <td>@bulkOrder.CustomerPhone</td>
+                    <td>@bulkOrder.OrderNotes</td>
+                    <td>@bulkOrder.ArtworkPosition</td>
+                    <td><a href="~/Images/BulkOrderArtwork/@bulkOrder.ArtworkImage" target="_blank"><img src="~/Images/BulkOrderArtwork/@bulkOrder.ArtworkImage" style="max-height:100px;max-width:100px;" /></a></td>
+                    <td>@bulkOrder.OrderTotal</td>
+                    @if (bulkOrder.OrderPaid)
+                    {
+                        <td style="background:green;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','true',this)">@bulkOrder.OrderPaid</a></td>
+                    }
+                    else
+                    {
+                        <td style="background:red;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','false',this)">@bulkOrder.OrderPaid</a></td>
+                    }
+                    <td><a href="https://lidlaunch.com/bulk/processpayment?id=@bulkOrder.PaymentGuid" target="_blank">Pay Link</a></td>
+                    <td><a href="javascript:void();" onclick="$('#popUpHolder').load(url, { bulkOrderId: @bulkOrder.Id });">view</a></td>
+                </tr>
+
+            }
+        }
+    </tbody>
+</table>
+
+<div id="popUpHolder">
+
+</div>
+
+
+
+
+
 

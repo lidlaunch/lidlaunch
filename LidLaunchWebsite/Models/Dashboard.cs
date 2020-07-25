@@ -74,7 +74,7 @@ namespace LidLaunchWebsite.Models
         public string ArtSource { get; set; }
         public string PreviewImage { get; set; }
         public string DigitizedFile { get; set; }
-        public string DigitizedInfoImage { get; set; }
+        public string DigitizedProductionSheet { get; set; }
         public string DigitizedPreview { get; set; }
         public int ProductId { get; set; }
         public List<HatTypeSize> lstHatTypeSizes { get; set; }
@@ -112,7 +112,7 @@ namespace LidLaunchWebsite.Models
         public string ArtSource { get; set; }
         public string PreviewImage { get; set; }
         public string DigitizedFile { get; set; }
-        public string DigitizedInfoImage { get; set; }
+        public string DigitizedProductionSheet { get; set; }
         public string DigitizedPreview { get; set; }
         public decimal EmbroiderdWidth { get; set; }
         public decimal EmbroideredHeight { get; set; }

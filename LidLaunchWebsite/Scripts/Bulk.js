@@ -328,3 +328,27 @@ function processBulkPaymentShowPaypal(total, paymentCompleteGuid) {
     renderBulkCartPaypalButtons(total, items, paymentCompleteGuid);
     $('#paypalPaymentButtonsPopup').show();
 }
+
+function saveNote(noteType, idVal, parentBulkOrderId) {
+    $.ajax({
+        type: "POST",
+        url: '/Dashboard/CreateNote',
+        contentType: false,
+        processData: false,
+        data: JSON.stringify({
+            noteType: noteType, idVal: idVal, parentBulkOrderId: parentBulkOrderId, text: $('#noteText').val(), attachment: ''}),
+        contentType: "application/json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('error.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                //reload bulk order window              
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error.', 'error', false);
+        }
+    });
+}

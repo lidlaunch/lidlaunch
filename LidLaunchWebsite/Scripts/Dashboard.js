@@ -92,7 +92,7 @@
                 showLoading();
                 $.ajax({
                     type: "POST",
-                    url: '/Dashboard/UpdateDesignDigitizedInfoImage?designId=' + designId,
+                    url: '/Dashboard/UpdateDesignDigitizedProductionSheet?designId=' + designId,
                     contentType: false,
                     processData: false,
                     data: data,

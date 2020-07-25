@@ -401,7 +401,7 @@ namespace LidLaunchWebsite.Classes
                         design.EmbroideredWidth = Convert.ToDecimal(dr["EmbroideredWidth"]);
                         design.DigitizedFile = dr["DigitizedFile"].ToString();
                         design.DigitizedPreview = dr["DigitizedPreview"].ToString();
-                        design.DigitizedInfoImage = dr["DigitizedInfoImage"].ToString();
+                        design.DigitizedProductionSheet = dr["DigitizedProductionSheet"].ToString();
                         product.Design = design;
                         model.Add(product);
                     }

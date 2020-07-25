@@ -2,6 +2,7 @@
 using LidLaunchWebsite.Models;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -511,7 +512,7 @@ namespace LidLaunchWebsite.Controllers
             var json = new JavaScriptSerializer().Serialize(returnValue);
             return json;
         }
-        public string UpdateDesignDigitizedInfoImage(string designId)
+        public string UpdateDesignDigitizedProductionSheet(string designId)
         {
             var returnValue = "";
             try
@@ -538,7 +539,7 @@ namespace LidLaunchWebsite.Controllers
 
                         //update design digitized file in database
                         DesignData data = new DesignData();
-                        var success = data.UpdateDesignDigitizedInfoImage(Convert.ToInt32(designId), fileName);
+                        var success = data.UpdateDesignDigitizedProductionSheet(Convert.ToInt32(designId), fileName);
                     }
                 }
             }
@@ -632,6 +633,77 @@ namespace LidLaunchWebsite.Controllers
                 return RedirectToAction("Login", "User", null);
             }
 
+        }
+        public ActionResult BulkOrderDetailsPopup(int bulkOrderId)
+        {
+            
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["UserID"]) == 1)
+                {
+                    BulkOrder bulkOrder = new BulkOrder();
+                    BulkData data = new BulkData();
+                    bulkOrder = data.GetBulkOrder(bulkOrderId, "");
+                    return PartialView("BulkOrderDetailsPopup", bulkOrder);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+
+        }
+
+        public ActionResult AddNote(int bulkOrderId, int bulkOrderItemId, int designId, int parentBulkOrderId)
+        {
+            dynamic model = new ExpandoObject();
+            if(bulkOrderId > 0)
+            {
+                model.noteType = "bulkOrder";
+                model.idVal = bulkOrderId;
+                model.parentBulkOrderId = parentBulkOrderId;
+            }
+            if(bulkOrderItemId > 0)
+            {
+                model.noteType = "bulkOrderItem";
+                model.idVal = bulkOrderItemId;
+                model.parentBulkOrderId = parentBulkOrderId;
+            }
+            if(designId > 0)
+            {
+                model.noteType = "design";
+                model.idVal = designId;
+                model.parentBulkOrderId = parentBulkOrderId;
+            }
+            
+            return PartialView("AddNote", model);
+        }
+
+        public string CreateNote(string noteType, string idVal, string parentBulkOrderId, string text, string attachment)
+        {            
+            BulkData data = new BulkData();
+            int noteId = 0;
+
+            if(noteType == "bulkOrder")
+            {
+                noteId = data.CreateNote(Convert.ToInt32(idVal), 0, 0, Convert.ToInt32(parentBulkOrderId), text, attachment, 0);
+            }
+            else if (noteType == "bulkOrderItem")
+            {
+                noteId = data.CreateNote(0, Convert.ToInt32(idVal), 0, Convert.ToInt32(parentBulkOrderId), text, attachment, 0);
+            }
+            else if (noteType == "design")
+            {
+                noteId = data.CreateNote(0, 0, Convert.ToInt32(idVal), Convert.ToInt32(parentBulkOrderId), text, attachment, 0);
+            }
+
+            var success = noteId > 0;
+
+            return success.ToString();
         }
 
     }

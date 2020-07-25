@@ -611,6 +611,8 @@
     <Content Include="Views\Dashboard\ViewBulkOrders.cshtml" />
     <Content Include="Views\Bulk\ProcessPayment.cshtml" />
     <Content Include="Views\Dashboard\BulkDigitizing.cshtml" />
+    <Content Include="Views\Dashboard\BulkOrderDetailsPopup.cshtml" />
+    <Content Include="Views\Dashboard\AddNote.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

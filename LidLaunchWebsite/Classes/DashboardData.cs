@@ -316,7 +316,7 @@ namespace LidLaunchWebsite.Classes
                             sale.ArtSource = dr["ArtSource"].ToString();
                             sale.PreviewImage = dr["PreviewImage"].ToString();
                             sale.DigitizedFile = dr["DigitizedFile"].ToString();
-                            sale.DigitizedInfoImage = dr["DigitizedInfoImage"].ToString();
+                            sale.DigitizedProductionSheet = dr["DigitizedProductionSheet"].ToString();
                             sale.DigitizedPreview = dr["DigitizedPreview"].ToString();
                             sale.DigitizingCost = Convert.ToDecimal(dr["DigitizingCost"].ToString());
                             sale.TypeText = dr["TypeText"].ToString();
@@ -360,7 +360,7 @@ namespace LidLaunchWebsite.Classes
                                 batchSale.PreviewImage = sale.PreviewImage;
                                 batchSale.ProductId = sale.ProductId;
                                 batchSale.DigitizedFile = sale.DigitizedFile;
-                                batchSale.DigitizedInfoImage = sale.DigitizedInfoImage;
+                                batchSale.DigitizedProductionSheet = sale.DigitizedProductionSheet;
                                 batchSale.DigitizedPreview = sale.DigitizedPreview;
                                 List<Sale> lstSales = new List<Sale>();
                                 lstSales.Add(sale);
@@ -408,7 +408,7 @@ namespace LidLaunchWebsite.Classes
                             sale.ArtSource = dr["ArtSource"].ToString();
                             sale.PreviewImage = dr["PreviewImage"].ToString();
                             sale.DigitizedFile = dr["DigitizedFile"].ToString();
-                            sale.DigitizedInfoImage = dr["DigitizedInfoImage"].ToString();
+                            sale.DigitizedProductionSheet = dr["DigitizedProductionSheet"].ToString();
                             sale.DigitizedPreview = dr["DigitizedPreview"].ToString();
                             sale.DigitizingCost = Convert.ToDecimal(dr["DigitizingCost"].ToString());
                             sale.TypeText = dr["TypeText"].ToString();
@@ -453,7 +453,7 @@ namespace LidLaunchWebsite.Classes
                                 batchSale.PreviewImage = sale.PreviewImage;
                                 batchSale.ProductId = sale.ProductId;
                                 batchSale.DigitizedFile = sale.DigitizedFile;
-                                batchSale.DigitizedInfoImage = sale.DigitizedInfoImage;
+                                batchSale.DigitizedProductionSheet = sale.DigitizedProductionSheet;
                                 batchSale.DigitizedPreview = sale.DigitizedPreview;
                                 List<Sale> lstSales = new List<Sale>();
                                 lstSales.Add(sale);
@@ -565,7 +565,7 @@ namespace LidLaunchWebsite.Classes
                             sale.ArtSource = dr["ArtSource"].ToString();
                             sale.PreviewImage = dr["PreviewImage"].ToString();
                             sale.DigitizedFile = dr["DigitizedFile"].ToString();
-                            sale.DigitizedInfoImage = dr["DigitizedInfoImage"].ToString();
+                            sale.DigitizedProductionSheet = dr["DigitizedProductionSheet"].ToString();
                             sale.DigitizedPreview = dr["DigitizedPreview"].ToString();
                             sale.DigitizingCost = Convert.ToDecimal(dr["DigitizingCost"].ToString());
                             sale.TypeText = dr["TypeText"].ToString();
@@ -610,7 +610,7 @@ namespace LidLaunchWebsite.Classes
                                 batchSale.PreviewImage = sale.PreviewImage;
                                 batchSale.ProductId = sale.ProductId;
                                 batchSale.DigitizedFile = sale.DigitizedFile;
-                                batchSale.DigitizedInfoImage = sale.DigitizedInfoImage;
+                                batchSale.DigitizedProductionSheet = sale.DigitizedProductionSheet;
                                 batchSale.DigitizedPreview = sale.DigitizedPreview;
                                 List<Sale> lstSales = new List<Sale>();
                                 lstSales.Add(sale);

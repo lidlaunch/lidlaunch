@@ -234,6 +234,7 @@ input[type=text], input[type=password], select {
     height: auto;
     width: 100%;
     padding-top: 20px;
+    min-height:600px;
 }
 
 #productDetails {
@@ -1829,11 +1830,75 @@ input[type=text], input[type=password], select {
 .placementOption {
     cursor: pointer;
 }
+
+#bulkOrderDetailsPopup {
+    background:rgba(0,0,0,0.5);
+    width:100%;
+    height:100%;
+    position:absolute;
+    display:block;
+    top:0;
+    right:0;
+}
+#bulkOrderDetailsPopup h3 {
+    margin:0;
+}
+#bulkOrderDetailsPopup thead {
+    font-weight:bold;
+}
+#bulkOrderDetailsPopupContent {
+    width: 1400px;
+    min-height: 500px;
+    height: auto;
+    background: #fff;
+    margin: 50px auto;
+    display: block;
+    padding: 10px;
+}
+#TopInfoBar {
+    clear: both;
+    font-weight: bold;
+    padding: 10px 0;
+    font-size: 22px;
+    height: 30px;
+}
+#BulkOrderId {
+    float: left;
+}
+#BulkOrderDate {
+    float:right;
+}
+#bulkOrderDetails {
+    float: left;
+    width: 45%;
+    clear:both;
+    background:#ddd;
+    padding:10px;
+}
+#bulkOrderItems {
+    float: left;
+    width: 50%;
+}
+#bulkOrderItems table {
+    width:100%;
+}
+#bulkOrderNotes {
+    clear: both;
+    width: 100%;
+    margin-top: 20px;
+}
+#bulkOrderNotes table {
+    width:100%;
+}
+#bulkOrderDesigns {
+    clear: both;
+    margin-top:20px;
+}
+.noteDate {
+    font-size: 12px;
+}
 /*******************************************END BULK ORDERING****************************************************/
-
-
 /*******************************************BEGIN HAT MANAGER STYLING*******************************************/
-
 .addHatTypeColor {
     background-color: greenyellow;
     color: #000;

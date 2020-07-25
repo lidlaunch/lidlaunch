@@ -1,0 +1,141 @@
+﻿@model LidLaunchWebsite.Models.BulkOrder
+@{
+    ViewBag.Title = "BulkOrderDetailsPopup";
+}
+
+<div id="bulkOrderDetailsPopup">
+    <div id="bulkOrderDetailsPopupContent">
+        <div id="TopInfoBar">
+            <div id="BulkOrderId">Id: @Model.Id</div>
+            <div id="BulkOrderDate">Order Date: @Model.OrderDate</div>
+        </div>
+        <div id="bulkOrderDetails">
+            <h3>Order Details</h3>
+            <table>
+                <tr>
+                    <td>Customer:</td>
+                    <td>@Model.CustomerName - @Model.CustomerEmail</td>
+                </tr>
+                <tr>
+                    <td>Customer Notes:</td>
+                    <td>@Model.OrderNotes</td>
+                </tr>
+                <tr>
+                    <td>Artwork Position:</td>
+                    <td>@Model.ArtworkPosition</td>
+                </tr>
+                <tr>
+                    <td>Art Source:</td>
+                    <td>@Model.ArtworkImage</td>
+                </tr>
+                <tr>
+                    <td>Order Total:</td>
+                    <td>@Model.OrderTotal</td>
+                </tr>
+                <tr>
+                    <td>Order Paid:</td>
+                    <td>@Model.OrderPaid</td>
+                </tr>
+                <tr>
+                    <td>Payment Link:</td>
+                    <td>@Model.PaymentGuid</td>
+                </tr>
+            </table>  
+        </div><!--/bulkOrderDetails-->
+        <div id="bulkOrderItems">
+            <h3>Order Items</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Item</td>
+                        <td>Qty</td>
+                        <td>Price</td>
+                        <td>Design Id</td>
+                        <td>Add Note</td>
+                    </tr>
+                <tbody>
+                    @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.lstItems)
+                    {
+                        <tr>
+                            <td>@item.ItemName</td>
+                            <td>@item.ItemQuantity</td>
+                            <td>@item.ItemCost</td>
+                            <td>@item.DesignId</td>
+                            <td><a href="javascript:void();" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id });">Add Note</a></td>
+                        </tr>
+                        foreach (LidLaunchWebsite.Models.Note note in item.lstNotes)
+                        {
+                            <tr>
+                                <td></td>
+                                <td colspan="2"><i class="noteDate">@note.CreatedDate</i> : @note.Text</td>
+                                <td>@note.Attachment</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div><!--/bulkOrderItems-->
+        <div id="bulkOrderNotes">
+            <h3>Order Notes</h3>
+            <table>
+                @foreach (LidLaunchWebsite.Models.Note note in Model.lstNotes)
+                {
+                    <tr>
+                        <td></td>
+                        <td colspan="3"><i class="noteDate">@note.CreatedDate</i> : @note.Text</td>
+                        <td>@note.Attachment</td>
+                    </tr>
+                }
+            </table>
+            <a href="javascript:void();" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: @Model.Id, bulkOrderItemId: 0 , designId: 0, parentBulkOrderId: @Model.Id });">Add Note</a>
+        </div>
+        <div id="bulkOrderDesigns">
+            <h3>Designs</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Art Source</td>
+                        <td>Height</td>
+                        <td>Width</td>
+                        <td>Embroidery File</td>
+                        <td>Transparent Preview</td>
+                        <td>Info File</td>
+                        <td>Add Note</td>
+                    </tr>
+                </thead>
+                @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns)
+                {
+                    <tr>
+                        <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>
+                        <td>@design.Height</td>
+                        <td>@design.Width</td>
+                        <td><input type="file" class="EmbroideryFile" /><br /><span class="EmbroideryFileName">@design.DigitizedFile</span></td>
+                        <td><input type="file" class="TransparentPreview" /><br /><span class="TransparentPreviewName">@design.DigitizedPreview</span></td>
+                        <td><input type="file" class="InfoFile" /><br /><span class="InfoFileName">@design.DigitizedProductionSheet</span></td>
+                        <td><input type="file" class="EMBFile" /><br /><span class="EMBFileName">@design.EMBFile</span></td>
+                        <td><a href="javascript:void();" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0 , designId: @design.Id, parentBulkOrderId: @Model.Id });">Add Note</a></td>
+                    </tr>
+                    if (design.lstNotes.Count > 0)
+                    {
+                        foreach (LidLaunchWebsite.Models.Note note in design.lstNotes)
+                        {
+                            <tr>
+                                <td></td>
+                                <td colspan="3"><i class="noteDate">@note.CreatedDate</i> : @note.Text</td>
+                                <td>@note.Attachment</td>
+                            </tr>
+                        }
+                    }
+
+
+                }
+
+            </table>
+        </div>
+        <div id="noteHolder"></div>
+    </div><!--bulkOrderDetailsPopupContent-->
+</div><!--/bulkOrderDetailsPopup-->
+<script type="text/javascript">
+    var addNoteUrl = '@Url.Action("AddNote", "DashBoard")';
+</script>
+

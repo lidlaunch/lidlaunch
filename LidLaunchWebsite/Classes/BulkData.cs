@@ -134,6 +134,24 @@ namespace LidLaunchWebsite.Classes
                                             item.ItemName = Convert.ToString(dr2["ItemName"].ToString());
                                             item.ItemQuantity = Convert.ToInt32(dr2["ItemQuantity"].ToString());
                                             item.ItemCost = Convert.ToDecimal(dr2["ItemCost"].ToString());
+                                            item.lstNotes = new List<Note>();
+                                            if (ds.Tables[4].Rows.Count > 0)
+                                            {
+                                                foreach (DataRow drNote in ds.Tables[4].Rows)
+                                                {
+                                                    if (Convert.ToInt32(drNote["BulkOrderItemId"].ToString()) == item.Id)
+                                                    {
+                                                        Note note = new Note();
+                                                        note.Id = Convert.ToInt32(drNote["Id"].ToString());
+                                                        note.Text = Convert.ToString(drNote["Text"].ToString());
+                                                        note.UserAdded = Convert.ToBoolean(drNote["UserAdded"].ToString());
+                                                        note.Attachment = Convert.ToString(drNote["Attachment"].ToString());
+                                                        note.CreatedDate = Convert.ToDateTime(drNote["CreatedDate"].ToString());
+                                                        note.CreatedUserId = Convert.ToInt32(drNote["CreatedUserId"].ToString());
+                                                        item.lstNotes.Add(note);
+                                                    }
+                                                }
+                                            }
                                             bulkOrder.lstItems.Add(item);
                                         }
                                     }
@@ -151,7 +169,7 @@ namespace LidLaunchWebsite.Classes
                                             design.ArtSource = Convert.ToString(dr3["ArtSource"].ToString());
                                             design.PreviewImage = Convert.ToString(dr3["PreviewImage"].ToString());
                                             design.DigitizedFile = Convert.ToString(dr3["DigitizedFile"].ToString());
-                                            design.DigitizedInfoImage = Convert.ToString(dr3["DigitizedInfoImage"].ToString());
+                                            design.DigitizedProductionSheet = Convert.ToString(dr3["DigitizedProductionSheet"].ToString());
                                             design.DigitizedPreview = Convert.ToString(dr3["DigitizedPreview"].ToString());
                                             design.Width = Convert.ToDecimal(dr3["Width"].ToString());
                                             design.Height = Convert.ToDecimal(dr3["Height"].ToString());
@@ -161,6 +179,26 @@ namespace LidLaunchWebsite.Classes
                                             design.EmbroideredHeight = Convert.ToDecimal(dr3["EmbroideredHeight"].ToString());
                                             design.EmbroideredX = Convert.ToDecimal(dr3["EmbroideredX"].ToString());
                                             design.EmbroideredY = Convert.ToDecimal(dr3["EmbroideredY"].ToString());
+
+                                            design.lstNotes = new List<Note>();
+                                            if (ds.Tables[5].Rows.Count > 0)
+                                            {
+                                                foreach (DataRow drNote in ds.Tables[5].Rows)
+                                                {
+                                                    if (Convert.ToInt32(drNote["DesignId"].ToString()) == design.Id)
+                                                    {
+                                                        Note note = new Note();
+                                                        note.Id = Convert.ToInt32(drNote["Id"].ToString());
+                                                        note.Text = Convert.ToString(drNote["Text"].ToString());
+                                                        note.UserAdded = Convert.ToBoolean(drNote["UserAdded"].ToString());
+                                                        note.Attachment = Convert.ToString(drNote["Attachment"].ToString());
+                                                        note.CreatedDate = Convert.ToDateTime(drNote["CreatedDate"].ToString());
+                                                        note.CreatedUserId = Convert.ToInt32(drNote["CreatedUserId"].ToString());
+                                                        design.lstNotes.Add(note);
+                                                    }
+                                                }
+                                            }
+
                                             bulkOrder.lstDesigns.Add(design);
                                         }
                                     }
@@ -273,9 +311,7 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
-        
-
-        public BulkOrder GetBulkOrderByPaymentGuid(string paymentGuid)
+        public BulkOrder GetBulkOrder(int bulkOrderId, string paymentGuid)
         {
             var data = new SQLData();
             BulkOrder bulkOrder = new BulkOrder();
@@ -284,8 +320,9 @@ namespace LidLaunchWebsite.Classes
                 DataSet ds = new DataSet();
                 using (data.conn)
                 {
-                    SqlCommand sqlComm = new SqlCommand("GetBulkOrderByPaymentGuid", data.conn);
-                    sqlComm.Parameters.AddWithValue("@paymentGuid", paymentGuid);           
+                    SqlCommand sqlComm = new SqlCommand("GetBulkOrder", data.conn);
+                    sqlComm.Parameters.AddWithValue("@paymentGuid", paymentGuid);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
 
@@ -336,11 +373,96 @@ namespace LidLaunchWebsite.Classes
                                         item.ItemName = Convert.ToString(dr2["ItemName"].ToString());
                                         item.ItemQuantity = Convert.ToInt32(dr2["ItemQuantity"].ToString());
                                         item.ItemCost = Convert.ToDecimal(dr2["ItemCost"].ToString());
+                                        item.lstNotes = new List<Note>();
+                                        if (ds.Tables[4].Rows.Count > 0)
+                                        {
+                                            foreach (DataRow drNote in ds.Tables[4].Rows)
+                                            {
+                                                if (Convert.ToInt32(drNote["BulkOrderItemId"].ToString()) == item.Id)
+                                                {
+                                                    Note note = new Note();
+                                                    note.Id = Convert.ToInt32(drNote["Id"].ToString());
+                                                    note.Text = Convert.ToString(drNote["Text"].ToString());
+                                                    note.UserAdded = Convert.ToBoolean(drNote["UserAdded"].ToString());
+                                                    note.Attachment = Convert.ToString(drNote["Attachment"].ToString());
+                                                    note.CreatedDate = Convert.ToDateTime(drNote["CreatedDate"].ToString());
+                                                    note.CreatedUserId = Convert.ToInt32(drNote["CreatedUserId"].ToString());
+                                                    item.lstNotes.Add(note);
+                                                }
+                                            }
+                                        }
+
                                         bulkOrder.lstItems.Add(item);
                                     }
                                 }
                             }
-                            
+
+                            bulkOrder.lstDesigns = new List<Design>();
+                            if (ds.Tables[2].Rows.Count > 0)
+                            {
+                                foreach (DataRow dr3 in ds.Tables[2].Rows)
+                                {
+                                    if (Convert.ToInt32(dr3["BulkOrderId"].ToString()) == bulkOrder.Id)
+                                    {
+                                        Design design = new Design();
+                                        design.Id = Convert.ToInt32(dr3["Id"].ToString());
+                                        design.ArtSource = Convert.ToString(dr3["ArtSource"].ToString());
+                                        design.PreviewImage = Convert.ToString(dr3["PreviewImage"].ToString());
+                                        design.DigitizedFile = Convert.ToString(dr3["DigitizedFile"].ToString());
+                                        design.DigitizedProductionSheet = Convert.ToString(dr3["DigitizedProductionSheet"].ToString());
+                                        design.DigitizedPreview = Convert.ToString(dr3["DigitizedPreview"].ToString());
+                                        design.Width = Convert.ToDecimal(dr3["Width"].ToString());
+                                        design.Height = Convert.ToDecimal(dr3["Height"].ToString());
+                                        design.X = Convert.ToDecimal(dr3["X"].ToString());
+                                        design.Y = Convert.ToDecimal(dr3["Y"].ToString());
+                                        design.EmbroideredWidth = Convert.ToDecimal(dr3["EmbroideredWidth"].ToString());
+                                        design.EmbroideredHeight = Convert.ToDecimal(dr3["EmbroideredHeight"].ToString());
+                                        design.EmbroideredX = Convert.ToDecimal(dr3["EmbroideredX"].ToString());
+                                        design.EmbroideredY = Convert.ToDecimal(dr3["EmbroideredY"].ToString());
+
+                                        design.lstNotes = new List<Note>();
+                                        if (ds.Tables[5].Rows.Count > 0)
+                                        {
+                                            foreach (DataRow drNote in ds.Tables[5].Rows)
+                                            {
+                                                if (Convert.ToInt32(drNote["DesignId"].ToString()) == design.Id)
+                                                {
+                                                    Note note = new Note();
+                                                    note.Id = Convert.ToInt32(drNote["Id"].ToString());
+                                                    note.Text = Convert.ToString(drNote["Text"].ToString());
+                                                    note.UserAdded = Convert.ToBoolean(drNote["UserAdded"].ToString());
+                                                    note.Attachment = Convert.ToString(drNote["Attachment"].ToString());
+                                                    note.CreatedDate = Convert.ToDateTime(drNote["CreatedDate"].ToString());
+                                                    note.CreatedUserId = Convert.ToInt32(drNote["CreatedUserId"].ToString());
+                                                    design.lstNotes.Add(note);
+                                                }
+                                            }
+                                        }
+
+                                        bulkOrder.lstDesigns.Add(design);
+                                    }
+                                }
+                            }
+
+                            bulkOrder.lstNotes = new List<Note>();
+                            if (ds.Tables[3].Rows.Count > 0)
+                            {
+                                foreach (DataRow dr4 in ds.Tables[3].Rows)
+                                {
+                                    if (Convert.ToInt32(dr4["BulkOrderId"].ToString()) == bulkOrder.Id)
+                                    {
+                                        Note note = new Note();
+                                        note.Id = Convert.ToInt32(dr4["Id"].ToString());
+                                        note.Text = Convert.ToString(dr4["Text"].ToString());
+                                        note.UserAdded = Convert.ToBoolean(dr4["UserAdded"].ToString());
+                                        note.Attachment = Convert.ToString(dr4["Attachment"].ToString());
+                                        note.CreatedDate = Convert.ToDateTime(dr4["CreatedDate"].ToString());
+                                        note.CreatedUserId = Convert.ToInt32(dr4["CreatedUserId"].ToString());
+                                        bulkOrder.lstNotes.Add(note);
+                                    }
+                                }
+                            }
+
                         }
                     }
 
@@ -421,6 +543,49 @@ namespace LidLaunchWebsite.Classes
             catch (Exception ex)
             {
                 return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+
+        public int CreateNote(int bulkOrderId, int bulkOrderItemId, int designId, int parentBulkOrderId, string text, string attachment, int userId)
+        {
+            var data = new SQLData();
+            var noteId = 0;
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("CreateNote", data.conn);
+                    SqlParameter returnParameter = sqlComm.Parameters.Add("noteId", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderItemId", bulkOrderItemId);
+                    sqlComm.Parameters.AddWithValue("@designId", designId);
+                    sqlComm.Parameters.AddWithValue("@parentBulkOrderId", parentBulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@text", text);
+                    sqlComm.Parameters.AddWithValue("@attachment", attachment);
+                    sqlComm.Parameters.AddWithValue("@userId", userId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                    noteId = (int)returnParameter.Value;                    
+
+                }
+
+                return noteId;
+            }
+            catch (Exception ex)
+            {
+                return noteId;
             }
             finally
             {

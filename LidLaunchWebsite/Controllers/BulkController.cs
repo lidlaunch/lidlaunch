@@ -71,7 +71,7 @@ namespace LidLaunchWebsite.Controllers
         {
                 BulkOrder bulkOrder = new BulkOrder();
                 BulkData data = new BulkData();
-                bulkOrder = data.GetBulkOrderByPaymentGuid(id);
+                bulkOrder = data.GetBulkOrder(0, id);
                 return View(bulkOrder);
         }
     }

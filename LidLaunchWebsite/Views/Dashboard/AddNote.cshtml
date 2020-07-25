@@ -1,0 +1,9 @@
+﻿
+@{
+    ViewBag.Title = "AddNote";
+}
+
+<h2>AddNote</h2>
+<input id="noteText" type="text" />
+<div id="saveNote" onclick="saveNote('@Model.noteType','@Model.idVal', '@Model.parentBulkOrderId')">Save Note</div>
+
