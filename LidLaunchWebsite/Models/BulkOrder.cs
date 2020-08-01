@@ -13,6 +13,7 @@ namespace LidLaunchWebsite.Models
         public decimal OrderTotal { get; set; }
         public bool HatsOrdered { get; set; }
         public DateTime OrderDate { get; set; }
+        public DateTime PaymentDate { get; set; }
         public DateTime ShipDate { get; set; }
         public string TrackingNumber { get; set; }
         public bool OrderComplete { get; set; }
@@ -26,6 +27,18 @@ namespace LidLaunchWebsite.Models
         public string PaymentGuid { get; set; }
         public string PaymentCompleteGuid { get; set; }
         public List<Design> lstDesigns { get; set; }
-        public List<Note> lstNotes{ get; set; }
-}
+        public List<Note> lstNotes { get; set; }
+        public string ProjectedShipDateShort { get; set; }
+        public string ProjectedShipDateLong { get; set; }
+        public int BulkOrderBatchId { get; set; }
+
+    }
+
+    public class BulkBatchOrder
+    {
+        public List<BulkOrder> lstBulkOrders { get; set; }
+        public List<BulkOrderItem> lstItemsToOrder { get; set; }
+        public OrderBatch batchInfo { get; set; }
+    }
+    
 }

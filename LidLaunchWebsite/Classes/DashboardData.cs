@@ -316,7 +316,7 @@ namespace LidLaunchWebsite.Classes
                             sale.ArtSource = dr["ArtSource"].ToString();
                             sale.PreviewImage = dr["PreviewImage"].ToString();
                             sale.DigitizedFile = dr["DigitizedFile"].ToString();
-                            sale.DigitizedProductionSheet = dr["DigitizedProductionSheet"].ToString();
+                            sale.DigitizedProductionSheet = dr["DigitizedProductionSheet"].ToString();                            
                             sale.DigitizedPreview = dr["DigitizedPreview"].ToString();
                             sale.DigitizingCost = Convert.ToDecimal(dr["DigitizingCost"].ToString());
                             sale.TypeText = dr["TypeText"].ToString();

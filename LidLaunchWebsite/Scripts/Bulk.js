@@ -352,3 +352,55 @@ function saveNote(noteType, idVal, parentBulkOrderId) {
         }
     });
 }
+
+
+function approveDigitizing(bulkOrderId) {
+    $.ajax({
+        type: "POST",
+        url: '/Bulk/ApproveDigitizing',
+        contentType: false,
+        processData: false,
+        data: JSON.stringify({
+            id: bulkOrderId
+        }),
+        contentType: "application/json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('error.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                //reload bulk order window   
+                window.location.reload();
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error.', 'error', false);
+        }
+    });
+}
+
+
+function createBulkOrderBatch() {
+    $.ajax({
+        type: "POST",
+        url: '/Bulk/CreateBulkOrderBatch',
+        contentType: false,
+        processData: false,
+        data: '',
+        contentType: "application/json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('error.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                //reload bulk order window   
+                window.location.reload();
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error.', 'error', false);
+        }
+    });
+}

@@ -24,7 +24,27 @@ namespace LidLaunchWebsite.Controllers
         {
             BulkData data = new BulkData();
             var success = data.UpdateBulkOrderPaidByPaymentCompleteGuid(id);
+            BulkOrder bulkOrder = new BulkOrder();
+            bulkOrder = data.GetBulkOrder(0, "", id);
+            EmailFunctions emailFunc = new EmailFunctions();
+            List<PaypalItem> items = new List<PaypalItem>();
+            foreach(BulkOrderItem bulkItem in bulkOrder.lstItems)
+            {
+                PaypalItem newItem = new PaypalItem();
+                newItem.name = bulkItem.ItemName;
+                newItem.price = bulkItem.ItemCost;
+                newItem.quantity = bulkItem.ItemQuantity.ToString();
+                items.Add(newItem);
+            }
+            var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderPaymentEmail(items, bulkOrder.OrderTotal.ToString(), bulkOrder.Id.ToString(), bulkOrder.PaymentGuid), "Lid Launch Payment Confirmation", "");
             return View();
+        }
+
+        public string ApproveDigitizing(string id)
+        {
+            BulkData data = new BulkData();
+            var success = data.ApproveBulkOrderDigitizing(Convert.ToInt32(id));
+            return success.ToString();
         }
 
         public string CreateBulkOrder(string items, string name, string email, string phone, string artworkPlacement, string orderNotes, string orderTotal, string paymentCompleteGuid)
@@ -48,7 +68,8 @@ namespace LidLaunchWebsite.Controllers
             }
 
             BulkData bulkData = new BulkData();
-            var orderId = bulkData.CreateBulkOrder(name, email, phone, Convert.ToDecimal(orderTotal), orderNotes, artworkPath, artworkPlacement, cartItems, paymentCompleteGuid);
+            var paymentGuid = Guid.NewGuid().ToString();
+            var orderId = bulkData.CreateBulkOrder(name, email, phone, Convert.ToDecimal(orderTotal), orderNotes, artworkPath, artworkPlacement, cartItems, paymentCompleteGuid, paymentGuid);
 
             DesignData designData = new DesignData();
             var designId = designData.CreateDesign(artworkPath, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M);
@@ -58,7 +79,7 @@ namespace LidLaunchWebsite.Controllers
             if(orderId > 0)
             {
                 EmailFunctions emailFunc = new EmailFunctions();
-                var emailSuccess = emailFunc.sendEmail(email, name, emailFunc.bulkOrderEmail(cartItems, orderTotal, orderId.ToString()), "Lid Launch Order Confirmation", "");
+                var emailSuccess = emailFunc.sendEmail(email, name, emailFunc.bulkOrderEmail(cartItems, orderTotal, orderId.ToString(), paymentGuid), "Lid Launch Order Confirmation", "");
                 return "success";
             } else
             {
@@ -67,12 +88,65 @@ namespace LidLaunchWebsite.Controllers
             
         }
 
-        public ActionResult ProcessPayment(string id)
+        public ActionResult OrderStatus(string id)
         {
-                BulkOrder bulkOrder = new BulkOrder();
-                BulkData data = new BulkData();
-                bulkOrder = data.GetBulkOrder(0, id);
-                return View(bulkOrder);
+            BulkOrder bulkOrder = new BulkOrder();
+            BulkData data = new BulkData();
+            bulkOrder = data.GetBulkOrder(0, id, "");          
+
+            return View(bulkOrder);
+        }
+
+        public string CreateBulkOrderBatch()
+        {
+            BulkData data = new BulkData();
+            var batchId = data.CreateBulkOrderBatch();
+
+            return batchId.ToString();
+        }
+
+        public ActionResult BulkOrderBatches()
+        {
+            BulkData data = new BulkData();
+            List<OrderBatch> lstBatches = new List<OrderBatch>();
+
+            lstBatches = data.GetBulkOrderBatches();
+
+            return PartialView("BulkOrderBatches", lstBatches); ;
+        }
+
+        public ActionResult BulkOrderBatch(string bulkBatchId)
+        {
+            BulkData data = new BulkData();
+            BulkBatchOrder bulkBatchOrder = new BulkBatchOrder();
+            List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
+
+            lstBulkOrders = data.GetBulkOrdersByBatchId(Convert.ToInt32(bulkBatchId));
+
+            bulkBatchOrder.lstBulkOrders = lstBulkOrders;
+
+            List<BulkOrderItem> products = new List<BulkOrderItem>();
+
+            foreach(BulkOrder bulkOrder in lstBulkOrders)
+            {
+                foreach(BulkOrderItem item in bulkOrder.lstItems)
+                {
+                    if(products.Any(p => p.ItemName == item.ItemName))
+                    {
+                        products.Find(p => p.ItemName == item.ItemName).ItemQuantity += item.ItemQuantity;
+                    } else
+                    {
+                        products.Add(item);
+                    }
+                }
+            }
+
+            products.RemoveAll(p => p.ItemName == "Artwork Setup/Digitizing");
+            products.RemoveAll(p => p.ItemName == "Shipping");
+
+            bulkBatchOrder.lstItemsToOrder = products;
+
+            return View(bulkBatchOrder);
         }
     }
 }

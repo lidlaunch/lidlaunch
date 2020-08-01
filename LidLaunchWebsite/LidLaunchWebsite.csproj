@@ -609,10 +609,12 @@
     <Content Include="Views\Bulk\Create.cshtml" />
     <Content Include="Views\Bulk\Orders.cshtml" />
     <Content Include="Views\Dashboard\ViewBulkOrders.cshtml" />
-    <Content Include="Views\Bulk\ProcessPayment.cshtml" />
+    <Content Include="Views\Bulk\OrderStatus.cshtml" />
     <Content Include="Views\Dashboard\BulkDigitizing.cshtml" />
     <Content Include="Views\Dashboard\BulkOrderDetailsPopup.cshtml" />
     <Content Include="Views\Dashboard\AddNote.cshtml" />
+    <Content Include="Views\Bulk\BulkOrderBatches.cshtml" />
+    <Content Include="Views\Bulk\BulkOrderBatch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,12 +1,15 @@
-﻿
+﻿@model List<LidLaunchWebsite.Models.BulkOrder>
 @{
     ViewBag.Title = "ViewBulkOrders";
 }
 <script type="text/javascript">
     var url = '@Url.Action("BulkOrderDetailsPopup", "DashBoard")';
+    var bulkBatchesUrl = '@Url.Action("BulkOrderBatches", "Bulk")';
 </script>
 <h2>View Bulk Orders</h2>
 <h3>Paid Orders</h3>
+<div onclick="createBulkOrderBatch()">Create Bulk Batch</div>
+<div onclick="$('#popUpHolder').load(bulkBatchesUrl);">View Bulk Batches</div>
 <table>
     <tbody>
         <tr>
@@ -45,7 +48,7 @@
                     {
                         <td style="background:red;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','false',this)">@bulkOrder.OrderPaid</a></td>
                     }
-                    <td><a href="https://lidlaunch.com/bulk/processpayment?id=@bulkOrder.PaymentGuid" target="_blank">Pay Link</a></td>
+                    <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@bulkOrder.PaymentGuid" target="_blank">Pay Link</a></td>
                     <td><a href="javascript:void();" onclick="$('#popUpHolder').load(url, { bulkOrderId: @bulkOrder.Id });">view</a></td>
                 </tr>                
             }
@@ -91,7 +94,7 @@
                     {
                         <td style="background:red;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','false',this)">@bulkOrder.OrderPaid</a></td>
                     }
-                    <td><a href="https://lidlaunch.com/bulk/processpayment?id=@bulkOrder.PaymentGuid" target="_blank">Pay Link</a></td>
+                    <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@bulkOrder.PaymentGuid" target="_blank">Pay Link</a></td>
                     <td><a href="javascript:void();" onclick="$('#popUpHolder').load(url, { bulkOrderId: @bulkOrder.Id });">view</a></td>
                 </tr>
 

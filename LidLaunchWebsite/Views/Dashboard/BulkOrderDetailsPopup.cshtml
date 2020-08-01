@@ -7,7 +7,8 @@
     <div id="bulkOrderDetailsPopupContent">
         <div id="TopInfoBar">
             <div id="BulkOrderId">Id: @Model.Id</div>
-            <div id="BulkOrderDate">Order Date: @Model.OrderDate</div>
+            <div id="BulkOrderDate">Order Date: @Model.OrderDate <span onclick="$('#bulkOrderDetailsPopup').hide();" style="font-weight:bold; border:1px solid #000; cursor:pointer;">X</span></div>
+            
         </div>
         <div id="bulkOrderDetails">
             <h3>Order Details</h3>
@@ -26,7 +27,7 @@
                 </tr>
                 <tr>
                     <td>Art Source:</td>
-                    <td>@Model.ArtworkImage</td>
+                    <td><img src="~/Images/BulkOrderArtwork/@Model.ArtworkImage" style="max-height:200px; max-width:200px;" /></td>
                 </tr>
                 <tr>
                     <td>Order Total:</td>
@@ -61,7 +62,7 @@
                             <td>@item.ItemQuantity</td>
                             <td>@item.ItemCost</td>
                             <td>@item.DesignId</td>
-                            <td><a href="javascript:void();" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id });">Add Note</a></td>
+                            <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id });">Add Note</a></td>
                         </tr>
                         foreach (LidLaunchWebsite.Models.Note note in item.lstNotes)
                         {
@@ -87,7 +88,7 @@
                     </tr>
                 }
             </table>
-            <a href="javascript:void();" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: @Model.Id, bulkOrderItemId: 0 , designId: 0, parentBulkOrderId: @Model.Id });">Add Note</a>
+            <a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: @Model.Id, bulkOrderItemId: 0 , designId: 0, parentBulkOrderId: @Model.Id });">Add Note</a>
         </div>
         <div id="bulkOrderDesigns">
             <h3>Designs</h3>
@@ -99,22 +100,23 @@
                         <td>Width</td>
                         <td>Embroidery File</td>
                         <td>Transparent Preview</td>
-                        <td>Info File</td>
+                        <td>Production File</td>
+                        <td>EMB File</td>
                         <td>Add Note</td>
                     </tr>
                 </thead>
                 @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns)
                 {
-                    <tr>
-                        <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>
-                        <td>@design.Height</td>
-                        <td>@design.Width</td>
-                        <td><input type="file" class="EmbroideryFile" /><br /><span class="EmbroideryFileName">@design.DigitizedFile</span></td>
-                        <td><input type="file" class="TransparentPreview" /><br /><span class="TransparentPreviewName">@design.DigitizedPreview</span></td>
-                        <td><input type="file" class="InfoFile" /><br /><span class="InfoFileName">@design.DigitizedProductionSheet</span></td>
-                        <td><input type="file" class="EMBFile" /><br /><span class="EMBFileName">@design.EMBFile</span></td>
-                        <td><a href="javascript:void();" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0 , designId: @design.Id, parentBulkOrderId: @Model.Id });">Add Note</a></td>
-                    </tr>
+            <tr>
+                <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>
+                <td>@design.Height</td>
+                <td>@design.Width</td>
+                <td><a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName" target="_blank">@design.DigitizedFile</a></td>
+                <td><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" /></a></td>
+                <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
+                <td><a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">@design.EMBFile</a></td>
+                <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id });">Add Note</a></td>
+            </tr>
                     if (design.lstNotes.Count > 0)
                     {
                         foreach (LidLaunchWebsite.Models.Note note in design.lstNotes)

@@ -402,6 +402,8 @@ namespace LidLaunchWebsite.Classes
                         design.DigitizedFile = dr["DigitizedFile"].ToString();
                         design.DigitizedPreview = dr["DigitizedPreview"].ToString();
                         design.DigitizedProductionSheet = dr["DigitizedProductionSheet"].ToString();
+                        design.EMBFile = Convert.ToString(dr["EMBFile"].ToString());
+                        design.CustomerApproved = Convert.ToBoolean(dr["CustomerApproved"].ToString());
                         product.Design = design;
                         model.Add(product);
                     }

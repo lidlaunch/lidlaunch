@@ -1,8 +1,13 @@
 ﻿$(document).ready(function () {
 
+    bindDigitizingFilesInputs();
+    bindHatPreviewInputs();
+});
+function bindDigitizingFilesInputs() {
     $('.EmbroideryFile').on('change', function (e) {
         var that = this;
         var designId = $(this).closest('tr').find(".designId").text();
+        var bulkOrderId = $(this).closest('tr').find(".bulkOrderId").text();
         var files = e.target.files;
         //var myID = 3; //uncomment this to make sure the ajax URL works
         if (files.length > 0 & files.length < 2) {
@@ -14,7 +19,7 @@
                 showLoading();
                 $.ajax({
                     type: "POST",
-                    url: '/Dashboard/UploadDigitizedFile?designId=' + designId,
+                    url: '/Dashboard/UploadDigitizedFile?designId=' + designId + '&bulkOrderId=' + bulkOrderId,
                     contentType: false,
                     processData: false,
                     data: data,
@@ -42,6 +47,7 @@
     $('.TransparentPreview').on('change', function (e) {
         var that = this;
         var designId = $(this).closest('tr').find(".designId").text();
+        var bulkOrderId = $(this).closest('tr').find(".bulkOrderId").text();
         var files = e.target.files;
         //var myID = 3; //uncomment this to make sure the ajax URL works
         if (files.length > 0 & files.length < 2) {
@@ -53,7 +59,7 @@
                 showLoading();
                 $.ajax({
                     type: "POST",
-                    url: '/Dashboard/UpdateDesignDigitizedPreview?designId=' + designId,
+                    url: '/Dashboard/UpdateDesignDigitizedPreview?designId=' + designId + '&bulkOrderId=' + bulkOrderId,
                     contentType: false,
                     processData: false,
                     data: data,
@@ -81,6 +87,7 @@
     $('.InfoFile').on('change', function (e) {
         var that = this;
         var designId = $(this).closest('tr').find(".designId").text();
+        var bulkOrderId = $(this).closest('tr').find(".bulkOrderId").text();
         var files = e.target.files;
         //var myID = 3; //uncomment this to make sure the ajax URL works
         if (files.length > 0 & files.length < 2) {
@@ -92,7 +99,7 @@
                 showLoading();
                 $.ajax({
                     type: "POST",
-                    url: '/Dashboard/UpdateDesignDigitizedProductionSheet?designId=' + designId,
+                    url: '/Dashboard/UpdateDesignDigitizedProductionSheet?designId=' + designId + '&bulkOrderId=' + bulkOrderId,
                     contentType: false,
                     processData: false,
                     data: data,
@@ -104,6 +111,46 @@
                             //set the url for the file link and show the link  
                             hideLoading();
                             $(that).closest('tr').find(".InfoFileName").text(result);
+                        }
+                    },
+                    error: function (xhr, status, p3, p4) {
+                        displayPopupNotification('Error uploading embroidery file please try again.', 'error', false);
+                    }
+                });
+            } else {
+                displayPopupNotification('Use Google Chrome browser or Firefox!', 'error', false);
+            }
+        } else {
+            displayPopupNotification('Only one file can be uploaded.', 'error', false);
+        }
+    });
+    $('.EMBFile').on('change', function (e) {
+        var that = this;
+        var designId = $(this).closest('tr').find(".designId").text();
+        var bulkOrderId = $(this).closest('tr').find(".bulkOrderId").text();
+        var files = e.target.files;
+        //var myID = 3; //uncomment this to make sure the ajax URL works
+        if (files.length > 0 & files.length < 2) {
+            if (window.FormData !== undefined) {
+                var data = new FormData();
+                for (var x = 0; x < files.length; x++) {
+                    data.append("file" + x, files[x]);
+                }
+                showLoading();
+                $.ajax({
+                    type: "POST",
+                    url: '/Dashboard/UpdateDesignEMBFile?designId=' + designId + '&bulkOrderId=' + bulkOrderId,
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        if (result == "") {
+                            //do nothing
+                            displayPopupNotification('Error uploading embroidery file please try again.', 'error', false);
+                        } else {
+                            //set the url for the file link and show the link 
+                            hideLoading();
+                            $(that).closest('tr').find(".EMBFileName").text(result);
                         }
                     },
                     error: function (xhr, status, p3, p4) {
@@ -156,8 +203,7 @@
             displayPopupNotification('Only one file can be uploaded.', 'error', false);
         }
     });
-    bindHatPreviewInputs();
-});
+}
 function bindHatPreviewInputs() {
     $('.creationImageUpload').on('change', function (e) {
         var that = this;

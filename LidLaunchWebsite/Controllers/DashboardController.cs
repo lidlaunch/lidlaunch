@@ -434,7 +434,7 @@ namespace LidLaunchWebsite.Controllers
                 return false;
             }
         }
-        public string UploadDigitizedFile(string designId)
+        public string UploadDigitizedFile(string designId, string bulkOrderId)
         {
             var returnValue = "";
             try
@@ -454,6 +454,10 @@ namespace LidLaunchWebsite.Controllers
                         var extension = Path.GetExtension(fileContent.FileName);
                         
                         var fileName = Guid.NewGuid().ToString() + extension;
+                        if(bulkOrderId != "")
+                        {
+                            fileName = "W" + bulkOrderId + extension;
+                        }
                         var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Digitizing/DST"), fileName);
 
                         fileContent.SaveAs(path);                                
@@ -473,7 +477,7 @@ namespace LidLaunchWebsite.Controllers
             var json = new JavaScriptSerializer().Serialize(returnValue);
             return json;
         }
-        public string UpdateDesignDigitizedPreview(string designId)
+        public string UpdateDesignDigitizedPreview(string designId, string bulkOrderId)
         {
             var returnValue = "";
             try
@@ -493,6 +497,10 @@ namespace LidLaunchWebsite.Controllers
                         var extension = Path.GetExtension(fileContent.FileName);
 
                         var fileName = Guid.NewGuid().ToString() + extension;
+                        if (bulkOrderId != "")
+                        {
+                            fileName = "W" + bulkOrderId + extension;
+                        }
                         var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Digitizing/Preview"), fileName);
 
                         fileContent.SaveAs(path);
@@ -501,6 +509,14 @@ namespace LidLaunchWebsite.Controllers
                         //update design digitized file in database
                         DesignData data = new DesignData();
                         var success = data.UpdateDesignDigitizedPreview(Convert.ToInt32(designId), fileName);
+
+                        if(success)
+                        {
+                            BulkData bulkData = new BulkData();
+                            BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
+                            EmailFunctions email = new EmailFunctions();
+                            email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
+                        }
                     }
                 }
             }
@@ -512,7 +528,8 @@ namespace LidLaunchWebsite.Controllers
             var json = new JavaScriptSerializer().Serialize(returnValue);
             return json;
         }
-        public string UpdateDesignDigitizedProductionSheet(string designId)
+
+        public string UpdateDesignEMBFile(string designId, string bulkOrderId)
         {
             var returnValue = "";
             try
@@ -532,6 +549,53 @@ namespace LidLaunchWebsite.Controllers
                         var extension = Path.GetExtension(fileContent.FileName);
 
                         var fileName = Guid.NewGuid().ToString() + extension;
+                        if (bulkOrderId != "")
+                        {
+                            fileName = "W" + bulkOrderId + extension;
+                        }
+                        var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Digitizing/EMB"), fileName);
+
+                        fileContent.SaveAs(path);
+                        returnValue = fileName;
+
+                        //update design digitized file in database
+                        DesignData data = new DesignData();
+                        var success = data.UpdateDesignEMBFile(Convert.ToInt32(designId), fileName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+            var json = new JavaScriptSerializer().Serialize(returnValue);
+            return json;
+        }
+        public string UpdateDesignDigitizedProductionSheet(string designId, string bulkOrderId)
+        {
+            var returnValue = "";
+            try
+            {
+                if (!checkLoggedIn())
+                {
+                    //do nothing
+                }
+                else
+                {
+                    var fileContent = Request.Files[0];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        var extension = Path.GetExtension(fileContent.FileName);
+
+                        var fileName = Guid.NewGuid().ToString() + extension;
+                        if (bulkOrderId != "")
+                        {
+                            fileName = "W" + bulkOrderId + extension;
+                        }
                         var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Digitizing/Info"), fileName);
 
                         fileContent.SaveAs(path);
@@ -621,6 +685,7 @@ namespace LidLaunchWebsite.Controllers
                     List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
                     BulkData data = new BulkData();
                     lstBulkOrders = data.GetBulkOrderData();
+                    lstBulkOrders.RemoveAll(bo => !bo.OrderPaid);
                     return View(lstBulkOrders);
                 }
                 else
@@ -643,7 +708,7 @@ namespace LidLaunchWebsite.Controllers
                 {
                     BulkOrder bulkOrder = new BulkOrder();
                     BulkData data = new BulkData();
-                    bulkOrder = data.GetBulkOrder(bulkOrderId, "");
+                    bulkOrder = data.GetBulkOrder(bulkOrderId, "", "");
                     return PartialView("BulkOrderDetailsPopup", bulkOrder);
                 }
                 else

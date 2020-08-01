@@ -20,6 +20,7 @@ namespace LidLaunchWebsite.Models
         public string DigitizedProductionSheet { get; set; }
         public string EMBFile { get; set; }
         public List<Note> lstNotes { get; set; }
+        public bool CustomerApproved { get; set; }
 
     }
 }
