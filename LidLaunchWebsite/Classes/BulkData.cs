@@ -339,6 +339,39 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
+        public bool UpdateBulkOrderBatchId(int bulkOrderId, int batchId)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderBatchId", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@batchId", batchId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
         public bool UpdateBulkOrderPaidByPaymentCompleteGuid(string paymentCompleteGuid)
         {
             var data = new SQLData();

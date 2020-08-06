@@ -2,7 +2,38 @@
 
     bindDigitizingFilesInputs();
     bindHatPreviewInputs();
+    bindBatchDropdown();
 });
+function bindBatchDropdown() {
+    $('.batchSelect').on('change', function (e) {
+        var bulkOrderId = $(this).closest('tr').find(".bulkOrderId").text();
+        var batchId = $(this).children("option:selected").val();
+        if (batchId === 0) {
+            //do nothing
+        } else {
+            showLoading();
+            $.ajax({
+                type: "POST",
+                url: '/Dashboard/UpdateBulkOrderBatchId?bulkOrderId=' + bulkOrderId + '&batchId=' + batchId,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result == "") {
+                        //do nothing
+                        displayPopupNotification('Error setting batch Id, please try again.', 'error', false);
+                    } else {
+                        //set the url for the file link and show the link 
+                        hideLoading();
+                    }
+                },
+                error: function (xhr, status, p3, p4) {
+                    displayPopupNotification('Error setting batch Id, please try again.', 'error', false);
+                }
+            });
+        }        
+            
+    });
+}
 function bindDigitizingFilesInputs() {
     $('.EmbroideryFile').on('change', function (e) {
         var that = this;
@@ -386,5 +417,6 @@ function updateBulkOrderPaid(bulkOrderId, orderPaid, that) {
         }
     });
 }
+
 
 

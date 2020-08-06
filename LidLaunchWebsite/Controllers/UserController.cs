@@ -110,6 +110,7 @@ namespace LidLaunchWebsite.Controllers
             Designer designer = new Designer();
             designer = designerData.GetDesigner(user.Id);
             Session["UserID"] = user.Id;
+            Session["UserEmail"] = user.Email;
             Session["DesignerID"] = designer.Id;
             return json;
         }

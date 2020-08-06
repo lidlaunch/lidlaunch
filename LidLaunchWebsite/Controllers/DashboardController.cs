@@ -2,6 +2,7 @@
 using LidLaunchWebsite.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -421,7 +422,17 @@ namespace LidLaunchWebsite.Controllers
             return json;
 
         }
-
+        public bool checkDigitizer()
+        {
+            if(Convert.ToString(Session["UserEmail"]) == ConfigurationManager.AppSettings["DigitizerEmailAddress"])
+            {
+                return true;
+            } 
+            else
+            {
+                return false;
+            }
+        }
 
         public bool checkLoggedIn()
         {            
@@ -439,7 +450,7 @@ namespace LidLaunchWebsite.Controllers
             var returnValue = "";
             try
             {
-                if (!checkLoggedIn())
+                if (!checkLoggedIn() && !checkDigitizer())
                 {
                     //do nothing
                 }
@@ -482,7 +493,7 @@ namespace LidLaunchWebsite.Controllers
             var returnValue = "";
             try
             {
-                if (!checkLoggedIn())
+                if (!checkLoggedIn() && !checkDigitizer())
                 {
                     //do nothing
                 }
@@ -534,7 +545,7 @@ namespace LidLaunchWebsite.Controllers
             var returnValue = "";
             try
             {
-                if (!checkLoggedIn())
+                if (!checkLoggedIn() && !checkDigitizer())
                 {
                     //do nothing
                 }
@@ -577,7 +588,7 @@ namespace LidLaunchWebsite.Controllers
             var returnValue = "";
             try
             {
-                if (!checkLoggedIn())
+                if (!checkLoggedIn() && !checkDigitizer())
                 {
                     //do nothing
                 }
@@ -641,12 +652,13 @@ namespace LidLaunchWebsite.Controllers
                 return RedirectToAction("Index", "Home", null);
             }
             else
-            {
-                List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
+            {                
                 BulkData data = new BulkData();
-                lstBulkOrders = data.GetBulkOrderData();
-                lstBulkOrders = lstBulkOrders.OrderByDescending(bo => bo.OrderPaid).ToList();
-                return View(lstBulkOrders);
+                ViewBulkOrdersModel model = new ViewBulkOrdersModel();
+                model.lstBulkOrders = data.GetBulkOrderData();
+                model.lstBulkOrders = model.lstBulkOrders.OrderByDescending(bo => bo.OrderPaid).ToList();
+                model.lstBulkOrderBatches = data.GetBulkOrderBatches();
+                return View(model);
             }
         }
 
@@ -676,11 +688,18 @@ namespace LidLaunchWebsite.Controllers
 
         }
 
+        public string UpdateBulkOrderBatchId(string bulkOrderId, string batchId)
+        {
+            BulkData data = new BulkData();
+            data.UpdateBulkOrderBatchId(Convert.ToInt32(bulkOrderId), Convert.ToInt32(batchId));
+            return "true";
+        }
+
         public ActionResult BulkDigitizing()
         {
             if (Convert.ToInt32(Session["UserID"]) > 0)
             {
-                if (Convert.ToInt32(Session["UserID"]) == 1)
+                if (checkLoggedIn() || checkDigitizer())
                 {
                     List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
                     BulkData data = new BulkData();

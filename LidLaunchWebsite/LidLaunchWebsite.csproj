@@ -615,6 +615,7 @@
     <Content Include="Views\Dashboard\AddNote.cshtml" />
     <Content Include="Views\Bulk\BulkOrderBatches.cshtml" />
     <Content Include="Views\Bulk\BulkOrderBatch.cshtml" />
+    <Content Include="Views\Bulk\PrintBulkOrderBatchBulkOrders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

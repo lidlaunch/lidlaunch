@@ -127,4 +127,10 @@ namespace LidLaunchWebsite.Models
         public List<HatType> lstHatTypes { get; set; }
     }        
 
+
+    public class ViewBulkOrdersModel
+    {
+        public List<BulkOrder> lstBulkOrders { get; set; }
+        public List<OrderBatch> lstBulkOrderBatches { get; set; }
+    }
 }

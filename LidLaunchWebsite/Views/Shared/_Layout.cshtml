@@ -104,10 +104,13 @@
                                                 <li>@Html.ActionLink("Approval", "PendingProducts", "Dashboard")</li>
                                                 <li>@Html.ActionLink("Orders", "Orders", "Dashboard")</li>
                                                 <li>@Html.ActionLink("Bulk Orders", "ViewBulkOrders", "Dashboard")</li>
-                                                <li>@Html.ActionLink("Bulk Digitizing", "BulkDigitizing", "Dashboard")</li>
                                                 <li>@Html.ActionLink("Needs Digitizing", "NeedsDigitizing", "Dashboard")</li>
                                                 <li>@Html.ActionLink("Order Batching", "CreateBatch", "Dashboard")</li>
                                                 <li>@Html.ActionLink("Hat Manager", "HatManager", "Dashboard")</li>
+                                            }
+                                            @if ((Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 643) || Convert.ToString(Session["UserEmail"]) == "digitizing@lidlaunch.com")
+                                            {
+                                                <li>@Html.ActionLink("Bulk Digitizing", "BulkDigitizing", "Dashboard")</li>
                                             }
                                         </ul>
                                     </li>

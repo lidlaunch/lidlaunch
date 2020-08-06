@@ -1,4 +1,4 @@
-﻿@model List<LidLaunchWebsite.Models.BulkOrder>
+﻿@model LidLaunchWebsite.Models.ViewBulkOrdersModel
 @{
     ViewBag.Title = "ViewBulkOrders";
 }
@@ -25,13 +25,14 @@
             <td><b>Order Paid</b></td>
             <td><b>Payment Link</b></td>
             <td><b>View</b></td>
+            <td><b>Batch</b></td>
         </tr>
-        @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model)
+        @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model.lstBulkOrders)
         {
             if (bulkOrder.OrderPaid)
             {
                 <tr style="background:#ccc;">
-                    <td>@bulkOrder.Id</td>
+                    <td><span class="bulkOrderId">@bulkOrder.Id</span></td>
                     <td>@bulkOrder.OrderDate</td>
                     <td>@bulkOrder.CustomerName</td>
                     <td>@bulkOrder.CustomerEmail</td>
@@ -50,6 +51,22 @@
                     }
                     <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@bulkOrder.PaymentGuid" target="_blank">Pay Link</a></td>
                     <td><a href="javascript:void();" onclick="$('#popUpHolder').load(url, { bulkOrderId: @bulkOrder.Id });">view</a></td>
+                    <td>
+                        <select class="batchSelect">
+                            <option id="0" selected value="0">N/A</option>
+                            @foreach (LidLaunchWebsite.Models.OrderBatch batch in Model.lstBulkOrderBatches)
+                            {
+                                if (batch.BatchId == bulkOrder.BulkOrderBatchId)
+                                {
+                                    <option id="@batch.BatchId" selected value="@batch.BatchId">@batch.BatchId : @batch.DateBatched.ToString("MM/dd")</option>
+                                }
+                                else
+                                {
+                                    <option id="@batch.BatchId" value="@batch.BatchId">@batch.BatchId : @batch.DateBatched.ToString("MM/dd")</option>
+                                }
+                            }
+                        </select>
+                    </td>
                 </tr>                
             }
         }
@@ -72,7 +89,7 @@
             <td><b>Payment Link</b></td>
             <td><b>View</b></td>
         </tr>
-        @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model)
+        @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model.lstBulkOrders)
         {
             if (!bulkOrder.OrderPaid)
             {

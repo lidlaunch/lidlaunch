@@ -126,6 +126,19 @@ namespace LidLaunchWebsite.Controllers
             return PartialView("BulkOrderBatches", lstBatches); ;
         }
 
+        public ActionResult PrintBulkOrderBatchBulkOrders(string bulkBatchId)
+        {
+            BulkData data = new BulkData();
+            BulkBatchOrder bulkBatchOrder = new BulkBatchOrder();
+            List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
+
+            lstBulkOrders = data.GetBulkOrdersByBatchId(Convert.ToInt32(bulkBatchId));
+
+            bulkBatchOrder.lstBulkOrders = lstBulkOrders;
+
+            return View(bulkBatchOrder);
+        }
+
         public ActionResult BulkOrderBatch(string bulkBatchId)
         {
             BulkData data = new BulkData();
@@ -135,6 +148,8 @@ namespace LidLaunchWebsite.Controllers
             lstBulkOrders = data.GetBulkOrdersByBatchId(Convert.ToInt32(bulkBatchId));
 
             bulkBatchOrder.lstBulkOrders = lstBulkOrders;
+            bulkBatchOrder.batchInfo = new OrderBatch();
+            bulkBatchOrder.batchInfo.BatchId = Convert.ToInt32(bulkBatchId);
 
             List<BulkOrderItem> products = new List<BulkOrderItem>();
 

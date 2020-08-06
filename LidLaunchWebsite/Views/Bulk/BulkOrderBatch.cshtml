@@ -4,6 +4,9 @@
 }
 
 <h2>BulkOrderBatch</h2>
+
+<a href="~/Bulk/PrintBulkOrderBatchBulkOrders?bulkBatchId=@Model.batchInfo.BatchId" target="_blank">PRINT ALL BATCHED ORDERS</a>
+
 <table>
     @foreach (LidLaunchWebsite.Models.BulkOrderItem itemToOrder in Model.lstItemsToOrder)
     {
