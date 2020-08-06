@@ -15,7 +15,7 @@
         {
             <div class="progressChunk">Payment</div>
         }
-        @if (Model.lstDesigns.Any(d => d.DigitizedFile == "" || !d.CustomerApproved) || Model.)
+        @if (Model.lstDesigns.Any(d => d.DigitizedFile == "" || !d.CustomerApproved))
         {
             <div class="progressChunk">Artwork Setup/Digitizing</div>
         }

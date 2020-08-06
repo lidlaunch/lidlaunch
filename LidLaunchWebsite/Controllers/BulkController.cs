@@ -23,20 +23,26 @@ namespace LidLaunchWebsite.Controllers
         public ActionResult Payment(string id)
         {
             BulkData data = new BulkData();
-            var success = data.UpdateBulkOrderPaidByPaymentCompleteGuid(id);
+            
             BulkOrder bulkOrder = new BulkOrder();
             bulkOrder = data.GetBulkOrder(0, "", id);
-            EmailFunctions emailFunc = new EmailFunctions();
-            List<PaypalItem> items = new List<PaypalItem>();
-            foreach(BulkOrderItem bulkItem in bulkOrder.lstItems)
+
+            if(bulkOrder != null && !bulkOrder.OrderPaid)
             {
-                PaypalItem newItem = new PaypalItem();
-                newItem.name = bulkItem.ItemName;
-                newItem.price = bulkItem.ItemCost;
-                newItem.quantity = bulkItem.ItemQuantity.ToString();
-                items.Add(newItem);
+                var success = data.UpdateBulkOrderPaidByPaymentCompleteGuid(id);
+                EmailFunctions emailFunc = new EmailFunctions();
+                List<PaypalItem> items = new List<PaypalItem>();
+                foreach (BulkOrderItem bulkItem in bulkOrder.lstItems)
+                {
+                    PaypalItem newItem = new PaypalItem();
+                    newItem.name = bulkItem.ItemName;
+                    newItem.price = bulkItem.ItemCost;
+                    newItem.quantity = bulkItem.ItemQuantity.ToString();
+                    items.Add(newItem);
+                }
+                var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderPaymentEmail(items, bulkOrder.OrderTotal.ToString(), bulkOrder.Id.ToString(), bulkOrder.PaymentGuid), "Lid Launch Payment Confirmation", "");
             }
-            var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderPaymentEmail(items, bulkOrder.OrderTotal.ToString(), bulkOrder.Id.ToString(), bulkOrder.PaymentGuid), "Lid Launch Payment Confirmation", "");
+            
             return View();
         }
 
@@ -52,7 +58,12 @@ namespace LidLaunchWebsite.Controllers
             var jss = new JavaScriptSerializer();
             var cartItems = jss.Deserialize<List<PaypalItem>>(items);
             var artworkPath = "";
-            var fileContent = Request.Files[0];
+            HttpPostedFileBase fileContent = null;
+            if (Request.Files.Count > 0)
+            {
+                fileContent = Request.Files[0];
+            }             
+
             if (fileContent != null && fileContent.ContentLength > 0)
             {
                 // get a stream
@@ -145,6 +156,8 @@ namespace LidLaunchWebsite.Controllers
             products.RemoveAll(p => p.ItemName == "Shipping");
 
             bulkBatchOrder.lstItemsToOrder = products;
+
+            bulkBatchOrder.lstItemsToOrder = bulkBatchOrder.lstItemsToOrder.OrderByDescending(bo => bo.ItemName).ToList();
 
             return View(bulkBatchOrder);
         }

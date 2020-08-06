@@ -158,7 +158,7 @@ function updateBulkTotals() {
 
     var hasArtFee = false; 
 
-    if (currentTotalBulkHatsCount < 12) {
+    if (currentTotalBulkHatsCount < 12 && $('#artworkPresetup').prop("checked") == false) {
         currentTotalCost += 30;
         hasArtFee = true;
         productList = productList + '{"name":"Artwork Setup/Digitizing","quantity":"1","price":"30","currency":"USD"},';
@@ -277,7 +277,14 @@ function verifyAndShowPaypal() {
 
         var that = this;
         var files = $('#bulkArtwork')[0].files;
-        if (files.length > 0) {
+
+        var orderNotes = $('#txtDetails').val();
+
+        if ($('#artworkPresetup').prop("checked")) {
+            orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
+        }
+
+        if (files.length > 0 || $('#artworkPresetup').prop("checked")) {
             if (window.FormData !== undefined) {
                 var data = new FormData();
                 data.append("file" + 0, files[0]);
@@ -285,7 +292,7 @@ function verifyAndShowPaypal() {
                 data.append("email", $('#txtEmail').val());
                 data.append("phone", $('#txtPhone').val());
                 data.append("artworkPlacement", $('#artPlacement').text());
-                data.append("orderNotes", $('#txtDetails').val());
+                data.append("orderNotes", orderNotes);
                 data.append("orderTotal", currentGrandTotalCost);
                 data.append("items", JSON.stringify(currentBulkProductList));
                 data.append("paymentCompleteGuid", $('#paymentCompleteGuid').text());
@@ -403,4 +410,16 @@ function createBulkOrderBatch() {
             displayPopupNotification('Error.', 'error', false);
         }
     });
+}
+
+function togglePresetArtwork() {
+    if ($('#artworkPresetup').prop("checked")) {
+        $('#artworkPresetup').prop("checked", false);
+        $('#bulkArtwork').show();
+        updateBulkTotals();
+    } else {
+        $('#artworkPresetup').prop("checked", true);
+        $('#bulkArtwork').hide();
+        updateBulkTotals();
+    }
 }

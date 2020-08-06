@@ -1194,8 +1194,12 @@
         </div>
         <div id="designUploadContent">
             <h2>Upload the artwork you would like to include on your hats..</h2>
-
-            <input type="file" id="bulkArtwork"/>
+            <div id="preSetupArtwork" onclick="togglePresetArtwork()">
+                <input type="checkbox" id="artworkPresetup" onclick="togglePresetArtwork()"/> Check this box if you have ordered hats from us in the past and your artwork is already setup in our system.
+            </div>
+            <div>
+                <input type="file" id="bulkArtwork" />
+            </div>            
         </div>
         <div id="designPlacement">
             <h2>Where would you like the artwork placed on the hat?</h2>
@@ -1219,7 +1223,7 @@
             <div>
                 <textarea class="productDetailsTextMulti textBoxMulti" id="txtDetails" placeholder="Order Information" rows="10"></textarea>
             </div>
-        </div>
+        </div>        
         <div id="designProcessExplained">
             <h2>We will convert and digitize your artwork. You will recieve mockups and stitching proofs for approval before the hats are stitched. We work with you to ensure the end product is going to be exactly what you want.</h2>
         </div>

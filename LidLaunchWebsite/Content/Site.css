@@ -1765,6 +1765,14 @@ input[type=text], input[type=password], select {
     left: 0;
 }
 
+#preSetupArtwork {
+    margin:20px 0;
+}
+#artworkPresetup {
+    width:20px;
+    height:20px;
+}
+
 .currentTotalContent {
     margin-top: 20px;
     text-align: center;
