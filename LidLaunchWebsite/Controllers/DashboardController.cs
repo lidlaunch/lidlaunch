@@ -402,7 +402,7 @@ namespace LidLaunchWebsite.Controllers
             bool success = false;
             if (Convert.ToInt32(Session["UserID"]) > 0)
             {
-                if (Convert.ToInt32(Session["UserID"]) == 1)
+                if (checkLoggedIn())
                 {
                     ProductData prodData = new ProductData();                    
 
@@ -723,7 +723,7 @@ namespace LidLaunchWebsite.Controllers
             
             if (Convert.ToInt32(Session["UserID"]) > 0)
             {
-                if (Convert.ToInt32(Session["UserID"]) == 1)
+                if (checkLoggedIn())
                 {
                     BulkOrder bulkOrder = new BulkOrder();
                     BulkData data = new BulkData();

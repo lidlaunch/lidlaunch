@@ -50,7 +50,7 @@
                         <td style="background:red;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','false',this)">@bulkOrder.OrderPaid</a></td>
                     }
                     <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@bulkOrder.PaymentGuid" target="_blank">Pay Link</a></td>
-                    <td><a href="javascript:void();" onclick="$('#popUpHolder').load(url, { bulkOrderId: @bulkOrder.Id });">view</a></td>
+                    <td><span onclick="$('#popUpHolder').load(url, { bulkOrderId: @bulkOrder.Id });">view</span></td>
                     <td>
                         <select class="batchSelect">
                             <option id="0" selected value="0">N/A</option>
@@ -112,7 +112,7 @@
                         <td style="background:red;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','false',this)">@bulkOrder.OrderPaid</a></td>
                     }
                     <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@bulkOrder.PaymentGuid" target="_blank">Pay Link</a></td>
-                    <td><a href="javascript:void();" onclick="$('#popUpHolder').load(url, { bulkOrderId: @bulkOrder.Id });">view</a></td>
+                    <td><span onclick="$('#popUpHolder').load(url, { bulkOrderId: @bulkOrder.Id });">view</span></td>
                 </tr>
 
             }

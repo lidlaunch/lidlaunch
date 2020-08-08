@@ -6,14 +6,28 @@
     #footer {
         padding-bottom: 200px;
     }
+    #content {
+        padding-top:0;
+    }
 </style>
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 <div id="bulkOrderingContainer">
+    <div id="bulkProgressBar" class="centerInner">
+        <div class="left">
+            <div class="bulkProgressBarStep selected" onclick="changeBulkOrderSection('intro');" id="introStepButton"><img src="~/Images/hiStepIcon.png" height="40" />Intro</div>
+            <div class="bulkProgressBarStep" onclick="changeBulkOrderSection('hats');" id="hatsStepButton"><img src="~/Images/hatStepIcon.png" height="40" />Select Hats</div>
+            <div class="bulkProgressBarStep" onclick="changeBulkOrderSection('art');" id="artStepButton"><img src="~/Images/artStepIcon.png" height="40" />Upload Design</div>
+            <div class="bulkProgressBarStep" onclick="changeBulkOrderSection('checkout');"><img src="~/Images/cartStepIcon.png" height="40" />Checkout</div>
+        </div>
+        <div class="right">
+            <div class="bulkProgressBarContinuteButton" onclick="goToNextStep(currentOrderStep);">Next Step</div>
+        </div>
+        
+    </div>
     <div id="bulkIntro" class="centerInner">
         <div id="bulkIntroInner">
-            <h1>Order Custom Hats</h1>
             <div class="left">
-                <h2>All bulk ordered hats start at $15/each</h2>
+                <h2>Our custom hats start at $15/each</h2>
                 <table class="priceList">
                     <tr>
                         <td>1-24</td>
@@ -43,29 +57,33 @@
                 <p>Order 12 or more to get <b>FREE</b> artwork setup.</p>
             </div>
             <div class="right">
-                <iframe width="500" height="280" src="https://www.youtube.com/embed/J_QOuohOSdU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="margin-top:30px;"></iframe>
+                <iframe width="500" height="280" src="https://www.youtube.com/embed/HdW6zOLnqHs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="margin-top:30px;"></iframe>
             </div>
         </div>
-    </div>
-    <div id="bulkHatTypeSelect" class="centerInner">
-        <div id="bulkTypeSelectTop" class="bulkSectionHeader">
-            <h1 class="bulkSectionHeaderH1"><span class="numberCircle">1</span> Select Your Hats:</h1>
+        <div id="getStartedBar" onclick="changeBulkOrderSection('hats');">
+            <div class="startBulk">
+                GET STARTED
+            </div>
         </div>
+        <div id="customerReviews">
+            <div id="fiveStarHolder"><img src="~/Images/5stars.png"/> - What our customers are saying</div>
+            <img src="~/Images/CustomerReviews1.jpg" />
+            <img src="~/Images/CustomerReviews2.jpg" />
+        </div>
+    </div>
+    <div id="bulkHatTypeSelect" class="centerInner" style="display:none;">       
         <div id="bulkHatSelectContainer">
             <div class="hatTypeSelectRegion">
-                <div class="hatBrand" id="FlexFit" onclick="$('#flexFitStyles').toggle();">
+                <div class="hatBrand" id="FlexFit">
                     <div class="hatBrandLogo left">
                         <img src="~/Images/flexfit-logo.png" height="60" />
-                    </div>
-                    <div class="hatBrandCollapser right">
-                        Show/Hide
                     </div>
                 </div>
                 <div class="hatBrandStyleOptions clear" id="flexFitStyles">
                     <div class="hatBrandStyleRegion clear">
                         <div class="hatTitle" onclick="$('#FlexFit6277').toggle();">
                             <div class="title left">Original FlexFit 6277 Fitted</div>
-                            <div class="right">Show/Hide</div>
+                            <div class="right">Expand/Collapse</div>
                         </div>
                         <div class="hatStyleSelectArea" id="FlexFit6277" style="display:none;">
                             <div class="hatStyleImage">
@@ -271,7 +289,7 @@
                     <div class="hatBrandStyleRegion clear">
                         <div class="hatTitle" onclick="$('#FlexFitTrucker').toggle();">
                             <div class="title left">FlexFit Trucker Mesh Fitted</div>
-                            <div class="right">Show/Hide</div>
+                            <div class="right">Expand/Collapse</div>
                         </div>
                         <div class="hatStyleSelectArea" id="FlexFitTrucker" style="display:none;">
                             <div class="hatStyleImage">
@@ -410,7 +428,7 @@
                     <div class="hatBrandStyleRegion clear">
                         <div class="hatTitle" onclick="$('#FlexFit110').toggle();">
                             <div class="title left">FlexFit 110 Trucker Snap Back</div>
-                            <div class="right">Show/Hide</div>
+                            <div class="right">Expand/Collapse</div>
                         </div>
                         <div class="hatStyleSelectArea" id="FlexFit110" style="display:none;">
                             <div class="hatStyleImage">
@@ -493,7 +511,7 @@
                     <div class="hatBrandStyleRegion clear">
                         <div class="hatTitle" onclick="$('#FlexFit210').toggle();">
                             <div class="title left">FlexFit Premium 210 Fitted Flat Bill</div>
-                            <div class="right">Show/Hide</div>
+                            <div class="right">Expand/Collapse</div>
                         </div>
                         <div class="hatStyleSelectArea" id="FlexFit210" style="display:none;">
                             <div class="hatStyleImage">
@@ -566,19 +584,16 @@
 
             </div><!--/hatTypeSelectRegion-->
             <div class="hatTypeSelectRegion">
-                <div class="hatBrand" id="Yupoong" onclick="$('#yupoongStyles').toggle();">
+                <div class="hatBrand" id="Yupoong">
                     <div class="hatBrandLogo left">
                         <img src="~/Images/yupoong.png" height="40" />
-                    </div>
-                    <div class="hatBrandCollapser right">
-                        Show/Hide
                     </div>
                 </div>
                 <div class="hatBrandStyleOptions clear" id="yupoongStyles">
                     <div class="hatBrandStyleRegion clear">
                         <div class="hatTitle" onclick="$('#6089FlatbillSnapback').toggle();">
                             <div class="title left">Flat Bill Snapback</div>
-                            <div class="right">Show/Hide</div>
+                            <div class="right">Expand/Collapse</div>
                         </div>
                         <div class="hatStyleSelectArea" id="6089FlatbillSnapback" style="display:none;">
                             <div class="hatStyleImage">
@@ -809,19 +824,16 @@
                 </div><!--/hatBrandStyleOptions-->
             </div><!--/hatTypeSelectRegion-->
             <div class="hatTypeSelectRegion">
-                <div class="hatBrand" id="Richardson" onclick="$('#richardsonStyles').toggle();">
+                <div class="hatBrand" id="Richardson">
                     <div class="hatBrandLogo left">
                         <img src="~/Images/richardson.gif" height="60" />
-                    </div>
-                    <div class="hatBrandCollapser right">
-                        Show/Hide
                     </div>
                 </div>
                 <div class="hatBrandStyleOptions clear" id="richardsonStyles">
                     <div class="hatBrandStyleRegion clear">
                         <div class="hatTitle" onclick="$('#Richardson112').toggle();">
                             <div class="title left">Richardson 112 Trucker Snapback</div>
-                            <div class="right">Show/Hide</div>
+                            <div class="right">Expand/Collapse</div>
                         </div>
                         <div class="hatStyleSelectArea" id="Richardson112" style="display:none;">
                             <div class="hatStyleImage">
@@ -1188,10 +1200,7 @@
             </div><!--/hatTypeSelectRegion-->
         </div>
     </div>
-    <div id="bulkArtworkStep" class="centerInner">
-        <div id="designUploadTop" class="bulkSectionHeader">
-            <h1 class="bulkSectionHeaderH1"><span class="numberCircle">2</span> Your Design:</h1>
-        </div>
+    <div id="bulkArtworkStep" class="centerInner" style="display:none;">       
         <div id="designUploadContent">
             <h2>Upload the artwork you would like to include on your hats..</h2>
             <div id="preSetupArtwork" onclick="togglePresetArtwork()">
@@ -1228,7 +1237,7 @@
             <h2>We will convert and digitize your artwork. You will recieve mockups and stitching proofs for approval before the hats are stitched. We work with you to ensure the end product is going to be exactly what you want.</h2>
         </div>
     </div><!--/bulkArtworkStep-->
-    <div id="bulkReadyToBuy" class="centerInner">
+    <div id="bulkReadyToBuy" class="centerInner" style="display:none;">
         <a href="javascript:void(0);" onclick="showBulkCart();"><div id="bulkPaymentButton">Ready To Buy</div></a>
     </div>
     <div id="totalBottomBar">

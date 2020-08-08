@@ -3,6 +3,7 @@ var currentTotalBulkHatsCount = 0;
 var currentTotalCost = 0;
 var currentShippingTotal = 0;
 var currentGrandTotalCost = 0;
+var currentOrderStep = 'intro';
 
 function updateBulkTotals() {
     var productList = '[';
@@ -421,5 +422,62 @@ function togglePresetArtwork() {
         $('#artworkPresetup').prop("checked", true);
         $('#bulkArtwork').hide();
         updateBulkTotals();
+    }
+}
+
+
+function changeBulkOrderSection(section) {
+    if (section == 'intro') {
+        $('#bulkIntro').show();
+        $('#bulkHatTypeSelect').hide();        
+        $('#bulkArtworkStep').hide();
+
+        $('#introStepButton').removeClass('selected');
+        $('#hatsStepButton').removeClass('selected');
+        $('#artStepButton').removeClass('selected');
+
+        $('#introStepButton').addClass('selected');
+        currentOrderStep = 'intro';
+        document.getElementById("header").scrollIntoView();
+    }
+    if (section == 'hats') {
+        $('#bulkIntro').hide();
+        $('#bulkHatTypeSelect').show();
+        $('#bulkArtworkStep').hide();
+
+        $('#introStepButton').removeClass('selected');
+        $('#hatsStepButton').removeClass('selected');
+        $('#artStepButton').removeClass('selected');
+
+        $('#hatsStepButton').addClass('selected');
+        currentOrderStep = 'hats';
+        document.getElementById("header").scrollIntoView();
+    }
+    if (section == 'art') {
+        $('#bulkIntro').hide();
+        $('#bulkHatTypeSelect').hide();
+        $('#bulkArtworkStep').show();
+
+        $('#introStepButton').removeClass('selected');
+        $('#hatsStepButton').removeClass('selected');
+        $('#artStepButton').removeClass('selected');
+
+        $('#artStepButton').addClass('selected');
+        currentOrderStep = 'art';
+        document.getElementById("header").scrollIntoView();
+    }
+    if (section == 'checkout') {
+        showBulkCart();
+    }
+}
+function goToNextStep(currentStep) {
+    if (currentStep == 'intro') {
+        changeBulkOrderSection('hats');
+    }
+    if (currentStep == 'hats') {
+        changeBulkOrderSection('art');
+    }
+    if (currentStep == 'art') {
+        changeBulkOrderSection('checkout');
     }
 }

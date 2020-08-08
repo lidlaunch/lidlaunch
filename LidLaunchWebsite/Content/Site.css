@@ -1613,20 +1613,94 @@ input[type=text], input[type=password], select {
 
 
 /*******************************************BULK ORDERING****************************************************/
+#bulkProgressBar {
+    background: #39b91c;
+    height: 74px;
+    width: 100%;
+    display: block;
+    color: #fff;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index:10;
+}
+.bulkProgressBarStep {
+    width: auto;
+    display: inline-block;
+    height: 100%;
+    line-height: 70px;
+    font-size: 22px;
+    margin: 0 10px;
+    cursor: pointer;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.bulkProgressBarStep img {
+    vertical-align: middle;
+    margin-right:5px;
+}
+.bulkProgressBarStep.selected {
+    border-bottom: 4px solid #fff;
+}
+.bulkProgressBarContinuteButton {
+    background:#fff;
+    color:#39b91c;
+    font-size:28px;
+    padding:10px 20px;
+    cursor:pointer;
+    margin-top:10px;
+    margin-right:10px;
+}
+.smallStepCircle {
+    border-radius: 50%;
+    behavior: url(PIE.htc);
+    padding: 0px 10px;
+    border: 3px solid #fff;
+    color: #fff;
+    text-align: center;
+    font: 32px Arial, sans-serif;
+    margin: 0 5px;
+}
 #bulkIntro {
     width: 100%;
-    height: 500px;
-    background: url("/Images/BulkTop.jpg");
+    height: auto;
+    background: url("/Images/BulkTop.jpg") no-repeat;
+    background-size: 100% auto;
     color: #fff;
     font-size: 22px;
 }
 
 #bulkIntroInner {
-    margin: 5%;
+    margin: 0px 5%;
     display: inline-block;
     width: 90%;
+    height: 370px;
 }
-
+#customerReviews {
+    color: #39b91c;
+    background:#fff;
+    padding-top:20px;
+}
+#fiveStarHolder {
+    margin-bottom:10px;
+}
+#fiveStarHolder img {
+    vertical-align: middle;
+}
+#getStartedBar {
+    background: #39b91c;
+    height: 70px;
+    width: 100%;
+    display: block;
+    color: #fff;
+}
+.startBulk {
+    text-align: center;
+    font-size: 38px;
+    line-height: 70px;
+    cursor:pointer;
+}
 .bulkSectionHeader {
     width: 100%;
     height: 200px;
@@ -1690,11 +1764,27 @@ input[type=text], input[type=password], select {
     cursor: pointer;
 }
 
-    .hatTitle .title {
-        color: #39b91c;
-        font-weight: bold;
-        font-size: 30px;
-    }
+.hatTitle .title {
+    color: #39b91c;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+#FlexFit.hatBrand {
+    background: url(/Images/FlexFitSectionBG.jpg) no-repeat;
+    background-position: right;
+    background-color: #efefef;
+}
+#Yupoong.hatBrand {
+    background: url(/Images/YupoongSectionBG.jpg) no-repeat;
+    background-position: right;
+    background-color: #efefef;
+}
+#Richardson.hatBrand {
+    background: url(/Images/RichardsonSectionBG.jpg) no-repeat;
+    background-position: right;
+    background-color: #efefef;
+}
 
 .hatStyleImage {
     width: 100%;
@@ -1983,9 +2073,24 @@ input[type=text], input[type=password], select {
     #previewHatContent {
         height: 600px;
         overflow-y: scroll;
+    }   
+    
+}
+@media only screen and (max-width:900px) {
+    .bulkProgressBarContinuteButton {
+        position: fixed;
+        bottom: 70px;
+        right: -10px;
+        border: 6px Solid #39b91c;
+    }
+    #bulkProgressBar {
+        float:unset;
+        text-align:center;
+    }
+    #bulkProgressBar .left {
+        float: unset;
     }
 }
-
 @media only screen and (max-width: 1100px) {
     #wrapper {
         min-width: 100%;
@@ -2262,6 +2367,7 @@ input[type=text], input[type=password], select {
     #bulkIntro {
         height: auto;
         text-align: center;
+        background-size:cover;
     }
 
     .priceList {
@@ -2580,5 +2686,29 @@ input[type=text], input[type=password], select {
 
     #bulkIntroInner {
         font-size: 20px;
+    }
+
+    .bulkProgressBarStep {
+        font-size:13px;
+        margin:0 6px;
+
+    }
+    .bulkProgressBarStep img {
+        width:30px;
+        height:30px;
+    }
+    .bulkProgressBarContinuteButton {
+        font-size: 22px;
+    }
+    #bulkIntro {
+        background-size: cover;
+    }
+    #customerReviews {
+        text-align: center;
+    }
+    #customerReviews img {
+        max-width: 100%;
+        display: block;
+        margin: 0 auto;
     }
 }

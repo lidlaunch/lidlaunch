@@ -242,17 +242,22 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\5stars.png" />
     <Content Include="Images\America.png" />
+    <Content Include="Images\artStepIcon.png" />
     <Content Include="Images\BannerImages.jpg" />
     <Content Include="Images\BG.jpg" />
     <Content Include="Images\BG2.jpg" />
     <Content Include="Images\BrickBG.jpg" />
     <Content Include="Images\BulkTop.jpg" />
+    <Content Include="Images\cartStepIcon.png" />
     <Content Include="Images\CenterPlacement.jpg" />
     <Content Include="Images\Check.png" />
     <Content Include="Images\CheckGray.png" />
     <Content Include="Images\ColorPicker.jpg" />
     <Content Include="Images\Conversion.png" />
+    <Content Include="Images\CustomerReviews1.jpg" />
+    <Content Include="Images\CustomerReviews2.jpg" />
     <Content Include="Images\DesignUploadTop.jpg" />
     <Content Include="Images\DropArrow.png" />
     <Content Include="Images\Examples1.jpg" />
@@ -330,6 +335,7 @@
     <Content Include="Images\FlexFitOriginalOptions.png" />
     <Content Include="Images\flexfit-logo.png" />
     <Content Include="Images\FlexFit210Options.png" />
+    <Content Include="Images\FlexFitSectionBG.jpg" />
     <Content Include="Images\FlexFitTruckerOptions.jpg" />
     <Content Include="Images\FlexFitTruckerOptions.png" />
     <Content Include="Images\GetStartedBG.jpg" />
@@ -378,8 +384,10 @@
     <Content Include="Images\HatAssets\Trucker.png" />
     <Content Include="Images\HatAssets\TruckFrontBlack.png" />
     <Content Include="Images\HatAssets\TruckFrontWhite.png" />
+    <Content Include="Images\hatStepIcon.png" />
     <Content Include="Images\HatStyleSelect.png" />
     <Content Include="Images\HatStyleSelectTemp.png" />
+    <Content Include="Images\hiStepIcon.png" />
     <Content Include="Images\Icons\android-icon-144x144.png" />
     <Content Include="Images\Icons\android-icon-192x192.png" />
     <Content Include="Images\Icons\android-icon-36x36.png" />
@@ -484,6 +492,7 @@
     <Content Include="Images\RichardsonHats\hat_70.jpg" />
     <Content Include="Images\RichardsonHats\hat_71.jpg" />
     <Content Include="Images\RichardsonHats\hat_72.jpg" />
+    <Content Include="Images\RichardsonSectionBG.jpg" />
     <Content Include="Images\RightPlacement.jpg" />
     <Content Include="Images\search.jpg" />
     <Content Include="Images\SearchBack.jpg" />
@@ -504,6 +513,7 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\VideoBg.jpg" />
     <Content Include="Images\yupoong.png" />
+    <Content Include="Images\YupoongSectionBG.jpg" />
     <Content Include="Images\Yupoong\6089\hat_01.jpg" />
     <Content Include="Images\Yupoong\6089\hat_02.jpg" />
     <Content Include="Images\Yupoong\6089\hat_03.jpg" />
