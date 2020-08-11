@@ -351,8 +351,7 @@ function saveNote(noteType, idVal, parentBulkOrderId) {
                 //do nothing
                 displayPopupNotification('error.', 'error', false);
             } else {
-                //set the url for the file link and show the link 
-                //reload bulk order window              
+                showBulkOrderDetailsPopup(parentBulkOrderId);
             }
         },
         error: function (xhr, status, p3, p4) {
@@ -480,4 +479,93 @@ function goToNextStep(currentStep) {
     if (currentStep == 'art') {
         changeBulkOrderSection('checkout');
     }
+}
+
+function showBulkOrderDetailsPopup(bulkOrderId) {
+    $('#popUpHolder').load(url, { bulkOrderId: bulkOrderId});
+}
+
+
+function setBulkOrderAsShipped(bulkOrderId) {
+    $.ajax({
+        type: "POST",
+        url: '/Bulk/SetBulkOrderAsShipped',
+        contentType: false,
+        processData: false,
+        data: JSON.stringify({
+            bulkOrderId: bulkOrderId,
+            trackingNumber: $('#txtTrackingNumber').val()
+        }),
+        contentType: "application/json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('error.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                //reload bulk order window   
+                showBulkOrderDetailsPopup(bulkOrderId);
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error.', 'error', false);
+        }
+    });
+}
+
+function searchBulkDesigns() {
+    $.ajax({
+        type: "POST",
+        url: '/Bulk/SearchBulkDesigns',
+        contentType: false,
+        processData: false,
+        data: JSON.stringify({
+            email: $('#txtBulkDesignEmail').val()
+        }),
+        contentType: "application/json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('error.', 'error', false);
+            } else {
+                //loop through the results and show them all to chose from
+                //showBulkOrderDetailsPopup(bulkOrderId);
+                var designs = JSON.parse(result);
+                for (i = 0; i < designs.length; i++) {
+                    $('#designImageHolder').append('<tr><td><img src="https://lidlaunch.com/Images/DesignImages/Digitizing/Preview/' + designs[i].DigitizedPreview + '" widht="200" height="200" onclick="setBulkDesign(' + designs[i].Id + ')"/></td></tr>');
+                }
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error.', 'error', false);
+        }
+    });
+}
+
+function setBulkDesign(designId) {
+    var bulkOrderId = $('#BulkOrderId').text();
+    $.ajax({
+        type: "POST",
+        url: '/Dashboard/SetBulkOrderDesign',
+        contentType: false,
+        processData: false,
+        data: JSON.stringify({
+            bulkOrderId: bulkOrderId,
+            designId: designId
+        }),
+        contentType: "application/json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('error.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                //reload bulk order window   
+                showBulkOrderDetailsPopup(bulkOrderId);
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error.', 'error', false);
+        }
+    });
 }

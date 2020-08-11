@@ -6,8 +6,8 @@
 <div id="bulkOrderDetailsPopup">
     <div id="bulkOrderDetailsPopupContent">
         <div id="TopInfoBar">
-            <div id="BulkOrderId">Id: @Model.Id</div>
-            <div id="BulkOrderDate">Payment Date: @Model.PaymentDate <span onclick="$('#bulkOrderDetailsPopup').hide();" style="font-weight:bold; border:1px solid #000; cursor:pointer;">X</span></div>
+            <div id="BulkOrderId">@Model.Id</div>
+            <div id="BulkOrderDate">Payment Date: @Model.PaymentDate <span onclick="$('#bulkOrderDetailsPopup').hide();" class="closeButton">X</span></div>
             
         </div>
         <div id="bulkOrderDetails">
@@ -39,7 +39,11 @@
                 </tr>
                 <tr>
                     <td>Payment Link:</td>
-                    <td>@Model.PaymentGuid</td>
+                    <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@Model.PaymentGuid" target="_blank">Pay Link</a></td>
+                </tr>
+                <tr>
+                    <td>Shipped:</td>
+                    <td><input type="text" placeholder="tracking #" id="txtTrackingNumber" value="@Model.TrackingNumber"/><input type="button" value="Mark Order As Shipped" class="smallButton" onclick="setBulkOrderAsShipped(@Model.Id)"/></td>
                 </tr>
             </table>  
         </div><!--/bulkOrderDetails-->
@@ -62,7 +66,7 @@
                             <td>@item.ItemQuantity</td>
                             <td>@item.ItemCost</td>
                             <td>@item.DesignId</td>
-                            <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id });">Add Note</a></td>
+                            <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id });"><input type="button" value="Add Note" class="smallButton"/></a></td>
                         </tr>
                         foreach (LidLaunchWebsite.Models.Note note in item.lstNotes)
                         {
@@ -88,10 +92,11 @@
                     </tr>
                 }
             </table>
-            <a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: @Model.Id, bulkOrderItemId: 0 , designId: 0, parentBulkOrderId: @Model.Id });">Add Note</a>
+            <a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: @Model.Id, bulkOrderItemId: 0 , designId: 0, parentBulkOrderId: @Model.Id });"><input type="button" value="Add Note" class="smallButton" /></a>
         </div>
         <div id="bulkOrderDesigns">
             <h3>Designs</h3>
+            <a href="javascript:void(0);" onclick="$('#bulkDesignSelectHolder').load(selectBulkDesignUrl);"><input type="button" class="smallButton" value="SELECT PRE-EXISTING DESIGN"/></a>
             <table>
                 <thead>
                     <tr>
@@ -115,7 +120,7 @@
                 <td><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" /></a></td>
                 <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
                 <td><a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">@design.EMBFile</a></td>
-                <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id });">Add Note</a></td>
+                <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id });"><input type="button" value="Add Note" class="smallButton" /></a></td>
             </tr>
                     if (design.lstNotes.Count > 0)
                     {
@@ -135,9 +140,12 @@
             </table>
         </div>
         <div id="noteHolder"></div>
+        <div id="bulkDesignSelectHolder"></div>
+        
     </div><!--bulkOrderDetailsPopupContent-->
 </div><!--/bulkOrderDetailsPopup-->
 <script type="text/javascript">
-    var addNoteUrl = '@Url.Action("AddNote", "DashBoard")';
+    var addNoteUrl = '@Url.Action("AddNote", "Dashboard")';
+    var selectBulkDesignUrl = '@Url.Action("SetBulkDesign", "Dashboard")';
 </script>
 

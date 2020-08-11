@@ -339,6 +339,39 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
+        public bool UpdateBulkOrderDesign(int bulkOrderId, int designId)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderDesign", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@designId", designId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
         public bool UpdateBulkOrderBatchId(int bulkOrderId, int batchId)
         {
             var data = new SQLData();
@@ -404,6 +437,39 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
+        public bool UpdateBulkOrderSetOrderAsShipped(int bulkOrderId, string trackingNumber)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderSetOrderAsShipped", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@trackingNumber", trackingNumber);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
         public bool ApproveBulkOrderDigitizing(int bulkOrderId)
         {
             var data = new SQLData();
@@ -426,6 +492,72 @@ namespace LidLaunchWebsite.Classes
             catch (Exception ex)
             {
                 return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public List<Design> GetBulkDesigns(string email)
+        {
+            var data = new SQLData();
+            List<Design> lstDesigns = new List<Design>();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetBulkDesigns", data.conn);
+                    sqlComm.Parameters.AddWithValue("@email", email);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in ds.Tables[0].Rows)
+                            {
+                                Design design = new Design();
+                                design.Id = Convert.ToInt32(dr["Id"].ToString());
+                                design.ArtSource = Convert.ToString(dr["ArtSource"].ToString());
+                                design.PreviewImage = Convert.ToString(dr["PreviewImage"].ToString());
+                                design.DigitizedFile = Convert.ToString(dr["DigitizedFile"].ToString());
+                                design.DigitizedProductionSheet = Convert.ToString(dr["DigitizedProductionSheet"].ToString());
+                                design.EMBFile = Convert.ToString(dr["EMBFile"].ToString());
+                                design.DigitizedPreview = Convert.ToString(dr["DigitizedPreview"].ToString());
+                                design.Width = Convert.ToDecimal(dr["Width"].ToString());
+                                design.Height = Convert.ToDecimal(dr["Height"].ToString());
+                                design.X = Convert.ToDecimal(dr["X"].ToString());
+                                design.Y = Convert.ToDecimal(dr["Y"].ToString());
+                                design.EmbroideredWidth = Convert.ToDecimal(dr["EmbroideredWidth"].ToString());
+                                design.EmbroideredHeight = Convert.ToDecimal(dr["EmbroideredHeight"].ToString());
+                                design.EmbroideredX = Convert.ToDecimal(dr["EmbroideredX"].ToString());
+                                design.EmbroideredY = Convert.ToDecimal(dr["EmbroideredY"].ToString());
+                                design.CustomerApproved = Convert.ToBoolean(dr["CustomerApproved"].ToString());
+                                lstDesigns.Add(design);
+                            }
+
+                        }
+
+                    }
+
+
+                }
+
+                return lstDesigns;
+            }
+            catch (Exception ex)
+            {
+                return lstDesigns;
             }
             finally
             {

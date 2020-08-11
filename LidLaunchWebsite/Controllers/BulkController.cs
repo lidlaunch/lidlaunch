@@ -46,6 +46,39 @@ namespace LidLaunchWebsite.Controllers
             return View();
         }
 
+        public string SetBulkOrderAsShipped(string bulkOrderId, string trackingNumber)
+        {
+            BulkData data = new BulkData();
+
+            BulkOrder bulkOrder = new BulkOrder();
+            bulkOrder = data.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
+
+            if (bulkOrder != null && !bulkOrder.OrderComplete)
+            {
+                var success = data.UpdateBulkOrderSetOrderAsShipped(Convert.ToInt32(bulkOrderId), trackingNumber);
+                EmailFunctions emailFunc = new EmailFunctions();
+                
+                var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderShippedEmail(trackingNumber), "Lid Launch Order Shipped", "");
+
+                return emailSuccess.ToString();
+            }
+
+            return "";
+        }
+
+        public string SearchBulkDesigns(string email)
+        {
+            BulkData data = new BulkData();
+            List<Design> lstDesigns = new List<Design>();
+
+            lstDesigns = data.GetBulkDesigns(email);
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(lstDesigns);  
+        }
+
+
+
+
         public string ApproveDigitizing(string id)
         {
             BulkData data = new BulkData();

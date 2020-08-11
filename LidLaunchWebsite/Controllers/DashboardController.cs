@@ -790,5 +790,26 @@ namespace LidLaunchWebsite.Controllers
             return success.ToString();
         }
 
+        public ActionResult SetBulkDesign()
+        {
+            return PartialView();
+        }
+
+        public string SetBulkOrderDesign(string bulkOrderId, string designId)
+        {
+            if (!checkLoggedIn())
+            {
+                return "false";
+            }
+            else
+            {
+                BulkData data = new BulkData();
+                data.UpdateBulkOrderDesign(Convert.ToInt32(bulkOrderId), Convert.ToInt32(designId));
+                return "true";
+
+            }
+
+        }
+
     }
 }

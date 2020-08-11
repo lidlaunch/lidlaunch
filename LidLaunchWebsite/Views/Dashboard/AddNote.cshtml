@@ -2,8 +2,12 @@
 @{
     ViewBag.Title = "AddNote";
 }
+<div id="notePopUp">
+    <div id="notePopupInner">
+        <span onclick="$('#notePopUp').hide();" class="closeButton" style="position:absolute; top:5px;right:5px;">X</span>
+        <input id="noteText" type="text" placeholder="add note..." />
+        <div id="saveNote"><input type="button" value="Save Note" class="smallButton" onclick="saveNote('@Model.noteType','@Model.idVal', '@Model.parentBulkOrderId')" /></div>
+    </div>
+</div>
 
-<h2>AddNote</h2>
-<input id="noteText" type="text" />
-<div id="saveNote" onclick="saveNote('@Model.noteType','@Model.idVal', '@Model.parentBulkOrderId')">Save Note</div>
 
