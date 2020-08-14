@@ -1,8 +1,16 @@
 ﻿using LidLaunchWebsite.Classes;
 using LidLaunchWebsite.Models;
+using Newtonsoft.Json.Linq;
+using PayPal.Api;
+using RestSharp;
+using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -60,10 +68,175 @@ namespace LidLaunchWebsite.Controllers
             {
                 cart.TotalWithShipping = cart.Total;
                 cart.Shipping = 0;
-            }
+            }            
+
 
             return View(cart);
         }
+
+        public ActionResult ProcessPayment()
+        {
+            return View();
+        }
+
+        public string PaymentWithCreditCard(string creditCard, string cartItems, string billingAddress, string shippingAddress, string shippingRecipient, int shippingPrice, string email,  string isBulkOrder)
+        {            
+
+
+            //Now make a List of Item and add the above item to it
+            //you can create as many items as you want and add to this list
+            List<Item> items = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Item>>(cartItems);
+            CreditCard cc = Newtonsoft.Json.JsonConvert.DeserializeObject<CreditCard>(creditCard);
+            Address billAddress = Newtonsoft.Json.JsonConvert.DeserializeObject<Address>(billingAddress);
+            Address shipAddress = Newtonsoft.Json.JsonConvert.DeserializeObject<Address>(shippingAddress);
+
+            ShippingAddress shippingAddressNew = new ShippingAddress();
+            shippingAddressNew.state = shipAddress.state;
+            shippingAddressNew.line1 = shipAddress.line1;
+            shippingAddressNew.postal_code = shipAddress.postal_code;
+            shippingAddressNew.city = shipAddress.city;
+            shippingAddressNew.phone = shipAddress.phone;
+            shippingAddressNew.recipient_name = shippingRecipient;
+            shippingAddressNew.country_code = "US";
+
+            billAddress.country_code = "US";
+
+            ItemList itemList = new ItemList();
+            itemList.items = items;
+            itemList.shipping_address = shippingAddressNew;
+
+
+            cc.type = FindType(cc.number);
+            cc.billing_address = billAddress;
+
+            var subtotal = items.Sum(i => Convert.ToDecimal(i.price) * Convert.ToInt32(i.quantity));
+            var total = shippingPrice + subtotal;
+
+            // Specify details of your payment amount.
+            var details = new Details();
+            details.shipping = shippingPrice.ToString();
+            details.subtotal = subtotal.ToString();
+            details.tax = "0";
+
+            // Specify your total payment amount and assign the details object
+            Amount amnt = new Amount();
+            amnt.currency = "USD";
+            // Total = shipping tax + subtotal.
+            amnt.total = total.ToString();
+            amnt.details = details;
+
+            var invoiceNumber = "";
+
+            String paymentGuid = Guid.NewGuid().ToString();
+
+            if (Convert.ToBoolean(isBulkOrder))
+            {
+                BulkController bc = new BulkController();
+                string orderResult = bc.CreateBulkOrder(cartItems, shippingRecipient, email, shippingAddressNew.phone, "", "", total.ToString(), paymentGuid);
+                invoiceNumber = "Bulk: " + orderResult;
+            } 
+            else
+            {
+                string orderResult = SubmitOrder(total.ToString(), cc.first_name, cc.last_name, email, billAddress.phone, shipAddress.line1, shipAddress.city, shipAddress.state, shipAddress.postal_code, billAddress.line1, billAddress.city, billAddress.state, billAddress.postal_code, paymentGuid);                
+                invoiceNumber = "Web:" + orderResult;
+            }          
+
+
+            // Now make a trasaction object and assign the Amount object
+            Transaction tran = new Transaction();
+            tran.amount = amnt;
+            tran.description = "Lid Launch Order Payment.";
+            tran.item_list = itemList;
+            tran.invoice_number = invoiceNumber;            
+
+            // Now, we have to make a list of trasaction and add the trasactions object
+            // to this list. You can create one or more object as per your requirements
+
+            List<Transaction> transactions = new List<Transaction>();
+            transactions.Add(tran);
+
+            // Now we need to specify the FundingInstrument of the Payer
+            // for credit card payments, set the CreditCard which we made above
+
+            FundingInstrument fundInstrument = new FundingInstrument();
+            fundInstrument.credit_card = cc;
+
+            // The Payment creation API requires a list of FundingIntrument
+
+            List<FundingInstrument> fundingInstrumentList = new List<FundingInstrument>();
+            fundingInstrumentList.Add(fundInstrument);
+
+            // Now create Payer object and assign the fundinginstrument list to the object
+            Payer payr = new Payer();
+            payr.funding_instruments = fundingInstrumentList;
+            payr.payment_method = "credit_card";            
+
+            // finally create the payment object and assign the payer object & transaction list to it
+            Payment pymnt = new Payment();
+            pymnt.intent = "sale";
+            pymnt.payer = payr;
+            pymnt.transactions = transactions;
+
+            try
+            {
+                //getting context from the paypal, basically we are sending the clientID and clientSecret key in this function 
+                //to the get the context from the paypal API to make the payment for which we have created the object above.
+
+                //Code for the configuration class is provided next
+
+                // Basically, apiContext has a accesstoken which is sent by the paypal to authenticate the payment to facilitator account. An access token could be an alphanumeric string
+
+                APIContext apiContext = PaypalConfiguration.GetAPIContext();
+
+                // Create is a Payment class function which actually sends the payment details to the paypal API for the payment. The function is passed with the ApiContext which we received above.
+
+                Payment createdPayment = pymnt.Create(apiContext);
+
+                //if the createdPayment.State is "approved" it means the payment was successfull else not
+
+                if (createdPayment.state.ToLower() != "approved")
+                {
+                    return "error";
+                }
+            }
+            catch (PayPal.PayPalException ex)
+            {
+                Logger.Log("Error: " + ex.Message);
+                return "error";
+            }
+
+            return paymentGuid;
+        }
+
+        public string FindType(string cardNumber)
+        {
+            //https://www.regular-expressions.info/creditcard.html
+            if (Regex.Match(cardNumber, @"^4[0-9]{12}(?:[0-9]{3})?$").Success)
+            {
+                return "visa";
+            }
+
+            if (Regex.Match(cardNumber, @"^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$").Success)
+            {
+                return "mastercard";
+            }
+
+            if (Regex.Match(cardNumber, @"^3[47][0-9]{13}$").Success)
+            {
+                return "amex";
+            }
+
+            if (Regex.Match(cardNumber, @"^6(?:011|5[0-9]{2})[0-9]{12}$").Success)
+            {
+                return "discover";
+            }
+
+            throw new Exception("Unknown card.");
+        }
+
+
+        private PayPal.Api.Payment payment;
+
 
         public string AddItemToCart(string productId, string qty, string size, string typeId, string colorId)
         {
@@ -174,11 +347,10 @@ namespace LidLaunchWebsite.Controllers
             var json = new JavaScriptSerializer().Serialize(totalProducts);
             return json;
         }
-        //public string SubmitOrder(string total, string firstName, string lastName, string email, string phone, string address, string city, string state, string zip, string addressBill, string cityBill, string stateBill, string zipBill)
-        public string SubmitOrder(string total, string firstName, string lastName, string email, string phone)
+        public string SubmitOrder(string total, string firstName, string lastName, string email, string phone, string address, string city, string state, string zip, string addressBill, string cityBill, string stateBill, string zipBill, string paymentGuid)        
         {
             OrderData orderData = new OrderData();
-            Order order = new Order();
+            Models.Order order = new Models.Order();
 
             Cart cart = new Cart();
             List<Product> lstProducts;
@@ -215,9 +387,9 @@ namespace LidLaunchWebsite.Controllers
                 orderTotal += 5;
             }            
 
-            String paymentGuid = Guid.NewGuid().ToString();
-            //var orderId = orderData.CreateOrder(orderTotal, firstName, lastName, email, phone, address, city, state, zip, addressBill, cityBill, stateBill, zipBill, paymentGuid, Convert.ToInt32(Session["UserID"]));
-            var orderId = orderData.CreateOrder(orderTotal, firstName, lastName, email, phone, "", "", "", "", "", "", "", "", paymentGuid, Convert.ToInt32(Session["UserID"]));
+            
+            var orderId = orderData.CreateOrder(orderTotal, firstName, lastName, email, phone, address, city, state, zip, addressBill, cityBill, stateBill, zipBill, paymentGuid, Convert.ToInt32(Session["UserID"]));
+            //var orderId = orderData.CreateOrder(orderTotal, firstName, lastName, email, phone, "", "", "", "", "", "", "", "", paymentGuid, Convert.ToInt32(Session["UserID"]));
             
             foreach (Product prod in cart.lstProducts)
             {
@@ -240,8 +412,8 @@ namespace LidLaunchWebsite.Controllers
                 var emailSuccess = emailFunc.sendEmail(email, firstName + " " + lastName, emailFunc.orderEmail(cart.lstProducts, total, orderId.ToString()), "Lid Launch Order Confirmation", "");
             }
 
-            var json = new JavaScriptSerializer().Serialize(new string[] {paymentGuid, orderId.ToString()});
-            return json;
+            //var json = new JavaScriptSerializer().Serialize(new string[] {paymentGuid, orderId.ToString()});
+            return orderId.ToString();
         }
         public virtual ActionResult Payment(string PaymentCode)
         {

@@ -24,6 +24,8 @@ namespace LidLaunchWebsite.Models
         public int ParentProductId { get; set; }
         public int ParentCount { get; set; }
         public string ApplyMethod { get; set; }
+        public decimal Price { get; set; }
+        public string ProductCategory { get; set; }
     }
     public class ProductPageProduct
     {

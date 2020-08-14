@@ -1,0 +1,71 @@
+﻿#checkoutContainer {
+    padding: 10px 20px;
+    color: ##333333;
+}
+
+#checkoutContainer table {
+    border: 1px solid #eee;
+    width: 100%;
+    border-radius:8px;
+    padding:10px;
+}
+#checkoutContainer table td{
+    padding:8px;
+}
+
+
+#checkoutContainer table input[type=text], #checkoutContainer table select {
+    width: 100%;
+}
+
+.checkoutStep {
+    margin:10px 0;
+}
+
+#paypalEntry {
+    display:none;
+}
+
+#differntBillingAddress {
+    display:none;
+}
+#paymentStep {
+    display:none;
+}
+
+#checkoutContainer .subTable {
+    background: #eee;
+}
+
+input[type=radio] {
+    width: 18px;
+    height: 18px;
+    -webkit-box-shadow: 0 0 0 0 #00bb00 inset;
+    box-shadow: 0 0 0 0 #00bb00 inset;
+    position: relative;
+    cursor: pointer;
+    vertical-align: -4px;
+    border: 1px solid;
+}
+
+#checkoutContainer a {
+    color: #39b91c;
+    font-size:14px;
+}
+
+#btnCompleteOrder {
+    display:none;
+}
+
+#checkoutContainer input[type=button].smallButton {
+    font-size: 18px;
+    padding: 20px;
+    margin: 10px 0;
+}
+
+#sameAsShippingRadioHolder, #differentBillingRadioHolder, #usePaypalRadioHolder, #userCreditCardRadioHolder {
+    cursor: pointer;
+}
+
+
+

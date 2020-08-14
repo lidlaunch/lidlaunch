@@ -124,7 +124,7 @@ namespace LidLaunchWebsite.Controllers
             {
                 EmailFunctions emailFunc = new EmailFunctions();
                 var emailSuccess = emailFunc.sendEmail(email, name, emailFunc.bulkOrderEmail(cartItems, orderTotal, orderId.ToString(), paymentGuid), "Lid Launch Order Confirmation", "");
-                return "success";
+                return orderId.ToString();
             } else
             {
                 return "";

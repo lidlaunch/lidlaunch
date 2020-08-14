@@ -69,7 +69,7 @@ function SubmitOrder() {
         }
     }    
 }
-function AddItemToCart() {
+function AddItemToCart(itemName, itemCategory, itemPrice) {
     var productId = $('#lblProductId').text();
     var qty = $('#txtQty').val();
     var size = $('#selectSize').val();
@@ -86,6 +86,14 @@ function AddItemToCart() {
         success: function (result) {
             $('#cartTotal').text(result);
             displayPopupNotification('Item added to cart.', 'error', false);
+            fbq('track', 'AddToCart', {
+                content_name: itemName,
+                content_category: itemCategory,
+                content_ids: [productId],
+                content_type: 'product',
+                value: (itemPrice * qty),
+                currency: 'USD'
+            });   
         },
         error: function () {
             alert('error');
