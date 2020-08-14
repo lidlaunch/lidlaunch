@@ -75,7 +75,13 @@
     <div class="centerInner">
         <div class="close" onclick="$('#checkoutPopoup').hide();" style="color:black;">X</div>
         <div id="checkoutHolderLeft">
-            @{ Html.RenderPartial("ProcessPayment", Model); }
+            <div id="chckoutWizzard">
+                @{ Html.RenderPartial("ProcessPayment", Model); }
+            </div>        
+            <div id="paypalButtons" class="hidden">
+                <h1>Select a payment option below</h1>
+                <div id="paypal-button-container"></div>
+            </div>
         </div>
         <div id="checkoutHolderRight">
             <table id="checkOutCartItems">
@@ -112,10 +118,7 @@
         @*<a href="#logo"><div id="PayNow" onclick="showPaypalButtons();">Pay Now With Paypal</div></a>*@
     </div><!--/cetnerInner-->
 </div><!--/checkoutPopup-->
-<div id="paypalButtons" class="hidden">
-    <h1>Select a payment option below</h1>
-    <div id="paypal-button-container"></div>
-</div>
+
 
 
 

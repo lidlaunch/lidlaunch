@@ -354,6 +354,7 @@ input[type=text], input[type=password], select {
         color: #39b91c;
         font-size: 26px;
         cursor: pointer;
+        border-radius:5px;
     }
 
 #examples {

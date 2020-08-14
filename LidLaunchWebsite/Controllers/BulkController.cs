@@ -86,16 +86,11 @@ namespace LidLaunchWebsite.Controllers
             return success.ToString();
         }
 
-        public string CreateBulkOrder(string items, string name, string email, string phone, string artworkPlacement, string orderNotes, string orderTotal, string paymentCompleteGuid)
+        public string CreateBulkOrder(string items, string name, string email, string phone, string artworkPlacement, string orderNotes, string orderTotal, string paymentCompleteGuid, HttpPostedFileBase fileContent)
         {
             var jss = new JavaScriptSerializer();
             var cartItems = jss.Deserialize<List<PaypalItem>>(items);
-            var artworkPath = "";
-            HttpPostedFileBase fileContent = null;
-            if (Request.Files.Count > 0)
-            {
-                fileContent = Request.Files[0];
-            }             
+            var artworkPath = "";                         
 
             if (fileContent != null && fileContent.ContentLength > 0)
             {
@@ -106,7 +101,7 @@ namespace LidLaunchWebsite.Controllers
 
                 var fileName = Guid.NewGuid() + extension;
                 artworkPath = fileName;
-                var path = Path.Combine(Server.MapPath("~/Images/BulkOrderArtwork/"), fileName);
+                var path = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory + "Images\\BulkOrderArtwork\\", fileName);
 
                 fileContent.SaveAs(path);
             }

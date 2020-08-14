@@ -36,10 +36,20 @@ function sameAsShipping() {
 
 }
 function processPayment() {
+    var isBulkOrder = false;
 
-    var isBulkOrder = $('#isBulkOrder').text();
+    if ($('#isBulkOrder').text() == "true") {
+        isBulkOrder = true;
+    }
 
-    var items = $('#productList').text();
+    var items = "";
+
+    if (isBulkOrder) {
+        items = JSON.stringify(currentBulkProductList);
+    } else {
+        items = $('#productList').text();
+    }
+    
     var shippingcost = $('#shippingCost').text();
     var email = $('#txtCustomerEmail').val();
     //shipping info
@@ -78,24 +88,57 @@ function processPayment() {
     var ccNumber = $('#txtCardNumber').val();
     var cType = $('#txt').val();    
 
-    var creditCardJson = '{ "billing_address" : ' + billingAddressJson + ', "cvv2" : "' + cvv + '", "expire_month" : "' + expMonth + '", "expire_year" : "' + expYear + '", "first_name" : "' + billFirstName + '", "last_name" : "' + billLastName + '", "number" : "' + ccNumber + '" }';
+    var creditCardJson = '{ "billing_address" : ' + billingAddressJson + ', "cvv2" : "' + cvv + '", "expire_month" : "' + expMonth + '", "expire_year" : "' + expYear + '", "first_name" : "' + billFirstName + '", "last_name" : "' + billLastName + '", "number" : "' + ccNumber + '"}';
+
+    var files = [];
+    var orderNotes = '';
+    var artworkPlacement = '';
+    var file = null;
+
+    if (isBulkOrder) {
+        files = $('#bulkArtwork')[0].files;
+        file = files[0];
+        orderNotes = $('#txtDetails').val();
+        if ($('#artworkPresetup').prop("checked")) {
+            orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
+        }
+        artworkPlacement = $('#artPlacement').text();
+    }
+
+
+    var data = new FormData();
+    data.append("file" + 0, file);
+    data.append("creditCard", creditCardJson);
+    data.append("cartItems", items);
+    data.append("billingAddress", billingAddressJson);
+    data.append("shippingAddress", shippingAddressJson);
+    data.append("shippingRecipient", shippingRecipient);
+    data.append("shippingPrice", shippingcost);
+    data.append("email", email);
+    data.append("isBulkOrder", isBulkOrder);
+    data.append("orderNotes", orderNotes);
+    data.append("artworkPlacement", artworkPlacement);
+    showLoading();
 
     $.ajax({
         type: "POST",
         url: '/Cart/PaymentWithCreditCard',
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: JSON.stringify({
-            "creditCard": creditCardJson, "cartItems": items, "billingAddress": billingAddressJson, "shippingAddress": shippingAddressJson, "shippingRecipient": shippingRecipient, "shippingPrice": shippingcost, "email": email, "isBulkOrder": isBulkOrder
-        }),
-        success: function () {
+        contentType: false,
+        processData: false,
+        data: data,
+        //data: JSON.stringify({
+        //    "creditCard": creditCardJson, "cartItems": items, "billingAddress": billingAddressJson, "shippingAddress": shippingAddressJson, "shippingRecipient": shippingRecipient, "shippingPrice": shippingcost, "email": email, "isBulkOrder": isBulkOrder
+        //}),
+        success: function (result) {
             if (result == "error") {
                 alert("error processing payment - please try again");   
             } else {
-                if (isBulkOrder == "true") {
+                if (isBulkOrder) {
                     // navigate to bulk order payment confirmation screen
+                    window.location = 'http://lidlaunch.com/bulk/payment?id=' + result;
                 } else {
                     // navigate to the normal paymetn confirmation screen
+                    window.location = 'http://lidlaunch.com/cart/payment?PaymentCode=' + result;
                 }
             }            
         },
@@ -104,6 +147,17 @@ function processPayment() {
         }
     });
 
+}
+function proceedToPayWithPaypal() {
+    var isBulkOrder = false;
 
+    if ($('#isBulkOrder').text() == "true") {
+        isBulkOrder = true;
+    }
+    if (isBulkOrder) {        
+        verifyAndShowPaypal();
+    } else {
+        showPaypalButtons();
+    }
 
 }
