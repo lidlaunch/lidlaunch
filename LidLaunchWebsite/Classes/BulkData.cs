@@ -860,7 +860,135 @@ namespace LidLaunchWebsite.Classes
             int totalDays = (weeksBase * 7) + addDays;
             return startDate.AddDays(totalDays * direction);
         }
-        
+
+
+        public int CreateMissingBlank(string missingBlank, int quantity)
+        {
+            var data = new SQLData();
+            var missingBankId = 0;
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("CreateMissingBlank", data.conn);
+                    SqlParameter returnParameter = sqlComm.Parameters.Add("missingBlankId", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+                    sqlComm.Parameters.AddWithValue("@missingBlank", missingBlank);
+                    sqlComm.Parameters.AddWithValue("@quantity ", quantity);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                    missingBankId = (int)returnParameter.Value;
+                    //updload the individual line items
+                    
+
+                }
+
+                return missingBankId;
+            }
+            catch (Exception ex)
+            {
+                return missingBankId;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public List<MissingBlank> GetMissingBlanks()
+        {
+            var data = new SQLData();
+            List<MissingBlank> lstMissingBlanks = new List<MissingBlank>();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetMissingBlanks", data.conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in ds.Tables[0].Rows)
+                            {
+                                MissingBlank missingBlank = new MissingBlank();
+                                missingBlank.Id = Convert.ToInt32(dr["Id"].ToString());
+                                missingBlank.MissingBlankName = Convert.ToString(dr["MissingBlank"].ToString());
+                                missingBlank.Quantity = Convert.ToInt32(dr["Quantity"].ToString());
+                                missingBlank.Status = Convert.ToString(dr["Status"].ToString());
+                                missingBlank.CreatedDate = Convert.ToDateTime(dr["CreatedDate"].ToString());
+
+                                lstMissingBlanks.Add(missingBlank);
+                            }
+
+                        }
+
+                    }
+
+
+                }
+
+                return lstMissingBlanks;
+            }
+            catch (Exception ex)
+            {
+                return lstMissingBlanks;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool UpdateMissingBlankStatus(int missingBlankId, string status)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateMissingBlankStatus", data.conn);
+                    sqlComm.Parameters.AddWithValue("@missingBlankId", missingBlankId);
+                    sqlComm.Parameters.AddWithValue("@status", status);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
 
 
     }
