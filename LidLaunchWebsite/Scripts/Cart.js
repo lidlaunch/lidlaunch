@@ -119,7 +119,7 @@ function RemoveItemFromCart(that) {
     });
 }
 //function renderPaypalButtons(price, items, name, line1, city, zip, phone, state) {
-function renderPaypalButtons(price, items, name) {
+function renderPaypalButtons(price, items, name, shippingCost, subtotal) {
     // Render the PayPal button
 
      paypal.Button.render({
@@ -156,7 +156,7 @@ function renderPaypalButtons(price, items, name) {
                 payment: {
                     transactions: [
                         {
-                            "amount": { "total": price, "currency": "USD" },
+                            "amount": { "total": price, "currency": "USD", "details": { "shipping": shippingCost, "tax": 0, "subtotal": subtotal } },
                             "description": "Lid Launch Order",
                             "item_list": {
                                 "items": JSON.parse(items)                                                         
@@ -186,6 +186,8 @@ function showPaypalButtons() {
     var lastName = $('#txtShippingLastName').val();
     var email = $('#txtCustomerEmail').val();
     var phone = $('#txtPhone').val();
+    var subTotal = $('#subTotal').text();
+    var shippingCost = $('#shippingCost').text();
     //var address = $('#txtAddress').val();
     //var city = $('#txtCity').val();
     //var state = $('#txtState').val();
@@ -201,8 +203,8 @@ function showPaypalButtons() {
         if (validateEmail(email)) {
             if (validatePhone(phone)) {
                 $('#chckoutWizzard').hide();
-                $('#paypalButtons').slidDown();
-                renderPaypalButtons(total, productList, firstName + ' ' + lastName);
+                $('#paypalButtons').slideDown();
+                renderPaypalButtons(total, productList, firstName + ' ' + lastName, shippingCost, subTotal);
             } else {
                 displayPopupNotification('Please enter a valid phone.', 'error', false);
             }

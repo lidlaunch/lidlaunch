@@ -1,6 +1,21 @@
 ﻿function proceedToPayment() {
     $('#shipingSection').hide();
+    setShipToSummary();
     $('#paymentStep').fadeIn();
+}
+function setShipToSummary() {
+    var shipAddress = $('#txtShippingAddress').val();
+    var shipCity = $('#txtShippingCity').val();
+    var shipState = $('#selShippingState').children("option:selected").val();
+    var shipZip = $('#txtShippingZip').val();
+
+    if ($('#rdPaypal').prop('checked') == true) {
+        $('#shipToSummary').text('PayPal shipping address');
+        $('#shipToChange').hide(); 
+    } else {
+        $('#shipToSummary').text(shipAddress + ', ' + shipCity + ', ' + shipState + ' ' + shipZip);        
+        $('#shipToChange').show();
+    }
 }
 function goBackToShipping() {
     $('#shipingSection').fadeIn();
@@ -14,6 +29,7 @@ function useCreditCard() {
     $('#btnCompleteOrder').hide();
     $('#btnPayNow').show();
     $('#billingAddres').show();
+    setShipToSummary();
 }
 function usePaypal() {
     $('#creditCardEntry').hide();
@@ -23,6 +39,7 @@ function usePaypal() {
     $('#btnPayNow').hide();
     $('#btnCompleteOrder').show();
     $('#billingAddres').hide();
+    setShipToSummary();
 }
 function useDifferentBillingAddress() {
     $('#differntBillingAddress').slideDown();    

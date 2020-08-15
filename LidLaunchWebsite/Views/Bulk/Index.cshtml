@@ -22,7 +22,7 @@
             <div class="bulkProgressBarStep" onclick="changeBulkOrderSection('checkout');"><img src="~/Images/cartStepIcon.png" height="40" />Checkout</div>
         </div>
         <div class="right">
-            <div class="bulkProgressBarContinuteButton" onclick="goToNextStep(currentOrderStep);">Next Step</div>
+            <div class="bulkProgressBarContinuteButton" onclick="goToNextStep(currentOrderStep);">Start</div>
         </div>
 
     </div>
@@ -1267,48 +1267,29 @@
             </div>
         </div>
         <div id="checkoutHolderRight">
-            <div id="bulkItemCartList">
-                <div class="bulkItemCartListItem">
-                    <div class="bulkItemCartListItemDetials"><b>Hat Style</b></div>
-                    <div class="bulkItemCartListItemQuantity"><b>Quantity</b></div>
-                    <div class="bulkItemCartListItemPrice"><b>Price</b></div>
-                </div>
-                <div id="cartListItems">
-                    <div class="bulkItemCartListItem">
-                        <div class="bulkItemCartListItemDetials">FlexFit 6277 - Black - S/M</div>
-                        <div class="bulkItemCartListItemQuantity">10</div>
-                        <div class="bulkItemCartListItemPrice">$15</div>
-                    </div>
-                    <div class="bulkItemCartListItem">
-                        <div class="bulkItemCartListItemDetials">FlexFit 6277 - Black - L/XL</div>
-                        <div class="bulkItemCartListItemQuantity">12</div>
-                        <div class="bulkItemCartListItemPrice">$15</div>
-                    </div>
-                </div>
-            </div>
-            <div class="cartSummary">
-                <div id="totalHeader">Totals</div>
-                <table id="totalTable" class="bulkCartTotals">
+                <table class="checkOutCartItems" id="cartItems">
                     <tbody>
+
+                    </tbody>
+                </table>
+                <table class="checkOutCartItems" style="margin-top:10px;">
+                    <tbody>
+                        <tr><td colspan="4"><hr></td></tr>
                         <tr>
-                            <td>Sub Total:</td>
+                            <td colspan="3">Sub Total:</td>
                             <td style="text-align:right;"><span id="bulkCartSubTotal">$0.00</span></td>
                         </tr>
-                        <tr id="tax" class="hidden">
-                            <td>Taxes:</td>
-                            <td style="text-align:right;">$0.00</td>
-                        </tr>
                         <tr>
-                            <td>Shipping:</td>
+                            <td colspan="3">Shipping:</td>
                             <td style="text-align:right;">$<span id="shippingCost">0</span></td>
                         </tr>
+                        <tr><td colspan="4"><hr></td></tr>
                         <tr>
-                            <td style="font-weight:bold;">Total:</td>
-                            <td style="text-align:right; font-weight:bold;"><span id="bulkCartTotal">$0.00</span></td>
+                            <td colspan="3" style="font-weight:bold;">Total:</td>
+                            <td style="text-align:right; font-weight:bold;">$<span id="lblTotal">44.98</span></td>
                         </tr>
                     </tbody>
                 </table>
-            </div><!--/cartSummary/-->
         </div>
 
         @*<a href="#logo"><div id="PayNow" onclick="showPaypalButtons();">Pay Now With Paypal</div></a>*@

@@ -15,6 +15,10 @@
     //    container = $('#dialog-notifications-success');
     //}
 
+    $('#errorNotifcation').click(function () {
+        $(this).hide();
+    });
+
     //we do not encode displayed message
     var htmlcode = '';
     if ((typeof message) == 'string') {
@@ -25,10 +29,11 @@
         }
     }
 
-    htmlcode = htmlcode + '<p id="closeError" onclick="closeError();">Close</p>'
+    //htmlcode = htmlcode + '<p id="closeError" onclick="closeError();">Close</p>'
     container.find('#errorContent').html(htmlcode);
     hideLoading();
     $('#errorNotifcation').show();
+    $('#errorNotifcation').delay(1600).fadeOut(300);
 }
 function closeError() {
     $('#errorNotifcation').hide();

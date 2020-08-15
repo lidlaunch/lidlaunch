@@ -22,7 +22,7 @@
             </tr>
             <tr>
                 <td><input type="text" placeholder="First name" id="txtShippingFirstName" autocomplete="shipping given-name" /></td>
-                <td><input type="text" placeholder="First name" id="txtShippingLastName" autocomplete="shipping family-name" /></td>
+                <td><input type="text" placeholder="Last name" id="txtShippingLastName" autocomplete="shipping family-name" /></td>
             </tr>
             <tr>
                 <td colspan="2">
@@ -114,8 +114,8 @@
                 </tr>
                 <tr>
                     <td>Ship to</td>
-                    <td>1840 Crimson Oak Drive, Maryville, IL 62062</td>
-                    <td><a href="#" onclick="goBackToShipping();">change</a></td>
+                    <td id="shipToSummary">1840 Crimson Oak Drive, Maryville, IL 62062</td>
+                    <td><a id="shipToChange" href="#" onclick="goBackToShipping();">change</a></td>
                 </tr>
             </table>
         </div>
@@ -136,7 +136,7 @@
                     <td colspan="2">
                         <table class="subTable">
                             <tr>
-                                <td colspan="3"><input type="text" placeholder="Card number" id="txtCardNumber" minlength="13" maxlength="19"/></td>
+                                <td colspan="3" style="position:relative;"><input type="text" placeholder="Card number" id="txtCardNumber" minlength="13" maxlength="19"/><img src="~/Images/ccavailable.png" style="position:absolute; right:6px; top:11px;"/></td>
                             </tr>
                             <tr>
                                 <td colspan="3"><input type="text" placeholder="Name on card" id="txtNameOnCard"/></td>
@@ -151,14 +151,14 @@
                 </tr>
                 <tr id="usePaypalRadioHolder" onclick="usePaypal()">
                     <td>
-                        <input type="radio" id="rdPaypal" /> PayPal
+                        <input type="radio" id="rdPaypal" /> <img src="~/Images/paypal.png" alt="PayPal" style="vertical-align: middle; height: 20px;"/>
                     </td>
                 </tr>
                 <tr id="paypalEntry">
                     <td colspan="2">
                         <table class="subTable">
                             <tr>
-                                <td> After clicking “Complete order”, you will be redirected to PayPal to complete your purchase securely.</td>
+                                <td> After clicking “Complete order”, you will be redirected to PayPal to complete your purchase securely.<br/><b>NOTE: Your order will be shipped to your PayPal shipping address!</b></td>
                             </tr>
                         </table>
                     </td>
@@ -188,7 +188,7 @@
                         <table class="subTable">
                             <tr>
                                 <td><input type="text" placeholder="First name" id="txtBillingFirstName" autocomplete="billing given-name" /></td>
-                                <td><input type="text" placeholder="First name" id="txtBillingLastName" autocomplete="billing family-name" /></td>
+                                <td><input type="text" placeholder="Last name" id="txtBillingLastName" autocomplete="billing family-name" /></td>
                             </tr>
 
                             <tr>
@@ -274,7 +274,7 @@
         <div id="completeOrderButtons">
             <a href="#" onclick="goBackToShipping()" class="left" style="line-height:80px;">< Go Back</a>
             <input type="button" value="Pay now" class="smallButton right" id="btnPayNow" onclick="processPayment();"/>
-            <input type="button" value="Complete order" class="smallButton  right" id="btnCompleteOrder"/>
+            <input type="button" value="Complete order" class="smallButton  right" id="btnCompleteOrder" onclick="proceedToPayWithPaypal()"/>
         </div>
     </div><!--/paymentStep-->
 </div><!--/checkoutContainer-->

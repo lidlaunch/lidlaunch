@@ -30,6 +30,7 @@
                         </span>
                     </div>
                 }
+                productList = productList.TrimEnd(',');
                 productList = productList + "]";
                 <span id="productList" class="hidden">@productList</span>
                 <span id="shippingCost" class="hidden">@Model.Shipping</span>
@@ -48,7 +49,7 @@
                 <table id="totalTable">
                     <tr>
                         <td>Sub Total:</td>
-                        <td style="text-align:right;">$@Model.Total</td>
+                        <td style="text-align:right;">$<span id="subTotal">@Model.Total</span></td>
                     </tr>
                     <tr id="tax" class="hidden">
                         <td>Taxes:</td>
@@ -56,7 +57,7 @@
                     </tr>
                     <tr>
                         <td>Shipping:</td>
-                        <td style="text-align:right;">$@Model.Shipping</td>
+                        <td style="text-align:right;">$<span id="shippingCost">@Model.Shipping</span></td>
                     </tr>
                     <tr>
                         <td style="font-weight:bold;">Total:</td>
@@ -84,7 +85,7 @@
             </div>
         </div>
         <div id="checkoutHolderRight">
-            <table id="checkOutCartItems">
+            <table class="checkOutCartItems">
                 @if (Model.lstProducts.Count != 0)
                 {
 

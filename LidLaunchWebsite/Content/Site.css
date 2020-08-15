@@ -300,25 +300,27 @@ input[type=text], input[type=password], select {
     margin: 0 auto;
 }
 
-    #searchHome #searhHolder #searchButton {
-        width: 40px;
-        height: 40px;
-        background: #22790f;
-        float: left;
-        padding: 5px;
-        cursor: pointer;
-    }
+#searchHome #searhHolder #searchButton {
+    width: 40px;
+    height: 40px;
+    background: #22790f;
+    float: left;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+}
 
-    #searchHome #searhHolder #search {
-        width: 695px;
-        height: 50px;
-        display: inline-block;
-        font-size: 32px;
-        float: left;
-        border: 1px solid #000;
-        padding: 0;
-        padding-left: 5px;
-    }
+#searchHome #searhHolder #search {
+    width: 695px;
+    height: 50px;
+    display: inline-block;
+    font-size: 32px;
+    float: left;
+    border: 1px solid #000;
+    padding: 0;
+    padding-left: 5px;
+    border-radius: 5px 0 0 5px;
+}
 
 #searchHome .SearchTag {
     font-size: 50px;
@@ -549,6 +551,7 @@ input[type=text], input[type=password], select {
     padding: 20px;
     margin-top: 20px;
     position: relative;
+    border-radius:5px 5px 0 0;
 }
 
     #productDetails #productOptionsBox select {
@@ -588,6 +591,7 @@ input[type=text], input[type=password], select {
     font-weight: bold;
     font-size: 20px;
     cursor: pointer;
+    border-radius: 0 0 5px 5px;
 }
 /*HAT CREATION WIZARD*/
 #HatCreation {
@@ -888,6 +892,7 @@ input[type=text], input[type=password], select {
     cursor: pointer;
     margin: 0 auto;
     margin-top: 20px;
+    border-radius:5px;
 }
 
 .GetStartedBlock {
@@ -1293,6 +1298,7 @@ input[type=text], input[type=password], select {
     padding: 20px;
     font-weight: bold;
     font-size: 32px;
+    border-radius:5px;
 }
 
 #totalTable tr td {
@@ -1380,6 +1386,7 @@ input[type=text], input[type=password], select {
     width: 100%;
     height: 100%;
     z-index: 99;
+    overflow-y:auto;
 }
 #checkoutPopoup .centerInner {
     height:100%;
@@ -1398,7 +1405,7 @@ input[type=text], input[type=password], select {
     background:#eee;
     width:40%;
 }
-#checkOutCartItems {
+.checkOutCartItems {
     width: 80%;
     margin: 0 auto;
     margin-top: 70px;
@@ -1595,6 +1602,7 @@ input[type=text], input[type=password], select {
     padding-left: 5px;
     padding: 5px;
     cursor: pointer;
+    border-radius:5px;
 }
 
     #hatTypeSelect img {
@@ -1662,6 +1670,7 @@ input[type=text], input[type=password], select {
     cursor: pointer;
     margin-top: 10px;
     margin-right: 10px;
+    border-radius:5px;
 }
 
 .smallStepCircle {
@@ -2678,25 +2687,26 @@ input[type=text], input[type=password], select {
         width: 100%;
     }
 
-        .cartDetails .productRow {
-            height: auto;
-            text-align: center;
-            margin-bottom: 10px;
-        }
+    .cartDetails .productRow {
+        height: auto;
+        text-align: center;
+        margin-bottom: 10px;
+    }
 
-        .cartDetails .productImage {
-            float: none;
-        }
+    .cartDetails .productImage {
+        float: none;
+    }
 
-        .cartDetails .productDetails {
-            0.00 display: block;
-            margin-left: 0;
-            float: none;
-        }
+    .cartDetails .productDetails {
+        0.00 display: block;
+        margin-left: 0;
+        float: none;
+    }
 
-        .cartDetails .removeButton {
-            display: inline;
-        }
+    .cartDetails .removeButton {
+        display: inline;
+        border-radius: 2px;
+    }
 
     #paypalCreditBanner img {
         max-width: 100%;

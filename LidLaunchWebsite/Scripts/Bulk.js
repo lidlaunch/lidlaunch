@@ -166,8 +166,9 @@ function updateBulkTotals() {
         $('#artworkSetupFee').show();
     } else {
         $('#artworkSetupFee').hide();
+        productList = productList.slice(0, -1);
     }
-
+    
     productList = productList + ']';
     //productList = productList + '{"name":"Shipping","quantity":"1","price":"' + currentShippingTotal + '","currency":"USD"}]';
 
@@ -203,9 +204,9 @@ function showBulkCart() {
     $('#bulkCartSubTotal').text('$' + currentTotalCost);
     $('#shippingCost').text(currentShippingTotal);
     $('#bulkCartTotal').text('$' + currentGrandTotalCost);
-    $('#cartListItems').empty();
-    for (var i = 0; i < currentBulkProductList.length - 1; i++) {
-        $('#cartListItems').append('<div class="bulkItemCartListItem"><div class="bulkItemCartListItemDetials">' + currentBulkProductList[i].name + '</div><div class="bulkItemCartListItemQuantity">' + currentBulkProductList[i].quantity + '</div><div class="bulkItemCartListItemPrice">' + currentBulkProductList[i].price + '</div></div>');
+    $('#cartItems tbody').empty();
+    for (var i = 0; i < currentBulkProductList.length; i++) {
+        $('#cartItems tbody').append('<tr><td><span>' + currentBulkProductList[i].quantity + '</span> x <span>' + currentBulkProductList[i].name + '</span></td><td><span>' + currentBulkProductList[i].price + '</span></td></tr>');
     }
     $('.bulkCartPopup').show();    
 }
@@ -437,6 +438,8 @@ function changeBulkOrderSection(section) {
         $('#hatsStepButton').removeClass('selected');
         $('#artStepButton').removeClass('selected');
 
+        $('.bulkProgressBarContinuteButton').text('Start');
+
         $('#introStepButton').addClass('selected');
         currentOrderStep = 'intro';
         document.getElementById("header").scrollIntoView();
@@ -450,37 +453,74 @@ function changeBulkOrderSection(section) {
         $('#hatsStepButton').removeClass('selected');
         $('#artStepButton').removeClass('selected');
 
+        $('.bulkProgressBarContinuteButton').text('Next Step');
+
         $('#hatsStepButton').addClass('selected');
         currentOrderStep = 'hats';
         document.getElementById("header").scrollIntoView();
     }
     if (section == 'art') {
-        $('#bulkIntro').hide();
-        $('#bulkHatTypeSelect').hide();
-        $('#bulkArtworkStep').show();
+        if (validateHats()) {
+            $('#bulkIntro').hide();
+            $('#bulkHatTypeSelect').hide();
+            $('#bulkArtworkStep').show();
 
-        $('#introStepButton').removeClass('selected');
-        $('#hatsStepButton').removeClass('selected');
-        $('#artStepButton').removeClass('selected');
+            $('#introStepButton').removeClass('selected');
+            $('#hatsStepButton').removeClass('selected');
+            $('#artStepButton').removeClass('selected');
 
-        $('#artStepButton').addClass('selected');
-        currentOrderStep = 'art';
-        document.getElementById("header").scrollIntoView();
+            $('.bulkProgressBarContinuteButton').text('Checkout');
+
+            $('#artStepButton').addClass('selected');
+            currentOrderStep = 'art';
+            document.getElementById("header").scrollIntoView();
+        }
     }
     if (section == 'checkout') {
-        showBulkCart();
+        if (validateHats()) {
+            if (validateArt()) {
+                showBulkCart();
+            }     
+        }
+           
     }
 }
 function goToNextStep(currentStep) {
     if (currentStep == 'intro') {
         changeBulkOrderSection('hats');
     }
-    if (currentStep == 'hats') {
+    if (currentStep == 'hats') {        
         changeBulkOrderSection('art');
     }
-    if (currentStep == 'art') {
+    if (currentStep == 'art') {        
         changeBulkOrderSection('checkout');
     }
+}
+function validateHats() {
+    if (currentBulkProductList.length > 0) {
+        return true;
+    } else {
+        displayPopupNotification('You need to select some hats from the expandable regions before continuing to the next step.', 'error', false);
+        return false;
+    }
+}
+function validateArt() {
+    var files = $('#bulkArtwork')[0].files;
+
+    var orderNotes = $('#txtDetails').val();
+    var artPlacement = $('#artPlacement').text();
+
+    if ($('#artworkPresetup').prop("checked")) {
+        orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
+    }
+
+    if ((files.length > 0 || $('#artworkPresetup').prop("checked")) && artPlacement != "") {
+        return true;
+    } else {
+        displayPopupNotification('Please upload your artwork if it is not already setup and select a placement location.', 'error', false);
+        return false;
+    }
+
 }
 
 function showBulkOrderDetailsPopup(bulkOrderId) {
