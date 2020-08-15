@@ -1,0 +1,280 @@
+﻿<div id="checkoutContainer">
+    <div style="text-align:center;">
+        <img src="~/Images/logo.jpg" width="300" />
+    </div>
+    <div id="shipingSection" class="checkoutStep">
+        <table>
+            <tr>
+                <td colspan="2">
+                    <b>Contact info</b>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="text" placeholder="Email" id="txtCustomerEmail" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="checkbox" checked id="chkOptIn" />Keep me up to date on news and exclusive offers</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <b>Shipping address</b>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text" placeholder="First name" id="txtShippingFirstName" autocomplete="shipping given-name" /></td>
+                <td><input type="text" placeholder="First name" id="txtShippingLastName" autocomplete="shipping family-name" /></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="text" placeholder="Address" id="txtShippingAddress" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="text" placeholder="City" id="txtShippingCity" /></td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="selShippingState">
+                        <option value="AL">Alabama</option>
+                        <option value="AK">Alaska</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="AR">Arkansas</option>
+                        <option value="CA">California</option>
+                        <option value="CO">Colorado</option>
+                        <option value="CT">Connecticut</option>
+                        <option value="DE">Delaware</option>
+                        <option value="DC">District Of Columbia</option>
+                        <option value="FL">Florida</option>
+                        <option value="GA">Georgia</option>
+                        <option value="HI">Hawaii</option>
+                        <option value="ID">Idaho</option>
+                        <option value="IL">Illinois</option>
+                        <option value="IN">Indiana</option>
+                        <option value="IA">Iowa</option>
+                        <option value="KS">Kansas</option>
+                        <option value="KY">Kentucky</option>
+                        <option value="LA">Louisiana</option>
+                        <option value="ME">Maine</option>
+                        <option value="MD">Maryland</option>
+                        <option value="MA">Massachusetts</option>
+                        <option value="MI">Michigan</option>
+                        <option value="MN">Minnesota</option>
+                        <option value="MS">Mississippi</option>
+                        <option value="MO">Missouri</option>
+                        <option value="MT">Montana</option>
+                        <option value="NE">Nebraska</option>
+                        <option value="NV">Nevada</option>
+                        <option value="NH">New Hampshire</option>
+                        <option value="NJ">New Jersey</option>
+                        <option value="NM">New Mexico</option>
+                        <option value="NY">New York</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="ND">North Dakota</option>
+                        <option value="OH">Ohio</option>
+                        <option value="OK">Oklahoma</option>
+                        <option value="OR">Oregon</option>
+                        <option value="PA">Pennsylvania</option>
+                        <option value="RI">Rhode Island</option>
+                        <option value="SC">South Carolina</option>
+                        <option value="SD">South Dakota</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="TX">Texas</option>
+                        <option value="UT">Utah</option>
+                        <option value="VT">Vermont</option>
+                        <option value="VA">Virginia</option>
+                        <option value="WA">Washington</option>
+                        <option value="WV">West Virginia</option>
+                        <option value="WI">Wisconsin</option>
+                        <option value="WY">Wyoming</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" placeholder="ZIP code" id="txtShippingZip" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="text" placeholder="Phone (optional)" id="txtPhone" />
+                </td>
+
+            </tr>
+        </table>
+        <div>
+            <input type="button" value="Continue To Payment" class="smallButton right" onclick="proceedToPayment();"/>
+        </div>
+    </div><!--/shipingSection-->
+
+    <div id="paymentStep" class="checkoutStep">
+        <div id="infoSummary">
+            <table>
+                <tr>
+                    <td>Contact</td>
+                    <td><span id="spnContactPreview">robertwhamm@yahoo.com</span></td>
+                    <td><a href="#" onclick="goBackToShipping();">change</a></td>
+                </tr>
+                <tr>
+                    <td>Ship to</td>
+                    <td>1840 Crimson Oak Drive, Maryville, IL 62062</td>
+                    <td><a href="#" onclick="goBackToShipping();">change</a></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="paymentInfo">
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <b>Payment</b><br />All Transactions are secure and encrypted.
+                    </td>
+                </tr>
+                <tr id="userCreditCardRadioHolder" onclick="useCreditCard()">
+                    <td>
+                        <input type="radio" id="rdCreditCard" checked/> Credit card
+                    </td>
+                </tr>
+                <tr id="creditCardEntry">
+                    <td colspan="2">
+                        <table class="subTable">
+                            <tr>
+                                <td colspan="3"><input type="text" placeholder="Card number" id="txtCardNumber" minlength="13" maxlength="19"/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"><input type="text" placeholder="Name on card" id="txtNameOnCard"/></td>
+                            </tr>
+                            <tr>
+                                <td style="width:25%;"><input type="text" placeholder="Exp MM" id="txtExpirationMonth" minlength="1" maxlength="2"/></td>
+                                <td style="width:25%;"><input type="text" placeholder="Exp YYYY" id="txtExpirationYear" minlength="4" maxlength="4"/></td>
+                                <td style="width:50%;"><input type="text" placeholder="Security code" id="txtSecurityCode" minlength="3" maxlength="4"/></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr id="usePaypalRadioHolder" onclick="usePaypal()">
+                    <td>
+                        <input type="radio" id="rdPaypal" /> PayPal
+                    </td>
+                </tr>
+                <tr id="paypalEntry">
+                    <td colspan="2">
+                        <table class="subTable">
+                            <tr>
+                                <td> After clicking “Complete order”, you will be redirected to PayPal to complete your purchase securely.</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </table>
+        </div><!--/paymentInfo-->
+
+
+
+
+        <div id="billingAddres" class="checkoutStep">
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <b>Billing address</b><br />Select the address that matches your card.
+                    </td>
+                </tr>
+                <tr id="sameAsShippingRadioHolder" onclick="sameAsShipping()">
+                    <td><input type="radio" id="rdUseSameAsShipping" checked/>Same as shipping address</td>
+                </tr>
+                <tr id="differentBillingRadioHolder" onclick="useDifferentBillingAddress()">
+                    <td><input type="radio" id="rdUsedifferentAddress" />Use a different address</td>
+                </tr>
+                <tr id="differntBillingAddress">
+                    <td>
+                        <table class="subTable">
+                            <tr>
+                                <td><input type="text" placeholder="First name" id="txtBillingFirstName" autocomplete="billing given-name" /></td>
+                                <td><input type="text" placeholder="First name" id="txtBillingLastName" autocomplete="billing family-name" /></td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <input type="text" placeholder="Address" id="txtBillingAddress" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><input type="text" placeholder="City" id="txtBillingCity" /></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select id="selBillingState">
+                                        <option value="AL">Alabama</option>
+                                        <option value="AK">Alaska</option>
+                                        <option value="AZ">Arizona</option>
+                                        <option value="AR">Arkansas</option>
+                                        <option value="CA">California</option>
+                                        <option value="CO">Colorado</option>
+                                        <option value="CT">Connecticut</option>
+                                        <option value="DE">Delaware</option>
+                                        <option value="DC">District Of Columbia</option>
+                                        <option value="FL">Florida</option>
+                                        <option value="GA">Georgia</option>
+                                        <option value="HI">Hawaii</option>
+                                        <option value="ID">Idaho</option>
+                                        <option value="IL">Illinois</option>
+                                        <option value="IN">Indiana</option>
+                                        <option value="IA">Iowa</option>
+                                        <option value="KS">Kansas</option>
+                                        <option value="KY">Kentucky</option>
+                                        <option value="LA">Louisiana</option>
+                                        <option value="ME">Maine</option>
+                                        <option value="MD">Maryland</option>
+                                        <option value="MA">Massachusetts</option>
+                                        <option value="MI">Michigan</option>
+                                        <option value="MN">Minnesota</option>
+                                        <option value="MS">Mississippi</option>
+                                        <option value="MO">Missouri</option>
+                                        <option value="MT">Montana</option>
+                                        <option value="NE">Nebraska</option>
+                                        <option value="NV">Nevada</option>
+                                        <option value="NH">New Hampshire</option>
+                                        <option value="NJ">New Jersey</option>
+                                        <option value="NM">New Mexico</option>
+                                        <option value="NY">New York</option>
+                                        <option value="NC">North Carolina</option>
+                                        <option value="ND">North Dakota</option>
+                                        <option value="OH">Ohio</option>
+                                        <option value="OK">Oklahoma</option>
+                                        <option value="OR">Oregon</option>
+                                        <option value="PA">Pennsylvania</option>
+                                        <option value="RI">Rhode Island</option>
+                                        <option value="SC">South Carolina</option>
+                                        <option value="SD">South Dakota</option>
+                                        <option value="TN">Tennessee</option>
+                                        <option value="TX">Texas</option>
+                                        <option value="UT">Utah</option>
+                                        <option value="VT">Vermont</option>
+                                        <option value="VA">Virginia</option>
+                                        <option value="WA">Washington</option>
+                                        <option value="WV">West Virginia</option>
+                                        <option value="WI">Wisconsin</option>
+                                        <option value="WY">Wyoming</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" placeholder="ZIP code" id="txtBillingZip" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <input type="text" placeholder="Phone (optional)" id="txtBillingPhone" />
+                                </td>
+
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </table>
+        </div><!--/billingAddres-->
+        <div id="completeOrderButtons">
+            <a href="#" onclick="goBackToShipping()" class="left" style="line-height:80px;">< Go Back</a>
+            <input type="button" value="Pay now" class="smallButton right" id="btnPayNow" onclick="processPayment();"/>
+            <input type="button" value="Complete order" class="smallButton  right" id="btnCompleteOrder"/>
+        </div>
+    </div><!--/paymentStep-->
+</div><!--/checkoutContainer-->

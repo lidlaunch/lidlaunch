@@ -1,7 +1,9 @@
 ﻿@{
     ViewBag.Title = "Lid Launch - Buy, Create and Sell Custom Hats Online. We handle everything for you!";
 }
-
+<script type="text/javascript">
+    fbq('track', "PageView");
+</script>
 
 <div id="searchBox">
     <div class="centerInner">
@@ -90,15 +92,7 @@
                 <img src="~/Images/DesignImages/InUse/@prod.Image" width="250" class="productImage" /><br />
                 <span class="prodName">@prod.Name</span><br />
                 <span class="prodPrice">
-                    @if (@prod.ApplyMethod.ToLower() == "embroidery")
-                    {
-                        <span>$19.99</span>
-                    }
-                    else if (@prod.ApplyMethod.ToLower() == "leatherpatch")
-                    {
-                        <span>$29.99</span>
-                    }
-
+                    $@prod.Price
                 </span>
                 @if (prod.ParentCount > 0)
                 {

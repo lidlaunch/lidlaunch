@@ -24,7 +24,9 @@ input[type=button] {
     cursor: pointer;
     border: 0;
     margin: 10px 0;
+    border-radius:5px;
 }
+
 
 input[type=button].smallButton {
     font-size: 14px;
@@ -37,6 +39,9 @@ input[type=text], input[type=password], select {
     border: 1px solid #ddd;
     padding-left: 5px;
     height: 30px;
+    border-radius: 5px;
+    font-family: sans-serif;
+    font-size:16px;
 }
 
 .left {
@@ -240,7 +245,7 @@ input[type=text], input[type=password], select {
     height: auto;
     width: 100%;
     padding-top: 20px;
-    min-height:600px;
+    min-height: 600px;
 }
 
 #productDetails {
@@ -349,6 +354,7 @@ input[type=text], input[type=password], select {
         color: #39b91c;
         font-size: 26px;
         cursor: pointer;
+        border-radius:5px;
     }
 
 #examples {
@@ -1312,6 +1318,7 @@ input[type=text], input[type=password], select {
     font-weight: bold;
     font-size: 32px;
     cursor: pointer;
+    border-radius:10px;
 }
 
 .paypalImage {
@@ -1365,8 +1372,8 @@ input[type=text], input[type=password], select {
 }
 
 
-#customerInfoPopup {
-    background: rgba(0,0,0,0.8);
+#checkoutPopoup {
+    background: #fff;
     position: fixed;
     top: 0;
     left: 0;
@@ -1374,35 +1381,29 @@ input[type=text], input[type=password], select {
     height: 100%;
     z-index: 99;
 }
-
-#customerInformation {
-    background: #fff;
-    border: #ddd 1px solid;
-    width: 560px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin: 0 auto;
-    height: auto;
-    margin-top: 10px;
-    position: relative;
+#checkoutPopoup .centerInner {
+    height:100%;
+}
+#checkoutHolderLeft {
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+    width: 50%;
 }
 
-    #customerInformation .formInput {
-        float: left;
-        width: 200px;
-    }
-
-        #customerInformation .formInput.formInputLabel {
-            width: 100px !important;
-            float: left;
-        }
-
-    #customerInformation #PayNow {
-        margin: 10px 0;
-    }
-
+#checkoutHolderRight {
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+    background:#eee;
+    width:40%;
+}
+#checkOutCartItems {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 70px;
+    font-size: 17px;
+}
 #paymentContainer {
     width: 600px;
     margin: 0 auto;
@@ -1628,8 +1629,9 @@ input[type=text], input[type=password], select {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    z-index:10;
+    z-index: 10;
 }
+
 .bulkProgressBarStep {
     width: auto;
     display: inline-block;
@@ -1642,22 +1644,26 @@ input[type=text], input[type=password], select {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-.bulkProgressBarStep img {
-    vertical-align: middle;
-    margin-right:5px;
-}
-.bulkProgressBarStep.selected {
-    border-bottom: 4px solid #fff;
-}
+
+    .bulkProgressBarStep img {
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+
+    .bulkProgressBarStep.selected {
+        border-bottom: 4px solid #fff;
+    }
+
 .bulkProgressBarContinuteButton {
-    background:#fff;
-    color:#39b91c;
-    font-size:28px;
-    padding:10px 20px;
-    cursor:pointer;
-    margin-top:10px;
-    margin-right:10px;
+    background: #fff;
+    color: #39b91c;
+    font-size: 28px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-right: 10px;
 }
+
 .smallStepCircle {
     border-radius: 50%;
     behavior: url(PIE.htc);
@@ -1668,6 +1674,7 @@ input[type=text], input[type=password], select {
     font: 32px Arial, sans-serif;
     margin: 0 5px;
 }
+
 #bulkIntro {
     width: 100%;
     height: auto;
@@ -1683,17 +1690,21 @@ input[type=text], input[type=password], select {
     width: 90%;
     height: 370px;
 }
+
 #customerReviews {
     color: #39b91c;
-    background:#fff;
-    padding-top:20px;
+    background: #fff;
+    padding-top: 20px;
 }
+
 #fiveStarHolder {
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
-#fiveStarHolder img {
-    vertical-align: middle;
-}
+
+    #fiveStarHolder img {
+        vertical-align: middle;
+    }
+
 #getStartedBar {
     background: #39b91c;
     height: 70px;
@@ -1701,12 +1712,14 @@ input[type=text], input[type=password], select {
     display: block;
     color: #fff;
 }
+
 .startBulk {
     text-align: center;
     font-size: 38px;
     line-height: 70px;
-    cursor:pointer;
+    cursor: pointer;
 }
+
 .bulkSectionHeader {
     width: 100%;
     height: 200px;
@@ -1770,22 +1783,24 @@ input[type=text], input[type=password], select {
     cursor: pointer;
 }
 
-.hatTitle .title {
-    color: #39b91c;
-    font-weight: bold;
-    font-size: 30px;
-}
+    .hatTitle .title {
+        color: #39b91c;
+        font-weight: bold;
+        font-size: 30px;
+    }
 
 #FlexFit.hatBrand {
     background: url(/Images/FlexFitSectionBG.jpg) no-repeat;
     background-position: right;
     background-color: #efefef;
 }
+
 #Yupoong.hatBrand {
     background: url(/Images/YupoongSectionBG.jpg) no-repeat;
     background-position: right;
     background-color: #efefef;
 }
+
 #Richardson.hatBrand {
     background: url(/Images/RichardsonSectionBG.jpg) no-repeat;
     background-position: right;
@@ -1862,11 +1877,12 @@ input[type=text], input[type=password], select {
 }
 
 #preSetupArtwork {
-    margin:20px 0;
+    margin: 20px 0;
 }
+
 #artworkPresetup {
-    width:20px;
-    height:20px;
+    width: 20px;
+    height: 20px;
 }
 
 .currentTotalContent {
@@ -1926,6 +1942,7 @@ input[type=text], input[type=password], select {
     text-align: center;
     color: #fff;
 }
+
 .closeButton {
     background: #000;
     color: #fff;
@@ -1935,6 +1952,7 @@ input[type=text], input[type=password], select {
     border: 1px solid #000;
     cursor: pointer;
 }
+
 #paypalPaymentButtonsInner {
     margin-top: 30px;
 }
@@ -1958,8 +1976,8 @@ input[type=text], input[type=password], select {
     width: 400px;
     margin: 0 auto;
     padding: 40px;
-    position:relative;
-    margin-top:20px;
+    position: relative;
+    margin-top: 20px;
 }
 
 #setBulkDesignPopup {
@@ -1979,15 +1997,18 @@ input[type=text], input[type=password], select {
     padding: 40px;
     position: relative;
     margin-top: 20px;
-    max-height:500px;
-    overflow-y:scroll;
+    max-height: 500px;
+    overflow-y: scroll;
 }
+
 .bulkOrderList {
     max-width: 100%;
 }
-.bulkOrderList td{
-    padding:5px;
-}
+
+    .bulkOrderList td {
+        padding: 5px;
+    }
+
 #bulkOrderDetailsPopup {
     background: rgba(0,0,0,0.5);
     width: 100%;
@@ -1997,12 +2018,15 @@ input[type=text], input[type=password], select {
     top: 0;
     right: 0;
 }
-#bulkOrderDetailsPopup h3 {
-    margin:0;
-}
-#bulkOrderDetailsPopup thead {
-    font-weight:bold;
-}
+
+    #bulkOrderDetailsPopup h3 {
+        margin: 0;
+    }
+
+    #bulkOrderDetailsPopup thead {
+        font-weight: bold;
+    }
+
 #bulkOrderDetailsPopupContent {
     width: 1400px;
     min-height: 500px;
@@ -2017,6 +2041,7 @@ input[type=text], input[type=password], select {
     max-height: 800px;
     overflow-y: scroll;
 }
+
 #TopInfoBar {
     clear: both;
     font-weight: bold;
@@ -2024,46 +2049,57 @@ input[type=text], input[type=password], select {
     font-size: 22px;
     height: 30px;
 }
+
 #BulkOrderId {
     float: left;
 }
+
 #BulkOrderDate {
-    float:right;
+    float: right;
 }
+
 #bulkOrderDetails {
     float: left;
     width: 45%;
-    clear:both;
-    background:#ddd;
-    padding:10px;
+    clear: both;
+    background: #ddd;
+    padding: 10px;
 }
+
 #bulkOrderItems {
     float: left;
     width: 50%;
 }
-#bulkOrderItems table {
-    width:100%;
-}
+
+    #bulkOrderItems table {
+        width: 100%;
+    }
+
 #bulkOrderNotes {
     clear: both;
     width: 100%;
     margin-top: 20px;
 }
-#bulkOrderNotes table {
-    width:100%;
-}
+
+    #bulkOrderNotes table {
+        width: 100%;
+    }
+
 #bulkOrderDesigns {
     clear: both;
-    margin-top:20px;
+    margin-top: 20px;
 }
+
 .noteDate {
     font-size: 12px;
 }
+
 #orderProgressBar {
     width: 708px;
     height: 40px;
     border: 1px solid #000;
 }
+
 .progressChunk {
     width: 140px;
     height: 40px;
@@ -2075,59 +2111,73 @@ input[type=text], input[type=password], select {
     line-height: 40px;
     word-wrap: normal;
 }
-.progressChunk.last {
-    border-right:0;
-}
-.progressChunk.complete {
-    background: #39b91c;
-    color:#fff;
-}
+
+    .progressChunk.last {
+        border-right: 0;
+    }
+
+    .progressChunk.complete {
+        background: #39b91c;
+        color: #fff;
+    }
+
 #progressLegend {
-    margin:10px 0;
+    margin: 10px 0;
 }
+
 #orderStatusText {
-    margin:10px 0;
+    margin: 10px 0;
 }
+
 #orderDigitizingPreview {
-    margin:10px;
+    margin: 10px;
 }
+
 .orderDigitizingPreview {
-    width:300px;
+    width: 300px;
     height: auto;
     float: left;
 }
+
 #orderItems {
-    margin:10px 0;
+    margin: 10px 0;
 }
+
 #approveDigitizing {
     width: 180px;
     height: 40px;
-    line-height:40px;
+    line-height: 40px;
     display: block;
     background: #ccc;
-    color:#000;
-    text-align:center;
-    vertical-align:middle;
-    font-weight:bold;
+    color: #000;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
 }
-#approveDigitizing a {
-    color:#000;
-}
-#approveDigitizing.digitizingApproved {
-    background: #39b91c;
-    color: #fff;
-}
+
+    #approveDigitizing a {
+        color: #000;
+    }
+
+    #approveDigitizing.digitizingApproved {
+        background: #39b91c;
+        color: #fff;
+    }
+
 .importantSection {
     background: #ccc;
     color: #000;
     width: 90%;
     padding: 10px;
 }
+
 .bulkOrderPrint #bulkOrderDetailsPopupContent {
     max-height: unset;
     overflow-y: unset;
-    left:0;
+    left: 0;
+    position: unset;
 }
+
 .bulkOrderPrint .smallButton, .bulkOrderPrint .closeButton {
     display: none;
 }
@@ -2145,9 +2195,9 @@ input[type=text], input[type=password], select {
     #previewHatContent {
         height: 600px;
         overflow-y: scroll;
-    }   
-    
+    }
 }
+
 @media only screen and (max-width:900px) {
     .bulkProgressBarContinuteButton {
         position: fixed;
@@ -2155,14 +2205,17 @@ input[type=text], input[type=password], select {
         right: -10px;
         border: 6px Solid #39b91c;
     }
+
     #bulkProgressBar {
-        float:unset;
-        text-align:center;
-    }
-    #bulkProgressBar .left {
         float: unset;
+        text-align: center;
     }
+
+        #bulkProgressBar .left {
+            float: unset;
+        }
 }
+
 @media only screen and (max-width: 1100px) {
     #wrapper {
         min-width: 100%;
@@ -2426,7 +2479,7 @@ input[type=text], input[type=password], select {
         font-size: 21px;
     }
 
-    #customerInfoPopup {
+    #checkoutPopoup {
         position: absolute;
     }
 
@@ -2439,7 +2492,7 @@ input[type=text], input[type=password], select {
     #bulkIntro {
         height: auto;
         text-align: center;
-        background-size:cover;
+        background-size: cover;
     }
 
     .priceList {
@@ -2761,26 +2814,30 @@ input[type=text], input[type=password], select {
     }
 
     .bulkProgressBarStep {
-        font-size:13px;
-        margin:0 0px;
+        font-size: 13px;
+        margin: 0 0px;
+    }
 
-    }
-    .bulkProgressBarStep img {
-        width:30px;
-        height:30px;
-    }
+        .bulkProgressBarStep img {
+            width: 30px;
+            height: 30px;
+        }
+
     .bulkProgressBarContinuteButton {
         font-size: 22px;
         right: 50%;
-        margin-right:-70px;
-        bottom:100px;
+        margin-right: -70px;
+        bottom: 100px;
     }
+
     #bulkIntro {
         background-size: cover;
     }
+
     #customerReviews {
         text-align: center;
     }
+
     #customerReviews img {
         max-width: 100%;
         display: block;

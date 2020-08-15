@@ -6,11 +6,13 @@
     #footer {
         padding-bottom: 200px;
     }
+
     #content {
-        padding-top:0;
+        padding-top: 0;
     }
 </style>
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<span id="isBulkOrder" class="hidden">true</span>
 <div id="bulkOrderingContainer">
     <div id="bulkProgressBar" class="centerInner">
         <div class="left">
@@ -22,7 +24,7 @@
         <div class="right">
             <div class="bulkProgressBarContinuteButton" onclick="goToNextStep(currentOrderStep);">Next Step</div>
         </div>
-        
+
     </div>
     <div id="bulkIntro" class="centerInner">
         <div id="bulkIntroInner">
@@ -66,12 +68,12 @@
             </div>
         </div>
         <div id="customerReviews">
-            <div id="fiveStarHolder"><img src="~/Images/5stars.png"/> - What our customers are saying</div>
+            <div id="fiveStarHolder"><img src="~/Images/5stars.png" /> - What our customers are saying</div>
             <img src="~/Images/CustomerReviews1.jpg" />
             <img src="~/Images/CustomerReviews2.jpg" />
         </div>
     </div>
-    <div id="bulkHatTypeSelect" class="centerInner" style="display:none;">       
+    <div id="bulkHatTypeSelect" class="centerInner" style="display:none;">
         <div id="bulkHatSelectContainer">
             <div class="hatTypeSelectRegion">
                 <div class="hatBrand" id="FlexFit">
@@ -137,12 +139,12 @@
                                             <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
                                         </tr>
                                         @*<tr>
-                                        <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_08.jpg" /></td>
-                                        <td class="colorOption">FRESH GREEN</td>
-                                        <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
-                                        <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
-                                        <td></td>
-                                    </tr>*@
+                                                <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_08.jpg" /></td>
+                                                <td class="colorOption">FRESH GREEN</td>
+                                                <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                <td></td>
+                                            </tr>*@
                                         <tr>
                                             <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_09.jpg" /></td>
                                             <td class="colorOption">GOLD</td>
@@ -1200,15 +1202,15 @@
             </div><!--/hatTypeSelectRegion-->
         </div>
     </div>
-    <div id="bulkArtworkStep" class="centerInner" style="display:none;">       
+    <div id="bulkArtworkStep" class="centerInner" style="display:none;">
         <div id="designUploadContent">
             <h2>Upload the artwork you would like to include on your hats..</h2>
             <div id="preSetupArtwork" onclick="togglePresetArtwork()">
-                <input type="checkbox" id="artworkPresetup" onclick="togglePresetArtwork()"/> Check this box if you have ordered hats from us in the past and your artwork is already setup in our system.
+                <input type="checkbox" id="artworkPresetup" onclick="togglePresetArtwork()" /> Check this box if you have ordered hats from us in the past and your artwork is already setup in our system.
             </div>
             <div>
                 <input type="file" id="bulkArtwork" />
-            </div>            
+            </div>
         </div>
         <div id="designPlacement">
             <h2>Where would you like the artwork placed on the hat?</h2>
@@ -1217,7 +1219,7 @@
                 <div class="placementOption" id="left" onclick="$('#artPlacement').text('left');$('.placementOption#left').addClass('selected');$('.placementOption#right').removeClass('selected');$('.placementOption#center').removeClass('selected');">
                     <img src="~/Images/LeftPlacement.jpg" class="placementImage" />
                 </div>
-                <div class="placementOption" id="center"  onclick="$('#artPlacement').text('center');$('.placementOption#left').removeClass('selected');$('.placementOption#right').removeClass('selected');$('.placementOption#center').addClass('selected');">
+                <div class="placementOption" id="center" onclick="$('#artPlacement').text('center');$('.placementOption#left').removeClass('selected');$('.placementOption#right').removeClass('selected');$('.placementOption#center').addClass('selected');">
                     <img src="~/Images/CenterPlacement.jpg" class="placementImage" />
                 </div>
                 <div class="placementOption" id="right" onclick="$('#artPlacement').text('right');$('.placementOption#left').removeClass('selected');$('.placementOption#right').addClass('selected');$('.placementOption#center').removeClass('selected');">
@@ -1232,7 +1234,7 @@
             <div>
                 <textarea class="productDetailsTextMulti textBoxMulti" id="txtDetails" placeholder="Order Information" rows="10"></textarea>
             </div>
-        </div>        
+        </div>
         <div id="designProcessExplained">
             <h2>We will convert and digitize your artwork. You will recieve mockups and stitching proofs for approval before the hats are stitched. We work with you to ensure the end product is going to be exactly what you want.</h2>
         </div>
@@ -1249,92 +1251,67 @@
 
     </div>
 </div>
-<div id="customerInfoPopup" class="bulkCartPopup"  style="display:none;">
-    <div id="bulkCartContainer">
-        <div class="close" onclick="$('.bulkCartPopup').hide();" style="color:black;">X</div>
-        <div id="bulkItemCartList">
-            <div class="bulkItemCartListItem">
-                <div class="bulkItemCartListItemDetials"><b>Hat Style</b></div>
-                <div class="bulkItemCartListItemQuantity"><b>Quantity</b></div>
-                <div class="bulkItemCartListItemPrice"><b>Price</b></div>
+
+
+<div id="checkoutPopoup" style="display:none;" class="bulkCartPopup" >
+    <div class="centerInner">
+        <div class="close" onclick="$('#checkoutPopoup').hide();" style="color:black;">X</div>
+        <div id="checkoutHolderLeft">
+            <div id="chckoutWizzard">
+                @{ Html.RenderPartial("~/Views/Cart/ProcessPayment.cshtml"); }
             </div>
-            <div id="cartListItems">
-                <div class="bulkItemCartListItem">
-                    <div class="bulkItemCartListItemDetials">FlexFit 6277 - Black - S/M</div>
-                    <div class="bulkItemCartListItemQuantity">10</div>
-                    <div class="bulkItemCartListItemPrice">$15</div>
-                </div>
-                <div class="bulkItemCartListItem">
-                    <div class="bulkItemCartListItemDetials">FlexFit 6277 - Black - L/XL</div>
-                    <div class="bulkItemCartListItemQuantity">12</div>
-                    <div class="bulkItemCartListItemPrice">$15</div>
-                </div>
+            <div id="paypalButtons" class="hidden">
+                <h1>Select a payment option below</h1>
+                <span id="paymentCompleteGuid" style="display:none;">@Model.PaymentCompleteGuid</span>
+                <div id="paypal-button-container-bulk"></div>
             </div>
         </div>
-        <div class="cartSummary">
-            <div id="totalHeader">Totals</div>
-            <table id="totalTable" class="bulkCartTotals">
-                <tbody>
-                    <tr>
-                        <td>Sub Total:</td>
-                        <td style="text-align:right;"><span id="bulkCartSubTotal">$0.00</span></td>
-                    </tr>
-                    <tr id="tax" class="hidden">
-                        <td>Taxes:</td>
-                        <td style="text-align:right;">$0.00</td>
-                    </tr>
-                    <tr>
-                        <td>Shipping:</td>
-                        <td style="text-align:right;"><span id="bulkCartShipping">$0</span></td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold;">Total:</td>
-                        <td style="text-align:right; font-weight:bold;"><span id="bulkCartTotal">$0.00</span></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div id="customerInfo" style="width:100%;">
-                <table style="margin: 0 auto;text-align:left; margin-bottom:20px;">
+        <div id="checkoutHolderRight">
+            <div id="bulkItemCartList">
+                <div class="bulkItemCartListItem">
+                    <div class="bulkItemCartListItemDetials"><b>Hat Style</b></div>
+                    <div class="bulkItemCartListItemQuantity"><b>Quantity</b></div>
+                    <div class="bulkItemCartListItemPrice"><b>Price</b></div>
+                </div>
+                <div id="cartListItems">
+                    <div class="bulkItemCartListItem">
+                        <div class="bulkItemCartListItemDetials">FlexFit 6277 - Black - S/M</div>
+                        <div class="bulkItemCartListItemQuantity">10</div>
+                        <div class="bulkItemCartListItemPrice">$15</div>
+                    </div>
+                    <div class="bulkItemCartListItem">
+                        <div class="bulkItemCartListItemDetials">FlexFit 6277 - Black - L/XL</div>
+                        <div class="bulkItemCartListItemQuantity">12</div>
+                        <div class="bulkItemCartListItemPrice">$15</div>
+                    </div>
+                </div>
+            </div>
+            <div class="cartSummary">
+                <div id="totalHeader">Totals</div>
+                <table id="totalTable" class="bulkCartTotals">
                     <tbody>
                         <tr>
-                            <td><b>Your Information:</b></td>
-                            <td></td>
+                            <td>Sub Total:</td>
+                            <td style="text-align:right;"><span id="bulkCartSubTotal">$0.00</span></td>
+                        </tr>
+                        <tr id="tax" class="hidden">
+                            <td>Taxes:</td>
+                            <td style="text-align:right;">$0.00</td>
                         </tr>
                         <tr>
-                            <td>Name:</td>
-                            <td><input type="text" id="txtFirstName"></td>
-                        </tr>                        
-                        <tr>
-                            <td>Email:</td>
-                            <td><input type="text" id="txtEmail"></td>
+                            <td>Shipping:</td>
+                            <td style="text-align:right;">$<span id="shippingCost">0</span></td>
                         </tr>
                         <tr>
-                            <td>Phone:</td>
-                            <td><input type="text" id="txtPhone"></td>
-                        </tr> 
-                        <tr>
-                            <td colspan="2">
-                                NOTE: YOUR ORDER WILL BE SHIPPED TO YOUR CONFIRMED PAYPAL SHIPPING ADDRESS!
-                            </td>
+                            <td style="font-weight:bold;">Total:</td>
+                            <td style="text-align:right; font-weight:bold;"><span id="bulkCartTotal">$0.00</span></td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <a href="javascript:void(0);" onclick="verifyAndShowPaypal();"><div id="PayNow">Complete Order</div></a>
-            
+            </div><!--/cartSummary/-->
         </div>
-    </div>
-    <span id="paymentCompleteGuid" style="display:none;">@Model.PaymentCompleteGuid</span>
-    <div id="paypalPaymentButtonsPopup" style="display:none;">
-        <div id="paypalPaymentButtonsInner">
-            <h1>Pay now using PayPal</h1>
-            <h2>A PayPal account is not required.</h2>
-            <div id="paypal-button-container-bulk"></div>
-            <div style="margin-top:30px;">
-                If Paying by credit/debit card click <b>PayPal</b> above and select the button outlined below. You do not need a PayPal account to check out.
-                <br /><br />
-                <img src="~/Images/PayWithDebit-CreditCard.png" width="500" />
-            </div>
-        </div>
-    </div>
-</div>
+
+        @*<a href="#logo"><div id="PayNow" onclick="showPaypalButtons();">Pay Now With Paypal</div></a>*@
+    </div><!--/cetnerInner-->
+</div><!--/checkoutPopup-->
+

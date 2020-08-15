@@ -2,6 +2,16 @@
 @{
     ViewBag.Title = Model.Product.Name + " - Custom Hat By " + @Model.Designer.ShopName;
 }
+    <script type="text/javascript">
+    fbq('track', 'ViewContent', {
+        content_name: '@Model.Product.Name',
+        content_category: '@Model.Product.CategoryId',
+        content_ids: @Model.Product.Id,
+        content_type: 'product',
+        value: @Model.Product.Price,      
+        currency: 'USD'
+    });
+    </script>
 <div id="productDetails" class="centerInner">
     <div id="productImages">
         <div id="imageHolder">
@@ -129,18 +139,12 @@
             <input type="number" min="1" max="150" id="txtQty" value="1" />
             <div class="inputLabel">Price:</div>
             <div id="priceText">
-            @if (Model.Product.ApplyMethod.ToLower() == "embroidery")
-            { 
-                <span>$19.99</span>
-            } else if(Model.Product.ApplyMethod.ToLower() == "leatherpatch")
-            { 
-                <span>$29.99</span>
-            }
+                $@Model.Product.Price
             </div><!--/priceText-->
         </div><!--/productOptionsBox-->
         @if (Request["showApproval"] != "1")
         {
-            <div class="AddToCartButton" onclick="AddItemToCart();">Add To Cart</div><!--/AddToCartButton-->
+            <div class="AddToCartButton" onclick="AddItemToCart('@Model.Product.Name', '0', '@Model.Product.Price');">Add To Cart</div><!--/AddToCartButton-->
         }
 
         <div class="productText">

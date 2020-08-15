@@ -69,7 +69,7 @@ function SubmitOrder() {
         }
     }    
 }
-function AddItemToCart() {
+function AddItemToCart(itemName, itemCategory, itemPrice) {
     var productId = $('#lblProductId').text();
     var qty = $('#txtQty').val();
     var size = $('#selectSize').val();
@@ -86,6 +86,14 @@ function AddItemToCart() {
         success: function (result) {
             $('#cartTotal').text(result);
             displayPopupNotification('Item added to cart.', 'error', false);
+            fbq('track', 'AddToCart', {
+                content_name: itemName,
+                content_category: itemCategory,
+                content_ids: [productId],
+                content_type: 'product',
+                value: (itemPrice * qty),
+                currency: 'USD'
+            });   
         },
         error: function () {
             alert('error');
@@ -174,9 +182,9 @@ function showPaypalButtons() {
     var productList = $('#productList').text();
     var total = $('#lblTotal').text();
     $('#OrderAmmount').val(total);
-    var firstName = $('#txtFirstName').val();
-    var lastName = $('#txtLastName').val();
-    var email = $('#txtEmail').val();
+    var firstName = $('#txtShippingFirstName').val();
+    var lastName = $('#txtShippingLastName').val();
+    var email = $('#txtCustomerEmail').val();
     var phone = $('#txtPhone').val();
     //var address = $('#txtAddress').val();
     //var city = $('#txtCity').val();
@@ -192,8 +200,8 @@ function showPaypalButtons() {
     } else {
         if (validateEmail(email)) {
             if (validatePhone(phone)) {
-                $('#customerInfo').hide();
-                $('#paypalButtons').show();
+                $('#chckoutWizzard').hide();
+                $('#paypalButtons').slidDown();
                 renderPaypalButtons(total, productList, firstName + ' ' + lastName);
             } else {
                 displayPopupNotification('Please enter a valid phone.', 'error', false);

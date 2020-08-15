@@ -162,13 +162,14 @@ function updateBulkTotals() {
     if (currentTotalBulkHatsCount < 12 && $('#artworkPresetup').prop("checked") == false) {
         currentTotalCost += 30;
         hasArtFee = true;
-        productList = productList + '{"name":"Artwork Setup/Digitizing","quantity":"1","price":"30","currency":"USD"},';
+        productList = productList + '{"name":"Artwork Setup/Digitizing","quantity":"1","price":"30","currency":"USD"}';
         $('#artworkSetupFee').show();
     } else {
         $('#artworkSetupFee').hide();
     }
 
-    productList = productList + '{"name":"Shipping","quantity":"1","price":"' + currentShippingTotal + '","currency":"USD"}]';
+    productList = productList + ']';
+    //productList = productList + '{"name":"Shipping","quantity":"1","price":"' + currentShippingTotal + '","currency":"USD"}]';
 
 
     currentBulkProductList = JSON.parse(productList);
@@ -200,19 +201,17 @@ function updateBulkTotals() {
 function showBulkCart() {
     $(window).scrollTop(0);
     $('#bulkCartSubTotal').text('$' + currentTotalCost);
-    $('#bulkCartShipping').text('$' + currentShippingTotal);
+    $('#shippingCost').text(currentShippingTotal);
     $('#bulkCartTotal').text('$' + currentGrandTotalCost);
     $('#cartListItems').empty();
     for (var i = 0; i < currentBulkProductList.length - 1; i++) {
         $('#cartListItems').append('<div class="bulkItemCartListItem"><div class="bulkItemCartListItemDetials">' + currentBulkProductList[i].name + '</div><div class="bulkItemCartListItemQuantity">' + currentBulkProductList[i].quantity + '</div><div class="bulkItemCartListItemPrice">' + currentBulkProductList[i].price + '</div></div>');
     }
-    $('.bulkCartPopup').show();
-    $('#paypal-button-container-bulk').empty();
-    renderBulkCartPaypalButtons(currentGrandTotalCost, currentBulkProductList, $('#paymentCompleteGuid').text());
+    $('.bulkCartPopup').show();    
 }
 
 
-function renderBulkCartPaypalButtons(price, items, paymentCompleteGuid) {
+function renderBulkCartPaypalButtons(price, items, paymentCompleteGuid, shippingCost, subtotal) {
     // Render the PayPal button
 
     paypal.Button.render({
@@ -249,7 +248,7 @@ function renderBulkCartPaypalButtons(price, items, paymentCompleteGuid) {
                 payment: {
                     transactions: [
                         {
-                            "amount": { "total": price, "currency": "USD" },
+                            "amount": { "total": price, "currency": "USD", "details": { "shipping": shippingCost, "tax": 0, "subtotal": subtotal } },
                             "description": "Lid Launch Order",
                             "item_list": {
                                 "items": items
@@ -274,7 +273,7 @@ function renderBulkCartPaypalButtons(price, items, paymentCompleteGuid) {
 function verifyAndShowPaypal() {
 
     console.log(JSON.stringify(currentBulkProductList));
-    if ($('#txtFirstName').val() != '' || $('#txtEmail').val() != '' || $('#txtPhone').val() != '') {
+    if ($('#txtShippingFirstName').val() + ' ' + $('#txtShippingLastName').val() != ' ' || $('#txtCustomerEmail').val() != '' || $('#txtPhone').val() != '') {
 
         var that = this;
         var files = $('#bulkArtwork')[0].files;
@@ -289,8 +288,8 @@ function verifyAndShowPaypal() {
             if (window.FormData !== undefined) {
                 var data = new FormData();
                 data.append("file" + 0, files[0]);
-                data.append("name", $('#txtFirstName').val());
-                data.append("email", $('#txtEmail').val());
+                data.append("name", $('#txtShippingFirstName').val() + ' ' + $('#txtShippingLastName').val());
+                data.append("email", $('#txtCustomerEmail').val());
                 data.append("phone", $('#txtPhone').val());
                 data.append("artworkPlacement", $('#artPlacement').text());
                 data.append("orderNotes", orderNotes);
@@ -311,7 +310,10 @@ function verifyAndShowPaypal() {
                         } else {
                             //set the url for the file link and show the link 
                             hideLoading();
-                            $('#paypalPaymentButtonsPopup').show();
+                            $('#chckoutWizzard').hide();
+                            $('#paypalButtons').slideDown();
+                            $('#paypal-button-container-bulk').empty();
+                            renderBulkCartPaypalButtons(currentGrandTotalCost, currentBulkProductList, $('#paymentCompleteGuid').text(), $('#shippingCost').text(), (currentGrandTotalCost - currentShippingTotal));
                         }
                     },
                     error: function (xhr, status, p3, p4) {
