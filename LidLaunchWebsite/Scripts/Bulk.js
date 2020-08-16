@@ -4,10 +4,11 @@ var currentTotalCost = 0;
 var currentShippingTotal = 0;
 var currentGrandTotalCost = 0;
 var currentOrderStep = 'intro';
+var totalHats = 0;
 
 function updateBulkTotals() {
     var productList = '[';
-    var totalHats = 0;
+    totalHats = 0;
     $('#FlexFit6277 table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
@@ -192,11 +193,18 @@ function updateBulkTotals() {
 
     currentGrandTotalCost = currentTotalCost + currentShippingTotal;
 
-    console.log(currentTotalCost);
+    $('#lblTotal').text(currentGrandTotalCost);
 
-    console.log(currentBulkProductList);
+    console.log(currentGrandTotalCost);
 
-
+    fbq('track', 'AddToCart', {
+        content_name: 'Bulk Order Hats',
+        content_category: 'Bulk Order Hats',
+        content_ids: '0',
+        content_type: 'product',
+        value: currentGrandTotalCost,
+        currency: 'USD'
+    });
 }
 
 function showBulkCart() {
@@ -265,78 +273,75 @@ function renderBulkCartPaypalButtons(price, items, paymentCompleteGuid, shipping
 
         onAuthorize: function (data, actions) {
             return actions.payment.execute().then(function () {
+                fbq('track', 'Purchase', {
+                    content_name: 'Bulk Hat Order',
+                    content_category: 'Bulk Hat Order',
+                    content_ids: '0',
+                    content_type: 'product',
+                    value: price,
+                    currency: 'USD'
+                });
                 window.location = 'http://lidlaunch.com/bulk/payment?id=' + paymentCompleteGuid;
             });
         }
 
     }, '#paypal-button-container-bulk');
 }
-function verifyAndShowPaypal() {
+function verifyAndShowPaypal() {    
 
-    console.log(JSON.stringify(currentBulkProductList));
-    if ($('#txtShippingFirstName').val() + ' ' + $('#txtShippingLastName').val() != ' ' || $('#txtCustomerEmail').val() != '' || $('#txtPhone').val() != '') {
+    var files = $('#bulkArtwork')[0].files;
 
-        var that = this;
-        var files = $('#bulkArtwork')[0].files;
+    var orderNotes = $('#txtDetails').val();
 
-        var orderNotes = $('#txtDetails').val();
-
-        if ($('#artworkPresetup').prop("checked")) {
-            orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
-        }
-
-        if (files.length > 0 || $('#artworkPresetup').prop("checked")) {
-            if (window.FormData !== undefined) {
-                var data = new FormData();
-                data.append("file" + 0, files[0]);
-                data.append("name", $('#txtShippingFirstName').val() + ' ' + $('#txtShippingLastName').val());
-                data.append("email", $('#txtCustomerEmail').val());
-                data.append("phone", $('#txtPhone').val());
-                data.append("artworkPlacement", $('#artPlacement').text());
-                data.append("orderNotes", orderNotes);
-                data.append("orderTotal", currentGrandTotalCost);
-                data.append("items", JSON.stringify(currentBulkProductList));
-                data.append("paymentCompleteGuid", $('#paymentCompleteGuid').text());
-                showLoading();
-                $.ajax({
-                    type: "POST",
-                    url: '/Bulk/CreateBulkOrder',
-                    contentType: false,
-                    processData: false,
-                    data: data,
-                    success: function (result) {
-                        if (result == "") {
-                            //do nothing
-                            displayPopupNotification('error.', 'error', false);
-                        } else {
-                            //set the url for the file link and show the link 
-                            hideLoading();
-                            $('#chckoutWizzard').hide();
-                            $('#paypalButtons').slideDown();
-                            $('#paypal-button-container-bulk').empty();
-                            renderBulkCartPaypalButtons(currentGrandTotalCost, currentBulkProductList, $('#paymentCompleteGuid').text(), $('#shippingCost').text(), (currentGrandTotalCost - currentShippingTotal));
-                        }
-                    },
-                    error: function (xhr, status, p3, p4) {
-                        displayPopupNotification('Error.', 'error', false);
-                    }
-                });
-            } else {
-                displayPopupNotification('Use Google Chrome browser or Firefox!', 'error', false);
-            }
-        } else {
-            displayPopupNotification('Please upload your artwork on the main screen.', 'error', false);
-        }
-        
-    } else {
-        displayPopupNotification('Please enter all contact information.', 'error', false);
+    if ($('#artworkPresetup').prop("checked")) {
+        orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
     }
+
+    if (window.FormData !== undefined) {
+        var data = new FormData();
+        data.append("file" + 0, files[0]);
+        data.append("name", $('#txtShippingFirstName').val() + ' ' + $('#txtShippingLastName').val());
+        data.append("email", $('#txtCustomerEmail').val());
+        data.append("phone", $('#txtPhone').val());
+        data.append("artworkPlacement", $('#artPlacement').text());
+        data.append("orderNotes", orderNotes);
+        data.append("orderTotal", currentGrandTotalCost);
+        data.append("items", JSON.stringify(currentBulkProductList));
+        data.append("paymentCompleteGuid", $('#paymentCompleteGuid').text());
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: '/Bulk/CreateBulkOrder',
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (result) {
+                if (result == "") {
+                    //do nothing
+                    displayPopupNotification('error.', 'error', false);
+                } else {
+                    //set the url for the file link and show the link 
+                    hideLoading();
+                    $('#chckoutWizzard').hide();
+                    $('#paypalButtons').slideDown();
+                    $('#paypal-button-container-bulk').empty();
+                    renderBulkCartPaypalButtons(currentGrandTotalCost, currentBulkProductList, $('#paymentCompleteGuid').text(), $('#shippingCost').text(), (currentGrandTotalCost - currentShippingTotal));
+                }
+            },
+            error: function (xhr, status, p3, p4) {
+                displayPopupNotification('Error.', 'error', false);
+            }
+        });
+    } else {
+        displayPopupNotification('Use Google Chrome browser or Firefox!', 'error', false);
+    }
+        
 }
 
 function processBulkPaymentShowPaypal(total, paymentCompleteGuid) {
     var items = JSON.parse($('#productList').text());    
 
-    renderBulkCartPaypalButtons(total, items, paymentCompleteGuid);
+    renderBulkCartPaypalButtons(total, items, paymentCompleteGuid, );
     $('#paypalPaymentButtonsPopup').show();
 }
 
@@ -458,6 +463,15 @@ function changeBulkOrderSection(section) {
         $('#hatsStepButton').addClass('selected');
         currentOrderStep = 'hats';
         document.getElementById("header").scrollIntoView();
+
+        fbq('track', 'ViewContent', {
+            content_name: 'Bulk Hat Order',
+            content_category: 'Bulk Hat Order',
+            content_ids: '0',
+            content_type: 'product',
+            value: '15',
+            currency: 'USD'
+        });
     }
     if (section == 'art') {
         if (validateHats()) {
@@ -479,6 +493,14 @@ function changeBulkOrderSection(section) {
     if (section == 'checkout') {
         if (validateHats()) {
             if (validateArt()) {
+                fbq('track', 'InitiateCheckout', {                    
+                    content_category: 'Bulk Order Hats',
+                    content_ids: ['0'],
+                    content_type: 'product',
+                    num_items: totalHats,
+                    value: currentGrandTotalCost,
+                    currency: 'USD'
+                });
                 showBulkCart();
             }     
         }

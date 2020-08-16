@@ -4,7 +4,14 @@
             var formattedText = cc_format($(this).val());
             $(this).val(formattedText);
         });
-        
+        $('#txtPhone').keyup(function () {
+            var formattedText = formatPhoneNumber($(this).val());
+            $(this).val(formattedText);
+        });
+        $('#txtBillingPhone').keyup(function () {
+            var formattedText = formatPhoneNumber($(this).val());
+            $(this).val(formattedText);
+        });
     });
 </script>
 
@@ -104,7 +111,7 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <input type="number" placeholder="Phone (optional)" id="txtPhone" />
+                    <input type="text" placeholder="Phone (optional)" id="txtPhone" />
                 </td>
 
             </tr>
@@ -152,8 +159,41 @@
                                 <td colspan="3"><input type="text" placeholder="Name on card" id="txtNameOnCard"/></td>
                             </tr>
                             <tr>
-                                <td style="width:25%;"><input type="number" placeholder="Exp MM" id="txtExpirationMonth" minlength="1" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/></td>
-                                <td style="width:25%;"><input type="number" placeholder="Exp YYYY" id="txtExpirationYear" minlength="4" maxlength="4" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/></td>
+                                <td style="width:25%;">
+                                    <select id="selExpirationMonth">
+                                        <option value="0">Exp Month</option>
+                                        <option value="1">01</option>
+                                        <option value="2">02</option>
+                                        <option value="3">03</option>
+                                        <option value="4">04</option>
+                                        <option value="5">05</option>
+                                        <option value="6">06</option>
+                                        <option value="7">07</option>
+                                        <option value="8">08</option>
+                                        <option value="9">09</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                @*<input type="number" placeholder="Exp MM" id="txtExpirationMonth" minlength="1" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>*@
+                                </td>
+                                <td style="width:25%;">
+                                    <select id="selExpirationYear">
+                                        <option value="0">Exp Year</option>
+                                        <option value="2020">2020</option>
+                                        <option value="2021">2021</option>
+                                        <option value="2022">2022</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2024">2024</option>
+                                        <option value="2025">2025</option>
+                                        <option value="2026">2026</option>
+                                        <option value="2027">2027</option>
+                                        <option value="2028">2028</option>
+                                        <option value="2029">2029</option>
+                                        <option value="2030">2030</option>                                        
+                                    </select>
+                                    @*<input type="number" placeholder="Exp YYYY" id="txtExpirationYear" minlength="4" maxlength="4" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />*@
+                                </td>
                                 <td style="width:50%;"><input type="number" placeholder="Security code" id="txtSecurityCode" minlength="3" maxlength="4" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/></td>
                             </tr>
                         </table>

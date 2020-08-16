@@ -11,6 +11,7 @@ namespace LidLaunchWebsite.Models
         public string CustomerEmail { get; set; }
         public string CustomerPhone { get; set; }
         public decimal OrderTotal { get; set; }
+        public decimal ShippingCost { get; set; }
         public bool HatsOrdered { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime PaymentDate { get; set; }

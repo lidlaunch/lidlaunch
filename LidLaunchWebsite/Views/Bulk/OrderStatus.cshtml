@@ -152,7 +152,7 @@
     </span>
     @if (!Model.OrderPaid)
     {
-        <a href="javascript:void(0);" onclick="processBulkPaymentShowPaypal(@Model.OrderTotal,'@Model.PaymentCompleteGuid');"><div id="PayNow">Pay Now</div></a>
+        <a href="javascript:void(0);" onclick="processBulkPaymentShowPaypal(@Model.OrderTotal,'@Model.PaymentCompleteGuid', @Model.ShippingCost, (@Model.OrderTotal - @Model.ShippingCost));"><div id="PayNow">Pay Now</div></a>
     }
     else
     {

@@ -64,7 +64,7 @@
                         <td style="text-align:right; font-weight:bold;">$<span id="lblTotal">@Model.TotalWithShipping</span></td>
                     </tr>
                 </table>
-                <a href="javascript:void(0);" onclick="$('#checkoutPopoup').show(); $(window).scrollTop(0);"><div id="PayNow">Check Out</div></a>
+                <a href="javascript:void(0);" onclick="$('#checkoutPopoup').show(); $(window).scrollTop(0); trackCartPixel(@Model.lstProducts.Select(i => i.Quantity).Sum() , @Model.TotalWithShipping)"><div id="PayNow">Check Out</div></a>
             </div>
         }
 

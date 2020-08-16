@@ -89,15 +89,26 @@ namespace LidLaunchWebsite.Controllers
             Address billAddress = Newtonsoft.Json.JsonConvert.DeserializeObject<Address>(billingAddress);
             Address shipAddress = Newtonsoft.Json.JsonConvert.DeserializeObject<Address>(shippingAddress);
 
+            bool bulkOrder = Convert.ToBoolean(isBulkOrder);
+
             ShippingAddress shippingAddressNew = new ShippingAddress();
+
             shippingAddressNew.state = shipAddress.state;
             shippingAddressNew.line1 = shipAddress.line1;
             shippingAddressNew.postal_code = shipAddress.postal_code;
             shippingAddressNew.city = shipAddress.city;
-            shippingAddressNew.phone = shipAddress.phone;
+            if(shipAddress.phone == "")
+            {
+                shippingAddressNew.phone = null;
+            }         
             shippingAddressNew.recipient_name = shippingRecipient;
             shippingAddressNew.country_code = "US";
+            
 
+            if(billAddress.phone == "")
+            {
+                billAddress.phone = null;
+            }
             billAddress.country_code = "US";
 
             ItemList itemList = new ItemList();
@@ -105,7 +116,11 @@ namespace LidLaunchWebsite.Controllers
             itemList.shipping_address = shippingAddressNew;
 
 
+            //remove spaces from credit card number...
+            cc.number = cc.number.Replace(" ", "");
+
             cc.type = FindType(cc.number);
+
             cc.billing_address = billAddress;
 
             var subtotal = items.Sum(i => Convert.ToDecimal(i.price) * Convert.ToInt32(i.quantity));
@@ -124,9 +139,10 @@ namespace LidLaunchWebsite.Controllers
             amnt.total = total.ToString();
             amnt.details = details;
 
-            var invoiceNumber = "";
+            string invoiceNumber = "";
 
-            String paymentGuid = Guid.NewGuid().ToString();
+            string paymentGuid = Guid.NewGuid().ToString();
+            
 
             HttpPostedFileBase fileContent = null;
             if (Request.Files.Count > 0)
@@ -134,25 +150,24 @@ namespace LidLaunchWebsite.Controllers
                 fileContent = Request.Files[0];
             }
 
-            if (Convert.ToBoolean(isBulkOrder))
+            //check if the credit card type is valid
+            if (cc.type == "unknown")
             {
-                BulkController bc = new BulkController();
-                string orderResult = bc.CreateBulkOrder(cartItems, shippingRecipient, email, shippingAddressNew.phone, artworkPlacement, orderNotes, total.ToString(), paymentGuid, fileContent);
-                invoiceNumber = "Bulk: " + orderResult;
-            } 
-            else
-            {
-                string orderResult = SubmitOrder(total.ToString(), cc.first_name, cc.last_name, email, billAddress.phone, shipAddress.line1, shipAddress.city, shipAddress.state, shipAddress.postal_code, billAddress.line1, billAddress.city, billAddress.state, billAddress.postal_code, paymentGuid);                
-                invoiceNumber = "Web:" + orderResult;
-            }          
-
+                return "ccerror";
+            }
 
             // Now make a trasaction object and assign the Amount object
             Transaction tran = new Transaction();
             tran.amount = amnt;
             tran.description = "Lid Launch Order Payment.";
             tran.item_list = itemList;
-            tran.invoice_number = invoiceNumber;            
+            if(bulkOrder)
+            {
+                tran.invoice_number = "Bulk:" + paymentGuid;
+            } else
+            {
+                tran.invoice_number = "Web:" + paymentGuid;
+            }            
 
             // Now, we have to make a list of trasaction and add the trasactions object
             // to this list. You can create one or more object as per your requirements
@@ -201,13 +216,26 @@ namespace LidLaunchWebsite.Controllers
 
                 if (createdPayment.state.ToLower() != "approved")
                 {
-                    return "error";
+                    return "ccerror";
+                }
+                else
+                {
+                    string phone = billAddress.phone == null ? "" : billAddress.phone;
+                    if (bulkOrder)
+                    {
+                        BulkController bc = new BulkController();
+                        string orderResult = bc.CreateBulkOrder(cartItems, shippingRecipient, email, phone, artworkPlacement, orderNotes, total.ToString(), paymentGuid, fileContent);                                              
+                    }
+                    else
+                    {                        
+                        string orderResult = SubmitOrder(total.ToString(), cc.first_name, cc.last_name, email, phone, shipAddress.line1, shipAddress.city, shipAddress.state, shipAddress.postal_code, billAddress.line1, billAddress.city, billAddress.state, billAddress.postal_code, paymentGuid);                                             
+                    }
                 }
             }
             catch (PayPal.PayPalException ex)
             {
                 Logger.Log("Error: " + ex.Message);
-                return "error";
+                return "ccerror";
             }
 
             return paymentGuid;
@@ -236,7 +264,7 @@ namespace LidLaunchWebsite.Controllers
                 return "discover";
             }
 
-            throw new Exception("Unknown card.");
+            return "unknown";
         }
 
 

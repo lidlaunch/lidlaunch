@@ -42,6 +42,26 @@ function cc_format(value) {
         return value
     }
 }
+function formatPhoneNumber(input) {
+    // Strip all characters from the input except digits
+    input = input.replace(/\D/g, '');
+
+    // Trim the remaining input to ten characters, to preserve phone number format
+    input = input.substring(0, 10);
+
+    // Based upon the length of the string, we add formatting as necessary
+    var size = input.length;
+    if (size == 0) {
+        input = input;
+    } else if (size < 4) {
+        input = '(' + input;
+    } else if (size < 7) {
+        input = '(' + input.substring(0, 3) + ') ' + input.substring(3, 6);
+    } else {
+        input = '(' + input.substring(0, 3) + ') ' + input.substring(3, 6) + '-' + input.substring(6, 10);
+    }
+    return input;
+}
 function setShipToSummary(shipAddress, shipCity, shipState, shipZip) {
    
 
@@ -89,21 +109,37 @@ function sameAsShipping() {
 
 }
 function validateCreditCardAndProcessPayment() {
-    if (validateCreditCardFIelds()) {
+    if (validateCreditCardFields()) {
         processPayment();
     }
 
 }
-function validateCreditCardFIelds   () {
+function validateCreditCardFields() {
     var cvv = $('#txtSecurityCode').val();
-    var expMonth = $('#txtExpirationMonth').val();
-    var expYear = $('#txtExpirationYear').val();
+    var expMonth = $('#selExpirationMonth').children("option:selected").val();
+    var expYear = $('#selExpirationYear').children("option:selected").val();
     var ccNumber = $('#txtCardNumber').val();
+    var alternateBilling = $('#rdUseSameAsShipping').prop('checked');
 
-    if (cvv == '' || expMonth == '' || expYear == '' || ccNumber == '') {
+    if (!alternateBilling) {
+        var shipAddress = $('#txtBillingAddress').val();
+        var shipCity = $('#txtBillingCity').val();
+        var shipState = $('#selBillingState').children("option:selected").val();
+        var shipZip = $('#txtBillingZip').val();
+        if (shipAddress == '' || shipCity == '' || shipState == '' || shipZip == '') {
+            displayPopupNotification('Please enter your billing address information.', 'error', false);
+            return false;
+        }
+    }
+
+    if (cvv == '' || expMonth == '0' || expYear == '0' || ccNumber == '') {
         displayPopupNotification('Please check your Credit Card info and try again.', 'error', false);
         return false
     }
+
+    fbq('track', 'AddPaymentInfo');
+
+    return true;
     
 }
 function processPayment() {
@@ -154,8 +190,8 @@ function processPayment() {
     }
 
     var cvv = $('#txtSecurityCode').val();
-    var expMonth = $('#txtExpirationMonth').val();
-    var expYear = $('#txtExpirationYear').val();
+    var expMonth = $('#selExpirationMonth').children("option:selected").val();
+    var expYear = $('#selExpirationYear').children("option:selected").val();
     var ccNumber = $('#txtCardNumber').val();   
 
     var creditCardJson = '{ "billing_address" : ' + billingAddressJson + ', "cvv2" : "' + cvv + '", "expire_month" : "' + expMonth + '", "expire_year" : "' + expYear + '", "first_name" : "' + billFirstName + '", "last_name" : "' + billLastName + '", "number" : "' + ccNumber + '"}';
@@ -190,6 +226,8 @@ function processPayment() {
     data.append("artworkPlacement", artworkPlacement);
     showLoading();
 
+    var totalPurchaseAmount = $('#lblTotal').text();
+
     $.ajax({
         type: "POST",
         url: '/Cart/PaymentWithCreditCard',
@@ -200,13 +238,30 @@ function processPayment() {
         //    "creditCard": creditCardJson, "cartItems": items, "billingAddress": billingAddressJson, "shippingAddress": shippingAddressJson, "shippingRecipient": shippingRecipient, "shippingPrice": shippingcost, "email": email, "isBulkOrder": isBulkOrder
         //}),
         success: function (result) {
-            if (result == "error") {
-                alert("error processing payment - please try again");   
+            if (result == "ccerror") {
+                hideLoading();
+                displayPopupNotification('Error processing payment, please check your credit card details and try again.', 'error', false);                 
             } else {
                 if (isBulkOrder) {
+                    fbq('track', 'Purchase', {
+                        content_name: 'Bulk Hat Order',
+                        content_category: 'Bulk Hat Order',
+                        content_ids: '0',
+                        content_type: 'product',
+                        value: totalPurchaseAmount,
+                        currency: 'USD'
+                    }); 
                     // navigate to bulk order payment confirmation screen
                     window.location = 'http://lidlaunch.com/bulk/payment?id=' + result;
                 } else {
+                    fbq('track', 'Purchase', {
+                        content_name: 'Web Hat Order',
+                        content_category: 'Web Hat Order',
+                        content_ids: '0',
+                        content_type: 'product',
+                        value: totalPurchaseAmount,
+                        currency: 'USD'
+                    }); 
                     // navigate to the normal paymetn confirmation screen
                     window.location = 'http://lidlaunch.com/cart/payment?PaymentCode=' + result;
                 }
@@ -229,5 +284,6 @@ function proceedToPayWithPaypal() {
     } else {
         showPaypalButtons();
     }
+    fbq('track', 'AddPaymentInfo');
 
 }

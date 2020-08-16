@@ -102,7 +102,6 @@ namespace LidLaunchWebsite.Classes
                 {
                     message.IsBodyHtml = true;
                     message.Bcc.Add("robert@lidlaunch.com");
-                    message.Bcc.Add("Sylvia@lidlaunch.com");
                     if(extraCC != "")
                     {
                         message.CC.Add(extraCC);
@@ -114,6 +113,7 @@ namespace LidLaunchWebsite.Classes
             }
             catch (Exception ex)
             {
+                Logger.Log("Error Sending Email: " + ex.Message.ToString() + "::::" + ex.InnerException.Message.ToString());
                 return false;
             }
         }

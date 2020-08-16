@@ -200,6 +200,7 @@ namespace LidLaunchWebsite.Classes
             bulkOrder.ProjectedShipDateLong = AddBusinessDays(bulkOrder.PaymentDate, 14).ToString("MM/dd/yyyy");
             bulkOrder.BulkOrderBatchId = Convert.ToInt32(dr["BulkOrderBatchId"].ToString());
             bulkOrder.lstItems = new List<BulkOrderItem>();
+            bulkOrder.ShippingCost = 0;
 
             if (ds.Tables[1].Rows.Count > 0)
             {
@@ -213,6 +214,10 @@ namespace LidLaunchWebsite.Classes
                         item.ItemName = Convert.ToString(dr2["ItemName"].ToString());
                         item.ItemQuantity = Convert.ToInt32(dr2["ItemQuantity"].ToString());
                         item.ItemCost = Convert.ToDecimal(dr2["ItemCost"].ToString());
+                        if(item.ItemName == "Shipping")
+                        {
+                            bulkOrder.ShippingCost = item.ItemCost;
+                        }
                         item.lstNotes = new List<Note>();
                         if (ds.Tables[4].Rows.Count > 0)
                         {
