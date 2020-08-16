@@ -14,7 +14,7 @@
 }
 
 
-#checkoutContainer table input[type=text], #checkoutContainer table select {
+#checkoutContainer table input[type=text], #checkoutContainer table select, #checkoutContainer table input[type=number] {
     width: 100%;
 }
 

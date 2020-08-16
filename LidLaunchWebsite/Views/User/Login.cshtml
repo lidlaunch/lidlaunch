@@ -1,6 +1,20 @@
 ﻿@{
     ViewBag.Title = "Lid Launch - Login";
 }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#txtEmail").keydown(function (e) {
+            if (e.keyCode == 13) {
+                login();
+            }
+        });
+        $("#txtPassword").keydown(function (e) {
+            if (e.keyCode == 13) {
+                login();
+            }
+        });
+    });
+</script>
 <div id="UserSignUp">
     <div class="formInput"><h1>Welcome back!</h1></div>
     <div class="formInput">

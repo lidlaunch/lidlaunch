@@ -1,13 +1,49 @@
 ﻿function proceedToPayment() {
-    $('#shipingSection').hide();
-    setShipToSummary();
-    $('#paymentStep').fadeIn();
-}
-function setShipToSummary() {
     var shipAddress = $('#txtShippingAddress').val();
     var shipCity = $('#txtShippingCity').val();
     var shipState = $('#selShippingState').children("option:selected").val();
     var shipZip = $('#txtShippingZip').val();
+    var email = $('#txtCustomerEmail').val();
+    var firstName = $('#txtShippingFirstName').val();
+    var lastName = $('#txtShippingLastName').val();
+
+    if (validateShippingInfo(firstName, lastName, shipAddress, shipCity, shipState, shipZip, email)) {
+        $('#shipingSection').hide();
+        setShipToSummary(shipAddress, shipCity, shipState, shipZip);
+        $('#paymentStep').fadeIn();
+    }    
+}
+function validateShippingInfo(firstName, lastName, address, city, state, zip, email) {
+    if (validateEmail(email) == false) {
+        displayPopupNotification('Please enter a valid email address.', 'error', false);
+        return false;
+    }
+
+    if (lastName == '' || firstName == '' || address == '' || city == '' || zip == '') {
+        displayPopupNotification('You must enter in all required fields.', 'error', false);
+        return false;
+    }
+
+    return true;
+}
+function cc_format(value) {
+    var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+    var matches = v.match(/\d{4,16}/g);
+    var match = matches && matches[0] || ''
+    var parts = []
+
+    for (i = 0, len = match.length; i < len; i += 4) {
+        parts.push(match.substring(i, i + 4))
+    }
+
+    if (parts.length) {
+        return parts.join(' ')
+    } else {
+        return value
+    }
+}
+function setShipToSummary(shipAddress, shipCity, shipState, shipZip) {
+   
 
     if ($('#rdPaypal').prop('checked') == true) {
         $('#shipToSummary').text('PayPal shipping address');
@@ -51,6 +87,24 @@ function sameAsShipping() {
     $('#rdUseSameAsShipping').prop('checked', true);
     $('#rdUsedifferentAddress').prop('checked', false);
 
+}
+function validateCreditCardAndProcessPayment() {
+    if (validateCreditCardFIelds()) {
+        processPayment();
+    }
+
+}
+function validateCreditCardFIelds   () {
+    var cvv = $('#txtSecurityCode').val();
+    var expMonth = $('#txtExpirationMonth').val();
+    var expYear = $('#txtExpirationYear').val();
+    var ccNumber = $('#txtCardNumber').val();
+
+    if (cvv == '' || expMonth == '' || expYear == '' || ccNumber == '') {
+        displayPopupNotification('Please check your Credit Card info and try again.', 'error', false);
+        return false
+    }
+    
 }
 function processPayment() {
     var isBulkOrder = false;
@@ -102,8 +156,7 @@ function processPayment() {
     var cvv = $('#txtSecurityCode').val();
     var expMonth = $('#txtExpirationMonth').val();
     var expYear = $('#txtExpirationYear').val();
-    var ccNumber = $('#txtCardNumber').val();
-    var cType = $('#txt').val();    
+    var ccNumber = $('#txtCardNumber').val();   
 
     var creditCardJson = '{ "billing_address" : ' + billingAddressJson + ', "cvv2" : "' + cvv + '", "expire_month" : "' + expMonth + '", "expire_year" : "' + expYear + '", "first_name" : "' + billFirstName + '", "last_name" : "' + billLastName + '", "number" : "' + ccNumber + '"}';
 

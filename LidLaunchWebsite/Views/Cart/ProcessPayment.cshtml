@@ -1,4 +1,14 @@
-﻿<div id="checkoutContainer">
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+        $('#txtCardNumber').keyup(function () {       
+            var formattedText = cc_format($(this).val());
+            $(this).val(formattedText);
+        });
+        
+    });
+</script>
+
+<div id="checkoutContainer">
     <div style="text-align:center;">
         <img src="~/Images/logo.jpg" width="300" />
     </div>
@@ -89,12 +99,12 @@
                     </select>
                 </td>
                 <td>
-                    <input type="text" placeholder="ZIP code" id="txtShippingZip" />
+                    <input type="number" placeholder="ZIP code" id="txtShippingZip" maxlength="5" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <input type="text" placeholder="Phone (optional)" id="txtPhone" />
+                    <input type="number" placeholder="Phone (optional)" id="txtPhone" />
                 </td>
 
             </tr>
@@ -136,15 +146,15 @@
                     <td colspan="2">
                         <table class="subTable">
                             <tr>
-                                <td colspan="3" style="position:relative;"><input type="text" placeholder="Card number" id="txtCardNumber" minlength="13" maxlength="19"/><img src="~/Images/ccavailable.png" style="position:absolute; right:6px; top:11px;"/></td>
+                                <td colspan="3" style="position:relative;"><input type="text" placeholder="Card number" id="txtCardNumber" minlength="13" maxlength="23"/><img src="~/Images/ccavailable.png" style="position:absolute; right:6px; top:11px;"/></td>
                             </tr>
                             <tr>
                                 <td colspan="3"><input type="text" placeholder="Name on card" id="txtNameOnCard"/></td>
                             </tr>
                             <tr>
-                                <td style="width:25%;"><input type="text" placeholder="Exp MM" id="txtExpirationMonth" minlength="1" maxlength="2"/></td>
-                                <td style="width:25%;"><input type="text" placeholder="Exp YYYY" id="txtExpirationYear" minlength="4" maxlength="4"/></td>
-                                <td style="width:50%;"><input type="text" placeholder="Security code" id="txtSecurityCode" minlength="3" maxlength="4"/></td>
+                                <td style="width:25%;"><input type="number" placeholder="Exp MM" id="txtExpirationMonth" minlength="1" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/></td>
+                                <td style="width:25%;"><input type="number" placeholder="Exp YYYY" id="txtExpirationYear" minlength="4" maxlength="4" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/></td>
+                                <td style="width:50%;"><input type="number" placeholder="Security code" id="txtSecurityCode" minlength="3" maxlength="4" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/></td>
                             </tr>
                         </table>
                     </td>
@@ -256,7 +266,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" placeholder="ZIP code" id="txtBillingZip" />
+                                    <input type="number" placeholder="ZIP code" id="txtBillingZip" maxlength="5" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
                                 </td>
                             </tr>
                             <tr>
@@ -273,7 +283,7 @@
         </div><!--/billingAddres-->
         <div id="completeOrderButtons">
             <a href="#" onclick="goBackToShipping()" class="left" style="line-height:80px;">< Go Back</a>
-            <input type="button" value="Pay now" class="smallButton right" id="btnPayNow" onclick="processPayment();"/>
+            <input type="button" value="Pay now" class="smallButton right" id="btnPayNow" onclick="validateCreditCardAndProcessPayment();"/>
             <input type="button" value="Complete order" class="smallButton  right" id="btnCompleteOrder" onclick="proceedToPayWithPaypal()"/>
         </div>
     </div><!--/paymentStep-->
