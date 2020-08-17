@@ -79,7 +79,7 @@ namespace LidLaunchWebsite.Controllers
             return View();
         }
 
-        public string PaymentWithCreditCard(string creditCard, string cartItems, string billingAddress, string shippingAddress, string shippingRecipient, int shippingPrice, string email,  string isBulkOrder, string orderNotes, string artworkPlacement)
+        public string PaymentWithCreditCard(string creditCard, string cartItems, string billingAddress, string shippingAddress, string shippingRecipient, decimal shippingPrice, string email,  string isBulkOrder, string orderNotes, string artworkPlacement)
         {            
 
             //Now make a List of Item and add the above item to it
@@ -224,7 +224,7 @@ namespace LidLaunchWebsite.Controllers
                     if (bulkOrder)
                     {
                         BulkController bc = new BulkController();
-                        string orderResult = bc.CreateBulkOrder(cartItems, shippingRecipient, email, phone, artworkPlacement, orderNotes, total.ToString(), paymentGuid, fileContent);                                              
+                        string orderResult = bc.CreateBulkOrder(cartItems, shippingRecipient, email, phone, artworkPlacement, orderNotes, total.ToString(), paymentGuid, shippingPrice.ToString(), fileContent);                                              
                     }
                     else
                     {                        

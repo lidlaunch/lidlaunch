@@ -10,7 +10,7 @@ namespace LidLaunchWebsite.Classes
 {
     public class BulkData
     {
-        public int CreateBulkOrder(string name, string email, string phoneNumber, decimal orderTotal, string artworkNotes, string artworkImage, string artworkPosition, List<PaypalItem> items, string paymentCompleteGuid, string paymentGuid)
+        public int CreateBulkOrder(string name, string email, string phoneNumber, decimal orderTotal, string artworkNotes, string artworkImage, string artworkPosition, List<PaypalItem> items, string paymentCompleteGuid, string paymentGuid, decimal shippingCost)
         {
             var data = new SQLData();
             var orderId = 0;
@@ -49,6 +49,14 @@ namespace LidLaunchWebsite.Classes
                             sqlComm2.CommandType = CommandType.StoredProcedure;
                             sqlComm2.ExecuteNonQuery();
                         }
+                        //add the shipping cost item
+                        SqlCommand sqlComm3 = new SqlCommand("CreateBulkOrderItem", data.conn);
+                        sqlComm3.Parameters.AddWithValue("@bulkOrderId", orderId);
+                        sqlComm3.Parameters.AddWithValue("@name", "Shipping");
+                        sqlComm3.Parameters.AddWithValue("@quantity", 1);
+                        sqlComm3.Parameters.AddWithValue("@cost", shippingCost);
+                        sqlComm3.CommandType = CommandType.StoredProcedure;
+                        sqlComm3.ExecuteNonQuery();
 
                     }
 
@@ -199,8 +207,8 @@ namespace LidLaunchWebsite.Classes
             bulkOrder.ProjectedShipDateShort = AddBusinessDays(bulkOrder.PaymentDate, 10).ToString("MM/dd/yyyy");
             bulkOrder.ProjectedShipDateLong = AddBusinessDays(bulkOrder.PaymentDate, 14).ToString("MM/dd/yyyy");
             bulkOrder.BulkOrderBatchId = Convert.ToInt32(dr["BulkOrderBatchId"].ToString());
-            bulkOrder.lstItems = new List<BulkOrderItem>();
-            bulkOrder.ShippingCost = 0;
+            bulkOrder.lstItems = new List<BulkOrderItem>();           
+
 
             if (ds.Tables[1].Rows.Count > 0)
             {
@@ -240,6 +248,8 @@ namespace LidLaunchWebsite.Classes
                     }
                 }
             }
+
+            bulkOrder.OrderSubTotal = bulkOrder.OrderTotal - bulkOrder.ShippingCost;
 
             bulkOrder.lstDesigns = new List<Design>();
             if (ds.Tables[2].Rows.Count > 0)

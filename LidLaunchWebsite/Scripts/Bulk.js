@@ -292,6 +292,7 @@ function verifyAndShowPaypal() {
     var files = $('#bulkArtwork')[0].files;
 
     var orderNotes = $('#txtDetails').val();
+    var shippingCost = $('#shippingCost').text();
 
     if ($('#artworkPresetup').prop("checked")) {
         orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
@@ -307,6 +308,7 @@ function verifyAndShowPaypal() {
         data.append("orderNotes", orderNotes);
         data.append("orderTotal", currentGrandTotalCost);
         data.append("items", JSON.stringify(currentBulkProductList));
+        data.append("shippingCost", shippingCost);
         data.append("paymentCompleteGuid", $('#paymentCompleteGuid').text());
         showLoading();
         $.ajax({
@@ -325,7 +327,7 @@ function verifyAndShowPaypal() {
                     $('#chckoutWizzard').hide();
                     $('#paypalButtons').slideDown();
                     $('#paypal-button-container-bulk').empty();
-                    renderBulkCartPaypalButtons(currentGrandTotalCost, currentBulkProductList, $('#paymentCompleteGuid').text(), $('#shippingCost').text(), (currentGrandTotalCost - currentShippingTotal));
+                    renderBulkCartPaypalButtons(currentGrandTotalCost, currentBulkProductList, $('#paymentCompleteGuid').text(), shippingCost, (currentGrandTotalCost - currentShippingTotal));
                 }
             },
             error: function (xhr, status, p3, p4) {
@@ -338,10 +340,10 @@ function verifyAndShowPaypal() {
         
 }
 
-function processBulkPaymentShowPaypal(total, paymentCompleteGuid) {
+function processBulkPaymentShowPaypal(total, paymentCompleteGuid, shippingCost, orderSubTotal) {
     var items = JSON.parse($('#productList').text());    
 
-    renderBulkCartPaypalButtons(total, items, paymentCompleteGuid, );
+    renderBulkCartPaypalButtons((shippingCost + orderSubTotal), items, paymentCompleteGuid, shippingCost, orderSubTotal);
     $('#paypalPaymentButtonsPopup').show();
 }
 

@@ -133,10 +133,14 @@
     <span id="productList" style="display:none;">
         [
         @{ int count = 1; }
-        @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.lstItems)
+        @{ List<LidLaunchWebsite.Models.BulkOrderItem> filteredList = new List<LidLaunchWebsite.Models.BulkOrderItem>();}
+        @{ filteredList.AddRange(Model.lstItems);}
+        @{ filteredList.RemoveAll(l => l.ItemName == "Shipping");}
+        @foreach (LidLaunchWebsite.Models.BulkOrderItem item in filteredList)
         {
             var jsonString = "";
-            if (count == Model.lstItems.Count)
+            
+            if (count == filteredList.Count)
             {
                 jsonString = "{\"name\":\"" + item.ItemName + "\",\"quantity\":\"" + item.ItemQuantity + "\",\"price\":\"" + item.ItemCost + "\",\"currency\":\"USD\"}";
             }
@@ -152,7 +156,7 @@
     </span>
     @if (!Model.OrderPaid)
     {
-        <a href="javascript:void(0);" onclick="processBulkPaymentShowPaypal(@Model.OrderTotal,'@Model.PaymentCompleteGuid', @Model.ShippingCost, (@Model.OrderTotal - @Model.ShippingCost));"><div id="PayNow">Pay Now</div></a>
+        <a href="javascript:void(0);" onclick="processBulkPaymentShowPaypal(@Model.OrderTotal,'@Model.PaymentCompleteGuid', @Model.ShippingCost, @Model.OrderSubTotal);"><div id="PayNow">Pay Now</div></a>
     }
     else
     {

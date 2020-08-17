@@ -86,7 +86,7 @@ namespace LidLaunchWebsite.Controllers
             return success.ToString();
         }
 
-        public string CreateBulkOrder(string items, string name, string email, string phone, string artworkPlacement, string orderNotes, string orderTotal, string paymentCompleteGuid, HttpPostedFileBase fileContent)
+        public string CreateBulkOrder(string items, string name, string email, string phone, string artworkPlacement, string orderNotes, string orderTotal, string paymentCompleteGuid, string shippingCost, HttpPostedFileBase fileContent)
         {
             var jss = new JavaScriptSerializer();
             var cartItems = jss.Deserialize<List<PaypalItem>>(items);
@@ -108,7 +108,7 @@ namespace LidLaunchWebsite.Controllers
 
             BulkData bulkData = new BulkData();
             var paymentGuid = Guid.NewGuid().ToString();
-            var orderId = bulkData.CreateBulkOrder(name, email, phone, Convert.ToDecimal(orderTotal), orderNotes, artworkPath, artworkPlacement, cartItems, paymentCompleteGuid, paymentGuid);
+            var orderId = bulkData.CreateBulkOrder(name, email, phone, Convert.ToDecimal(orderTotal), orderNotes, artworkPath, artworkPlacement, cartItems, paymentCompleteGuid, paymentGuid, Convert.ToDecimal(shippingCost));
 
             DesignData designData = new DesignData();
             var designId = designData.CreateDesign(artworkPath, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M);
