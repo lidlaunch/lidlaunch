@@ -287,3 +287,17 @@ function proceedToPayWithPaypal() {
     fbq('track', 'AddPaymentInfo');
 
 }
+var mobileCartShown = false;
+
+function showHideMobileCart() {
+    if (mobileCartShown) {
+        mobileCartShown = false;
+        $('#showHideSummary').text('Show order summary');
+        $('.checkOutCartItems').detach().appendTo('#checkoutHolderRight');
+    } else {
+        mobileCartShown = true;
+        $('#showHideSummary').text('Hide order summary');
+        $('.checkOutCartItems').detach().appendTo('#clonedCart');        
+    }
+    
+}

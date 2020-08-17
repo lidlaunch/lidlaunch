@@ -12,12 +12,22 @@
             var formattedText = formatPhoneNumber($(this).val());
             $(this).val(formattedText);
         });
+        $('#lblMobileTotal').text($('#lblTotal').text());
     });
 </script>
 
 <div id="checkoutContainer">
     <div style="text-align:center;">
         <img src="~/Images/logo.jpg" width="300" />
+    </div>
+    <div id="mobileCart" onclick="showHideMobileCart();">
+        <div id="showSummary">
+            <div class="left" id="showHideSummary">Show order summary</div>
+            <div class="right" id="lblMobileTotal">$0.00</div>
+        </div>
+        <div id="clonedCart" >
+
+        </div>
     </div>
     <div id="shipingSection" class="checkoutStep">
         <table>
@@ -117,7 +127,7 @@
             </tr>
         </table>
         <div>
-            <input type="button" value="Continue To Payment" class="smallButton right" onclick="proceedToPayment();"/>
+            <input type="button" value="Continue To Payment" class="smallButton right checkoutProgressButton" onclick="proceedToPayment();"/>
         </div>
     </div><!--/shipingSection-->
 
@@ -323,8 +333,8 @@
         </div><!--/billingAddres-->
         <div id="completeOrderButtons">
             <a href="#" onclick="goBackToShipping()" class="left" style="line-height:80px;">< Go Back</a>
-            <input type="button" value="Pay now" class="smallButton right" id="btnPayNow" onclick="validateCreditCardAndProcessPayment();"/>
-            <input type="button" value="Complete order" class="smallButton  right" id="btnCompleteOrder" onclick="proceedToPayWithPaypal()"/>
+            <input type="button" value="Pay now" class="smallButton right checkoutProgressButton" id="btnPayNow" onclick="validateCreditCardAndProcessPayment();"/>
+            <input type="button" value="Complete order" class="smallButton  right checkoutProgressButton" id="btnCompleteOrder" onclick="proceedToPayWithPaypal()"/>
         </div>
     </div><!--/paymentStep-->
 </div><!--/checkoutContainer-->

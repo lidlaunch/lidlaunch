@@ -194,6 +194,7 @@ function updateBulkTotals() {
     currentGrandTotalCost = currentTotalCost + currentShippingTotal;
 
     $('#lblTotal').text(currentGrandTotalCost);
+    $('#lblMobileTotal').text('$' + currentGrandTotalCost);
 
     console.log(currentGrandTotalCost);
 

@@ -67,5 +67,18 @@ input[type=radio] {
     cursor: pointer;
 }
 
+#mobileCart {
+    background:#eee;    
+    display:none;
+}
+#showSummary {
+    padding: 30px;
+    font-size: 20px;
+    height:20px;
+    cursor:pointer;
+}
+#lblMobileTotal {
+    font-weight:bold;
+}
 
 
