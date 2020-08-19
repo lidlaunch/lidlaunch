@@ -13,6 +13,7 @@ namespace LidLaunchWebsite.Controllers
     public class BulkController : Controller
     {
         // GET: Bulk
+        
         public ActionResult Index()
         {
             BulkOrder bulkOrder = new BulkOrder();
@@ -104,6 +105,28 @@ namespace LidLaunchWebsite.Controllers
                 var path = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory + "Images\\BulkOrderArtwork\\", fileName);
 
                 fileContent.SaveAs(path);
+            }
+            else
+            {
+                HttpPostedFileBase fileContent2 = null;
+                if (Request.Files.Count > 0)
+                {
+                    fileContent2 = Request.Files[0];
+                }
+
+                if (fileContent2 != null && fileContent2.ContentLength > 0)
+                {
+                    // get a stream
+                    var stream = fileContent2.InputStream;
+                    // and optionally write the file to disk
+                    var extension = Path.GetExtension(fileContent2.FileName);
+
+                    var fileName = Guid.NewGuid() + extension;
+                    artworkPath = fileName;
+                    var path = Path.Combine(Server.MapPath("~/Images/BulkOrderArtwork/"), fileName);
+
+                    fileContent2.SaveAs(path);
+                }
             }
 
             BulkData bulkData = new BulkData();

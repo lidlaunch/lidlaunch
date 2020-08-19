@@ -154,12 +154,12 @@
                         <b>Payment</b><br />All Transactions are secure and encrypted.
                     </td>
                 </tr>
-                <tr id="userCreditCardRadioHolder" onclick="useCreditCard()">
+                <tr id="userCreditCardRadioHolder" onclick="useCreditCard()" style="display:none;">
                     <td>
-                        <input type="radio" id="rdCreditCard" checked/> Credit card
+                        <input type="radio" id="rdCreditCard"/> Credit card
                     </td>
                 </tr>
-                <tr id="creditCardEntry">
+                <tr id="creditCardEntry"  style="display:none;">
                     <td colspan="2">
                         <table class="subTable">
                             <tr>
@@ -209,7 +209,7 @@
                         </table>
                     </td>
                 </tr>
-                <tr id="usePaypalRadioHolder" onclick="usePaypal()">
+                <tr id="usePaypalRadioHolder" onclick="usePaypal()" checked>
                     <td>
                         <input type="radio" id="rdPaypal" /> <img src="~/Images/paypal.png" alt="PayPal" style="vertical-align: middle; height: 20px;"/>
                     </td>

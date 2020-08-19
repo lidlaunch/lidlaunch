@@ -56,6 +56,10 @@ input[type=radio] {
 #btnCompleteOrder {
     display:none;
 }
+#completeOrderButtons {
+    display:inline-block;
+    width:100%;
+}
 
 #checkoutContainer input[type=button].smallButton {
     font-size: 18px;

@@ -22,15 +22,20 @@
 });
 function SubmitOrder() {
     var total = $('#lblTotal').text();
+    var email = $('#txtCustomerEmail').val();
+    var firstName = $('#txtShippingFirstName').val();
+    var lastName = $('#txtShippingLastName').val();
+    var phone = $('#txtPhone').val();
     
     showLoading();
     $.ajax({
         type: "POST",
         url: '/Cart/SubmitOrder',
         contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        //data: JSON.stringify({ "total": total, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "address": address, "city": city, "state": state, "zip": zip, "addressBill": addressBill, "cityBill": cityBill, "stateBill": stateBill, "zipBill": zipBill }),
-        data: JSON.stringify({ "total": total, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone}),
+        dataType: "text",
+        data: JSON.stringify({
+            "total": total, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "address": "", "city": "", "state": "", "zip": "", "addressBill": "", "cityBill": "", "stateBill": "", "zipBill": "", "paymentGuid": "" }),
+        //data: JSON.stringify({ "total": total, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone}),
         success: function (result) {
             fbq('track', 'Purchase', {
                 content_name: 'Web Hat Order',
@@ -40,7 +45,7 @@ function SubmitOrder() {
                 value: total,
                 currency: 'USD'
             }); 
-            window.location = 'http://lidlaunch.com/cart/payment?PaymentCode=' + result[0];
+            window.location = 'http://lidlaunch.com/cart/payment?PaymentCode=' + result;
         },
         error: function () {
             displayPopupNotification('There was an error creating your order please try again.', 'error', false);
@@ -98,7 +103,7 @@ function RemoveItemFromCart(that) {
     });
 }
 //function renderPaypalButtons(price, items, name, line1, city, zip, phone, state) {
-function renderPaypalButtons(price, items, name, shippingCost, subtotal) {
+function renderPaypalButtons(price, items, shippingCost, subtotal) {
     // Render the PayPal button
 
      paypal.Button.render({
@@ -160,7 +165,11 @@ function renderPaypalButtons(price, items, name, shippingCost, subtotal) {
 function showPaypalButtons() {             
     $('#chckoutWizzard').hide();
     $('#paypalButtons').slideDown();
-    renderPaypalButtons(total, productList, firstName + ' ' + lastName, shippingCost, subTotal);
+    var total = $('#lblTotal').text();
+    var shippingCost = $('#shippingCost').text();
+    var subTotal = total - shippingCost;
+    var productList = $('#productList').text();
+    renderPaypalButtons(total, productList, shippingCost, subTotal);
 }
 function trackCartPixel(totalItems, totalPrice) {
     fbq('track', 'InitiateCheckout', {

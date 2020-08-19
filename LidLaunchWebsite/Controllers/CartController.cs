@@ -420,6 +420,10 @@ namespace LidLaunchWebsite.Controllers
                 orderTotal += 5;
             }            
 
+            if(paymentGuid == "")
+            {
+                paymentGuid = Guid.NewGuid().ToString();
+            }
             
             var orderId = orderData.CreateOrder(orderTotal, firstName, lastName, email, phone, address, city, state, zip, addressBill, cityBill, stateBill, zipBill, paymentGuid, Convert.ToInt32(Session["UserID"]));
             //var orderId = orderData.CreateOrder(orderTotal, firstName, lastName, email, phone, "", "", "", "", "", "", "", "", paymentGuid, Convert.ToInt32(Session["UserID"]));
@@ -446,7 +450,7 @@ namespace LidLaunchWebsite.Controllers
             }
 
             //var json = new JavaScriptSerializer().Serialize(new string[] {paymentGuid, orderId.ToString()});
-            return orderId.ToString();
+            return paymentGuid;
         }
         public virtual ActionResult Payment(string PaymentCode)
         {

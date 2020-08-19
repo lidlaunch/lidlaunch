@@ -9,7 +9,9 @@
 
     if (validateShippingInfo(firstName, lastName, shipAddress, shipCity, shipState, shipZip, email)) {
         $('#shipingSection').hide();
-        setShipToSummary(shipAddress, shipCity, shipState, shipZip);
+        setShipToSummary();
+        //UNTIL PAYPAL PAYMENTS PRO IS APPROVED
+        usePaypal();
         $('#paymentStep').fadeIn();
     }    
 }
@@ -62,8 +64,11 @@ function formatPhoneNumber(input) {
     }
     return input;
 }
-function setShipToSummary(shipAddress, shipCity, shipState, shipZip) {
-   
+function setShipToSummary() {
+    var shipAddress = $('#txtShippingAddress').val();
+    var shipCity = $('#txtShippingCity').val();
+    var shipState = $('#selShippingState').children("option:selected").val();
+    var shipZip = $('#txtShippingZip').val();
 
     if ($('#rdPaypal').prop('checked') == true) {
         $('#shipToSummary').text('PayPal shipping address');
@@ -285,7 +290,7 @@ function proceedToPayWithPaypal() {
         showPaypalButtons();
     }
     fbq('track', 'AddPaymentInfo');
-
+    $(window).scrollTop(0);
 }
 var mobileCartShown = false;
 

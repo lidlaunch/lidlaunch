@@ -2232,15 +2232,11 @@ input[type=text], input[type=password], select, input[type=number] {
         display: none;
     }
     #paymentContainer {
-        width: auto;
-        margin: 0 20px;
-        /* margin-top: 20px; */
-        padding:0;
+        width: 90%;
+        margin:0;
+        padding:20px;
         background-size: cover;
         height: auto;
-        /* padding-top: 88px; */
-        /* padding-left: 20px; */
-        /* padding-right: 20px; */
     }
 }
 
@@ -2257,9 +2253,11 @@ input[type=text], input[type=password], select, input[type=number] {
     }
 
     #header {
-        height: 202px;
+        height: 160px;
     }
-
+    #navigation ul {
+        margin-top:0;
+    }
     #logo {
         float: none;
         margin: 0 auto;
@@ -2272,14 +2270,14 @@ input[type=text], input[type=password], select, input[type=number] {
         text-align: center;
     }
 
-        #navigation ul {
-            float: unset;
-            display: inline-block;
-        }
+    #navigation ul {
+        float: unset;
+        display: inline-block;
+    }
 
-            #navigation ul li.last {
-                margin-right: 0;
-            }
+    #navigation ul li.last {
+        margin-right: 0;
+    }
 
     .mainNavigation {
         position: absolute;
@@ -2291,6 +2289,7 @@ input[type=text], input[type=password], select, input[type=number] {
         padding-right: 0;
         border: 0;
         display: none;
+        z-index: 90;
     }
 
     .dropdown {
@@ -2662,13 +2661,32 @@ input[type=text], input[type=password], select, input[type=number] {
         }
 
     #header {
-        height: 164px;
+        height:110px;
+    }
+
+    #header #logo {
+        height:60px;
     }
 
     .mainNavigation {
-        top: 204px;
+        top: 150px;
+        z-index:90;
     }
 
+    #navigation ul {
+        margin-top: 2px;
+    }
+
+    .cartIcon {
+        margin-left: -3px;
+    }
+    #bulkProgressBar {
+        height:50px
+    }
+    .bulkProgressBarStep {
+        height:50px;
+        line-height:46px;
+    }
     #searchBoxTop #searhHolder #search {
         width: 70%;
     }
@@ -2791,19 +2809,19 @@ input[type=text], input[type=password], select, input[type=number] {
         width: 90%;
     }
 
-        .hatBrandStyleRegion .hatTitle .title {
-            font-size: 16px;
-        }
+    .hatBrandStyleRegion .hatTitle .title {
+        font-size: 16px;
+    }
 
-        .hatBrandStyleRegion .hatTitle .left {
-            width: 60%;
-        }
+    .hatBrandStyleRegion .hatTitle .left {
+        width: 60%;
+    }
 
-        .hatBrandStyleRegion .hatTitle .right {
-            width: 40%;
-            text-align: right;
-            font-size: 12px;
-        }
+    .hatBrandStyleRegion .hatTitle .right {
+        width: 40%;
+        text-align: right;
+        font-size: 12px;
+    }
 
     .hatStyleSelectArea .hatStyleImage img {
         width: 100%;
@@ -2813,24 +2831,55 @@ input[type=text], input[type=password], select, input[type=number] {
         display: inline-block;
     }
 
-        .hatStyleSetQty table {
-            width: 100% !important;
-            float: unset !important;
-            display: inline-block;
-        }
+    .hatStyleImage {
+        width:70%;
+        margin:0 auto;
+    }
+    #FlexFit210 .hatStyleSetQty table {
+        width: 100% !important;
+        float: unset !important;
+        display: inline-block;
+    }
+    #FlexFit6277 .hatStyleSetQty table {
+        width: 100% !important;
+        float: unset !important;
+        display: inline-block;
+    }
 
-            .hatStyleSetQty table .hatPreviewImage img {
-                width: 80px;
-            }
+    #Richardson112 .hatStyleSetQty table {
+        width: 48% !important;
+        float: unset !important;
+        display: inline-block;
+    }
+    #6089FlatbillSnapback .hatStyleSetQty table {
+        width: 48% !important;
+        float: unset !important;
+        display: inline-block;
+    }
 
-            .hatStyleSetQty table .colorOption {
-                width: 40px;
-                font-size: 12px;
-                word-break: break-all;
-            }
+    .hatStyleSetQty table .hatPreviewImage img {
+        width: 80px;
+    }
+
+    .hatStyleSetQty table .colorOption {
+        width: 40px;
+        font-size: 10px;
+        word-break: break-word;
+    }
 
     #bulkArtworkStep h2 {
         font-size: 16px;
+        background:#eee;
+        padding:20px;
+    }
+
+    #designComments p {
+        padding:0 30px;
+    }
+
+    .productDetailsTextMulti {
+        font-size: 12px;
+        width: 90% !important;
     }
 
     #bulkArtworkStep {
@@ -2896,5 +2945,9 @@ input[type=text], input[type=password], select, input[type=number] {
         max-width: 100%;
         display: block;
         margin: 0 auto;
+    }
+
+    #creditCardEntry {
+        font-size:12px;
     }
 }

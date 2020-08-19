@@ -265,6 +265,7 @@
     <Content Include="Images\BrickBG.jpg" />
     <Content Include="Images\BulkTop.jpg" />
     <Content Include="Images\cartStepIcon.png" />
+    <Content Include="Images\ccavailable.png" />
     <Content Include="Images\CenterPlacement.jpg" />
     <Content Include="Images\Check.png" />
     <Content Include="Images\CheckGray.png" />
@@ -435,6 +436,7 @@
     <Content Include="Images\LogoBG.jpg" />
     <Content Include="Images\min.png" />
     <Content Include="Images\MoreColors.png" />
+    <Content Include="Images\paypal.png" />
     <Content Include="Images\PayWithDebit-CreditCard.png" />
     <Content Include="Images\richardson.gif" />
     <Content Include="Images\Richardson112.jpg" />
