@@ -176,15 +176,15 @@ function updateBulkTotals() {
 
     currentBulkProductList = JSON.parse(productList);
 
-    var length = currentBulkProductList.length - 1;
+    var length = currentBulkProductList.length;
 
     if (hasArtFee) {
-        length = currentBulkProductList.length - 2;
+        length = currentBulkProductList.length - 1;
     }
 
     for (var i = 0; i < length; i++) {
 
-        currentBulkProductList[i].price = currentPrice
+        currentBulkProductList[i].price = currentPrice;
     }
 
     $('#bottomTotal').text('$' + currentTotalCost);
