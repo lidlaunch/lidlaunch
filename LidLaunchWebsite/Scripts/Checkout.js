@@ -9,7 +9,7 @@
 
     if (validateShippingInfo(firstName, lastName, shipAddress, shipCity, shipState, shipZip, email)) {
         $('#shipingSection').hide();
-        setShipToSummary(shipAddress, shipCity, shipState, shipZip);
+        setShipToSummary();
         $('#paymentStep').fadeIn();
     }    
 }
@@ -62,8 +62,11 @@ function formatPhoneNumber(input) {
     }
     return input;
 }
-function setShipToSummary(shipAddress, shipCity, shipState, shipZip) {
-   
+function setShipToSummary() {
+    var shipAddress = $('#txtShippingAddress').val();
+    var shipCity = $('#txtShippingCity').val();
+    var shipState = $('#selShippingState').children("option:selected").val();
+    var shipZip = $('#txtShippingZip').val();
 
     if ($('#rdPaypal').prop('checked') == true) {
         $('#shipToSummary').text('PayPal shipping address');
@@ -162,7 +165,6 @@ function processPayment() {
     //shipping info
     var shipFirstName = $('#txtShippingFirstName').val();
     var shipLastName = $('#txtShippingLastName').val();
-    var shippingRecipient = shipFirstName + " " + shipLastName;
 
     var shipAddress = $('#txtShippingAddress').val();
     var shipCity = $('#txtShippingCity').val();
@@ -179,22 +181,18 @@ function processPayment() {
     var billZip = $('#txtBillingZip').val();
     var billPhone = $('#txtBillingPhone').val();
 
-    var shippingAddressJson = '{ "state" : "' + shipState + '", "line1" : "' + shipAddress + '", "postal_code" : "' + shipZip + '", "city" : "' + shipCity + '", "phone" : "' + shipPhone + '" }';
+    var shippingAddressJson = '{ "ShipToState" : "' + shipState + '", "ShipToStreet" : "' + shipAddress + '", "ShipToZip" : "' + shipZip + '", "ShipToCity" : "' + shipCity + '", "ShipToPhone" : "' + shipPhone + '", "ShipToFirstName" : "' + shipFirstName + '", "ShipToLastName" : "' + shipLastName + '" }';
     var billingAddressJson = "";
     if ($('#rdUseSameAsShipping').prop('checked') == true) {
-        billingAddressJson = shippingAddressJson;
-        billFirstName = shipFirstName;
-        billLastName = shipLastName;
+        billingAddressJson = '{ "State" : "' + shipState + '", "Street" : "' + shipAddress + '", "Zip" : "' + shipZip + '", "City" : "' + shipCity + '", "PhoneNum" : "' + shipPhone + '" , "FirstName" : "' + shipFirstName + '", "LastName" : "' + shipLastName + '"}';
     } else {
-        billingAddressJson = '{ "state" : "' + billState + '", "line1" : "' + billAddress + '", "postal_code" : "' + billZip + '", "city" : "' + billCity + '", "phone" : "' + billPhone + '" }';
+        billingAddressJson = '{ "State" : "' + billState + '", "Street" : "' + billAddress + '", "Zip" : "' + billZip + '", "City" : "' + billCity + '", "PhoneNum" : "' + billPhone + '" , "FirstName" : "' + billFirstName + '", "LastName" : "' + billLastName + '"}';
     }
 
-    var cvv = $('#txtSecurityCode').val();
-    var expMonth = $('#selExpirationMonth').children("option:selected").val();
-    var expYear = $('#selExpirationYear').children("option:selected").val();
-    var ccNumber = $('#txtCardNumber').val();   
-
-    var creditCardJson = '{ "billing_address" : ' + billingAddressJson + ', "cvv2" : "' + cvv + '", "expire_month" : "' + expMonth + '", "expire_year" : "' + expYear + '", "first_name" : "' + billFirstName + '", "last_name" : "' + billLastName + '", "number" : "' + ccNumber + '"}';
+    var ccV = $('#txtSecurityCode').val();
+    var ccExpMM = $('#selExpirationMonth').children("option:selected").val();
+    var ccExpYY = $('#selExpirationYear').children("option:selected").val();
+    var ccNumber = $('#txtCardNumber').val().replace(/\s/g, '');
 
     var files = [];
     var orderNotes = '';
@@ -211,22 +209,26 @@ function processPayment() {
         artworkPlacement = $('#artPlacement').text();
     }
 
+    var totalPurchaseAmount = $('#lblTotal').text();
 
     var data = new FormData();
     data.append("file" + 0, file);
-    data.append("creditCard", creditCardJson);
     data.append("cartItems", items);
     data.append("billingAddress", billingAddressJson);
     data.append("shippingAddress", shippingAddressJson);
-    data.append("shippingRecipient", shippingRecipient);
-    data.append("shippingPrice", shippingcost);
+    data.append("ccNumber", ccNumber);
+    data.append("ccExpMM", ccExpMM);
+    data.append("ccExpYY", ccExpYY);
+    data.append("ccV", ccV);
+    data.append("orderTotal", totalPurchaseAmount);
     data.append("email", email);
     data.append("isBulkOrder", isBulkOrder);
     data.append("orderNotes", orderNotes);
     data.append("artworkPlacement", artworkPlacement);
+    data.append("shippingCost", shippingcost);
     showLoading();
 
-    var totalPurchaseAmount = $('#lblTotal').text();
+    
 
     $.ajax({
         type: "POST",
@@ -285,7 +287,7 @@ function proceedToPayWithPaypal() {
         showPaypalButtons();
     }
     fbq('track', 'AddPaymentInfo');
-
+    $(window).scrollTop(0);
 }
 var mobileCartShown = false;
 

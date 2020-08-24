@@ -1,15 +1,15 @@
 ﻿using LidLaunchWebsite.Classes;
 using LidLaunchWebsite.Models;
-using Newtonsoft.Json.Linq;
-using PayPal.Api;
-using RestSharp;
-using RestSharp.Authenticators;
 using System;
+
+using PayPal.Payments.Common;
+using PayPal.Payments.Common.Utility;
+using PayPal.Payments.DataObjects;
+//using PayPal.Payments.Samples.CS.DataObjects.Recurring;
+using PayPal.Payments.Transactions;
+
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -79,164 +79,154 @@ namespace LidLaunchWebsite.Controllers
             return View();
         }
 
-        public string PaymentWithCreditCard(string creditCard, string cartItems, string billingAddress, string shippingAddress, string shippingRecipient, decimal shippingPrice, string email,  string isBulkOrder, string orderNotes, string artworkPlacement)
-        {            
-
-            //Now make a List of Item and add the above item to it
-            //you can create as many items as you want and add to this list
-            List<Item> items = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Item>>(cartItems);
-            CreditCard cc = Newtonsoft.Json.JsonConvert.DeserializeObject<CreditCard>(creditCard);
-            Address billAddress = Newtonsoft.Json.JsonConvert.DeserializeObject<Address>(billingAddress);
-            Address shipAddress = Newtonsoft.Json.JsonConvert.DeserializeObject<Address>(shippingAddress);
-
-            bool bulkOrder = Convert.ToBoolean(isBulkOrder);
-
-            ShippingAddress shippingAddressNew = new ShippingAddress();
-
-            shippingAddressNew.state = shipAddress.state;
-            shippingAddressNew.line1 = shipAddress.line1;
-            shippingAddressNew.postal_code = shipAddress.postal_code;
-            shippingAddressNew.city = shipAddress.city;
-            if(shipAddress.phone == "")
-            {
-                shippingAddressNew.phone = null;
-            }         
-            shippingAddressNew.recipient_name = shippingRecipient;
-            shippingAddressNew.country_code = "US";
-            
-
-            if(billAddress.phone == "")
-            {
-                billAddress.phone = null;
-            }
-            billAddress.country_code = "US";
-
-            ItemList itemList = new ItemList();
-            itemList.items = items;
-            itemList.shipping_address = shippingAddressNew;
+        public string PaymentWithCreditCard(string cartItems, string ccNumber, string ccExpMM, string ccExpYY, string ccV, string orderTotal, string billingAddress, string shippingAddress, string email,  string isBulkOrder, string orderNotes, string artworkPlacement, string shippingCost)
+        {
+            BillTo billAddress = Newtonsoft.Json.JsonConvert.DeserializeObject<BillTo>(billingAddress);
+            ShipTo shipAddress = Newtonsoft.Json.JsonConvert.DeserializeObject<ShipTo>(shippingAddress);
 
 
-            //remove spaces from credit card number...
-            cc.number = cc.number.Replace(" ", "");
+            UserInfo User = new UserInfo("lidlaunch", "lidlaunch", "PayPal", "Z06Corvette90!");
 
-            cc.type = FindType(cc.number);
+            // Create the Payflow  Connection data object with the required connection details.
+            // Values of connection details can also be passed in the constructor of 
+            // PayflowConnectionData. This will override the values passed in the App config file.
+            // Example values passed below are as follows:
+            // Payflow Pro Host address : pilot-payflowpro.verisign.com 
+            // Payflow Pro Host Port : 443
+            // Timeout : 45 ( in seconds )
+            //TESTING ENDPOINT
+            //PayflowConnectionData Connection = new PayflowConnectionData("pilot-payflowpro.paypal.com", 443, 45);
+            //PRODUCTION ENDPOINT
+            PayflowConnectionData Connection = new PayflowConnectionData("payflowpro.paypal.com", 443, 45);
 
-            cc.billing_address = billAddress;
+            // Create a new Invoice data object with the Amount, Billing Address etc. details.
+            Invoice Inv = new Invoice();
 
-            var subtotal = items.Sum(i => Convert.ToDecimal(i.price) * Convert.ToInt32(i.quantity));
-            var total = shippingPrice + subtotal;
-
-            // Specify details of your payment amount.
-            var details = new Details();
-            details.shipping = shippingPrice.ToString();
-            details.subtotal = subtotal.ToString();
-            details.tax = "0";
-
-            // Specify your total payment amount and assign the details object
-            Amount amnt = new Amount();
-            amnt.currency = "USD";
-            // Total = shipping tax + subtotal.
-            amnt.total = total.ToString();
-            amnt.details = details;
-
-            string invoiceNumber = "";
-
-            string paymentGuid = Guid.NewGuid().ToString();
-            
+            // Set Amount.
+            Currency Amt = new Currency(Convert.ToDecimal(orderTotal));
+            Inv.Amt = Amt;
+            // Truncate the Amount value using the truncate feature of 
+            // the Currency Data Object.
+            // Note: Currency Data Object also has the Round feature
+            // which will round the amount value to desired number of decimal
+            // digits ( default 2 ). However, round and truncate cannot be used 
+            // at the same time. You can set one of round or truncate true.
+            Inv.Amt.Truncate = true;
+            // Set the truncation decimal digit to 2.
+            Inv.Amt.NoOfDecimalDigits = 2;
 
             HttpPostedFileBase fileContent = null;
             if (Request.Files.Count > 0)
             {
                 fileContent = Request.Files[0];
             }
+            string paymentGuid = Guid.NewGuid().ToString();
+            bool bulkOrder = Convert.ToBoolean(isBulkOrder);
 
-            //check if the credit card type is valid
-            if (cc.type == "unknown")
+
+            if (bulkOrder)
+            {
+                Inv.PoNum = "Bulk:PO-" + paymentGuid;
+                Inv.InvNum = "Bulk:INV-" + paymentGuid;
+            }
+            else
+            {
+                Inv.PoNum = "Web:PO-" + paymentGuid;
+                Inv.InvNum = "Web:INV-" + paymentGuid;
+            }
+
+
+
+            Inv.BillTo = billAddress;
+            Inv.ShipTo = shipAddress;
+
+            Inv.BillTo.
+            
+
+            // Create a new Payment Device - Credit Card data object.
+            // The input parameters are Credit Card Number and Expiration Date of the Credit Card.
+            CreditCard CC = new CreditCard(ccNumber, ccExpMM + ccExpYY);
+            CC.Cvv2 = ccV;
+
+            if (FindType(ccNumber) == "unknown")
             {
                 return "ccerror";
             }
 
-            // Now make a trasaction object and assign the Amount object
-            Transaction tran = new Transaction();
-            tran.amount = amnt;
-            tran.description = "Lid Launch Order Payment.";
-            tran.item_list = itemList;
-            if(bulkOrder)
+            // Create a new Tender - Card Tender data object.
+            CardTender Card = new CardTender(CC);
+            ///////////////////////////////////////////////////////////////////
+
+            // Create a new Base Transaction.
+            BaseTransaction Trans = new BaseTransaction("S",
+                User, Connection, Inv, Card, PayflowUtility.RequestId);
+
+            // Submit the Transaction
+            Response Resp = Trans.SubmitTransaction();
+
+            // Display the transaction response parameters.
+            if (Resp != null)
             {
-                tran.invoice_number = "Bulk:" + paymentGuid;
+                // Get the Transaction Response parameters.
+                TransactionResponse TrxnResponse = Resp.TransactionResponse;
+
+                if (TrxnResponse != null)
+                {
+                    Console.WriteLine("RESULT = " + TrxnResponse.Result);
+                    Console.WriteLine("PNREF = " + TrxnResponse.Pnref);
+                    Console.WriteLine("RESPMSG = " + TrxnResponse.RespMsg);
+                    Console.WriteLine("AUTHCODE = " + TrxnResponse.AuthCode);
+                    Console.WriteLine("AVSADDR = " + TrxnResponse.AVSAddr);
+                    Console.WriteLine("AVSZIP = " + TrxnResponse.AVSZip);
+                    Console.WriteLine("IAVS = " + TrxnResponse.IAVS);
+                    Console.WriteLine("CVV2MATCH = " + TrxnResponse.CVV2Match);
+                }
+
+                // Get the Fraud Response parameters.
+                FraudResponse FraudResp = Resp.FraudResponse;
+                // Display Fraud Response parameter
+                if (FraudResp != null)
+                {
+                    Console.WriteLine("PREFPSMSG = " + FraudResp.PreFpsMsg);
+                    Console.WriteLine("POSTFPSMSG = " + FraudResp.PostFpsMsg);
+                }
+
+                // Display the response.
+                Console.WriteLine(Environment.NewLine + PayflowUtility.GetStatus(Resp));
+
+
+                // Get the Transaction Context and check for any contained SDK specific errors (optional code).
+                Context TransCtx = Resp.TransactionContext;
+                if (TransCtx != null && TransCtx.getErrorCount() > 0)
+                {
+                    Console.WriteLine(Environment.NewLine + "Transaction Errors = " + TransCtx.ToString());
+                    return "ccerror";
+                } else
+                {
+                    if (Resp.TransactionResponse.Result == 0)
+                    {
+                        string phone = billAddress.PhoneNum == null ? "" : billAddress.PhoneNum;
+                        if (bulkOrder)
+                        {
+                            BulkController bc = new BulkController();
+                            string orderResult = bc.CreateBulkOrder(cartItems, shipAddress.ShipToFirstName + " " + shipAddress.ShipToLastName, email, phone, artworkPlacement, orderNotes, orderTotal, paymentGuid, shippingCost, fileContent);
+                        }
+                        else
+                        {
+                            string orderResult = SubmitOrder(orderTotal, shipAddress.ShipToFirstName, shipAddress.ShipToLastName, email, phone, shipAddress.ShipToStreet, shipAddress.ShipToCity, shipAddress.ShipToState, shipAddress.ShipToZip, billAddress.Street, billAddress.City, billAddress.State, billAddress.Zip, paymentGuid);
+                        }
+                    } else
+                    {
+                        return "ccerror";
+                    }                                     
+
+                }
             } else
             {
-                tran.invoice_number = "Web:" + paymentGuid;
-            }            
+                return ("ccerror");
 
-            // Now, we have to make a list of trasaction and add the trasactions object
-            // to this list. You can create one or more object as per your requirements
-
-            List<Transaction> transactions = new List<Transaction>();
-            transactions.Add(tran);
-
-            // Now we need to specify the FundingInstrument of the Payer
-            // for credit card payments, set the CreditCard which we made above
-
-            FundingInstrument fundInstrument = new FundingInstrument();
-            fundInstrument.credit_card = cc;
-
-            // The Payment creation API requires a list of FundingIntrument
-
-            List<FundingInstrument> fundingInstrumentList = new List<FundingInstrument>();
-            fundingInstrumentList.Add(fundInstrument);
-
-            // Now create Payer object and assign the fundinginstrument list to the object
-            Payer payr = new Payer();
-            payr.funding_instruments = fundingInstrumentList;
-            payr.payment_method = "credit_card";            
-
-            // finally create the payment object and assign the payer object & transaction list to it
-            Payment pymnt = new Payment();
-            pymnt.intent = "sale";
-            pymnt.payer = payr;
-            pymnt.transactions = transactions;
-
-            try
-            {
-                //getting context from the paypal, basically we are sending the clientID and clientSecret key in this function 
-                //to the get the context from the paypal API to make the payment for which we have created the object above.
-
-                //Code for the configuration class is provided next
-
-                // Basically, apiContext has a accesstoken which is sent by the paypal to authenticate the payment to facilitator account. An access token could be an alphanumeric string
-
-                APIContext apiContext = PaypalConfiguration.GetAPIContext();
-
-                // Create is a Payment class function which actually sends the payment details to the paypal API for the payment. The function is passed with the ApiContext which we received above.
-
-                Payment createdPayment = pymnt.Create(apiContext);
-
-                //if the createdPayment.State is "approved" it means the payment was successfull else not
-
-                if (createdPayment.state.ToLower() != "approved")
-                {
-                    return "ccerror";
-                }
-                else
-                {
-                    string phone = billAddress.phone == null ? "" : billAddress.phone;
-                    if (bulkOrder)
-                    {
-                        BulkController bc = new BulkController();
-                        string orderResult = bc.CreateBulkOrder(cartItems, shippingRecipient, email, phone, artworkPlacement, orderNotes, total.ToString(), paymentGuid, shippingPrice.ToString(), fileContent);                                              
-                    }
-                    else
-                    {                        
-                        string orderResult = SubmitOrder(total.ToString(), cc.first_name, cc.last_name, email, phone, shipAddress.line1, shipAddress.city, shipAddress.state, shipAddress.postal_code, billAddress.line1, billAddress.city, billAddress.state, billAddress.postal_code, paymentGuid);                                             
-                    }
-                }
             }
-            catch (PayPal.PayPalException ex)
-            {
-                Logger.Log("Error: " + ex.Message);
-                return "ccerror";
-            }
+
 
             return paymentGuid;
         }
@@ -266,9 +256,6 @@ namespace LidLaunchWebsite.Controllers
 
             return "unknown";
         }
-
-
-        private PayPal.Api.Payment payment;
 
 
         public string AddItemToCart(string productId, string qty, string size, string typeId, string colorId)
@@ -420,6 +407,10 @@ namespace LidLaunchWebsite.Controllers
                 orderTotal += 5;
             }            
 
+            if(paymentGuid == "")
+            {
+                paymentGuid = Guid.NewGuid().ToString();
+            }
             
             var orderId = orderData.CreateOrder(orderTotal, firstName, lastName, email, phone, address, city, state, zip, addressBill, cityBill, stateBill, zipBill, paymentGuid, Convert.ToInt32(Session["UserID"]));
             //var orderId = orderData.CreateOrder(orderTotal, firstName, lastName, email, phone, "", "", "", "", "", "", "", "", paymentGuid, Convert.ToInt32(Session["UserID"]));
@@ -439,14 +430,14 @@ namespace LidLaunchWebsite.Controllers
                 }                
             }
             
-            if (orderId > 0)
+            if (orderId > 0) 
             {
                 EmailFunctions emailFunc = new EmailFunctions();
                 var emailSuccess = emailFunc.sendEmail(email, firstName + " " + lastName, emailFunc.orderEmail(cart.lstProducts, total, orderId.ToString()), "Lid Launch Order Confirmation", "");
             }
 
             //var json = new JavaScriptSerializer().Serialize(new string[] {paymentGuid, orderId.ToString()});
-            return orderId.ToString();
+            return paymentGuid;
         }
         public virtual ActionResult Payment(string PaymentCode)
         {
