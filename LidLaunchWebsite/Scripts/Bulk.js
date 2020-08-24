@@ -198,14 +198,6 @@ function updateBulkTotals() {
 
     console.log(currentGrandTotalCost);
 
-    fbq('track', 'AddToCart', {
-        content_name: 'Bulk Order Hats',
-        content_category: 'Bulk Order Hats',
-        content_ids: '0',
-        content_type: 'product',
-        value: currentGrandTotalCost,
-        currency: 'USD'
-    });
 }
 
 function showBulkCart() {
@@ -491,6 +483,17 @@ function changeBulkOrderSection(section) {
             $('#artStepButton').addClass('selected');
             currentOrderStep = 'art';
             document.getElementById("header").scrollIntoView();
+
+            var currentTotal = $('#lblTotal').text();
+
+            fbq('track', 'AddToCart', {
+                content_name: 'Bulk Order Hats',
+                content_category: 'Bulk Order Hats',
+                content_ids: '0',
+                content_type: 'product',
+                value: currentTotal,
+                currency: 'USD'
+            });
         }
     }
     if (section == 'checkout') {
