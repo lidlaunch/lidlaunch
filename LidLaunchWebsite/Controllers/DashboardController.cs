@@ -742,6 +742,48 @@ namespace LidLaunchWebsite.Controllers
 
         }
 
+        public ActionResult AddBulkRework(int bulkOrderBatchId, int bulkOrderItemId, string bulkOrderBlankName, int parentBulkOrderId, int parentBulkOrderBatchId, string note, int quantity, int bulkReworkId)
+        {
+            dynamic model = new ExpandoObject();
+            
+            model.bulkOrderBatchId = bulkOrderBatchId;
+            model.bulkOrderItemId = bulkOrderItemId;
+            model.bulkOrderBlankName = bulkOrderBlankName;
+            model.parentBulkOrderId = parentBulkOrderId;
+            model.parentBulkOrderBatchId = parentBulkOrderBatchId;
+            model.quantity = quantity;
+            model.bulkReworkId = bulkReworkId;
+            model.note = note;
+
+            return PartialView("AddBulkRework", model);
+        }
+
+        public string CreateBulkRework(string bulkOrderBatchId, string bulkOrderItemId, string bulkOrderBlankName, string quantity, string note, string status, string reworkId)
+        {
+            BulkData data = new BulkData();
+            int intBulkReworkId = Convert.ToInt32(reworkId);
+
+            bool missingBlank = false;
+
+            if(Convert.ToInt32(bulkOrderBatchId) > 0)
+            {
+                missingBlank = true;
+            }
+
+            if(intBulkReworkId > 0)
+            {
+                data.UpdateBulkRework(Convert.ToInt32(quantity), Convert.ToString(note), Convert.ToString(status), intBulkReworkId);
+            } 
+            else
+            {
+                intBulkReworkId = data.CreateBulkRework(Convert.ToInt32(bulkOrderItemId), Convert.ToInt32(bulkOrderBatchId), Convert.ToInt32(quantity), Convert.ToString(note), Convert.ToBoolean(missingBlank), Convert.ToString(bulkOrderBlankName));
+            }            
+
+            var success = intBulkReworkId > 0;
+
+            return success.ToString();
+        }
+
         public ActionResult AddNote(int bulkOrderId, int bulkOrderItemId, int designId, int parentBulkOrderId)
         {
             dynamic model = new ExpandoObject();

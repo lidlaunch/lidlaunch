@@ -67,6 +67,10 @@ function setShipToSummary() {
     var shipCity = $('#txtShippingCity').val();
     var shipState = $('#selShippingState').children("option:selected").val();
     var shipZip = $('#txtShippingZip').val();
+    var email = $('#txtCustomerEmail').val();
+
+    $('#spnContactPreview').text(email);
+
 
     if ($('#rdPaypal').prop('checked') == true) {
         $('#shipToSummary').text('PayPal shipping address');

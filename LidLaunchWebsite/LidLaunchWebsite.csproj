@@ -231,7 +231,7 @@
     <Compile Include="Models\BulkOrder.cs" />
     <Compile Include="Models\BulkOrderItem.cs" />
     <Compile Include="Models\Logger.cs" />
-    <Compile Include="Models\MissingBlank.cs" />
+    <Compile Include="Models\BulkRework.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\Dashboard.cs" />
@@ -647,6 +647,7 @@
     <Content Include="Views\Cart\ProcessPayment.cshtml" />
     <Content Include="Views\Cart\CheckOut.cshtml" />
     <Content Include="Views\Dashboard\MissingBlanks.cshtml" />
+    <Content Include="Views\Dashboard\AddBulkRework.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

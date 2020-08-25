@@ -340,6 +340,33 @@ function processBulkPaymentShowPaypal(total, paymentCompleteGuid, shippingCost, 
     $('#paypalPaymentButtonsPopup').show();
 }
 
+function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, parentBulkOrderId, parentBulkOrderBatchId, reworkId) {
+    $.ajax({
+        type: "POST",
+        url: '/Dashboard/CreateBulkRework',
+        contentType: false,
+        processData: false,
+        data: JSON.stringify({
+            bulkOrderBatchId: bulkOrderBatchId, bulkOrderItemId: bulkOrderItemId, bulkOrderBlankName: bulkOrderBlankName, quantity: $('#bulkReworkQuantity').val(), note: $('#bulkReworkNote').val(), status: $('#selReworkStatus').children("option:selected").val(), reworkId: reworkId}),
+        contentType: "application/json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('error.', 'error', false);
+            } else {
+                if (bulkOrderBatchId != '' && bulkOrderBatchId != '0') {
+                    alert('show the bulk order batch screen for batch id= ' + parentBulkOrderBatchId);
+                } else {
+                    showBulkOrderDetailsPopup(parentBulkOrderId);
+                }                
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error.', 'error', false);
+        }
+    });
+}
+
 function saveNote(noteType, idVal, parentBulkOrderId) {
     $.ajax({
         type: "POST",

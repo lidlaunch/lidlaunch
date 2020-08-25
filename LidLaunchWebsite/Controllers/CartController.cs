@@ -140,7 +140,6 @@ namespace LidLaunchWebsite.Controllers
             Inv.BillTo = billAddress;
             Inv.ShipTo = shipAddress;
 
-            Inv.BillTo.
             
 
             // Create a new Payment Device - Credit Card data object.

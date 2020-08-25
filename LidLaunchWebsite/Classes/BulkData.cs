@@ -222,6 +222,17 @@ namespace LidLaunchWebsite.Classes
                         item.ItemName = Convert.ToString(dr2["ItemName"].ToString());
                         item.ItemQuantity = Convert.ToInt32(dr2["ItemQuantity"].ToString());
                         item.ItemCost = Convert.ToDecimal(dr2["ItemCost"].ToString());
+
+                        BulkRework bulkRework = new BulkRework();
+                        if (Convert.ToInt32(dr2["BulkReworkId"]) > 0)
+                        {                            
+                            item.BulkRework = GetBulkReworkById(Convert.ToInt32(dr2["BulkReworkId"]));
+                        } 
+                        else
+                        {
+                            item.BulkRework = bulkRework;
+                        }
+
                         if(item.ItemName == "Shipping")
                         {
                             bulkOrder.ShippingCost = item.ItemCost;
@@ -507,6 +518,61 @@ namespace LidLaunchWebsite.Classes
             catch (Exception ex)
             {
                 return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public BulkRework GetBulkReworkById(int reworkId)
+        {
+            var data = new SQLData();
+            BulkRework bulkRework = new BulkRework();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetBulkReworkById", data.conn);
+                    sqlComm.Parameters.AddWithValue("@reworkId", reworkId);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            DataRow dr = ds.Tables[0].Rows[0];
+                            bulkRework.Id = Convert.ToInt32(dr["Id"].ToString());
+                            bulkRework.BulkOrderItemId = Convert.ToInt32(dr["BulkOrderItemId"].ToString());
+                            bulkRework.BulkOrderBatchId = Convert.ToInt32(dr["BulkOrderBatchId"].ToString());
+                            bulkRework.Quantity = Convert.ToInt32(dr["Quantity"].ToString());
+                            bulkRework.Status = Convert.ToString(dr["Status"].ToString());
+                            bulkRework.CreatedDate = Convert.ToDateTime(dr["CreatedDate"].ToString());
+                            bulkRework.Note = Convert.ToString(dr["Note"].ToString());
+                            bulkRework.IsMissingBlank = Convert.ToBoolean(dr["MissingBlank"].ToString());
+                            bulkRework.MissingBlankName = Convert.ToString(dr["MissingBlankName"].ToString());
+
+                        }
+
+                    }
+
+
+                }
+
+                return bulkRework;
+            }
+            catch (Exception ex)
+            {
+                return bulkRework;
             }
             finally
             {
@@ -876,36 +942,30 @@ namespace LidLaunchWebsite.Classes
             return startDate.AddDays(totalDays * direction);
         }
 
-
-        public int CreateMissingBlank(string missingBlank, int quantity)
+        public int UpdateBulkRework(int quantity, string note, string status, int bulkReworkId)
         {
             var data = new SQLData();
-            var missingBankId = 0;
             try
             {
                 DataSet ds = new DataSet();
                 using (data.conn)
                 {
-                    SqlCommand sqlComm = new SqlCommand("CreateMissingBlank", data.conn);
-                    SqlParameter returnParameter = sqlComm.Parameters.Add("missingBlankId", SqlDbType.Int);
-                    returnParameter.Direction = ParameterDirection.ReturnValue;
-                    sqlComm.Parameters.AddWithValue("@missingBlank", missingBlank);
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkRework", data.conn);
+                    sqlComm.Parameters.AddWithValue("@note ", note);
                     sqlComm.Parameters.AddWithValue("@quantity ", quantity);
+                    sqlComm.Parameters.AddWithValue("@status", status);
+                    sqlComm.Parameters.AddWithValue("@bulkReworkId", bulkReworkId);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();
                     sqlComm.ExecuteNonQuery();
-                    missingBankId = (int)returnParameter.Value;
-                    //updload the individual line items
-                    
-
                 }
 
-                return missingBankId;
+                return bulkReworkId;
             }
             catch (Exception ex)
             {
-                return missingBankId;
+                return bulkReworkId;
             }
             finally
             {
@@ -916,16 +976,60 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
-        public List<MissingBlank> GetMissingBlanks()
+
+        public int CreateBulkRework(int bulkOrderItemId, int bulkOrderBatchId, int quantity, string note, bool missingBlank, string missingBlankName)
         {
             var data = new SQLData();
-            List<MissingBlank> lstMissingBlanks = new List<MissingBlank>();
+            var bulkReworkId = 0;
             try
             {
                 DataSet ds = new DataSet();
                 using (data.conn)
                 {
-                    SqlCommand sqlComm = new SqlCommand("GetMissingBlanks", data.conn);
+                    SqlCommand sqlComm = new SqlCommand("CreateBulkRework", data.conn);
+                    SqlParameter returnParameter = sqlComm.Parameters.Add("bulkReworkId", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+                    sqlComm.Parameters.AddWithValue("@bulkOrderItemId", bulkOrderItemId);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderBatchId", bulkOrderBatchId);
+                    sqlComm.Parameters.AddWithValue("@note ", note);
+                    sqlComm.Parameters.AddWithValue("@missingBlank ", missingBlank);
+                    sqlComm.Parameters.AddWithValue("@missingBlankName ", missingBlankName);
+                    sqlComm.Parameters.AddWithValue("@quantity ", quantity);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                    bulkReworkId = (int)returnParameter.Value;
+                    //updload the individual line items
+                    
+
+                }
+
+                return bulkReworkId;
+            }
+            catch (Exception ex)
+            {
+                return bulkReworkId;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public List<BulkRework> GetBulkRework()
+        {
+            var data = new SQLData();
+            List<BulkRework> lstBulkRework = new List<BulkRework>();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetBulkRework", data.conn);
                     sqlComm.CommandType = CommandType.StoredProcedure;
 
                     SqlDataAdapter da = new SqlDataAdapter();
@@ -939,14 +1043,17 @@ namespace LidLaunchWebsite.Classes
                         {
                             foreach (DataRow dr in ds.Tables[0].Rows)
                             {
-                                MissingBlank missingBlank = new MissingBlank();
+                                BulkRework missingBlank = new BulkRework();
                                 missingBlank.Id = Convert.ToInt32(dr["Id"].ToString());
-                                missingBlank.MissingBlankName = Convert.ToString(dr["MissingBlank"].ToString());
+                                missingBlank.BulkOrderItemId = Convert.ToInt32(dr["BulkOrderItemId"].ToString());
+                                missingBlank.BulkOrderBatchId = Convert.ToInt32(dr["BulkOrderBatchId"].ToString());
                                 missingBlank.Quantity = Convert.ToInt32(dr["Quantity"].ToString());
                                 missingBlank.Status = Convert.ToString(dr["Status"].ToString());
                                 missingBlank.CreatedDate = Convert.ToDateTime(dr["CreatedDate"].ToString());
+                                missingBlank.Note = Convert.ToString(dr["Note"].ToString());
+                                missingBlank.MissingBlankName = Convert.ToString(dr["MissingBlankName"].ToString());
 
-                                lstMissingBlanks.Add(missingBlank);
+                                lstBulkRework.Add(missingBlank);
                             }
 
                         }
@@ -956,11 +1063,11 @@ namespace LidLaunchWebsite.Classes
 
                 }
 
-                return lstMissingBlanks;
+                return lstBulkRework;
             }
             catch (Exception ex)
             {
-                return lstMissingBlanks;
+                return lstBulkRework;
             }
             finally
             {
@@ -971,7 +1078,7 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
-        public bool UpdateMissingBlankStatus(int missingBlankId, string status)
+        public bool UpdateBulkReworkStatus(int bulkReworkId, string status)
         {
             var data = new SQLData();
             try
@@ -980,8 +1087,8 @@ namespace LidLaunchWebsite.Classes
                 DataSet ds = new DataSet();
                 using (data.conn)
                 {
-                    SqlCommand sqlComm = new SqlCommand("UpdateMissingBlankStatus", data.conn);
-                    sqlComm.Parameters.AddWithValue("@missingBlankId", missingBlankId);
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkReworkStatus", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkReworkId", bulkReworkId);
                     sqlComm.Parameters.AddWithValue("@status", status);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
