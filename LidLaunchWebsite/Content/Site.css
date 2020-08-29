@@ -101,7 +101,7 @@ input[type=text], input[type=password], select, input[type=number] {
 }
 
 #searchTop {
-    width: 300px;
+    width: 168px;
     height: 40px;
     display: inline-block;
     font-size: 22px;
@@ -239,7 +239,10 @@ input[type=text], input[type=password], select, input[type=number] {
     background-color: rgba(57,185,28,1);
     color: white;
 }
-
+#categoryLable img{
+    float:left;
+    margin-right:10px;
+}
 #content {
     clear: both;
     height: auto;
@@ -253,10 +256,18 @@ input[type=text], input[type=password], select, input[type=number] {
 }
 
 #searchBox {
-    height: 370px;
+    height: 375px;
     width: 100%;
-    background: url(/Images/TopImage2.jpg) no-repeat;
-    background-position-y: -200px;
+    background: url(/Images/TopImage4.jpg) no-repeat;
+    background-position-y: -300px;
+    background-size: cover;
+}
+
+#searchBox.earn {
+    width: 100%;
+    background: url(/Images/TopImage3.jpg) no-repeat;
+    background-position-y: -300px;
+
     background-size: cover;
 }
 
@@ -270,9 +281,9 @@ input[type=text], input[type=password], select, input[type=number] {
 }
 
 #searchBoxTop {
-    height: 300px;
+    height: 100%;
     width: 100%;
-    /*background:url(/Images/SearchBack2.png) no-repeat;*/
+    text-align:center;
 }
 
 .introText {
@@ -2342,8 +2353,11 @@ input[type=text], input[type=password], select, input[type=number] {
     }
 
     #searchBox {
-        background-position-y: 0;
+        background-position-y: -100px;
         height: 308px;
+    }
+    #searchBox img {
+        height:100%;
     }
 
     .introText {
@@ -2356,7 +2370,7 @@ input[type=text], input[type=password], select, input[type=number] {
         }
 
     #searchBoxTop {
-        height: 240px;
+        height: 308px;
     }
 
         #searchBoxTop #searhHolder {
@@ -2717,10 +2731,32 @@ input[type=text], input[type=password], select, input[type=number] {
         width: 70%;
     }
 
+    #searchBox {
+        height:223px;
+    }
+
     #searchBoxTop {
         background-size: 260% 300px;
         background-position: -99px;
+        height: 223px;
     }
+    #searchBox.earn {
+        background-position-y: -70px;
+        height:202px;
+    }
+
+    #searchBox.earn img {
+        height: auto;
+        width: 540px;
+        margin-left: -44px;
+    }
+
+    #searchBox img {
+        height: auto;
+        width: 600px;
+        margin-left: -52px;
+    }
+
 
     .productListed {
         width: 100%;
@@ -2767,7 +2803,8 @@ input[type=text], input[type=password], select, input[type=number] {
     }
 
     #topSearch {
-        top: 220px;
+        top: 160px;
+        left:20px;
     }
 
     .cartDetails {

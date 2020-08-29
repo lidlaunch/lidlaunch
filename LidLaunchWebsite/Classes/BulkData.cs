@@ -10,7 +10,7 @@ namespace LidLaunchWebsite.Classes
 {
     public class BulkData
     {
-        public int CreateBulkOrder(string name, string email, string phoneNumber, decimal orderTotal, string artworkNotes, string artworkImage, string artworkPosition, List<PaypalItem> items, string paymentCompleteGuid, string paymentGuid, decimal shippingCost)
+        public int CreateBulkOrder(string name, string email, string phoneNumber, decimal orderTotal, string artworkNotes, string artworkImage, string artworkPosition, List<PaypalItem> items, string paymentCompleteGuid, string paymentGuid, decimal shippingCost, string shipToName, string shipToAddress, string shipToCity, string shipToState, string shipToZip, string shipToPhone, string billToName, string billToAddress, string billToCity, string billToState, string billToZip, string billToPhone)
         {
             var data = new SQLData();
             var orderId = 0;
@@ -31,6 +31,18 @@ namespace LidLaunchWebsite.Classes
                     sqlComm.Parameters.AddWithValue("@artworkPosition", artworkPosition);
                     sqlComm.Parameters.AddWithValue("@paymentCompleteGuid", paymentCompleteGuid);
                     sqlComm.Parameters.AddWithValue("@paymentGuid", paymentGuid);                    
+                    sqlComm.Parameters.AddWithValue("@shipToName", shipToName);
+                    sqlComm.Parameters.AddWithValue("@shipToAddress", shipToAddress);
+                    sqlComm.Parameters.AddWithValue("@shipToCity", shipToCity);
+                    sqlComm.Parameters.AddWithValue("@shipToState", shipToState);
+                    sqlComm.Parameters.AddWithValue("@shipToZip", shipToZip);
+                    sqlComm.Parameters.AddWithValue("@shipToPhone", shipToPhone);
+                    sqlComm.Parameters.AddWithValue("@billToName", billToName);
+                    sqlComm.Parameters.AddWithValue("@billToAddress", billToAddress);
+                    sqlComm.Parameters.AddWithValue("@billToCity", billToCity);
+                    sqlComm.Parameters.AddWithValue("@billToState", billToState);
+                    sqlComm.Parameters.AddWithValue("@billToZip", billToZip);
+                    sqlComm.Parameters.AddWithValue("@billToPhone", billToPhone);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();
@@ -66,6 +78,7 @@ namespace LidLaunchWebsite.Classes
             }
             catch (Exception ex)
             {
+                Logger.Log("Error Creating Bulk Order: " + ex.Message.ToString());
                 return orderId;
             }
             finally

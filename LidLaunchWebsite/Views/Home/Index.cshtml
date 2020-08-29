@@ -8,71 +8,74 @@
 <div id="searchBox">
     <div class="centerInner">
         <div id="searchBoxTop">
+            <a href="/Bulk"><img src="~/Images/HomeHero.png" /></a>
             <!--/nothing now-->
-            <div class="introText left">
-                <i class="far fa-edit icon"></i>
-                <br />
-                <br />
-                Create your own designs
-                <br />
-                & earn $5 per sale!
-            </div>
-            <div class="introText right">
-                <i class="fas fa-boxes icon"></i>
-                <br />
-                <br />
-                Order hats in bulk starting
-                <br />
-                at $15 each!
-            </div>
+            @*<div class="introText left">
+                    <i class="far fa-edit icon"></i>
+                    <br />
+                    <br />
+                    Create your own designs
+                    <br />
+                    & earn $5 per sale!
+                </div>
+                <div class="introText right">
+                    <i class="fas fa-boxes icon"></i>
+                    <br />
+                    <br />
+                    Order hats in bulk starting
+                    <br />
+                    at $15 each!
+                </div>*@
         </div>
     </div><!--/centerInner-->
     <div class="clear"></div>
-    <div id="searchBoxBottom">
-        <div class="centerInner">
-            <div class="introButtons left">
-                <div id="button" onclick="window.location = '/Create/GetStarted'" class="desktopStartSelling">
-                    Start Selling <i class="fas fa-rocket"></i>
-                </div><!--/button-->
-                <div id="button" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);" class="mobileStartSelling" style="display:none;">
-                    Start Selling <i class="fas fa-rocket"></i>
-                </div><!--/button-->
-            </div>
-            <div class="introButtons right">
-                <div id="button" onclick="window.location = '/Bulk'">
-                    Buy Bulk <i class="fas fa-rocket"></i>
-                </div><!--/button-->
-            </div>
-        </div><!--/centerInner-->
-    </div><!--/searchBoxBottom-->
+    @*<div id="searchBoxBottom">
+            <div class="centerInner">
+                <div class="introButtons left">
+                    <div id="button" onclick="window.location = '/Create/GetStarted'" class="desktopStartSelling">
+                        Start Selling <i class="fas fa-rocket"></i>
+                    </div>/button
+                    <div id="button" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);" class="mobileStartSelling" style="display:none;">
+                        Start Selling <i class="fas fa-rocket"></i>
+                    </div>/button
+                </div>
+                <div class="introButtons right">
+                    <div id="button" onclick="window.location = '/Bulk'">
+                        Buy Bulk <i class="fas fa-rocket"></i>
+                    </div>/button
+                </div>
+            </div>/centerInner
+        </div>/searchBoxBottom*@
 </div><!--/searchBox-->
 <div id="examples">
 
 </div>
-
-<div id="paypalCreditBanner" style="display:none;">
-    <script type="text/javascript" data-pp-payerid="YGM642QKHYWE8" data-pp-placementtype="728x90" data-pp-style="BLKWHTYLRG">
-        (function (d, t) { "use strict"; var s = d.getElementsByTagName(t)[0], n = d.createElement(t); n.src = "//www.paypalobjects.com/upstream/bizcomponents/js/merchant.js"; s.parentNode.insertBefore(n, s); }(document, "script"));
-    </script>
-</div>
 <div id="videoSection">
     <div class="centerInner">
         <div id="asideVideo">
-        <table style="width:500px; margin-top:55px;text-align:right;">
-            <tr>
-                <td>
-                    Lid Launch is a husband and wife owned and operated business. We are located in the St.Louis area.
-                </td>
-                <td>
-                    <img src="@Url.Content("~/Images/fam.jpg")" width="200" />
-                </td>
-            </tr>
-        </table>
-            
+            <table style="width:500px; margin-top:55px;text-align:right;">
+                <tr>
+                    <td>
+                        Lid Launch is a husband and wife owned and operated business. We are located in the St.Louis area.
+                    </td>
+                    <td>
+                        <img src="@Url.Content("~/Images/fam2.jpg")" width="300" />
+                    </td>
+                </tr>
+            </table>
+
         </div><!--asideVideo-->
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/yqeF8mT2jm4?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/HdW6zOLnqHs?&controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
 </div>
+<div class="clear"></div>
+<div id="searchBox" class="earn">
+    <div class="centerInner">
+        <div id="searchBoxTop">
+            <a href="/Create"><img src="~/Images/StartEarningHero.png" /></a>             
+        </div>
+    </div>    
+</div><!--/searchBox-->
 <div class="clear"></div>
 <div>
     <div id="ProductListSection">
