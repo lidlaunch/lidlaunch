@@ -2822,7 +2822,7 @@ input[type=text], input[type=password], select, input[type=number] {
     }
 
     .cartDetails .productDetails {
-        0.00 display: block;
+        display: block;
         margin-left: 0;
         float: none;
     }
@@ -3013,4 +3013,43 @@ input[type=text], input[type=password], select, input[type=number] {
     #creditCardEntry {
         font-size:12px;
     }
+}
+@media only screen and (max-width: 500px) {
+    #searchBox {
+        height:178px;
+        background:#000;
+    }
+    #searchBoxTop {
+        height: 178px;
+    }
+    #searchBox img {
+        width: 480px;
+    }
+    #searchBox.earn img {
+        width: 422px;
+        margin-left: -37px;
+    }
+    #searchBox.earn {
+        height: 158px;
+        background:#000;
+    }
+    #searchBoxTop {
+        overflow: hidden;
+    }
+    .bulkProgressBarStep {
+        font-size: 12px;
+    }
+    #videoSection {
+        height:130px;
+    }
+    #videoSection iframe {
+        display:none;
+    }
+    #bulkIntroInner .right {
+        display:none;
+    }
+    #footer {
+        height:250px;
+    }
+
 }
