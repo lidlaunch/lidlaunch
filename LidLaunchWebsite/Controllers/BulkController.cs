@@ -9,7 +9,9 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using ShipStationAccess.V2;
 using ShipStationAccess.V2.Models;
-
+using ZXing;
+using ZXing.Common;
+using System.Drawing;
 
 namespace LidLaunchWebsite.Controllers
 {
@@ -142,6 +144,28 @@ namespace LidLaunchWebsite.Controllers
                 var designId = designData.CreateDesign(artworkPath, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M);
 
                 bulkData.CreateBulkOrderDesign(orderId, designId);
+
+                //create barcode file
+                var barcodeImage = "BO-" + orderId.ToString() + ".jpg";
+                if (!System.IO.File.Exists(Server.MapPath("~/Images/Barcodes/" + barcodeImage)))
+                {
+                    //generate barcode image
+                    IBarcodeWriter barcodeWriter = new BarcodeWriter
+                    {
+                        Format = BarcodeFormat.CODE_39,
+                        Options = new EncodingOptions
+                        {
+                            Height = 100,
+                            Width = 300
+                        }
+                    };
+                    Bitmap barcode = barcodeWriter.Write("BO-" + orderId.ToString());
+                    barcode.Save(Server.MapPath("~/Images/Barcodes/" + barcodeImage));
+                }
+                else
+                {
+                    //do nothing
+                }
 
                 if (orderId > 0)
                 {

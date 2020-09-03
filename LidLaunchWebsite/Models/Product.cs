@@ -40,4 +40,11 @@ namespace LidLaunchWebsite.Models
         public List<Category> lstCategories { get; set; }
         public List<Product> lstParentProducts { get; set; }
     }
+
+    public class ProductAndDesignerInfo
+    {
+        public string ProductName { get; set; }
+        public string UserEmail { get; set; }
+        public string ArtSource { get; set; }
+    }
 }

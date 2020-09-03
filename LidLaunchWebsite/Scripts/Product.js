@@ -40,6 +40,27 @@ function ApproveProduct(id) {
         }
     });
 }
+
+function DenyProduct(id, that) {
+    var denyReason = $(that).closest('tr').find("#txtDenyReason").val();
+    $.ajax({
+        type: "POST",
+        url: '/Dashboard/DenyProduct',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ "id": id, "denyReason": denyReason}),
+        dataType: "json",
+        success: function (result) {
+            if (result) {
+                location.reload();
+            } else {
+                displayPopupNotification('Error approving product.', 'error', false);
+            }
+        },
+        error: function () {
+            displayPopupNotification('Error approving product.', 'error', false);
+        }
+    });
+}
 function changeHatTypeProduct(typeId, that) {
     $('#typeId').text(typeId);
 
