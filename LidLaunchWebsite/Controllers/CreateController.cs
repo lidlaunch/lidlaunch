@@ -163,6 +163,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
+                Logger.Log("Error Uploading Artwork: " + ex.Message.ToString());
                 return "";
             }
 
@@ -172,34 +173,42 @@ namespace LidLaunchWebsite.Controllers
 
         public Bitmap Crop(Bitmap bmp)
         {
-            // Find the min/max non-white/transparent pixels
-            Point min = new Point(int.MaxValue, int.MaxValue);
-            Point max = new Point(int.MinValue, int.MinValue);
-
-            for (int x = 0; x < bmp.Width; ++x)
+            try
             {
-                for (int y = 0; y < bmp.Height; ++y)
-                {
-                    Color pixelColor = bmp.GetPixel(x, y);
-                    if (!(pixelColor.A == 0))
-                    {
-                        if (x < min.X) min.X = x;
-                        if (y < min.Y) min.Y = y;
+                // Find the min/max non-white/transparent pixels
+                Point min = new Point(int.MaxValue, int.MaxValue);
+                Point max = new Point(int.MinValue, int.MinValue);
 
-                        if (x > max.X) max.X = x;
-                        if (y > max.Y) max.Y = y;
+                for (int x = 0; x < bmp.Width; ++x)
+                {
+                    for (int y = 0; y < bmp.Height; ++y)
+                    {
+                        Color pixelColor = bmp.GetPixel(x, y);
+                        if (!(pixelColor.A == 0))
+                        {
+                            if (x < min.X) min.X = x;
+                            if (y < min.Y) min.Y = y;
+
+                            if (x > max.X) max.X = x;
+                            if (y > max.Y) max.Y = y;
+                        }
                     }
                 }
-            }
 
-            // Create a new bitmap from the crop rectangle
-            Rectangle cropRectangle = new Rectangle(min.X, min.Y, max.X - min.X, max.Y - min.Y);
-            Bitmap newBitmap = new Bitmap(cropRectangle.Width, cropRectangle.Height);
-            using (Graphics g = Graphics.FromImage(newBitmap))
+                // Create a new bitmap from the crop rectangle
+                Rectangle cropRectangle = new Rectangle(min.X, min.Y, max.X - min.X, max.Y - min.Y);
+                Bitmap newBitmap = new Bitmap(cropRectangle.Width, cropRectangle.Height);
+                using (Graphics g = Graphics.FromImage(newBitmap))
+                {
+                    g.DrawImage(bmp, 0, 0, cropRectangle, GraphicsUnit.Pixel);
+                }
+                return newBitmap;
+            } 
+            catch(Exception ex)
             {
-                g.DrawImage(bmp, 0, 0, cropRectangle, GraphicsUnit.Pixel);
-            }
-            return newBitmap;
+                Logger.Log("Error Cropping: " + ex.Message.ToString());
+                return null;
+            }            
         }
 
         public string CreateDesign(string x, string y, string width, string height, string typeId, string colorId)
@@ -270,6 +279,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
+                Logger.Log("Error Creating Design: " + ex.Message.ToString());
                 return "";
             }
             var json = new JavaScriptSerializer().Serialize(tempFullPath);
@@ -316,6 +326,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
+                Logger.Log("Error Generating Preview Image: " + ex.Message.ToString());
                 return "";
             }
         }
@@ -371,6 +382,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
+                Logger.Log("Error Accepting Design: " + ex.Message.ToString());
                 return "";
             }
             var json = new JavaScriptSerializer().Serialize(success);
@@ -393,68 +405,85 @@ namespace LidLaunchWebsite.Controllers
         }
         public string UpdateProduct(string name, string description, string categoryId, string privateProduct, List<string> hatTypes, string parentProductId)
         {
-            if (!checkLoggedIn())
+            try
             {
+                if (!checkLoggedIn())
+                {
+                    return "";
+                }
+                else
+                {
+                    ProductData productData = new ProductData();
+                    var productId = Convert.ToInt32(Session["ProductID"]);
+                    foreach (string type in hatTypes)
+                    {
+                        var trimmedType = type.TrimEnd(',');
+                        string[] splitType = trimmedType.Split(':');
+                        var typeId = Convert.ToInt32(splitType[0]);
+                        var colors = splitType[1].Split(',');
+
+                        if (Convert.ToInt32(Session["HatTypeID"]) != typeId)
+                        {
+                            foreach (string color in colors)
+                            {
+                                var colorId = Convert.ToInt32(color);
+                                var previewFileName = GeneratePreviewImage(Session["TempDesignArtworkImagePath"].ToString(), productId, typeId, colorId);
+                                productData.CreateProductType(productId, typeId, previewFileName, colorId);
+                            }
+                        }
+                    }
+
+                    var success = productData.UpdateProduct(name, description, Convert.ToInt32(Session["ProductID"].ToString()), Convert.ToInt32(categoryId), Convert.ToBoolean(privateProduct), Convert.ToInt32(parentProductId));
+                    var json = new JavaScriptSerializer().Serialize(Session["ProductID"].ToString());
+                    Session["TempDesignArtworkImagePath"] = null;
+                    Session["ArtworkX"] = null;
+                    Session["ArtworkY"] = null;
+                    Session["ArtworkWidth"] = null;
+                    Session["ArtworkHeight"] = null;
+                    Session["FullImagePreview"] = null;
+                    Session["ProductID"] = null;
+                    return json;
+                }
+            }
+            catch(Exception ex)
+            {
+                Logger.Log("Error Updating Product: " + ex.Message.ToString());
                 return "";
             }
-            else
-            {
-                ProductData productData = new ProductData();
-                var productId = Convert.ToInt32(Session["ProductID"]);               
-                foreach ( string type in hatTypes)
-                {
-                    var trimmedType = type.TrimEnd(',');
-                    string[] splitType = trimmedType.Split(':'); 
-                    var typeId = Convert.ToInt32(splitType[0]);
-                    var colors = splitType[1].Split(',');
-
-                    if (Convert.ToInt32(Session["HatTypeID"]) != typeId)
-                    {
-                        foreach(string color in colors)
-                        {
-                            var colorId = Convert.ToInt32(color);
-                            var previewFileName = GeneratePreviewImage(Session["TempDesignArtworkImagePath"].ToString(), productId, typeId, colorId);
-                            productData.CreateProductType(productId, typeId, previewFileName, colorId);
-                        }                        
-                    }     
-                }
-
-                var success = productData.UpdateProduct(name, description, Convert.ToInt32(Session["ProductID"].ToString()), Convert.ToInt32(categoryId), Convert.ToBoolean(privateProduct), Convert.ToInt32(parentProductId));
-                var json = new JavaScriptSerializer().Serialize(Session["ProductID"].ToString());
-                Session["TempDesignArtworkImagePath"] = null;
-                Session["ArtworkX"] = null;
-                Session["ArtworkY"] = null;
-                Session["ArtworkWidth"] = null;
-                Session["ArtworkHeight"] = null;
-                Session["FullImagePreview"] = null;
-                Session["ProductID"] = null;
-                return json;
-            }
+            
         }
         public string UpdateProductExisting(string name, string description, string categoryId, string privateProduct, string remove, string parentProductId)
         {
-            if (!checkLoggedIn())
+            try
             {
+                if (!checkLoggedIn())
+                {
+                    return "";
+                }
+                else
+                {
+                    ProductData productData = new ProductData();
+                    var productId = Convert.ToInt32(Session["ProductID"]);
+
+                    var success = productData.UpdateProductExisting(name, description, Convert.ToInt32(Session["ProductID"].ToString()), Convert.ToInt32(categoryId), Convert.ToBoolean(privateProduct), Convert.ToBoolean(remove), Convert.ToInt32(parentProductId));
+                    var json = new JavaScriptSerializer().Serialize(Session["ProductID"].ToString());
+                    Session["TempDesignArtworkImagePath"] = null;
+                    Session["ArtworkX"] = null;
+                    Session["ArtworkY"] = null;
+                    Session["ArtworkWidth"] = null;
+                    Session["ArtworkHeight"] = null;
+                    Session["FullImagePreview"] = null;
+                    Session["ProductID"] = null;
+                    return json;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("Error Updating Existing Product: " + ex.Message.ToString());
                 return "";
             }
-            else
-            {
-                ProductData productData = new ProductData();
-                var productId = Convert.ToInt32(Session["ProductID"]);                
-
-                var success = productData.UpdateProductExisting(name, description, Convert.ToInt32(Session["ProductID"].ToString()), Convert.ToInt32(categoryId), Convert.ToBoolean(privateProduct), Convert.ToBoolean(remove), Convert.ToInt32(parentProductId));
-                var json = new JavaScriptSerializer().Serialize(Session["ProductID"].ToString());
-                Session["TempDesignArtworkImagePath"] = null;
-                Session["ArtworkX"] = null;
-                Session["ArtworkY"] = null;
-                Session["ArtworkWidth"] = null;
-                Session["ArtworkHeight"] = null;
-                Session["FullImagePreview"] = null;
-                Session["ProductID"] = null;
-                return json;
-            }
-        }      
-
+        }
 
     }
 }

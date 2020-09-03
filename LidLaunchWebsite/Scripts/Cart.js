@@ -23,9 +23,36 @@
 function SubmitOrder() {
     var total = $('#lblTotal').text();
     var email = $('#txtCustomerEmail').val();
-    var firstName = $('#txtShippingFirstName').val();
-    var lastName = $('#txtShippingLastName').val();
-    var phone = $('#txtPhone').val();
+    //shipping info
+    var shipFirstName = $('#txtShippingFirstName').val();
+    var shipLastName = $('#txtShippingLastName').val();
+
+    var shipAddress = $('#txtShippingAddress').val();
+    var shipCity = $('#txtShippingCity').val();
+    var shipState = $('#selShippingState').children("option:selected").val();
+    var shipZip = $('#txtShippingZip').val();
+    var shipPhone = $('#txtPhone').val();
+
+    var billFirstName = $('#txtBillingFirstName').val();
+    var billLastName = $('#txtBillingLastName').val();
+
+    var billAddress = $('#txtBillingAddress').val();
+    var billCity = $('#txtBillingCity').val();
+    var billState = $('#selBillingState').children("option:selected").val();
+    var billZip = $('#txtBillingZip').val();
+    var billPhone = $('#txtBillingPhone').val();
+
+    var useShipAddressForBilling = $('#rdUseSameAsShipping').prop('checked');
+
+    if (useShipAddressForBilling) {
+        billFirstName = shipFirstName;
+        billLastName = shipLastName;
+        billAddress = shipAddress;
+        billCity = shipCity;
+        billState = shipState;
+        billZip = shipZip;
+        billPhone = shipPhone
+    }
     
     showLoading();
     $.ajax({
@@ -34,7 +61,7 @@ function SubmitOrder() {
         contentType: "application/json; charset=utf-8",
         dataType: "text",
         data: JSON.stringify({
-            "total": total, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "address": "", "city": "", "state": "", "zip": "", "addressBill": "", "cityBill": "", "stateBill": "", "zipBill": "", "paymentGuid": "" }),
+            "total": total, "firstName": shipFirstName, "lastName": shipLastName, "email": email, "phone": shipPhone, "address": shipAddress, "city": shipCity, "state": shipState, "zip": shipZip, "addressBill": billAddress, "cityBill": billCity, "stateBill": billState, "zipBill": billZip, "paymentGuid": "" }),
         //data: JSON.stringify({ "total": total, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone}),
         success: function (result) {
             fbq('track', 'Purchase', {

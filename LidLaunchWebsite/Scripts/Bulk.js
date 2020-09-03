@@ -291,6 +291,39 @@ function verifyAndShowPaypal() {
         orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
     }
 
+    var email = $('#txtCustomerEmail').val();
+    //shipping info
+    var shipFirstName = $('#txtShippingFirstName').val();
+    var shipLastName = $('#txtShippingLastName').val();
+
+    var shipAddress = $('#txtShippingAddress').val();
+    var shipCity = $('#txtShippingCity').val();
+    var shipState = $('#selShippingState').children("option:selected").val();
+    var shipZip = $('#txtShippingZip').val();
+    var shipPhone = $('#txtPhone').val();
+
+    var billFirstName = $('#txtBillingFirstName').val();
+    var billLastName = $('#txtBillingLastName').val();
+
+    var billAddress = $('#txtBillingAddress').val();
+    var billCity = $('#txtBillingCity').val();
+    var billState = $('#selBillingState').children("option:selected").val();
+    var billZip = $('#txtBillingZip').val();
+    var billPhone = $('#txtBillingPhone').val();
+
+    var useShipAddressForBilling = $('#rdUseSameAsShipping').prop('checked');
+
+    if (useShipAddressForBilling) {
+        billFirstName = shipFirstName;
+        billLastName = shipLastName;
+        billAddress = shipAddress;
+        billCity = shipCity;
+        billState = shipState;
+        billZip = shipZip;
+        billPhone = shipPhone
+    }
+
+
     if (window.FormData !== undefined) {
         var data = new FormData();
         data.append("file" + 0, files[0]);
@@ -303,6 +336,18 @@ function verifyAndShowPaypal() {
         data.append("items", JSON.stringify(currentBulkProductList));
         data.append("shippingCost", shippingCost);
         data.append("paymentCompleteGuid", $('#paymentCompleteGuid').text());
+        data.append("billToState", billState);
+        data.append("billToAddress", billAddress);
+        data.append("billToZip", billZip);
+        data.append("billToPhone", billPhone);
+        data.append("billToCity", billCity);
+        data.append("billToName", billFirstName + ' ' + billLastName);
+        data.append("shipToState", billState);
+        data.append("shipToAddress", shipAddress);
+        data.append("shipToZip", shipZip);
+        data.append("shipToPhone", shipPhone);
+        data.append("shipToCity", shipCity);
+        data.append("shipToName", shipFirstName + ' ' + shipLastName);
         showLoading();
         $.ajax({
             type: "POST",
@@ -338,6 +383,33 @@ function processBulkPaymentShowPaypal(total, paymentCompleteGuid, shippingCost, 
 
     renderBulkCartPaypalButtons((shippingCost + orderSubTotal), items, paymentCompleteGuid, shippingCost, orderSubTotal);
     $('#paypalPaymentButtonsPopup').show();
+}
+
+function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, parentBulkOrderId, parentBulkOrderBatchId, reworkId) {
+    $.ajax({
+        type: "POST",
+        url: '/Dashboard/CreateBulkRework',
+        contentType: false,
+        processData: false,
+        data: JSON.stringify({
+            bulkOrderBatchId: bulkOrderBatchId, bulkOrderItemId: bulkOrderItemId, bulkOrderBlankName: bulkOrderBlankName, quantity: $('#bulkReworkQuantity').val(), note: $('#bulkReworkNote').val(), status: $('#selReworkStatus').children("option:selected").val(), reworkId: reworkId}),
+        contentType: "application/json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('error.', 'error', false);
+            } else {
+                if (bulkOrderBatchId != '' && bulkOrderBatchId != '0') {
+                    alert('show the bulk order batch screen for batch id= ' + parentBulkOrderBatchId);
+                } else {
+                    showBulkOrderDetailsPopup(parentBulkOrderId);
+                }                
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error.', 'error', false);
+        }
+    });
 }
 
 function saveNote(noteType, idVal, parentBulkOrderId) {

@@ -150,7 +150,102 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
-        
+
+        public bool DenyProduct(int productId)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("DenyProduct", data.conn);
+                    sqlComm.Parameters.AddWithValue("@id", productId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public ProductAndDesignerInfo GetProductAndDesignerInfo(int productId)
+        {
+            ProductAndDesignerInfo info = new ProductAndDesignerInfo();
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetProductAndDesignerInfo", data.conn);
+                    sqlComm.Parameters.AddWithValue("@id", productId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+                }
+
+                if (ds.Tables.Count > 0)
+                {
+                    Product product = new Product();
+                    Design design = new Design();
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        DataRow dr = ds.Tables[0].Rows[0];
+                        info.ProductName = dr["Name"].ToString();
+                    }
+                    if(ds.Tables[2].Rows.Count > 0)
+                    {
+                        DataRow dr = ds.Tables[2].Rows[0];
+                        info.ArtSource = dr["ArtSource"].ToString();
+                    }
+                    if (ds.Tables[3].Rows.Count > 0)
+                    {
+                        DataRow dr = ds.Tables[3].Rows[0];
+                        info.UserEmail = dr["Email"].ToString();
+                    }
+
+                    return info;
+                }
+                else
+                {
+                    return info;
+                }
+            }
+            catch (Exception ex)
+            {
+                return info;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+
+        }
+
         public bool UpdateProduct(string name, string description, int productId, int categoryId, bool privateProduct, int parentProductId)
         {
             var data = new SQLData();

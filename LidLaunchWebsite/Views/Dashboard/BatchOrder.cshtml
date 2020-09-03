@@ -31,3 +31,23 @@
         }
     </table>
 
+
+<div id="batchPrintArea">
+    @foreach (LidLaunchWebsite.Models.BatchSale batchSale in Model.lstReadySales)
+    {
+        <div><h2>@batchSale.ProductName</h2></div>
+        <div><img src="~/Images/DesignImages/InUse/@batchSale.PreviewImage" width="200" /></div>
+
+        foreach (LidLaunchWebsite.Models.Sale sale in batchSale.lstSales)
+        {
+            <div><b>@sale.OrderId - @sale.OrderDate - @sale.OrderTotal</b></div>
+            <div>@sale.CustomerName</div>
+            <div>@sale.CustomerPhone</div>
+            <div>@sale.ShippingAddress</div>
+            <div>@sale.TypeText - @sale.HatColor - @sale.Size</div>
+            <br />
+        }
+
+    }
+</div>
+

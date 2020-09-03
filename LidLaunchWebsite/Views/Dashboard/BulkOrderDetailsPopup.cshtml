@@ -6,6 +6,7 @@
 <div id="bulkOrderDetailsPopup">
     <div id="bulkOrderDetailsPopupContent">
         <div id="TopInfoBar">
+            <div id="barcode"><img src="~/Images/Barcodes/@Model.BarcodeImage"  /></div>
             <div id="BulkOrderId">@Model.Id</div>
             <div id="BulkOrderDate">Payment Date: @Model.PaymentDate <span onclick="$('#bulkOrderDetailsPopup').hide();" class="closeButton">X</span></div>
             
@@ -23,7 +24,20 @@
                 </tr>
                 <tr>
                     <td>Artwork Position:</td>
-                    <td>@Model.ArtworkPosition</td>
+                    <td>
+                        @if (Model.ArtworkPosition == "left")
+                        {
+                            <img src="~/Images/LeftPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
+                        }
+                        @if (Model.ArtworkPosition == "right")
+                        {
+                            <img src="~/Images/RightPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
+                        }
+                        @if (Model.ArtworkPosition == "center")
+                        {
+                            <img src="~/Images/CenterPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
+                        }
+                    </td>
                 </tr>
                 <tr>
                     <td>Art Source:</td>
@@ -57,17 +71,49 @@
                         <td>Price</td>
                         <td>Design Id</td>
                         <td>Add Note</td>
+                        <td>Rework</td>
                     </tr>
                 <tbody>
                     @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.lstItems)
                     {
-                        <tr>
-                            <td>@item.ItemName</td>
-                            <td>@item.ItemQuantity</td>
-                            <td>@item.ItemCost</td>
-                            <td>@item.DesignId</td>
-                            <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id });"><input type="button" value="Add Note" class="smallButton"/></a></td>
-                        </tr>
+                        if (item.BulkRework != null && item.BulkRework.Id > 0)
+                        {
+                            if (item.BulkRework.Status == "Complete")
+                            {
+                                <tr class="reworkItem complete">
+                                    <td>@item.ItemName</td>
+                                    <td>@item.ItemQuantity</td>
+                                    <td>@item.ItemCost</td>
+                                    <td>@item.DesignId</td>
+                                    <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                                    <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.BulkRework.Quantity, note: '@item.BulkRework.Note', bulkReworkId: @item.BulkRework.Id });">@item.BulkRework.Quantity : @item.BulkRework.Note</a></td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr class="reworkItem">
+                                    <td>@item.ItemName</td>
+                                    <td>@item.ItemQuantity</td>
+                                    <td>@item.ItemCost</td>
+                                    <td>@item.DesignId</td>
+                                    <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                                    <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.BulkRework.Quantity, note: '@item.BulkRework.Note', bulkReworkId: @item.BulkRework.Id });">@item.BulkRework.Quantity : @item.BulkRework.Note</a></td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>@item.ItemName</td>
+                                <td>@item.ItemQuantity</td>
+                                <td>@item.ItemCost</td>
+                                <td>@item.DesignId</td>
+                                <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                                <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.ItemQuantity, note: '', bulkReworkid: 0 });"><input type="button" value="Rework" class="smallButton" /></a></td>
+                            </tr>
+                        }
+
+
                         foreach (LidLaunchWebsite.Models.Note note in item.lstNotes)
                         {
                             <tr>
@@ -141,11 +187,13 @@
         </div>
         <div id="noteHolder"></div>
         <div id="bulkDesignSelectHolder"></div>
+        <div id="bulkReworkHolder"></div>
         
     </div><!--bulkOrderDetailsPopupContent-->
 </div><!--/bulkOrderDetailsPopup-->
 <script type="text/javascript">
     var addNoteUrl = '@Url.Action("AddNote", "Dashboard")';
     var selectBulkDesignUrl = '@Url.Action("SetBulkDesign", "Dashboard")';
+    var addBulkReworkUrl = '@Url.Action("AddBulkRework", "Dashboard")';
 </script>
 

@@ -67,14 +67,19 @@ function setShipToSummary() {
     var shipCity = $('#txtShippingCity').val();
     var shipState = $('#selShippingState').children("option:selected").val();
     var shipZip = $('#txtShippingZip').val();
+    var email = $('#txtCustomerEmail').val();
 
-    if ($('#rdPaypal').prop('checked') == true) {
-        $('#shipToSummary').text('PayPal shipping address');
-        $('#shipToChange').hide(); 
-    } else {
-        $('#shipToSummary').text(shipAddress + ', ' + shipCity + ', ' + shipState + ' ' + shipZip);        
-        $('#shipToChange').show();
-    }
+    $('#spnContactPreview').text(email);
+
+    $('#shipToSummary').text(shipAddress + ', ' + shipCity + ', ' + shipState + ' ' + shipZip);
+
+    //if ($('#rdPaypal').prop('checked') == true) {
+    //    $('#shipToSummary').text('PayPal shipping address');
+    //    $('#shipToChange').hide(); 
+    //} else {
+    //    $('#shipToSummary').text(shipAddress + ', ' + shipCity + ', ' + shipState + ' ' + shipZip);        
+    //    $('#shipToChange').show();
+    //}
 }
 function goBackToShipping() {
     $('#shipingSection').fadeIn();
@@ -122,9 +127,9 @@ function validateCreditCardFields() {
     var expMonth = $('#selExpirationMonth').children("option:selected").val();
     var expYear = $('#selExpirationYear').children("option:selected").val();
     var ccNumber = $('#txtCardNumber').val();
-    var alternateBilling = $('#rdUseSameAsShipping').prop('checked');
+    var useSameAsShippingAddressForBilling = $('#rdUseSameAsShipping').prop('checked');
 
-    if (!alternateBilling) {
+    if (!useSameAsShippingAddressForBilling) {
         var shipAddress = $('#txtBillingAddress').val();
         var shipCity = $('#txtBillingCity').val();
         var shipState = $('#selBillingState').children("option:selected").val();

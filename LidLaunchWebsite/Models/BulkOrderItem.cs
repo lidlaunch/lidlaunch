@@ -11,5 +11,6 @@ namespace LidLaunchWebsite.Models
         public decimal ItemCost { get; set; }
         public List<Note> lstNotes { get; set; }
         public int DesignId { get; set; }
+        public BulkRework BulkRework { get; set; }
     }
 }

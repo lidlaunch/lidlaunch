@@ -33,7 +33,7 @@ namespace LidLaunchWebsite.Models
         public string ProjectedShipDateShort { get; set; }
         public string ProjectedShipDateLong { get; set; }
         public int BulkOrderBatchId { get; set; }
-
+        public string BarcodeImage { get; set; }
     }
 
     public class BulkBatchOrder

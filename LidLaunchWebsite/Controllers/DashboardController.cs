@@ -3,12 +3,15 @@ using LidLaunchWebsite.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using ZXing;
+using ZXing.Common;
 
 namespace LidLaunchWebsite.Controllers
 {
@@ -395,7 +398,44 @@ namespace LidLaunchWebsite.Controllers
 
             return json;
         }
+        public string DenyProduct(string id, string denyReason)
+        {
+            bool success = false;
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (checkLoggedIn())
+                {
+                    ProductData prodData = new ProductData();
 
+                    success = prodData.DenyProduct(Convert.ToInt32(id));
+
+                    if (success)
+                    {
+                        //sendEmail
+                        ProductData data = new ProductData();
+                        ProductAndDesignerInfo info = data.GetProductAndDesignerInfo(Convert.ToInt32(id));
+
+                        if(info != null)
+                        {
+                            EmailFunctions email = new EmailFunctions();
+                            email.sendEmail(info.UserEmail, "LidLaunch Designer", email.productDenyEmail(info.ProductName, denyReason, info.ArtSource), "Your Lid Launch Design Was Denied", "");
+                        }
+                    }
+                }
+                else
+                {
+                    success = false;
+                }
+            }
+            else
+            {
+                success = false;
+            }
+            var json = new JavaScriptSerializer().Serialize(success);
+
+            return json;
+
+        }
 
         public string ApproveProduct(string id)
         {
@@ -406,7 +446,18 @@ namespace LidLaunchWebsite.Controllers
                 {
                     ProductData prodData = new ProductData();                    
 
-                    success = prodData.ApproveProduct(Convert.ToInt32(id));                    
+                    success = prodData.ApproveProduct(Convert.ToInt32(id));
+
+                    if (success)
+                    {
+                        ProductData data = new ProductData();
+                        ProductAndDesignerInfo info = data.GetProductAndDesignerInfo(Convert.ToInt32(id));
+                        if (info != null)
+                        {
+                            EmailFunctions email = new EmailFunctions();
+                            email.sendEmail(info.UserEmail, "LidLaunch Designer", email.productApprovedEmail(info.ProductName, "https://lidlaunch.com/Product?id=" + id), "Your Lid Launch Design Was Approved", "");
+                        }
+                    }
                 }
                 else
                 {
@@ -728,6 +779,27 @@ namespace LidLaunchWebsite.Controllers
                     BulkOrder bulkOrder = new BulkOrder();
                     BulkData data = new BulkData();
                     bulkOrder = data.GetBulkOrder(bulkOrderId, "", "");
+
+                    bulkOrder.BarcodeImage = "BO-" + bulkOrderId.ToString() + ".jpg";
+                    if(!System.IO.File.Exists(Server.MapPath("~/Images/Barcodes/" + bulkOrder.BarcodeImage)))
+                    {
+                        //generate barcode image
+                        IBarcodeWriter barcodeWriter = new BarcodeWriter
+                        {
+                            Format = BarcodeFormat.CODE_39,
+                            Options = new EncodingOptions
+                            {
+                                Height = 100,
+                                Width = 300
+                            }
+                        };
+                        Bitmap barcode = barcodeWriter.Write("BO-" + bulkOrderId.ToString());
+                        barcode.Save(Server.MapPath("~/Images/Barcodes/" + bulkOrder.BarcodeImage));
+                    } else
+                    {
+                        //do nothing
+                    }
+
                     return PartialView("BulkOrderDetailsPopup", bulkOrder);
                 }
                 else
@@ -740,6 +812,48 @@ namespace LidLaunchWebsite.Controllers
                 return RedirectToAction("Login", "User", null);
             }
 
+        }
+
+        public ActionResult AddBulkRework(int bulkOrderBatchId, int bulkOrderItemId, string bulkOrderBlankName, int parentBulkOrderId, int parentBulkOrderBatchId, string note, int quantity, int bulkReworkId)
+        {
+            dynamic model = new ExpandoObject();
+            
+            model.bulkOrderBatchId = bulkOrderBatchId;
+            model.bulkOrderItemId = bulkOrderItemId;
+            model.bulkOrderBlankName = bulkOrderBlankName;
+            model.parentBulkOrderId = parentBulkOrderId;
+            model.parentBulkOrderBatchId = parentBulkOrderBatchId;
+            model.quantity = quantity;
+            model.bulkReworkId = bulkReworkId;
+            model.note = note;
+
+            return PartialView("AddBulkRework", model);
+        }
+
+        public string CreateBulkRework(string bulkOrderBatchId, string bulkOrderItemId, string bulkOrderBlankName, string quantity, string note, string status, string reworkId)
+        {
+            BulkData data = new BulkData();
+            int intBulkReworkId = Convert.ToInt32(reworkId);
+
+            bool missingBlank = false;
+
+            if(Convert.ToInt32(bulkOrderBatchId) > 0)
+            {
+                missingBlank = true;
+            }
+
+            if(intBulkReworkId > 0)
+            {
+                data.UpdateBulkRework(Convert.ToInt32(quantity), Convert.ToString(note), Convert.ToString(status), intBulkReworkId);
+            } 
+            else
+            {
+                intBulkReworkId = data.CreateBulkRework(Convert.ToInt32(bulkOrderItemId), Convert.ToInt32(bulkOrderBatchId), Convert.ToInt32(quantity), Convert.ToString(note), Convert.ToBoolean(missingBlank), Convert.ToString(bulkOrderBlankName));
+            }            
+
+            var success = intBulkReworkId > 0;
+
+            return success.ToString();
         }
 
         public ActionResult AddNote(int bulkOrderId, int bulkOrderItemId, int designId, int parentBulkOrderId)

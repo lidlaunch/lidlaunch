@@ -7,6 +7,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using ShipStationAccess.V2;
+using ShipStationAccess.V2.Models;
+using ZXing;
+using ZXing.Common;
+using System.Drawing;
 
 namespace LidLaunchWebsite.Controllers
 {
@@ -87,66 +92,138 @@ namespace LidLaunchWebsite.Controllers
             return success.ToString();
         }
 
-        public string CreateBulkOrder(string items, string name, string email, string phone, string artworkPlacement, string orderNotes, string orderTotal, string paymentCompleteGuid, string shippingCost, HttpPostedFileBase fileContent)
+        public string CreateBulkOrder(string items, string email, string artworkPlacement, string orderNotes, string orderTotal, string paymentCompleteGuid, string shippingCost, HttpPostedFileBase fileContent, string billToState, string billToAddress, string billToZip, string billToPhone, string billToCity, string billToName, string shipToState, string shipToAddress, string shipToZip, string shipToPhone, string shipToCity, string shipToName)
         {
-            var jss = new JavaScriptSerializer();
-            var cartItems = jss.Deserialize<List<PaypalItem>>(items);
-            var artworkPath = "";                         
-
-            if (fileContent != null && fileContent.ContentLength > 0)
+            try
             {
-                // get a stream
-                var stream = fileContent.InputStream;
-                // and optionally write the file to disk
-                var extension = Path.GetExtension(fileContent.FileName);
+                var jss = new JavaScriptSerializer();
+                var cartItems = jss.Deserialize<List<PaypalItem>>(items);
+                var artworkPath = "";
 
-                var fileName = Guid.NewGuid() + extension;
-                artworkPath = fileName;
-                var path = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory + "Images\\BulkOrderArtwork\\", fileName);
-
-                fileContent.SaveAs(path);
-            }
-            else
-            {
-                HttpPostedFileBase fileContent2 = null;
-                if (Request.Files.Count > 0)
-                {
-                    fileContent2 = Request.Files[0];
-                }
-
-                if (fileContent2 != null && fileContent2.ContentLength > 0)
+                if (fileContent != null && fileContent.ContentLength > 0)
                 {
                     // get a stream
-                    var stream = fileContent2.InputStream;
+                    var stream = fileContent.InputStream;
                     // and optionally write the file to disk
-                    var extension = Path.GetExtension(fileContent2.FileName);
+                    var extension = Path.GetExtension(fileContent.FileName);
 
                     var fileName = Guid.NewGuid() + extension;
                     artworkPath = fileName;
-                    var path = Path.Combine(Server.MapPath("~/Images/BulkOrderArtwork/"), fileName);
+                    var path = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory + "Images\\BulkOrderArtwork\\", fileName);
 
-                    fileContent2.SaveAs(path);
+                    fileContent.SaveAs(path);
                 }
+                else
+                {
+                    HttpPostedFileBase fileContent2 = null;
+                    if (Request != null && Request.Files.Count > 0)
+                    {
+                        fileContent2 = Request.Files[0];
+                    }
+
+                    if (fileContent2 != null && fileContent2.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent2.InputStream;
+                        // and optionally write the file to disk
+                        var extension = Path.GetExtension(fileContent2.FileName);
+
+                        var fileName = Guid.NewGuid() + extension;
+                        artworkPath = fileName;
+                        var path = Path.Combine(Server.MapPath("~/Images/BulkOrderArtwork/"), fileName);
+
+                        fileContent2.SaveAs(path);
+                    }
+                }
+
+                BulkData bulkData = new BulkData();
+                var paymentGuid = Guid.NewGuid().ToString();
+                var orderId = bulkData.CreateBulkOrder(shipToName, email, shipToPhone, Convert.ToDecimal(orderTotal), orderNotes, artworkPath, artworkPlacement, cartItems, paymentCompleteGuid, paymentGuid, Convert.ToDecimal(shippingCost), shipToName, shipToAddress, shipToCity, shipToState, shipToZip, shipToPhone, billToName, billToAddress, billToCity, billToState, billToZip, billToPhone);
+
+                DesignData designData = new DesignData();
+                var designId = designData.CreateDesign(artworkPath, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M);
+
+                bulkData.CreateBulkOrderDesign(orderId, designId);
+
+                //create barcode file
+                var barcodeImage = "BO-" + orderId.ToString() + ".jpg";
+                if (!System.IO.File.Exists(Server.MapPath("~/Images/Barcodes/" + barcodeImage)))
+                {
+                    //generate barcode image
+                    IBarcodeWriter barcodeWriter = new BarcodeWriter
+                    {
+                        Format = BarcodeFormat.CODE_39,
+                        Options = new EncodingOptions
+                        {
+                            Height = 100,
+                            Width = 300
+                        }
+                    };
+                    Bitmap barcode = barcodeWriter.Write("BO-" + orderId.ToString());
+                    barcode.Save(Server.MapPath("~/Images/Barcodes/" + barcodeImage));
+                }
+                else
+                {
+                    //do nothing
+                }
+
+                if (orderId > 0)
+                {
+                    EmailFunctions emailFunc = new EmailFunctions();
+                    var emailSuccess = emailFunc.sendEmail(email, shipToName, emailFunc.bulkOrderEmail(cartItems, orderTotal, orderId.ToString(), paymentGuid), "Lid Launch Order Confirmation", "");
+
+                    //insert order into ship station
+                    ShipStationCredentials credentials = new ShipStationCredentials("a733e1314b6f4374bd12f4a32d4263b9", "bd45d90bfbae40d39f5d7e8b3966f130");
+                    ShipStationService shipService = new ShipStationService(credentials);
+                    ShipStationAccess.V2.Models.Order.ShipStationOrder order = new ShipStationAccess.V2.Models.Order.ShipStationOrder();
+                    order.OrderNumber = "BO-" + orderId.ToString();
+                    order.OrderKey = "BO-" + orderId.ToString();
+                    order.OrderDate = DateTime.Now;
+                    ShipStationAddress billAddress = new ShipStationAddress();
+                    billAddress.Name = billToName;
+                    billAddress.Phone = billToPhone;
+                    billAddress.State = billToState;
+                    billAddress.PostalCode = billToZip;
+                    billAddress.Street1 = billToAddress;
+                    billAddress.City = billToCity;
+                    billAddress.Country = "US";
+                    order.BillingAddress = billAddress;
+                    ShipStationAddress shipAddress = new ShipStationAddress();
+                    shipAddress.Name = shipToName;
+                    shipAddress.Phone = shipToPhone;
+                    shipAddress.State = shipToState;
+                    shipAddress.PostalCode = shipToZip;
+                    shipAddress.Street1 = shipToAddress;
+                    shipAddress.City = shipToCity;
+                    shipAddress.Country = "US";
+                    order.ShippingAddress = shipAddress;
+                    order.CustomerEmail = email;
+                    order.AmountPaid = Convert.ToDecimal(orderTotal);
+                    order.CustomerNotes = orderNotes;
+                    order.OrderStatus = ShipStationAccess.V2.Models.Order.ShipStationOrderStatusEnum.awaiting_shipment;
+
+                    try
+                    {
+                        shipService.UpdateOrderAsync(order);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message.ToString());
+                    }
+
+                    return orderId.ToString();
+                }
+                else
+                {
+                    return "";
+                }
+
             }
-
-            BulkData bulkData = new BulkData();
-            var paymentGuid = Guid.NewGuid().ToString();
-            var orderId = bulkData.CreateBulkOrder(name, email, phone, Convert.ToDecimal(orderTotal), orderNotes, artworkPath, artworkPlacement, cartItems, paymentCompleteGuid, paymentGuid, Convert.ToDecimal(shippingCost));
-
-            DesignData designData = new DesignData();
-            var designId = designData.CreateDesign(artworkPath, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M);
-
-            bulkData.CreateBulkOrderDesign(orderId, designId);
-
-            if(orderId > 0)
+            catch (Exception ex)
             {
-                EmailFunctions emailFunc = new EmailFunctions();
-                var emailSuccess = emailFunc.sendEmail(email, name, emailFunc.bulkOrderEmail(cartItems, orderTotal, orderId.ToString(), paymentGuid), "Lid Launch Order Confirmation", "");
-                return orderId.ToString();
-            } else
-            {
-                return "";
+                Logger.Log("Error Submitting Order: " + ex.Message.ToString());
             }
+            return "";            
             
         }
 

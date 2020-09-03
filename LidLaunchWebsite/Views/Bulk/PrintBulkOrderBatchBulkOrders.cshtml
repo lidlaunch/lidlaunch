@@ -24,7 +24,7 @@
 @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model.lstBulkOrders)
 {
 <div class="bulkOrderPrint">
-    @{Html.RenderPartial("~/Views/Dashboard/BulkOrderDetailsPopup.cshtml", bulkOrder);}    
+    @{Html.RenderAction("BulkOrderDetailsPopup", "Dashboard", new { bulkOrderId = bulkOrder.Id });}    
 </div>    
 }
 
