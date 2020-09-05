@@ -88,6 +88,7 @@ namespace LidLaunchWebsite.Controllers
         {
 
             string paymentGuid = Guid.NewGuid().ToString();
+            EmailFunctions emailFunc = new EmailFunctions();
             try
             {            
                 BillTo billAddress = Newtonsoft.Json.JsonConvert.DeserializeObject<BillTo>(billingAddress);
@@ -175,32 +176,32 @@ namespace LidLaunchWebsite.Controllers
                 // Display the transaction response parameters.
                 if (Resp != null)
                 {
-                    // Get the Transaction Response parameters.
-                    TransactionResponse TrxnResponse = Resp.TransactionResponse;
+                    //// Get the Transaction Response parameters.
+                    //TransactionResponse TrxnResponse = Resp.TransactionResponse;
 
-                    if (TrxnResponse != null)
-                    {
-                        Console.WriteLine("RESULT = " + TrxnResponse.Result);
-                        Console.WriteLine("PNREF = " + TrxnResponse.Pnref);
-                        Console.WriteLine("RESPMSG = " + TrxnResponse.RespMsg);
-                        Console.WriteLine("AUTHCODE = " + TrxnResponse.AuthCode);
-                        Console.WriteLine("AVSADDR = " + TrxnResponse.AVSAddr);
-                        Console.WriteLine("AVSZIP = " + TrxnResponse.AVSZip);
-                        Console.WriteLine("IAVS = " + TrxnResponse.IAVS);
-                        Console.WriteLine("CVV2MATCH = " + TrxnResponse.CVV2Match);
-                    }
+                    //if (TrxnResponse != null)
+                    //{
+                    //    Console.WriteLine("RESULT = " + TrxnResponse.Result);
+                    //    Console.WriteLine("PNREF = " + TrxnResponse.Pnref);
+                    //    Console.WriteLine("RESPMSG = " + TrxnResponse.RespMsg);
+                    //    Console.WriteLine("AUTHCODE = " + TrxnResponse.AuthCode);
+                    //    Console.WriteLine("AVSADDR = " + TrxnResponse.AVSAddr);
+                    //    Console.WriteLine("AVSZIP = " + TrxnResponse.AVSZip);
+                    //    Console.WriteLine("IAVS = " + TrxnResponse.IAVS);
+                    //    Console.WriteLine("CVV2MATCH = " + TrxnResponse.CVV2Match);
+                    //}
 
-                    // Get the Fraud Response parameters.
-                    FraudResponse FraudResp = Resp.FraudResponse;
-                    // Display Fraud Response parameter
-                    if (FraudResp != null)
-                    {
-                        Console.WriteLine("PREFPSMSG = " + FraudResp.PreFpsMsg);
-                        Console.WriteLine("POSTFPSMSG = " + FraudResp.PostFpsMsg);
-                    }
+                    //// Get the Fraud Response parameters.
+                    //FraudResponse FraudResp = Resp.FraudResponse;
+                    //// Display Fraud Response parameter
+                    //if (FraudResp != null)
+                    //{
+                    //    Console.WriteLine("PREFPSMSG = " + FraudResp.PreFpsMsg);
+                    //    Console.WriteLine("POSTFPSMSG = " + FraudResp.PostFpsMsg);
+                    //}
 
-                    // Display the response.
-                    Console.WriteLine(Environment.NewLine + PayflowUtility.GetStatus(Resp));
+                    //// Display the response.
+                    //Console.WriteLine(Environment.NewLine + PayflowUtility.GetStatus(Resp));
 
 
                     // Get the Transaction Context and check for any contained SDK specific errors (optional code).
@@ -209,7 +210,8 @@ namespace LidLaunchWebsite.Controllers
                     {
                         Console.WriteLine(Environment.NewLine + "Transaction Errors = " + TransCtx.ToString());
                         return "ccerror";
-                    } else
+                    } 
+                    else
                     {
                         if (Resp.TransactionResponse.Result == 0)
                         {
@@ -224,20 +226,29 @@ namespace LidLaunchWebsite.Controllers
                                 string orderResult = SubmitOrder(orderTotal, shipAddress.ShipToFirstName, shipAddress.ShipToLastName, email, phone, shipAddress.ShipToStreet, shipAddress.ShipToCity, shipAddress.ShipToState, shipAddress.ShipToZip, billAddress.Street, billAddress.City, billAddress.State, billAddress.Zip, paymentGuid);
                             }
                         } else
-                        {
+                        {                            
+                            string paymentError = "Credit Card Payment Error: " + "Issue with credit card transaction. Customer Information: " + email + " - " + shipAddress.ShipToFirstName + " " + shipAddress.ShipToLastName + " ::: Items - " + cartItems + " ::: TOTAL = " + orderTotal + " :::::: RESPONSE FROM PAYFLOW = " + Resp.TransactionResponse.RespMsg.ToString();
+                            emailFunc.sendEmail("robert@lidlaunch.com", "Lid Launch", paymentError, "Payment Processing Error", "");
+                            Logger.Log(paymentError, Server.MapPath("~/Log/LidLaunchLog.txt"));
                             return "ccerror";
                         }                                     
 
                     }
-                } else
+                } 
+                else
                 {
+                    string paymentError = "Credit Card Payment Error: " + "Issue with credit card transaction. Customer Information: " + email + " - " + shipAddress.ShipToFirstName + " " + shipAddress.ShipToLastName + " ::: Items - " + cartItems + " ::: TOTAL = " + orderTotal + " :::::: RESPONSE FROM PAYFLOW WAS NULL";
+                    emailFunc.sendEmail("robert@lidlaunch.com", "Lid Launch", paymentError, "Payment Processing Error", "");
+                    Logger.Log(paymentError, Server.MapPath("~/Log/LidLaunchLog.txt"));
                     return "ccerror";
 
                 }
             }
             catch (Exception ex)
             {
-                Logger.Log("Credit Card Payment Error: " + ex.Message.ToString());
+                string paymentError = "Credit Card Payment Error: " + "Issue with credit card transaction. Customer Information: " + email + " - " + shippingAddress + " ::: Items - " + cartItems + " ::: TOTAL = " + orderTotal;
+                emailFunc.sendEmail("robert@lidlaunch.com", "Lid Launch", paymentError, "Payment Processing Error", "");
+                Logger.Log(paymentError, Server.MapPath("~/Log/LidLaunchLog.txt"));
                 return "ccerror";
             }
             return paymentGuid;
@@ -477,7 +488,7 @@ namespace LidLaunchWebsite.Controllers
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Error Sending Website Order Email Confirmation: Web Order ID: " + orderId.ToString() + " EmailTo: " + email + " - Exception: " + ex.Message.ToString());
+                        Logger.Log("Error Sending Website Order Email Confirmation: Web Order ID: " + orderId.ToString() + " EmailTo: " + email + " - Exception: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
                     }
 
                     try
@@ -514,14 +525,14 @@ namespace LidLaunchWebsite.Controllers
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Error Importing Into Ship Station: Bulk Order ID: " + ex.Message.ToString());
+                        Logger.Log("Error Importing Into Ship Station: Bulk Order ID: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
                     }
                 }
 
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Submitting Order: " + ex.Message.ToString());
+                Logger.Log("Error Submitting Order: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
             }
             
             //var json = new JavaScriptSerializer().Serialize(new string[] {paymentGuid, orderId.ToString()});

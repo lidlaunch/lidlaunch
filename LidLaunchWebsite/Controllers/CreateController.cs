@@ -163,7 +163,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Uploading Artwork: " + ex.Message.ToString());
+                Logger.Log("Error Uploading Artwork: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
                 return "";
             }
 
@@ -206,7 +206,7 @@ namespace LidLaunchWebsite.Controllers
             } 
             catch(Exception ex)
             {
-                Logger.Log("Error Cropping: " + ex.Message.ToString());
+                Logger.Log("Error Cropping: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
                 return null;
             }            
         }
@@ -279,7 +279,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Creating Design: " + ex.Message.ToString());
+                Logger.Log("Error Creating Design: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
                 return "";
             }
             var json = new JavaScriptSerializer().Serialize(tempFullPath);
@@ -326,7 +326,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Generating Preview Image: " + ex.Message.ToString());
+                Logger.Log("Error Generating Preview Image: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
                 return "";
             }
         }
@@ -382,7 +382,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Accepting Design: " + ex.Message.ToString());
+                Logger.Log("Error Accepting Design: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
                 return "";
             }
             var json = new JavaScriptSerializer().Serialize(success);
@@ -447,7 +447,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch(Exception ex)
             {
-                Logger.Log("Error Updating Product: " + ex.Message.ToString());
+                Logger.Log("Error Updating Product: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
                 return "";
             }
             
@@ -480,7 +480,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Updating Existing Product: " + ex.Message.ToString());
+                Logger.Log("Error Updating Existing Product: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
                 return "";
             }
         }

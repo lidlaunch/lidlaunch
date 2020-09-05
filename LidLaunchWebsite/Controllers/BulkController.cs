@@ -176,7 +176,7 @@ namespace LidLaunchWebsite.Controllers
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Error Sending Bulk Order Email Confirmation: Bulk Order ID: " + orderId.ToString() + " EmailTo: " + email + " - Exception: " + ex.Message.ToString());
+                        Logger.Log("Error Sending Bulk Order Email Confirmation: Bulk Order ID: " + orderId.ToString() + " EmailTo: " + email + " - Exception: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
                     }
 
                     try
@@ -214,7 +214,7 @@ namespace LidLaunchWebsite.Controllers
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Error Importing Into Ship Station: Bulk Order ID: " + ex.Message.ToString());
+                        Logger.Log("Error Importing Into Ship Station: Bulk Order ID: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
                     }
                     return orderId.ToString();
                 }
@@ -226,7 +226,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Submitting Order: " + ex.Message.ToString());
+                Logger.Log("Error Submitting Order: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
             }
             return "";            
             

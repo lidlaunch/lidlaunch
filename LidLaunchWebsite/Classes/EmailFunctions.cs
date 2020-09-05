@@ -122,7 +122,7 @@ namespace LidLaunchWebsite.Classes
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Sending Email: " + ex.Message.ToString() + "::::" + ex.InnerException.Message.ToString());
+                Logger.Log("Error Sending Email: " + ex.Message.ToString() + "::::" + ex.InnerException.Message.ToString(), HttpContext.Current.Server.MapPath("~/Log/LidLaunchLog.txt"));
                 return false;
             }
         }
