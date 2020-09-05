@@ -169,48 +169,53 @@ namespace LidLaunchWebsite.Controllers
 
                 if (orderId > 0)
                 {
-                    EmailFunctions emailFunc = new EmailFunctions();
-                    var emailSuccess = emailFunc.sendEmail(email, shipToName, emailFunc.bulkOrderEmail(cartItems, orderTotal, orderId.ToString(), paymentGuid), "Lid Launch Order Confirmation", "");
-
-                    //insert order into ship station
-                    ShipStationCredentials credentials = new ShipStationCredentials("a733e1314b6f4374bd12f4a32d4263b9", "bd45d90bfbae40d39f5d7e8b3966f130");
-                    ShipStationService shipService = new ShipStationService(credentials);
-                    ShipStationAccess.V2.Models.Order.ShipStationOrder order = new ShipStationAccess.V2.Models.Order.ShipStationOrder();
-                    order.OrderNumber = "BO-" + orderId.ToString();
-                    order.OrderKey = "BO-" + orderId.ToString();
-                    order.OrderDate = DateTime.Now;
-                    ShipStationAddress billAddress = new ShipStationAddress();
-                    billAddress.Name = billToName;
-                    billAddress.Phone = billToPhone;
-                    billAddress.State = billToState;
-                    billAddress.PostalCode = billToZip;
-                    billAddress.Street1 = billToAddress;
-                    billAddress.City = billToCity;
-                    billAddress.Country = "US";
-                    order.BillingAddress = billAddress;
-                    ShipStationAddress shipAddress = new ShipStationAddress();
-                    shipAddress.Name = shipToName;
-                    shipAddress.Phone = shipToPhone;
-                    shipAddress.State = shipToState;
-                    shipAddress.PostalCode = shipToZip;
-                    shipAddress.Street1 = shipToAddress;
-                    shipAddress.City = shipToCity;
-                    shipAddress.Country = "US";
-                    order.ShippingAddress = shipAddress;
-                    order.CustomerEmail = email;
-                    order.AmountPaid = Convert.ToDecimal(orderTotal);
-                    order.CustomerNotes = orderNotes;
-                    order.OrderStatus = ShipStationAccess.V2.Models.Order.ShipStationOrderStatusEnum.awaiting_shipment;
+                    try
+                    {
+                        EmailFunctions emailFunc = new EmailFunctions();
+                        var emailSuccess = emailFunc.sendEmail(email, shipToName, emailFunc.bulkOrderEmail(cartItems, orderTotal, orderId.ToString(), paymentGuid), "Lid Launch Order Confirmation", "");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("Error Sending Bulk Order Email Confirmation: Bulk Order ID: " + orderId.ToString() + " EmailTo: " + email + " - Exception: " + ex.Message.ToString());
+                    }
 
                     try
                     {
+                        //insert order into ship station
+                        ShipStationCredentials credentials = new ShipStationCredentials("a733e1314b6f4374bd12f4a32d4263b9", "bd45d90bfbae40d39f5d7e8b3966f130");
+                        ShipStationService shipService = new ShipStationService(credentials);
+                        ShipStationAccess.V2.Models.Order.ShipStationOrder order = new ShipStationAccess.V2.Models.Order.ShipStationOrder();
+                        order.OrderNumber = "BO-" + orderId.ToString();
+                        order.OrderKey = "BO-" + orderId.ToString();
+                        order.OrderDate = DateTime.Now;
+                        ShipStationAddress billAddress = new ShipStationAddress();
+                        billAddress.Name = billToName;
+                        billAddress.Phone = billToPhone;
+                        billAddress.State = billToState;
+                        billAddress.PostalCode = billToZip;
+                        billAddress.Street1 = billToAddress;
+                        billAddress.City = billToCity;
+                        billAddress.Country = "US";
+                        order.BillingAddress = billAddress;
+                        ShipStationAddress shipAddress = new ShipStationAddress();
+                        shipAddress.Name = shipToName;
+                        shipAddress.Phone = shipToPhone;
+                        shipAddress.State = shipToState;
+                        shipAddress.PostalCode = shipToZip;
+                        shipAddress.Street1 = shipToAddress;
+                        shipAddress.City = shipToCity;
+                        shipAddress.Country = "US";
+                        order.ShippingAddress = shipAddress;
+                        order.CustomerEmail = email;
+                        order.AmountPaid = Convert.ToDecimal(orderTotal);
+                        order.CustomerNotes = orderNotes;
+                        order.OrderStatus = ShipStationAccess.V2.Models.Order.ShipStationOrderStatusEnum.awaiting_shipment;
                         shipService.UpdateOrderAsync(order);
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message.ToString());
+                        Logger.Log("Error Importing Into Ship Station: Bulk Order ID: " + ex.Message.ToString());
                     }
-
                     return orderId.ToString();
                 }
                 else
