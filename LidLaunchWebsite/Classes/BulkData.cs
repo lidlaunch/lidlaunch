@@ -78,7 +78,7 @@ namespace LidLaunchWebsite.Classes
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Creating Bulk Order: " + ex.Message.ToString(), HttpContext.Current.Server.MapPath("~/Log/LidLaunchLog.txt"));
+                Logger.Log("Error Creating Bulk Order: " + ex.Message.ToString());
                 return orderId;
             }
             finally

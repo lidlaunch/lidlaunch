@@ -259,7 +259,7 @@ function processPayment() {
                         currency: 'USD'
                     }); 
                     // navigate to bulk order payment confirmation screen
-                    window.location = 'http://lidlaunch.com/bulk/payment?id=' + result;
+                    window.location = 'https://lidlaunch.com/bulk/payment?id=' + result;
                 } else {
                     fbq('track', 'Purchase', {
                         content_name: 'Web Hat Order',
@@ -269,13 +269,13 @@ function processPayment() {
                         value: totalPurchaseAmount,
                         currency: 'USD'
                     }); 
-                    // navigate to the normal paymetn confirmation screen
-                    window.location = 'http://lidlaunch.com/cart/payment?PaymentCode=' + result;
+                    // navigate to the normal payment confirmation screen
+                    window.location = 'https://lidlaunch.com/cart/payment?PaymentCode=' + result;
                 }
             }            
         },
         error: function () {
-            alert('error');
+            displayPopupNotification('Please Contact Us. There was an issue processing your order.', 'error', false);
         }
     });
 

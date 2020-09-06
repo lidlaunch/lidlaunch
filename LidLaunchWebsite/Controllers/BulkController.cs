@@ -109,7 +109,7 @@ namespace LidLaunchWebsite.Controllers
 
                     var fileName = Guid.NewGuid() + extension;
                     artworkPath = fileName;
-                    var path = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory + "Images\\BulkOrderArtwork\\", fileName);
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork", fileName);
 
                     fileContent.SaveAs(path);
                 }
@@ -130,7 +130,7 @@ namespace LidLaunchWebsite.Controllers
 
                         var fileName = Guid.NewGuid() + extension;
                         artworkPath = fileName;
-                        var path = Path.Combine(Server.MapPath("~/Images/BulkOrderArtwork/"), fileName);
+                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork/", fileName);
 
                         fileContent2.SaveAs(path);
                     }
@@ -145,27 +145,35 @@ namespace LidLaunchWebsite.Controllers
 
                 bulkData.CreateBulkOrderDesign(orderId, designId);
 
-                //create barcode file
-                var barcodeImage = "BO-" + orderId.ToString() + ".jpg";
-                if (!System.IO.File.Exists(Server.MapPath("~/Images/Barcodes/" + barcodeImage)))
+                try
                 {
-                    //generate barcode image
-                    IBarcodeWriter barcodeWriter = new BarcodeWriter
+                    //create barcode file
+                    var barcodeImage = "BO-" + orderId.ToString() + ".jpg";
+                    if (!System.IO.File.Exists(HttpRuntime.AppDomainAppPath + "/Images/Barcodes/" + barcodeImage))
                     {
-                        Format = BarcodeFormat.CODE_39,
-                        Options = new EncodingOptions
+                        //generate barcode image
+                        IBarcodeWriter barcodeWriter = new BarcodeWriter
                         {
-                            Height = 100,
-                            Width = 300
-                        }
-                    };
-                    Bitmap barcode = barcodeWriter.Write("BO-" + orderId.ToString());
-                    barcode.Save(Server.MapPath("~/Images/Barcodes/" + barcodeImage));
+                            Format = BarcodeFormat.CODE_39,
+                            Options = new EncodingOptions
+                            {
+                                Height = 100,
+                                Width = 300
+                            }
+                        };
+                        Bitmap barcode = barcodeWriter.Write("BO-" + orderId.ToString());
+                        barcode.Save(HttpRuntime.AppDomainAppPath + "/Images/Barcodes/" + barcodeImage);
+                    }
+                    else
+                    {
+                        //do nothing
+                    }
                 }
-                else
-                {
-                    //do nothing
+                catch(Exception ex)
+                {                    
+                    Logger.Log("Error Creating Barcode : Bulk Order Id = " + orderId.ToString() + " :: EXCEPTION :" + ex.Message.ToString());
                 }
+                
 
                 if (orderId > 0)
                 {
@@ -176,7 +184,7 @@ namespace LidLaunchWebsite.Controllers
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Error Sending Bulk Order Email Confirmation: Bulk Order ID: " + orderId.ToString() + " EmailTo: " + email + " - Exception: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
+                        Logger.Log("Error Sending Bulk Order Email Confirmation: Bulk Order ID: " + orderId.ToString() + " EmailTo: " + email + " - Exception: " + ex.Message.ToString());
                     }
 
                     try
@@ -214,19 +222,20 @@ namespace LidLaunchWebsite.Controllers
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Error Importing Into Ship Station: Bulk Order ID: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
+                        Logger.Log("Error Importing Into Ship Station: Bulk Order ID: " + ex.Message.ToString());
                     }
                     return orderId.ToString();
                 }
                 else
                 {
+                    Logger.Log("Bulk Order Order ID was not > 0 : " + email + " - " + shipToName);
                     return "";
                 }
 
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Submitting Order: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
+                Logger.Log("Error Submitting Order: " + ex.Message.ToString());
             }
             return "";            
             

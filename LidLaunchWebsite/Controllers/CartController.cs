@@ -229,7 +229,7 @@ namespace LidLaunchWebsite.Controllers
                         {                            
                             string paymentError = "Credit Card Payment Error: " + "Issue with credit card transaction. Customer Information: " + email + " - " + shipAddress.ShipToFirstName + " " + shipAddress.ShipToLastName + " ::: Items - " + cartItems + " ::: TOTAL = " + orderTotal + " :::::: RESPONSE FROM PAYFLOW = " + Resp.TransactionResponse.RespMsg.ToString();
                             emailFunc.sendEmail("robert@lidlaunch.com", "Lid Launch", paymentError, "Payment Processing Error", "");
-                            Logger.Log(paymentError, Server.MapPath("~/Log/LidLaunchLog.txt"));
+                            Logger.Log(paymentError);
                             return "ccerror";
                         }                                     
 
@@ -239,16 +239,16 @@ namespace LidLaunchWebsite.Controllers
                 {
                     string paymentError = "Credit Card Payment Error: " + "Issue with credit card transaction. Customer Information: " + email + " - " + shipAddress.ShipToFirstName + " " + shipAddress.ShipToLastName + " ::: Items - " + cartItems + " ::: TOTAL = " + orderTotal + " :::::: RESPONSE FROM PAYFLOW WAS NULL";
                     emailFunc.sendEmail("robert@lidlaunch.com", "Lid Launch", paymentError, "Payment Processing Error", "");
-                    Logger.Log(paymentError, Server.MapPath("~/Log/LidLaunchLog.txt"));
+                    Logger.Log(paymentError);
                     return "ccerror";
 
                 }
             }
             catch (Exception ex)
             {
-                string paymentError = "Credit Card Payment Error: " + "Issue with credit card transaction. Customer Information: " + email + " - " + shippingAddress + " ::: Items - " + cartItems + " ::: TOTAL = " + orderTotal;
+                string paymentError = "Credit Card Payment Error: " + "Issue with credit card transaction. Customer Information: " + email + " - " + shippingAddress + " ::: Items - " + cartItems + " ::: TOTAL = " + orderTotal + " EXCEPTION MESSAGE: " + ex.Message.ToString() + " :: " + ex.InnerException.Message.ToString();
                 emailFunc.sendEmail("robert@lidlaunch.com", "Lid Launch", paymentError, "Payment Processing Error", "");
-                Logger.Log(paymentError, Server.MapPath("~/Log/LidLaunchLog.txt"));
+                Logger.Log(paymentError);
                 return "ccerror";
             }
             return paymentGuid;
@@ -459,7 +459,7 @@ namespace LidLaunchWebsite.Controllers
 
                 //create barcode file
                 var barcodeImage = "WO-" + orderId.ToString() + ".jpg";
-                if (!System.IO.File.Exists(Server.MapPath("~/Images/Barcodes/" + barcodeImage)))
+                if (!System.IO.File.Exists(HttpRuntime.AppDomainAppPath + "/Images/Barcodes/" + barcodeImage))
                 {
                     //generate barcode image
                     IBarcodeWriter barcodeWriter = new BarcodeWriter
@@ -472,7 +472,7 @@ namespace LidLaunchWebsite.Controllers
                         }
                     };
                     Bitmap barcode = barcodeWriter.Write("WO-" + orderId.ToString());
-                    barcode.Save(Server.MapPath("~/Images/Barcodes/" + barcodeImage));
+                    barcode.Save(HttpRuntime.AppDomainAppPath + "/Images/Barcodes/" + barcodeImage);
                 }
                 else
                 {
@@ -488,7 +488,7 @@ namespace LidLaunchWebsite.Controllers
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Error Sending Website Order Email Confirmation: Web Order ID: " + orderId.ToString() + " EmailTo: " + email + " - Exception: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
+                        Logger.Log("Error Sending Website Order Email Confirmation: Web Order ID: " + orderId.ToString() + " EmailTo: " + email + " - Exception: " + ex.Message.ToString());                    
                     }
 
                     try
@@ -525,14 +525,14 @@ namespace LidLaunchWebsite.Controllers
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Error Importing Into Ship Station: Bulk Order ID: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
+                        Logger.Log("Error Importing Into Ship Station: Bulk Order ID: " + ex.Message.ToString());
                     }
                 }
 
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Submitting Order: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
+                Logger.Log("Error Submitting Order: " + ex.Message.ToString());
             }
             
             //var json = new JavaScriptSerializer().Serialize(new string[] {paymentGuid, orderId.ToString()});

@@ -248,7 +248,7 @@ namespace LidLaunchWebsite.Controllers
                         //var extension = Path.GetExtension(fileContent.FileName);
 
                         var fileName = Request.Files[0].FileName;
-                        var path = Path.Combine(Server.MapPath("~/Images/HatAssets/"), fileName);
+                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/HatAssets/", fileName);
 
                         fileContent.SaveAs(path);
                         returnValue = fileName;                        
@@ -283,7 +283,7 @@ namespace LidLaunchWebsite.Controllers
                         //var extension = Path.GetExtension(fileContent.FileName);
 
                         var fileName = Request.Files[0].FileName;
-                        var path = Path.Combine(Server.MapPath("~/Images/HatAssets/"), fileName);
+                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/HatAssets/", fileName);
 
                         fileContent.SaveAs(path);
                         returnValue = fileName;
@@ -520,7 +520,7 @@ namespace LidLaunchWebsite.Controllers
                         {
                             fileName = "W" + bulkOrderId + extension;
                         }
-                        var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Digitizing/DST"), fileName);
+                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", fileName);
 
                         fileContent.SaveAs(path);                                
                         returnValue = fileName;
@@ -563,7 +563,7 @@ namespace LidLaunchWebsite.Controllers
                         {
                             fileName = "W" + bulkOrderId + extension;
                         }
-                        var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Digitizing/Preview"), fileName);
+                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Preview", fileName);
 
                         fileContent.SaveAs(path);
                         returnValue = fileName;
@@ -615,7 +615,7 @@ namespace LidLaunchWebsite.Controllers
                         {
                             fileName = "W" + bulkOrderId + extension;
                         }
-                        var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Digitizing/EMB"), fileName);
+                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/EMB", fileName);
 
                         fileContent.SaveAs(path);
                         returnValue = fileName;
@@ -658,7 +658,7 @@ namespace LidLaunchWebsite.Controllers
                         {
                             fileName = "W" + bulkOrderId + extension;
                         }
-                        var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Digitizing/Info"), fileName);
+                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Info", fileName);
 
                         fileContent.SaveAs(path);
                         returnValue = fileName;
@@ -781,7 +781,7 @@ namespace LidLaunchWebsite.Controllers
                     bulkOrder = data.GetBulkOrder(bulkOrderId, "", "");
 
                     bulkOrder.BarcodeImage = "BO-" + bulkOrderId.ToString() + ".jpg";
-                    if(!System.IO.File.Exists(Server.MapPath("~/Images/Barcodes/" + bulkOrder.BarcodeImage)))
+                    if(!System.IO.File.Exists(HttpRuntime.AppDomainAppPath + "/Images/Barcodes/" + bulkOrder.BarcodeImage))
                     {
                         //generate barcode image
                         IBarcodeWriter barcodeWriter = new BarcodeWriter
@@ -794,7 +794,7 @@ namespace LidLaunchWebsite.Controllers
                             }
                         };
                         Bitmap barcode = barcodeWriter.Write("BO-" + bulkOrderId.ToString());
-                        barcode.Save(Server.MapPath("~/Images/Barcodes/" + bulkOrder.BarcodeImage));
+                        barcode.Save(HttpRuntime.AppDomainAppPath + "/Images/Barcodes/" + bulkOrder.BarcodeImage);
                     } else
                     {
                         //do nothing

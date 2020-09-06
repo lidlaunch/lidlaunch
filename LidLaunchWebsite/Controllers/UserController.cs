@@ -112,7 +112,7 @@ namespace LidLaunchWebsite.Controllers
             Session["UserID"] = user.Id;
             Session["UserEmail"] = user.Email;
             Session["DesignerID"] = designer.Id;
-            Logger.Log("User Logged In", Server.MapPath("~/Log/LidLaunchLog.txt"));
+            Logger.Log("User Logged In");
             return json;
         }
         public string SendPasswordResetEmail(string email)

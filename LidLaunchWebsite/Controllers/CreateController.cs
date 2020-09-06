@@ -146,7 +146,7 @@ namespace LidLaunchWebsite.Controllers
                                 //} else
                                 //{
                                 var fileName = Guid.NewGuid().ToString() + extension;
-                                var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), fileName);
+                                var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Temp", fileName);
                                 //using (var fileStream = System.IO.File.Create(path))
                                 //{
                                 //    stream.CopyTo(fileStream);
@@ -163,7 +163,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Uploading Artwork: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
+                Logger.Log("Error Uploading Artwork: " + ex.Message.ToString());
                 return "";
             }
 
@@ -206,7 +206,7 @@ namespace LidLaunchWebsite.Controllers
             } 
             catch(Exception ex)
             {
-                Logger.Log("Error Cropping: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
+                Logger.Log("Error Cropping: " + ex.Message.ToString());
                 return null;
             }            
         }
@@ -228,9 +228,9 @@ namespace LidLaunchWebsite.Controllers
 
                     int hatTypeId = Convert.ToInt32(typeId);
                     int hatColorId = Convert.ToInt32(colorId);
-                    var hatImagePath = Path.Combine(Server.MapPath("~/Images/HatAssets"), lstHatTypes.Where(ht => ht.Id == hatTypeId).FirstOrDefault().lstColors.Where(c => c.colorId == hatColorId).FirstOrDefault().creationImage);                                       
+                    var hatImagePath = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/HatAssets", lstHatTypes.Where(ht => ht.Id == hatTypeId).FirstOrDefault().lstColors.Where(c => c.colorId == hatColorId).FirstOrDefault().creationImage);                                       
 
-                    var artworkPath = Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), Session["TempDesignArtworkImagePath"].ToString());                    
+                    var artworkPath = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Temp", Session["TempDesignArtworkImagePath"].ToString());                    
                     
                     var hatBitmap = new System.Drawing.Bitmap(hatImagePath);
                     var artworkBitmap = new System.Drawing.Bitmap(artworkPath);
@@ -270,7 +270,7 @@ namespace LidLaunchWebsite.Controllers
                     //g.FillRectangles(shadowBrush, new System.Drawing.RectangleF[] { rect });
                     tempFullPath = Guid.NewGuid().ToString() + ".png";
                     Session["FullImagePreview"] = tempFullPath;
-                    hatBitmap.Save(Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), tempFullPath));
+                    hatBitmap.Save(Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Temp", tempFullPath));
 
                     g.Dispose();
                     hatBitmap.Dispose();
@@ -279,7 +279,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Creating Design: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
+                Logger.Log("Error Creating Design: " + ex.Message.ToString());
                 return "";
             }
             var json = new JavaScriptSerializer().Serialize(tempFullPath);
@@ -292,10 +292,10 @@ namespace LidLaunchWebsite.Controllers
             {
                 HatData hatData = new HatData();
                 var lstHatTypes = hatData.GetHatTypes();
-                var hatImagePath = Path.Combine(Server.MapPath("~/Images/HatAssets"), lstHatTypes.Where(ht => ht.Id == hatTypeId).FirstOrDefault().lstColors.Where(c => c.colorId == hatColorId).FirstOrDefault().creationImage);
+                var hatImagePath = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/HatAssets", lstHatTypes.Where(ht => ht.Id == hatTypeId).FirstOrDefault().lstColors.Where(c => c.colorId == hatColorId).FirstOrDefault().creationImage);
 
                 var hatBitmap = new System.Drawing.Bitmap(hatImagePath);
-                artworkPath = Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), artworkPath);
+                artworkPath = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Temp", artworkPath);
                 var artworkBitmap = new System.Drawing.Bitmap(artworkPath);
                 var fullPath = "";
 
@@ -314,7 +314,7 @@ namespace LidLaunchWebsite.Controllers
                 g.DrawImage(artworkBitmap, new System.Drawing.Point(artworkX, artworkY));
                 
                 var fileName = Guid.NewGuid().ToString() + ".png";
-                hatBitmap.Save(Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), fileName));
+                hatBitmap.Save(Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/InUse", fileName));
 
                 g.Dispose();
                 hatBitmap.Dispose();
@@ -326,7 +326,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Generating Preview Image: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
+                Logger.Log("Error Generating Preview Image: " + ex.Message.ToString());
                 return "";
             }
         }
@@ -354,13 +354,13 @@ namespace LidLaunchWebsite.Controllers
                     var currentHatTypeId = Convert.ToInt32(Session["HatTypeID"]);
                     var currentColorId = Convert.ToInt32(Session["ColorID"]);
 
-                    if (!System.IO.File.Exists(Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["TempDesignArtworkImagePath"].ToString())))
+                    if (!System.IO.File.Exists(Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/InUse", Session["TempDesignArtworkImagePath"].ToString())))
                     {
-                        System.IO.File.Copy(Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), Session["TempDesignArtworkImagePath"].ToString()), Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["TempDesignArtworkImagePath"].ToString()));
+                        System.IO.File.Copy(Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Temp", Session["TempDesignArtworkImagePath"].ToString()), Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/InUse", Session["TempDesignArtworkImagePath"].ToString()));
                     }
-                    if(!System.IO.File.Exists(Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["FullImagePreview"].ToString())))
+                    if(!System.IO.File.Exists(Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/InUse", Session["FullImagePreview"].ToString())))
                     {
-                        System.IO.File.Copy(Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), Session["FullImagePreview"].ToString()), Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["FullImagePreview"].ToString()));
+                        System.IO.File.Copy(Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Temp", Session["FullImagePreview"].ToString()), Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/InUse", Session["FullImagePreview"].ToString()));
                     }
 
                     var designId = designData.CreateDesign(Session["TempDesignArtworkImagePath"].ToString(), Session["FullImagePreview"].ToString(), width, height, x, y, Convert.ToDecimal(emWidth), Convert.ToDecimal(emHeight), Convert.ToDecimal(emX), Convert.ToDecimal(emY));
@@ -382,7 +382,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Accepting Design: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
+                Logger.Log("Error Accepting Design: " + ex.Message.ToString());
                 return "";
             }
             var json = new JavaScriptSerializer().Serialize(success);
@@ -447,7 +447,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch(Exception ex)
             {
-                Logger.Log("Error Updating Product: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
+                Logger.Log("Error Updating Product: " + ex.Message.ToString());
                 return "";
             }
             
@@ -480,7 +480,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Updating Existing Product: " + ex.Message.ToString(), Server.MapPath("~/Log/LidLaunchLog.txt"));
+                Logger.Log("Error Updating Existing Product: " + ex.Message.ToString());
                 return "";
             }
         }
