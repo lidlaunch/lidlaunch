@@ -53,7 +53,7 @@ function SubmitOrder() {
         billZip = shipZip;
         billPhone = shipPhone
     }
-    
+
     showLoading();
     $.ajax({
         type: "POST",
@@ -61,7 +61,8 @@ function SubmitOrder() {
         contentType: "application/json; charset=utf-8",
         dataType: "text",
         data: JSON.stringify({
-            "total": total, "firstName": shipFirstName, "lastName": shipLastName, "email": email, "phone": shipPhone, "address": shipAddress, "city": shipCity, "state": shipState, "zip": shipZip, "addressBill": billAddress, "cityBill": billCity, "stateBill": billState, "zipBill": billZip, "paymentGuid": "" }),
+            "total": total, "firstName": shipFirstName, "lastName": shipLastName, "email": email, "phone": shipPhone, "address": shipAddress, "city": shipCity, "state": shipState, "zip": shipZip, "addressBill": billAddress, "cityBill": billCity, "stateBill": billState, "zipBill": billZip, "paymentGuid": ""
+        }),
         //data: JSON.stringify({ "total": total, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone}),
         success: function (result) {
             fbq('track', 'Purchase', {
@@ -71,14 +72,17 @@ function SubmitOrder() {
                 content_type: 'product',
                 value: total,
                 currency: 'USD'
-            }); 
-            window.location = 'http://lidlaunch.com/cart/payment?PaymentCode=' + result;
+            });
+            setTimeout(function () {
+                window.location = 'http://lidlaunch.com/cart/payment?PaymentCode=' + result;
+            }, 1500);
+
         },
         error: function () {
             displayPopupNotification('There was an error creating your order please try again.', 'error', false);
         }
     });
-              
+
 }
 function AddItemToCart(itemName, itemCategory, itemPrice) {
     var productId = $('#lblProductId').text();
@@ -93,7 +97,8 @@ function AddItemToCart(itemName, itemCategory, itemPrice) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: JSON.stringify({
-            "productId": productId, "qty": qty, "size": size, "typeId": typeId, "colorId": colorId }),
+            "productId": productId, "qty": qty, "size": size, "typeId": typeId, "colorId": colorId
+        }),
         success: function (result) {
             $('#cartTotal').text(result);
             displayPopupNotification('Item added to cart.', 'error', false);
@@ -104,7 +109,7 @@ function AddItemToCart(itemName, itemCategory, itemPrice) {
                 content_type: 'product',
                 value: (itemPrice * qty),
                 currency: 'USD'
-            });   
+            });
         },
         error: function () {
             alert('error');
@@ -120,7 +125,7 @@ function RemoveItemFromCart(that) {
         url: '/Cart/RemoveItemFromCart',
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        data: JSON.stringify({ "cartGuid": cartGuid}),
+        data: JSON.stringify({ "cartGuid": cartGuid }),
         success: function (result) {
             location.reload();
         },
@@ -133,36 +138,36 @@ function RemoveItemFromCart(that) {
 function renderPaypalButtons(price, items, shippingCost, subtotal) {
     // Render the PayPal button
 
-     paypal.Button.render({
+    paypal.Button.render({
 
         // Set your environment
 
-         env: 'production', // sandbox | production
+        env: 'production', // sandbox | production
 
         // Specify the style of the button
 
         style: {
-            size:  'medium', // small | medium | large | responsive
+            size: 'medium', // small | medium | large | responsive
             shape: 'rect',  // pill | rect
             tagline: false
         },
 
         funding: {
-            allowed: [ paypal.FUNDING.CREDIT ]
+            allowed: [paypal.FUNDING.CREDIT]
         },
 
         // PayPal Client IDs - replace with your own
         // Create a PayPal app: https://developer.paypal.com/developer/applications/create
 
         client: {
-            sandbox:    'AUGWFUyOkNKvJMkpTl2mEoKxi3R3XQDeS7A2miRXir2epkYH3Xq2VP29C5KGGrGBgOugE7zCmZEw54C-',
+            sandbox: 'AUGWFUyOkNKvJMkpTl2mEoKxi3R3XQDeS7A2miRXir2epkYH3Xq2VP29C5KGGrGBgOugE7zCmZEw54C-',
             production: 'AdnLTOhpnQgW42pJFrli9Oer3A-oKrfj8aykjj-XqmhBcamkINRmhIR9J1n8rcxcWwDTUSYaLk4ipi0y'
         },
 
         // Wait for the PayPal button to be clicked
 
-        payment: function(data, actions) {
-            
+        payment: function (data, actions) {
+
             return actions.payment.create({
                 payment: {
                     transactions: [
@@ -170,26 +175,26 @@ function renderPaypalButtons(price, items, shippingCost, subtotal) {
                             "amount": { "total": price, "currency": "USD", "details": { "shipping": shippingCost, "tax": 0, "subtotal": subtotal } },
                             "description": "Lid Launch Order",
                             "item_list": {
-                                "items": JSON.parse(items)                                                         
+                                "items": JSON.parse(items)
                             }
                         }
                     ]
                 }
-            });                   
-                    
+            });
+
         },
 
         // Wait for the payment to be authorized by the customer
 
-        onAuthorize: function(data, actions) {
-            return actions.payment.execute().then(function() {
+        onAuthorize: function (data, actions) {
+            return actions.payment.execute().then(function () {
                 SubmitOrder();
             });
         }
 
     }, '#paypal-button-container');
 }
-function showPaypalButtons() {             
+function showPaypalButtons() {
     $('#chckoutWizzard').hide();
     $('#paypalButtons').slideDown();
     var total = $('#lblTotal').text();

@@ -53,7 +53,7 @@ function updateBulkTotals() {
                     //}
                     totalHats += parseInt($(this).val());
                     hatName = 'FlexFit Trucker  - ' + hatColorText + ' - OSFA';
-                   
+
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
                 }
             });
@@ -133,7 +133,7 @@ function updateBulkTotals() {
                 }
             });
         });
-    });    
+    });
     $('#6006 table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
@@ -145,7 +145,7 @@ function updateBulkTotals() {
                 }
             });
         });
-    });    
+    });
     $('#ShortBeanies table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
@@ -176,15 +176,15 @@ function updateBulkTotals() {
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
                     totalHats += parseInt($(this).val());
-                    var hatName = 'Richardson 112  - ' + hatColorText + ' - OSFA';                    
+                    var hatName = 'Richardson 112  - ' + hatColorText + ' - OSFA';
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
                 }
             });
         });
     });
-    var shippingPrice = 15;    
+    var shippingPrice = 15;
 
-    currentTotalBulkHatsCount = totalHats;    
+    currentTotalBulkHatsCount = totalHats;
 
     var currentPrice = 15;
     currentShippingTotal = 5;
@@ -215,10 +215,10 @@ function updateBulkTotals() {
     else if (currentTotalBulkHatsCount >= 6) {
         currentShippingTotal = 5;
     }
-    
+
     currentTotalCost = currentTotalBulkHatsCount * currentPrice;
 
-    var hasArtFee = false; 
+    var hasArtFee = false;
 
     if (currentTotalBulkHatsCount < 12 && $('#artworkPresetup').prop("checked") == false) {
         currentTotalCost += 30;
@@ -229,7 +229,7 @@ function updateBulkTotals() {
         $('#artworkSetupFee').hide();
         productList = productList.slice(0, -1);
     }
-    
+
     productList = productList + ']';
     //productList = productList + '{"name":"Shipping","quantity":"1","price":"' + currentShippingTotal + '","currency":"USD"}]';
 
@@ -269,7 +269,7 @@ function showBulkCart() {
     for (var i = 0; i < currentBulkProductList.length; i++) {
         $('#cartItems tbody').append('<tr><td><span>' + currentBulkProductList[i].quantity + '</span> x <span>' + currentBulkProductList[i].name + '</span></td><td><span>' + currentBulkProductList[i].price + '</span></td></tr>');
     }
-    $('.bulkCartPopup').show();    
+    $('.bulkCartPopup').show();
 }
 
 
@@ -334,13 +334,16 @@ function renderBulkCartPaypalButtons(price, items, paymentCompleteGuid, shipping
                     value: price,
                     currency: 'USD'
                 });
-                window.location = 'http://lidlaunch.com/bulk/payment?id=' + paymentCompleteGuid;
+                setTimeout(function () {
+                    window.location = 'http://lidlaunch.com/bulk/payment?id=' + paymentCompleteGuid;
+                }, 1500);
+
             });
         }
 
     }, '#paypal-button-container-bulk');
 }
-function verifyAndShowPaypal() {    
+function verifyAndShowPaypal() {
 
     var files = $('#bulkArtwork')[0].files;
 
@@ -435,11 +438,11 @@ function verifyAndShowPaypal() {
     } else {
         displayPopupNotification('Use Google Chrome browser or Firefox!', 'error', false);
     }
-        
+
 }
 
 function processBulkPaymentShowPaypal(total, paymentCompleteGuid, shippingCost, orderSubTotal) {
-    var items = JSON.parse($('#productList').text());    
+    var items = JSON.parse($('#productList').text());
 
     renderBulkCartPaypalButtons((shippingCost + orderSubTotal), items, paymentCompleteGuid, shippingCost, orderSubTotal);
     $('#paypalPaymentButtonsPopup').show();
@@ -452,7 +455,8 @@ function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, p
         contentType: false,
         processData: false,
         data: JSON.stringify({
-            bulkOrderBatchId: bulkOrderBatchId, bulkOrderItemId: bulkOrderItemId, bulkOrderBlankName: bulkOrderBlankName, quantity: $('#bulkReworkQuantity').val(), note: $('#bulkReworkNote').val(), status: $('#selReworkStatus').children("option:selected").val(), reworkId: reworkId}),
+            bulkOrderBatchId: bulkOrderBatchId, bulkOrderItemId: bulkOrderItemId, bulkOrderBlankName: bulkOrderBlankName, quantity: $('#bulkReworkQuantity').val(), note: $('#bulkReworkNote').val(), status: $('#selReworkStatus').children("option:selected").val(), reworkId: reworkId
+        }),
         contentType: "application/json",
         success: function (result) {
             if (result == "") {
@@ -463,7 +467,7 @@ function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, p
                     alert('show the bulk order batch screen for batch id= ' + parentBulkOrderBatchId);
                 } else {
                     showBulkOrderDetailsPopup(parentBulkOrderId);
-                }                
+                }
             }
         },
         error: function (xhr, status, p3, p4) {
@@ -479,7 +483,8 @@ function saveNote(noteType, idVal, parentBulkOrderId) {
         contentType: false,
         processData: false,
         data: JSON.stringify({
-            noteType: noteType, idVal: idVal, parentBulkOrderId: parentBulkOrderId, text: $('#noteText').val(), attachment: ''}),
+            noteType: noteType, idVal: idVal, parentBulkOrderId: parentBulkOrderId, text: $('#noteText').val(), attachment: ''
+        }),
         contentType: "application/json",
         success: function (result) {
             if (result == "") {
@@ -563,7 +568,7 @@ function togglePresetArtwork() {
 function changeBulkOrderSection(section) {
     if (section == 'intro') {
         $('#bulkIntro').show();
-        $('#bulkHatTypeSelect').hide();        
+        $('#bulkHatTypeSelect').hide();
         $('#bulkArtworkStep').hide();
 
         $('#introStepButton').removeClass('selected');
@@ -631,7 +636,7 @@ function changeBulkOrderSection(section) {
     if (section == 'checkout') {
         if (validateHats()) {
             if (validateArt()) {
-                fbq('track', 'InitiateCheckout', {                    
+                fbq('track', 'InitiateCheckout', {
                     content_category: 'Bulk Order Hats',
                     content_ids: ['0'],
                     content_type: 'product',
@@ -640,19 +645,19 @@ function changeBulkOrderSection(section) {
                     currency: 'USD'
                 });
                 showBulkCart();
-            }     
+            }
         }
-           
+
     }
 }
 function goToNextStep(currentStep) {
     if (currentStep == 'intro') {
         changeBulkOrderSection('hats');
     }
-    if (currentStep == 'hats') {        
+    if (currentStep == 'hats') {
         changeBulkOrderSection('art');
     }
-    if (currentStep == 'art') {        
+    if (currentStep == 'art') {
         changeBulkOrderSection('checkout');
     }
 }
@@ -684,7 +689,7 @@ function validateArt() {
 }
 
 function showBulkOrderDetailsPopup(bulkOrderId) {
-    $('#popUpHolder').load(url, { bulkOrderId: bulkOrderId});
+    $('#popUpHolder').load(url, { bulkOrderId: bulkOrderId });
 }
 
 
