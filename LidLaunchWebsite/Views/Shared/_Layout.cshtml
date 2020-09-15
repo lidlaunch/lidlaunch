@@ -87,10 +87,11 @@
                         </div>
                         <div id="navigation">
                             <ul>
+                                <li>@Html.ActionLink("Order", "Index", "Bulk")</li>
                                 <li>@Html.ActionLink("Shop", "Index", "Shop")</li>
                                 <li id="desktopCreate">@Html.ActionLink("Create", "GetStarted", "Create")</li>
                                 <li id="mobileCreate" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);"><a href="#">Create</a></li>
-                                <li>@Html.ActionLink("Order", "Index", "Bulk")</li>
+
                                 @if (Convert.ToInt32(Session["UserID"]) > 0)
                                 {
                                     <li>

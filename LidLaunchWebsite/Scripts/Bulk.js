@@ -110,6 +110,66 @@ function updateBulkTotals() {
             });
         });
     });
+    $('#DadCap table').each(function () {
+        $(this).find('tr').each(function () {
+            var hatColorText = $(this).find('.colorOption').text();
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalHats += parseInt($(this).val());
+                    var hatName = 'Yupoong Dad Cap  - ' + hatColorText + ' - OSFA';
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+                }
+            });
+        });
+    });
+    $('#6606TruckerSnapback table').each(function () {
+        $(this).find('tr').each(function () {
+            var hatColorText = $(this).find('.colorOption').text();
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalHats += parseInt($(this).val());
+                    var hatName = 'Yupoong 6606 Trucker Snapback  - ' + hatColorText + ' - OSFA';
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+                }
+            });
+        });
+    });    
+    $('#6006 table').each(function () {
+        $(this).find('tr').each(function () {
+            var hatColorText = $(this).find('.colorOption').text();
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalHats += parseInt($(this).val());
+                    var hatName = 'Yupoong 6006 Flat Bill Trucker Snapback  - ' + hatColorText + ' - OSFA';
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+                }
+            });
+        });
+    });    
+    $('#ShortBeanies table').each(function () {
+        $(this).find('tr').each(function () {
+            var hatColorText = $(this).find('.colorOption').text();
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalHats += parseInt($(this).val());
+                    var hatName = 'Yupoong Short Beanie  - ' + hatColorText + ' - OSFA';
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+                }
+            });
+        });
+    });
+    $('#CuffedBeanies table').each(function () {
+        $(this).find('tr').each(function () {
+            var hatColorText = $(this).find('.colorOption').text();
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalHats += parseInt($(this).val());
+                    var hatName = 'Yupoong Cuffed Beanie  - ' + hatColorText + ' - OSFA';
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+                }
+            });
+        });
+    });
     $('#Richardson112 table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();

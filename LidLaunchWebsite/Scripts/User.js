@@ -7,6 +7,10 @@
     "password": ""
 }
 
+function closeDesignerPopup() {
+    window.location = "/Home";
+}
+
 function saveUser() {
     var firstName = $('#txtFirstName').val();
     var lastName = $('#txtLastName').val();
@@ -30,7 +34,8 @@ function saveUser() {
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (data) {
-                            window.location = "/Home";
+                            hideLoading();
+                            $('#createDesignerPopup').show();
                         },
                         error: function (err) {
                             displayPopupNotification('User create failed please try again.', 'error', false);
