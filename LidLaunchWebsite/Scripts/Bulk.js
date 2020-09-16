@@ -280,6 +280,7 @@ function renderBulkCartPaypalButtons(price, items, paymentCompleteGuid, shipping
 
     }, '#paypal-button-container-bulk');
 }
+
 function verifyAndShowPaypal() {    
 
     var files = $('#bulkArtwork')[0].files;
