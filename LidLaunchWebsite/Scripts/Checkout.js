@@ -11,7 +11,7 @@
         $('#shipingSection').hide();
         setShipToSummary();
         $('#paymentStep').fadeIn();
-    }    
+    }
 }
 function validateShippingInfo(firstName, lastName, address, city, state, zip, email) {
     if (validateEmail(email) == false) {
@@ -106,12 +106,12 @@ function usePaypal() {
     setShipToSummary();
 }
 function useDifferentBillingAddress() {
-    $('#differntBillingAddress').slideDown();    
+    $('#differntBillingAddress').slideDown();
     $('#rdUseSameAsShipping').prop('checked', false);
     $('#rdUsedifferentAddress').prop('checked', true);
 }
 function sameAsShipping() {
-    $('#differntBillingAddress').hide();    
+    $('#differntBillingAddress').hide();
     $('#rdUseSameAsShipping').prop('checked', true);
     $('#rdUsedifferentAddress').prop('checked', false);
 
@@ -148,7 +148,7 @@ function validateCreditCardFields() {
     fbq('track', 'AddPaymentInfo');
 
     return true;
-    
+
 }
 function processPayment() {
     var isBulkOrder = false;
@@ -164,7 +164,7 @@ function processPayment() {
     } else {
         items = $('#productList').text();
     }
-    
+
     var shippingcost = $('#shippingCost').text();
     var email = $('#txtCustomerEmail').val();
     //shipping info
@@ -233,7 +233,7 @@ function processPayment() {
     data.append("shippingCost", shippingcost);
     showLoading();
 
-    
+
 
     $.ajax({
         type: "POST",
@@ -247,7 +247,7 @@ function processPayment() {
         success: function (result) {
             if (result == "ccerror") {
                 hideLoading();
-                displayPopupNotification('Error processing payment, please check your credit card details and try again.', 'error', false);                 
+                displayPopupNotification('Error processing payment, please check your credit card details and try again.', 'error', false);
             } else {
                 if (isBulkOrder) {
                     fbq('track', 'Purchase', {
@@ -257,9 +257,11 @@ function processPayment() {
                         content_type: 'product',
                         value: totalPurchaseAmount,
                         currency: 'USD'
-                    }); 
+                    });
                     // navigate to bulk order payment confirmation screen
-                    window.location = 'https://lidlaunch.com/bulk/payment?id=' + result;
+                    setTimeout(function () {
+                        window.location = 'https://lidlaunch.com/bulk/payment?id=' + result;
+                    }, 1500);
                 } else {
                     fbq('track', 'Purchase', {
                         content_name: 'Web Hat Order',
@@ -268,11 +270,13 @@ function processPayment() {
                         content_type: 'product',
                         value: totalPurchaseAmount,
                         currency: 'USD'
-                    }); 
+                    });
                     // navigate to the normal payment confirmation screen
-                    window.location = 'https://lidlaunch.com/cart/payment?PaymentCode=' + result;
+                    setTimeout(function () {
+                        window.location = 'https://lidlaunch.com/cart/payment?PaymentCode=' + result;
+                    }, 1500);
                 }
-            }            
+            }
         },
         error: function () {
             displayPopupNotification('Please Contact Us. There was an issue processing your order.', 'error', false);
@@ -286,7 +290,7 @@ function proceedToPayWithPaypal() {
     if ($('#isBulkOrder').text() == "true") {
         isBulkOrder = true;
     }
-    if (isBulkOrder) {        
+    if (isBulkOrder) {
         verifyAndShowPaypal();
     } else {
         showPaypalButtons();
@@ -304,7 +308,7 @@ function showHideMobileCart() {
     } else {
         mobileCartShown = true;
         $('#showHideSummary').text('Hide order summary');
-        $('.checkOutCartItems').detach().appendTo('#clonedCart');        
+        $('.checkOutCartItems').detach().appendTo('#clonedCart');
     }
-    
+
 }

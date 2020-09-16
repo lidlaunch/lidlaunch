@@ -44,4 +44,11 @@
     </div>
 </div>
 
+<div id="createDesignerPopup" class="hidden">
+    <div id="createDesignerPopupInner">
+        @{ Html.RenderPartial("~/Views/Designer/Index.cshtml"); }
+        <input type="button" class="smallButton" value="I do not want a designer account." onclick="closeDesignerPopup()" style="margin:10px auto;"/>
+    </div>    
+</div>
+
 
