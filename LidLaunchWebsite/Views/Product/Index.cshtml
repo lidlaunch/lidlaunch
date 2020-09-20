@@ -2,32 +2,44 @@
 @{
     ViewBag.Title = Model.Product.Name + " - Custom Hat By " + @Model.Designer.ShopName;
 }
-<div id="productDetails">
+    <script type="text/javascript">
+    fbq('track', 'ViewContent', {
+        content_name: '@Model.Product.Name',
+        content_category: '@Model.Product.CategoryId',
+        content_ids: @Model.Product.Id,
+        content_type: 'product',
+        value: @Model.Product.Price,      
+        currency: 'USD'
+    });
+    </script>
+<div id="productDetails" class="centerInner">
     <div id="productImages">
         <div id="imageHolder">
             @foreach (LidLaunchWebsite.Models.HatType hatType in Model.lstHatTypes)
-        {
-            if (hatType.Id == Model.Product.TypeId)
             {
-                <img src="~/Images/DesignImages/InUse/@hatType.ImagePreview" id="productImage" class="@("type" + hatType.Id.ToString())" />
-        }
-        else
-        {
-            <img src="~/Images/DesignImages/InUse/@hatType.ImagePreview" id="productImage" class="@("type" + hatType.Id.ToString()) hidden" />
-    }
-
-}
+                foreach (LidLaunchWebsite.Models.HatColor hatColor in hatType.lstColors)
+                {
+                    if (Model.Product.ColorId == hatColor.colorId && Model.Product.TypeId == hatType.Id)
+                    {
+                        <img src="~/Images/DesignImages/InUse/@hatColor.creationImage" id="productImage" class="@("type" + hatType.Id.ToString()) hatDisplayImage @("color" + hatColor.colorId.ToString())" />
+                    }
+                    else
+                    {
+                        <img src="~/Images/DesignImages/InUse/@hatColor.creationImage" id="productImage" class="@("type" + hatType.Id.ToString()) hidden hatDisplayImage @("color" + hatColor.colorId.ToString())" />
+                    }
+                }
+            }
 
         </div><!--/imageHolder-->
         <div id="childProducts">
             @foreach (LidLaunchWebsite.Models.Product prod in Model.lstChildProducts)
-        {
+            {
             <div class="productListed" onclick="window.location='/Product?id=@prod.Id'">
                 <img src="~/Images/DesignImages/InUse/@prod.Design.PreviewImage" width="250" class="productImage" /><br />
                 <span class="prodName">@prod.Name</span><br />
             </div>
 
-    }
+            }
         </div><!--/childProducts-->
     </div><!--/productImages-->
     
@@ -46,7 +58,7 @@
         </div><!--productText--->
         <div id="productOptionsBox">
             <div class="inputLabel">Hat Type:</div>
-            <div id="hatTypeSelect" onclick="$('#productHatStyleSelect').show();"><img src="/Images/HatAssets/@Model.lstHatTypes.Single(h => h.Id == Model.Product.TypeId).ProductImage" id="selectedHatTypeImg" /><div id="selectedHatTypeInfo">@Model.lstHatTypes.Single(h => h.Id == Model.Product.TypeId).Name</div><div id="expandArrow"></div></div>
+            <div id="hatTypeSelect" onclick="$('#productHatStyleSelect').show();"><img src="/Images/HatAssets/@Model.Product.Design.PreviewImage" id="selectedHatTypeImg" /><div id="selectedHatTypeInfo">@Model.Product.TypeText</div><div id="expandArrow"></div></div>
             <div id="productHatStyleSelect" class="hidden">
                 @foreach (LidLaunchWebsite.Models.HatType hatType in Model.lstHatTypes)
                 {
@@ -66,9 +78,37 @@
                             @hatType.Name
                         </div>
                         <div class="hatStyleDescription">
-                            @hatType.Desscription
+                            @hatType.Description
                         </div>
                     </div>
+                }
+            </div>
+            <div class="clear"></div>
+            <div class="inputLabel">Hat Color:</div>
+            <div id="productHatColorSelect">
+                @foreach (LidLaunchWebsite.Models.HatType hatType in Model.lstHatTypes)
+                {
+
+                    foreach (LidLaunchWebsite.Models.HatColor hatColor in @hatType.lstColors)
+                    {
+
+                        if (Model.Product.ColorId == hatColor.colorId && Model.Product.TypeId == hatType.Id)
+                        {
+                            <div class="hatStyleColors @hatType.Id">
+                                <span class="color @hatColor.colorId selected" id="@hatColor.colorId" style="background-color:#@hatColor.colorCode" onclick="changeHatColor(@hatColor.colorId, this);"></span>
+                                <input type="checkbox" class="selectedHatColor hidden" id="@hatColor.colorId" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="hatStyleColors @hatType.Id hidden">
+                                <span class="color @hatColor.colorId" id="@hatColor.colorId" style="background-color:#@hatColor.colorCode" onclick="changeHatColor(@hatColor.colorId, this);"></span>
+                                <input type="checkbox" class="selectedHatColor hidden" id="@hatColor.colorId" />
+                            </div>
+                        }
+
+                    }
+
                 }
             </div>
             <div class="clear"></div>
@@ -98,11 +138,13 @@
             <div class="inputLabel">Quantity</div>
             <input type="number" min="1" max="150" id="txtQty" value="1" />
             <div class="inputLabel">Price:</div>
-            <div id="priceText">$25.00</div>
+            <div id="priceText">
+                $@Model.Product.Price
+            </div><!--/priceText-->
         </div><!--/productOptionsBox-->
         @if (Request["showApproval"] != "1")
         {
-            <div class="AddToCartButton" onclick="AddItemToCart();">Add To Cart</div><!--/AddToCartButton-->
+            <div class="AddToCartButton" onclick="AddItemToCart('@Model.Product.Name', '0', '@Model.Product.Price');">Add To Cart</div><!--/AddToCartButton-->
         }
 
         <div class="productText">

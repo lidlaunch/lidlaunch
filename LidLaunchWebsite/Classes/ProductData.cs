@@ -150,7 +150,102 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
-        
+
+        public bool DenyProduct(int productId)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("DenyProduct", data.conn);
+                    sqlComm.Parameters.AddWithValue("@id", productId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public ProductAndDesignerInfo GetProductAndDesignerInfo(int productId)
+        {
+            ProductAndDesignerInfo info = new ProductAndDesignerInfo();
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetProductAndDesignerInfo", data.conn);
+                    sqlComm.Parameters.AddWithValue("@id", productId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+                }
+
+                if (ds.Tables.Count > 0)
+                {
+                    Product product = new Product();
+                    Design design = new Design();
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        DataRow dr = ds.Tables[0].Rows[0];
+                        info.ProductName = dr["Name"].ToString();
+                    }
+                    if(ds.Tables[2].Rows.Count > 0)
+                    {
+                        DataRow dr = ds.Tables[2].Rows[0];
+                        info.ArtSource = dr["ArtSource"].ToString();
+                    }
+                    if (ds.Tables[3].Rows.Count > 0)
+                    {
+                        DataRow dr = ds.Tables[3].Rows[0];
+                        info.UserEmail = dr["Email"].ToString();
+                    }
+
+                    return info;
+                }
+                else
+                {
+                    return info;
+                }
+            }
+            catch (Exception ex)
+            {
+                return info;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+
+        }
+
         public bool UpdateProduct(string name, string description, int productId, int categoryId, bool privateProduct, int parentProductId)
         {
             var data = new SQLData();
@@ -223,7 +318,85 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
-        public Product GetProduct(int productId, int typeId)
+        public Product GetProductForProductPage(int productId)
+        {
+            Product model = new Product();
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetProductForProductPage", data.conn);
+                    sqlComm.Parameters.AddWithValue("@id", productId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+                }
+
+                if (ds.Tables.Count > 0)
+                {
+                    Product product = new Product();
+                    Design design = new Design();
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        DataRow dr = ds.Tables[0].Rows[0];
+                        product.Id = Convert.ToInt32(dr["Id"]);
+                        product.DesignerId = Convert.ToInt32(dr["DesignerId"]);
+                        product.Name = Convert.ToString(dr["Name"]);
+                        product.Description = Convert.ToString(dr["Description"]);
+                        product.Private = Convert.ToBoolean(dr["Private"].ToString());
+                        product.Hidden = Convert.ToBoolean(dr["Hidden"].ToString());
+                        product.ApplyMethod = Convert.ToString(dr["ApplyMethod"].ToString());
+                        if (!(dr["ParentProductId"] is DBNull))
+                        {
+                            product.ParentProductId = Convert.ToInt32(dr["ParentProductId"]);
+                        }
+                        else
+                        {
+                            product.ParentProductId = 0;
+                        }
+                        if(product.ApplyMethod.ToLower() == "embroidery")
+                        {
+                            product.Price = 19.99M;
+                        } 
+                        else if (product.ApplyMethod.ToLower() == "leatherpatch")
+                        {
+                            product.Price = 29.99M;
+                        } 
+                        else
+                        {
+                            product.Price = 19.99M;
+                        }
+                       
+                    }                   
+
+                    model = product;
+                    return model;
+                }
+                else
+                {
+                    return model;
+                }
+            }
+            catch (Exception ex)
+            {
+                return model;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+        public Product GetProduct(int productId, int typeId, int colorId)
         {
             Product model = new Product();
             var data = new SQLData();
@@ -236,6 +409,7 @@ namespace LidLaunchWebsite.Classes
                     SqlCommand sqlComm = new SqlCommand("GetProduct", data.conn);
                     sqlComm.Parameters.AddWithValue("@id", productId);
                     sqlComm.Parameters.AddWithValue("@typeId", typeId);
+                    sqlComm.Parameters.AddWithValue("@colorId", colorId);
                     //sqlComm.Parameters.AddWithValue("@TimeRange", TimeRange);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
@@ -259,8 +433,9 @@ namespace LidLaunchWebsite.Classes
                         product.Description = Convert.ToString(dr["Description"]);
                         product.Private = Convert.ToBoolean(dr["Private"].ToString());
                         product.Hidden = Convert.ToBoolean(dr["Hidden"].ToString());
-                        product.TypeId = Convert.ToInt32(dr["TypeId"]);
+                        product.TypeId = Convert.ToInt32(dr["TypeId"]); ;
                         product.TypeText = dr["TypeText"].ToString();
+                        product.ApplyMethod = dr["ApplyMethod"].ToString();
                         if (!(dr["ParentProductId"] is DBNull))
                         {
                             product.ParentProductId = Convert.ToInt32(dr["ParentProductId"]);
@@ -269,7 +444,19 @@ namespace LidLaunchWebsite.Classes
                         {
                             product.ParentProductId = 0;
                         }
-                            
+                        if (product.ApplyMethod.ToLower() == "embroidery")
+                        {
+                            product.Price = 19.99M;
+                        }
+                        else if (product.ApplyMethod.ToLower() == "leatherpatch")
+                        {
+                            product.Price = 29.99M;
+                        }
+                        else
+                        {
+                            product.Price = 19.99M;
+                        }
+
                     }
                     if (ds.Tables[1].Rows.Count > 0)
                     {
@@ -334,7 +521,9 @@ namespace LidLaunchWebsite.Classes
                         design.EmbroideredWidth = Convert.ToDecimal(dr["EmbroideredWidth"]);
                         design.DigitizedFile = dr["DigitizedFile"].ToString();
                         design.DigitizedPreview = dr["DigitizedPreview"].ToString();
-                        design.DigitizedInfoImage = dr["DigitizedInfoImage"].ToString();
+                        design.DigitizedProductionSheet = dr["DigitizedProductionSheet"].ToString();
+                        //design.EMBFile = Convert.ToString(dr["EMBFile"].ToString());
+                        //design.CustomerApproved = Convert.ToBoolean(dr["CustomerApproved"].ToString());
                         product.Design = design;
                         model.Add(product);
                     }
@@ -576,6 +765,19 @@ namespace LidLaunchWebsite.Classes
                         webProd.DesignerId = Convert.ToInt32(row["DesignerId"]);
                         webProd.ProductId = Convert.ToInt32(row["ProductID"]);
                         webProd.ParentCount = Convert.ToInt32(row["ParentCount"]);
+                        webProd.ApplyMethod = Convert.ToString(row["ApplyMethod"]);
+                        if (webProd.ApplyMethod.ToLower() == "embroidery")
+                        {
+                            webProd.Price = 19.99M;
+                        }
+                        else if (webProd.ApplyMethod.ToLower() == "leatherpatch")
+                        {
+                            webProd.Price = 29.99M;
+                        }
+                        else
+                        {
+                            webProd.Price = 19.99M;
+                        }
 
                         lstWebsiteProducts.Add(webProd);
                     }
@@ -635,6 +837,19 @@ namespace LidLaunchWebsite.Classes
                         webProd.DesignerId = Convert.ToInt32(row["DesignerId"]);
                         webProd.ProductId = Convert.ToInt32(row["ProductID"]);
                         webProd.ParentCount = Convert.ToInt32(row["ParentCount"]);
+                        webProd.ApplyMethod = Convert.ToString(row["ApplyMethod"]);
+                        if (webProd.ApplyMethod.ToLower() == "embroidery")
+                        {
+                            webProd.Price = 19.99M;
+                        }
+                        else if (webProd.ApplyMethod.ToLower() == "leatherpatch")
+                        {
+                            webProd.Price = 29.99M;
+                        }
+                        else
+                        {
+                            webProd.Price = 19.99M;
+                        }
 
                         lstWebsiteProducts.Add(webProd);
                     }
@@ -717,58 +932,7 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
-        public List<HatType> GetHatTypes()
-        {
-            List<HatType> model = new List<HatType>();
-            var data = new SQLData();
-            try
-            {
-
-                DataSet ds = new DataSet();
-                using (data.conn)
-                {
-                    SqlCommand sqlComm = new SqlCommand("GetHatTypes", data.conn);
-                    //sqlComm.Parameters.AddWithValue("@TimeRange", TimeRange);
-
-                    sqlComm.CommandType = CommandType.StoredProcedure;
-
-                    SqlDataAdapter da = new SqlDataAdapter();
-                    da.SelectCommand = sqlComm;
-
-                    da.Fill(ds);
-                }
-
-                if (ds.Tables.Count > 0)
-                {
-                    foreach (DataRow dr in ds.Tables[0].Rows)
-                    {
-                        HatType hatType = new HatType();
-                        hatType.Id = Convert.ToInt32(dr["Id"]);
-                        hatType.Name = Convert.ToString(dr["Name"]);
-                        hatType.Desscription = dr["Description"].ToString();
-                        hatType.ProductImage = dr["ProductImage"].ToString();
-                        model.Add(hatType);
-                    }
-                    return model;
-                }
-                else
-                {
-                    return model;
-                }
-            }
-            catch (Exception ex)
-            {
-                return model;
-            }
-            finally
-            {
-                if (data.conn != null)
-                {
-                    data.conn.Close();
-                }
-            }
-
-        }        
+                
         public List<HatType> GetProductHatTypes(int productId)
         {
             List<HatType> model = new List<HatType>();
@@ -797,9 +961,20 @@ namespace LidLaunchWebsite.Classes
                         HatType hatType = new HatType();
                         hatType.Id = Convert.ToInt32(dr["Id"]);
                         hatType.Name = Convert.ToString(dr["Name"]);
-                        hatType.Desscription = dr["Description"].ToString();
-                        hatType.ImagePreview = dr["ImagePreview"].ToString();
+                        hatType.Description = dr["Description"].ToString();
                         hatType.ProductImage = dr["ProductImage"].ToString();
+                        var lstColors = new List<HatColor>();
+
+                        foreach (DataRow dr2 in ds.Tables[1].Rows)
+                        {
+                            if (Convert.ToInt32(dr2["TypeId"]) == hatType.Id)
+                            {
+                                lstColors.Add(new HatColor { color = Convert.ToString(dr2["Color"]), colorCode = Convert.ToString(dr2["ColorCode"]), availableToCreate = Convert.ToBoolean(dr2["AvailableToCreate"]), colorId = Convert.ToInt32(dr2["ColorId"]), creationImage = Convert.ToString(dr2["ImagePreview"]) });
+                            }
+                        }
+                        lstColors = lstColors.OrderBy(c => c.colorId).ToList();
+                        hatType.lstColors = lstColors;
+
                         model.Add(hatType);
                     }
                     return model;

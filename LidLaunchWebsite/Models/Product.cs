@@ -23,6 +23,9 @@ namespace LidLaunchWebsite.Models
         public string TypeText { get; set; }
         public int ParentProductId { get; set; }
         public int ParentCount { get; set; }
+        public string ApplyMethod { get; set; }
+        public decimal Price { get; set; }
+        public string ProductCategory { get; set; }
     }
     public class ProductPageProduct
     {
@@ -36,5 +39,12 @@ namespace LidLaunchWebsite.Models
         public Product Product { get; set; }
         public List<Category> lstCategories { get; set; }
         public List<Product> lstParentProducts { get; set; }
+    }
+
+    public class ProductAndDesignerInfo
+    {
+        public string ProductName { get; set; }
+        public string UserEmail { get; set; }
+        public string ArtSource { get; set; }
     }
 }

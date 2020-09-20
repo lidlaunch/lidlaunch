@@ -2,8 +2,11 @@
 @{
     ViewBag.Title = "Lid Launch - Your Shopping Cart";
 }
+<!--/sandbox client id-->
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-<div id="CreateDetails" ng-controller="CartController as cart" ng-init="cart.GetCart()" style="min-height:800px;">
+<span id="isBulkOrder" class="hidden">false</span>
+
+<div id="CreateDetails" style="min-height:800px;">
     <div class="cartContainer">
         <div id="cartHeader">Your Cart</div>
         <div class="cartDetails">
@@ -13,14 +16,14 @@
                 foreach (LidLaunchWebsite.Models.Product product in Model.lstProducts)
                 {
 
-                    productList = productList + "{\"name\":\"" + product.Name + " - " + product.TypeText + " - Size: " + product.Size + "\",\"quantity\":\"" + product.Quantity + "\",\"price\":\"" + (product.Quantity * 25) + "\",\"currency\":\"USD\"},";
+                    productList = productList + "{\"name\":\"" + product.Name + " - " + product.TypeText + " - Size: " + product.Size + "\",\"quantity\":\"" + product.Quantity + "\",\"price\":\"" + product.Price + "\",\"currency\":\"USD\"},";
 
                     <div class="productRow">
                         <img src="~/Images/DesignImages/InUse/@product.Design.PreviewImage" width="100" class="productImage" />
                         <span class="productDetails">
                             <div class="cartGuid hidden">@product.CartGuid</div>
                             <div class="productName">@product.Name</div>
-                            <div class="productPrice">$@(product.Quantity * 25)</div>
+                            <div class="productPrice">$@(product.Quantity * Convert.ToDecimal(product.Price))</div>
                             <div class="productType">Type: @product.TypeText</div>
                             <div class="productQty">Quantity: @product.Quantity</div>
                             <div class="productSize">Size: @product.Size</div>
@@ -28,8 +31,10 @@
                         </span>
                     </div>
                 }
-                productList = productList + "{\"name\":\"Shipping\",\"quantity\":\"1\",\"price\":\"5\",\"currency\":\"USD\"}]";
+                productList = productList.TrimEnd(',');
+                productList = productList + "]";
                 <span id="productList" class="hidden">@productList</span>
+                <span id="shippingCost" class="hidden">@Model.Shipping</span>
             }
             else
             {
@@ -45,7 +50,7 @@
                 <table id="totalTable">
                     <tr>
                         <td>Sub Total:</td>
-                        <td style="text-align:right;">$@Model.Total</td>
+                        <td style="text-align:right;">$<span id="subTotal">@Model.Total</span></td>
                     </tr>
                     <tr id="tax" class="hidden">
                         <td>Taxes:</td>
@@ -53,14 +58,14 @@
                     </tr>
                     <tr>
                         <td>Shipping:</td>
-                        <td style="text-align:right;">$5</td>
+                        <td style="text-align:right;">$<span id="shippingCost">@Model.Shipping</span></td>
                     </tr>
                     <tr>
                         <td style="font-weight:bold;">Total:</td>
-                        <td style="text-align:right; font-weight:bold;">$<span id="lblTotal">@(Model.Total + 5)</span></td>
+                        <td style="text-align:right; font-weight:bold;">$<span id="lblTotal">@Model.TotalWithShipping</span></td>
                     </tr>
                 </table>
-                <a href="#logo" onclick="$('#customerInfoPopup').show();"><div id="PayNow">Complete Order</div></a>
+                <a href="javascript:void(0);" onclick="$('#checkoutPopoup').show(); $(window).scrollTop(0); trackCartPixel(@Model.lstProducts.Select(i => i.Quantity).Sum() , @Model.TotalWithShipping)"><div id="PayNow">Check Out</div></a>
             </div>
         }
 
@@ -68,201 +73,56 @@
 
     </div>
 </div>
-<div id="customerInfoPopup" style="display:none;">
-    <div id="customerInformation">
-        <div id="infoContent">
-            <div id="customerInfo">
-                <div class="close" onclick="$('#customerInfoPopup').hide();" style="color:black;">X</div>
-                <table>
-                    <tr>
-                        <td colspan="2"><b>Your Information:</b></td>
-                    </tr>
-                    <tr>
-                        <td>First Name:</td>
-                        <td><input type="text" id="txtFirstName" /></td>
-                    </tr>
-                    <tr>
-                        <td>Last Name:</td>
-                        <td><input type="text" id="txtLastName" /></td>
-                    </tr>
-                    <tr>
-                        <td>Email:</td>
-                        <td><input type="text" id="txtEmail" /></td>
-                    </tr>
-                    <tr>
-                        <td>Phone:</td>
-                        <td><input type="text" id="txtPhone" /></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><b>Shipping Address:</b></td>
-                    </tr>
-                    <tr>
-                        <td>Address:</td>
-                        <td><input type="text" id="txtAddress" /></td>
-                    <tr>
-                        <td>City:</td>
-                        <td><input type="text" id="txtCity" /></td>
-                    </tr>
-                    <tr>
-                        <td>State:</td>
-                        <td>
-                            <select id="txtState">
-                                <option value="AL">Alabama</option>
-                                <option value="AK">Alaska</option>
-                                <option value="AZ">Arizona</option>
-                                <option value="AR">Arkansas</option>
-                                <option value="CA">California</option>
-                                <option value="CO">Colorado</option>
-                                <option value="CT">Connecticut</option>
-                                <option value="DE">Delaware</option>
-                                <option value="DC">District Of Columbia</option>
-                                <option value="FL">Florida</option>
-                                <option value="GA">Georgia</option>
-                                <option value="HI">Hawaii</option>
-                                <option value="ID">Idaho</option>
-                                <option value="IL">Illinois</option>
-                                <option value="IN">Indiana</option>
-                                <option value="IA">Iowa</option>
-                                <option value="KS">Kansas</option>
-                                <option value="KY">Kentucky</option>
-                                <option value="LA">Louisiana</option>
-                                <option value="ME">Maine</option>
-                                <option value="MD">Maryland</option>
-                                <option value="MA">Massachusetts</option>
-                                <option value="MI">Michigan</option>
-                                <option value="MN">Minnesota</option>
-                                <option value="MS">Mississippi</option>
-                                <option value="MO">Missouri</option>
-                                <option value="MT">Montana</option>
-                                <option value="NE">Nebraska</option>
-                                <option value="NV">Nevada</option>
-                                <option value="NH">New Hampshire</option>
-                                <option value="NJ">New Jersey</option>
-                                <option value="NM">New Mexico</option>
-                                <option value="NY">New York</option>
-                                <option value="NC">North Carolina</option>
-                                <option value="ND">North Dakota</option>
-                                <option value="OH">Ohio</option>
-                                <option value="OK">Oklahoma</option>
-                                <option value="OR">Oregon</option>
-                                <option value="PA">Pennsylvania</option>
-                                <option value="RI">Rhode Island</option>
-                                <option value="SC">South Carolina</option>
-                                <option value="SD">South Dakota</option>
-                                <option value="TN">Tennessee</option>
-                                <option value="TX">Texas</option>
-                                <option value="UT">Utah</option>
-                                <option value="VT">Vermont</option>
-                                <option value="VA">Virginia</option>
-                                <option value="WA">Washington</option>
-                                <option value="WV">West Virginia</option>
-                                <option value="WI">Wisconsin</option>
-                                <option value="WY">Wyoming</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Zip:</td>
-                        <td><input type="text" id="txtZip" /></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><b>Billing Address</b></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><input type="checkbox" id="chkSameAsShipping" /> Same As Shipping</td>
-                    </tr>
-                    <tr id="billingAddress">
-                        <td colspan="2">
-                            <table>
-                                <tr>
-                                    <td>Address:</td>
-                                    <td><input type="text" id="txtAddressBill" /></td>
-                                </tr>
-                                <tr>
-                                    <td>City:</td>
-                                    <td><input type="text" id="txtCityBill" /></td>
-                                </tr>
-                                <tr>
-                                    <td>State:</td>
-                                    <td>
-                                        <select id="txtStateBill">
-                                            <option value="AL">Alabama</option>
-                                            <option value="AK">Alaska</option>
-                                            <option value="AZ">Arizona</option>
-                                            <option value="AR">Arkansas</option>
-                                            <option value="CA">California</option>
-                                            <option value="CO">Colorado</option>
-                                            <option value="CT">Connecticut</option>
-                                            <option value="DE">Delaware</option>
-                                            <option value="DC">District Of Columbia</option>
-                                            <option value="FL">Florida</option>
-                                            <option value="GA">Georgia</option>
-                                            <option value="HI">Hawaii</option>
-                                            <option value="ID">Idaho</option>
-                                            <option value="IL">Illinois</option>
-                                            <option value="IN">Indiana</option>
-                                            <option value="IA">Iowa</option>
-                                            <option value="KS">Kansas</option>
-                                            <option value="KY">Kentucky</option>
-                                            <option value="LA">Louisiana</option>
-                                            <option value="ME">Maine</option>
-                                            <option value="MD">Maryland</option>
-                                            <option value="MA">Massachusetts</option>
-                                            <option value="MI">Michigan</option>
-                                            <option value="MN">Minnesota</option>
-                                            <option value="MS">Mississippi</option>
-                                            <option value="MO">Missouri</option>
-                                            <option value="MT">Montana</option>
-                                            <option value="NE">Nebraska</option>
-                                            <option value="NV">Nevada</option>
-                                            <option value="NH">New Hampshire</option>
-                                            <option value="NJ">New Jersey</option>
-                                            <option value="NM">New Mexico</option>
-                                            <option value="NY">New York</option>
-                                            <option value="NC">North Carolina</option>
-                                            <option value="ND">North Dakota</option>
-                                            <option value="OH">Ohio</option>
-                                            <option value="OK">Oklahoma</option>
-                                            <option value="OR">Oregon</option>
-                                            <option value="PA">Pennsylvania</option>
-                                            <option value="RI">Rhode Island</option>
-                                            <option value="SC">South Carolina</option>
-                                            <option value="SD">South Dakota</option>
-                                            <option value="TN">Tennessee</option>
-                                            <option value="TX">Texas</option>
-                                            <option value="UT">Utah</option>
-                                            <option value="VT">Vermont</option>
-                                            <option value="VA">Virginia</option>
-                                            <option value="WA">Washington</option>
-                                            <option value="WV">West Virginia</option>
-                                            <option value="WI">Wisconsin</option>
-                                            <option value="WY">Wyoming</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Zip:</td>
-                                    <td><input type="text" id="txtZipBill" /></td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr id="priceRow">
-                        <td colspan="2">
-                            <h2>TOTAL - $@(Model.Total + 5)</h2>
-                        </td>
-                    </tr>
-                </table>
-                <a href="#logo"><div id="PayNow" onclick="showPaypalButtons();">Pay Now With Paypal</div></a>
-            </div><!--/customerInfo-->
-
+<div id="checkoutPopoup" style="display:none;">
+    <div class="centerInner">
+        <div class="close" onclick="$('#checkoutPopoup').hide();" style="color:black;">X</div>
+        <div id="checkoutHolderLeft">
+            <div id="chckoutWizzard">
+                @{ Html.RenderPartial("ProcessPayment", Model); }
+            </div>        
             <div id="paypalButtons" class="hidden">
                 <h1>Select a payment option below</h1>
                 <div id="paypal-button-container"></div>
             </div>
         </div>
-    </div>
-</div>
+        <div id="checkoutHolderRight">
+            <table class="checkOutCartItems">
+                @if (Model.lstProducts.Count != 0)
+                {
+
+                    foreach (LidLaunchWebsite.Models.Product product in Model.lstProducts)
+                    {
+                        <tr>
+                            <td class=""><img src="~/Images/DesignImages/InUse/@product.Design.PreviewImage" width="75" class="productImage" /></td>
+                            <td class="">@product.Quantity x @product.Name</td>
+                            <td class="">@product.TypeText - @product.Size</td>
+                            <td style="text-align:right;">$@(product.Quantity * Convert.ToDecimal(product.Price))</td>
+                        </tr>
+                    }
+                }
+                <tr><td colspan="4"><hr /></td></tr>
+                <tr>
+                    <td colspan="3">Sub Total:</td>
+                    <td style="text-align:right;">$@Model.Total</td>
+                </tr>
+                <tr>
+                    <td colspan="3">Shipping:</td>
+                    <td style="text-align:right;">$@Model.Shipping</td>
+                </tr>
+                <tr><td colspan="4"><hr /></td></tr>
+                <tr>
+                    <td colspan="3" style="font-weight:bold;">Total:</td>
+                    <td style="text-align:right; font-weight:bold;">$<span id="lblTotal">@Model.TotalWithShipping</span></td>
+                </tr>
+            </table>
+        </div>
+
+        @*<a href="#logo"><div id="PayNow" onclick="showPaypalButtons();">Pay Now With Paypal</div></a>*@
+    </div><!--/cetnerInner-->
+</div><!--/checkoutPopup-->
+
+
+
 
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="hidden">
     <input type="hidden" name="cmd" value="_xclick">
@@ -275,6 +135,9 @@
     <input type="hidden" name="no_shipping" value="2">
     <input type="hidden" name="rm" value="1">
     <input type="hidden" name="quantity" value="1" />
+    <input type="hidden" name="solution_type" value="sole">
+    <input type="hidden" name="landing_page" value="billing">
+    <input type="hidden" name="user_selected_funding_source" value="credit card">
     <input type="hidden" id="ReturnURL" name="return" value="http://lidlaunch.com/cart/payment">
     <input type="hidden" name="cancel_return" value="http://lidlaunch.com/cart/cancel">
     <input type="hidden" name="currency_code" value="USD">

@@ -1,0 +1,14 @@
+﻿<div id="addBulkReworkPopup">
+    <div id="addBulkReworkPopupInner">
+        <span onclick="$('#addBulkReworkPopup').hide();" class="closeButton" style="position:absolute; top:5px;right:5px;">X</span>
+        <div><span id="bulkOrderBlankName">@Model.bulkOrderBlankName</span><input type="text" id="bulkReworkQuantity" value="@Model.quantity"/></div>     
+        <div><input id="bulkReworkNote" type="text" placeholder="note..." value="@Model.note"/></div>
+        <div>
+            <select id="selReworkStatus">
+                <option value="In Progress">In Progress</option>
+                <option value="Complete">Complete</option>
+            </select>
+        </div>
+        <div id="saveNote"><input type="button" value="Save Rework" class="smallButton" onclick="saveBulkRework('@Model.bulkOrderBatchId','@Model.bulkOrderItemId', '@Model.bulkOrderBlankName',  '@Model.parentBulkOrderId', '@Model.parentBulkOrderBatchId', '@Model.bulkReworkId')" /></div>
+    </div>
+</div>

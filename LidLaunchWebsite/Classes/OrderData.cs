@@ -129,5 +129,45 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
+        public bool CheckProductHasFreeShipping(int Id)
+        {
+            var data = new SQLData();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("CheckProductHasFreeShipping", data.conn);
+                    sqlComm.Parameters.AddWithValue("@id", Id);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+                }
+
+                if (ds.Tables.Count > 0)
+                {
+                    return Convert.ToBoolean(ds.Tables[0].Rows[0]["FreeShipping"]);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
     }
 }

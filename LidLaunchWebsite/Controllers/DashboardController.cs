@@ -2,11 +2,16 @@
 using LidLaunchWebsite.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Drawing;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using ZXing;
+using ZXing.Common;
 
 namespace LidLaunchWebsite.Controllers
 {
@@ -176,7 +181,155 @@ namespace LidLaunchWebsite.Controllers
             }
 
         }
+        public ActionResult HatManager()
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["UserID"]) == 1)
+                {
+                    HatData data = new HatData();
+                    HatManager hatManager = new HatManager();
+                    hatManager.lstHatTypes = data.GetHatTypes();
+                    return View(hatManager);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
 
+        }
+        public ActionResult HatTypeEdit(int hatTypeId = 0)
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["UserID"]) == 1)
+                {
+                    HatData data = new HatData();
+                    HatType hatType = new HatType();
+                    if (hatTypeId > 0)
+                    {
+                        hatType = data.GetHatType(hatTypeId);
+                    }                    
+                    return View(hatType);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+            
+        }
+        public string UploadHatCreationImage()
+        {
+            var returnValue = "";
+            try
+            {
+                if (!checkLoggedIn())
+                {
+                    //do nothing
+                }
+                else
+                {
+                    var fileContent = Request.Files[0];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        //var extension = Path.GetExtension(fileContent.FileName);
+
+                        var fileName = Request.Files[0].FileName;
+                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/HatAssets/", fileName);
+
+                        fileContent.SaveAs(path);
+                        returnValue = fileName;                        
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+            var json = new JavaScriptSerializer().Serialize(returnValue);
+            return json;
+        }
+        public string UploadHatTypePreviewImage()
+        {
+            var returnValue = "";
+            try
+            {
+                if (!checkLoggedIn())
+                {
+                    //do nothing
+                }
+                else
+                {
+                    var fileContent = Request.Files[0];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        //var extension = Path.GetExtension(fileContent.FileName);
+
+                        var fileName = Request.Files[0].FileName;
+                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/HatAssets/", fileName);
+
+                        fileContent.SaveAs(path);
+                        returnValue = fileName;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+            var json = new JavaScriptSerializer().Serialize(returnValue);
+            return json;
+        }
+        
+        public string SaveHatType (List<HatColor> hatTypeColors, int hatTypeId, string hatTypeName, string hatTypePreview, string description, string manufacturer, string productIdentifier, string basePrice)
+        {
+            HatData hatData = new HatData();
+            HatType hatType = new HatType();
+            hatType.Description = "test";
+            hatType.ProductImage = hatTypePreview;
+            hatType.ManufacturerId = 1;
+            hatType.Name = hatTypeName;
+            hatType.ProductIdentifier = "abc123";
+            if (hatTypeId == 0)
+            {
+                //create new hat type from scratch                
+                hatTypeId = hatData.CreateHatType(hatType);
+                hatType.Id = hatTypeId;
+            }
+            else
+            {
+                //update existing hat type
+                hatData.UpdateHatType(hatType);
+                hatType.Id = hatTypeId;
+            }
+
+            foreach(HatColor hatTypeColor in hatTypeColors)
+            {
+                //update / create hat type color
+                hatTypeColor.typeId = hatType.Id;
+                hatData.CreateTypeColor(hatTypeColor);
+            }
+
+            return "";
+        }
         public ActionResult EditProduct(string id)
         {
             if (Convert.ToInt32(id) > 0)
@@ -186,7 +339,7 @@ namespace LidLaunchWebsite.Controllers
                 List<Product> lstParentProducts = new List<Product>();
                 ProductData data = new ProductData();
                 Product product = new Product();
-                product = data.GetProduct(Convert.ToInt32(id),0);
+                product = data.GetProduct(Convert.ToInt32(id),0,0);
                 lstCategories = data.GetCategories();
                 lstParentProducts = data.GetDesignerProductsForParentList((Int32)Session["DesignerID"]);
                 updateProd.lstParentProducts = lstParentProducts;
@@ -245,18 +398,29 @@ namespace LidLaunchWebsite.Controllers
 
             return json;
         }
-
-
-        public string ApproveProduct(string id)
+        public string DenyProduct(string id, string denyReason)
         {
             bool success = false;
             if (Convert.ToInt32(Session["UserID"]) > 0)
             {
-                if (Convert.ToInt32(Session["UserID"]) == 1)
+                if (checkLoggedIn())
                 {
-                    ProductData prodData = new ProductData();                    
+                    ProductData prodData = new ProductData();
 
-                    success = prodData.ApproveProduct(Convert.ToInt32(id));                    
+                    success = prodData.DenyProduct(Convert.ToInt32(id));
+
+                    if (success)
+                    {
+                        //sendEmail
+                        ProductData data = new ProductData();
+                        ProductAndDesignerInfo info = data.GetProductAndDesignerInfo(Convert.ToInt32(id));
+
+                        if(info != null)
+                        {
+                            EmailFunctions email = new EmailFunctions();
+                            email.sendEmail(info.UserEmail, "LidLaunch Designer", email.productDenyEmail(info.ProductName, denyReason, info.ArtSource), "Your Lid Launch Design Was Denied", "");
+                        }
+                    }
                 }
                 else
                 {
@@ -272,9 +436,58 @@ namespace LidLaunchWebsite.Controllers
             return json;
 
         }
-        public bool checkLoggedIn()
+
+        public string ApproveProduct(string id)
         {
-            if (Convert.ToInt32(Session["UserID"]) == 1)
+            bool success = false;
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (checkLoggedIn())
+                {
+                    ProductData prodData = new ProductData();                    
+
+                    success = prodData.ApproveProduct(Convert.ToInt32(id));
+
+                    if (success)
+                    {
+                        ProductData data = new ProductData();
+                        ProductAndDesignerInfo info = data.GetProductAndDesignerInfo(Convert.ToInt32(id));
+                        if (info != null)
+                        {
+                            EmailFunctions email = new EmailFunctions();
+                            email.sendEmail(info.UserEmail, "LidLaunch Designer", email.productApprovedEmail(info.ProductName, "https://lidlaunch.com/Product?id=" + id), "Your Lid Launch Design Was Approved", "");
+                        }
+                    }
+                }
+                else
+                {
+                    success = false;
+                }
+            }
+            else
+            {
+                success = false;
+            }
+            var json = new JavaScriptSerializer().Serialize(success);
+
+            return json;
+
+        }
+        public bool checkDigitizer()
+        {
+            if(Convert.ToString(Session["UserEmail"]) == ConfigurationManager.AppSettings["DigitizerEmailAddress"])
+            {
+                return true;
+            } 
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool checkLoggedIn()
+        {            
+            if (Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 643)
             {
                 return true;
             }
@@ -283,12 +496,12 @@ namespace LidLaunchWebsite.Controllers
                 return false;
             }
         }
-        public string UploadDigitizedFile(string designId)
+        public string UploadDigitizedFile(string designId, string bulkOrderId)
         {
             var returnValue = "";
             try
             {
-                if (!checkLoggedIn())
+                if (!checkLoggedIn() && !checkDigitizer())
                 {
                     //do nothing
                 }
@@ -303,7 +516,11 @@ namespace LidLaunchWebsite.Controllers
                         var extension = Path.GetExtension(fileContent.FileName);
                         
                         var fileName = Guid.NewGuid().ToString() + extension;
-                        var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Digitizing/DST"), fileName);
+                        if(bulkOrderId != "")
+                        {
+                            fileName = "W" + bulkOrderId + extension;
+                        }
+                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", fileName);
 
                         fileContent.SaveAs(path);                                
                         returnValue = fileName;
@@ -322,12 +539,12 @@ namespace LidLaunchWebsite.Controllers
             var json = new JavaScriptSerializer().Serialize(returnValue);
             return json;
         }
-        public string UpdateDesignDigitizedPreview(string designId)
+        public string UpdateDesignDigitizedPreview(string designId, string bulkOrderId)
         {
             var returnValue = "";
             try
             {
-                if (!checkLoggedIn())
+                if (!checkLoggedIn() && !checkDigitizer())
                 {
                     //do nothing
                 }
@@ -342,7 +559,11 @@ namespace LidLaunchWebsite.Controllers
                         var extension = Path.GetExtension(fileContent.FileName);
 
                         var fileName = Guid.NewGuid().ToString() + extension;
-                        var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Digitizing/Preview"), fileName);
+                        if (bulkOrderId != "")
+                        {
+                            fileName = "W" + bulkOrderId + extension;
+                        }
+                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Preview", fileName);
 
                         fileContent.SaveAs(path);
                         returnValue = fileName;
@@ -350,6 +571,14 @@ namespace LidLaunchWebsite.Controllers
                         //update design digitized file in database
                         DesignData data = new DesignData();
                         var success = data.UpdateDesignDigitizedPreview(Convert.ToInt32(designId), fileName);
+
+                        if(success)
+                        {
+                            BulkData bulkData = new BulkData();
+                            BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
+                            EmailFunctions email = new EmailFunctions();
+                            email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
+                        }
                     }
                 }
             }
@@ -361,12 +590,13 @@ namespace LidLaunchWebsite.Controllers
             var json = new JavaScriptSerializer().Serialize(returnValue);
             return json;
         }
-        public string UpdateDesignDigitizedInfoImage(string designId)
+
+        public string UpdateDesignEMBFile(string designId, string bulkOrderId)
         {
             var returnValue = "";
             try
             {
-                if (!checkLoggedIn())
+                if (!checkLoggedIn() && !checkDigitizer())
                 {
                     //do nothing
                 }
@@ -381,14 +611,61 @@ namespace LidLaunchWebsite.Controllers
                         var extension = Path.GetExtension(fileContent.FileName);
 
                         var fileName = Guid.NewGuid().ToString() + extension;
-                        var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Digitizing/Info"), fileName);
+                        if (bulkOrderId != "")
+                        {
+                            fileName = "W" + bulkOrderId + extension;
+                        }
+                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/EMB", fileName);
 
                         fileContent.SaveAs(path);
                         returnValue = fileName;
 
                         //update design digitized file in database
                         DesignData data = new DesignData();
-                        var success = data.UpdateDesignDigitizedInfoImage(Convert.ToInt32(designId), fileName);
+                        var success = data.UpdateDesignEMBFile(Convert.ToInt32(designId), fileName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+            var json = new JavaScriptSerializer().Serialize(returnValue);
+            return json;
+        }
+        public string UpdateDesignDigitizedProductionSheet(string designId, string bulkOrderId)
+        {
+            var returnValue = "";
+            try
+            {
+                if (!checkLoggedIn() && !checkDigitizer())
+                {
+                    //do nothing
+                }
+                else
+                {
+                    var fileContent = Request.Files[0];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        var extension = Path.GetExtension(fileContent.FileName);
+
+                        var fileName = Guid.NewGuid().ToString() + extension;
+                        if (bulkOrderId != "")
+                        {
+                            fileName = "W" + bulkOrderId + extension;
+                        }
+                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Info", fileName);
+
+                        fileContent.SaveAs(path);
+                        returnValue = fileName;
+
+                        //update design digitized file in database
+                        DesignData data = new DesignData();
+                        var success = data.UpdateDesignDigitizedProductionSheet(Convert.ToInt32(designId), fileName);
                     }
                 }
             }
@@ -415,6 +692,237 @@ namespace LidLaunchWebsite.Controllers
             var json = new JavaScriptSerializer().Serialize(success);
 
             return json;
+        }
+
+
+        public ActionResult ViewBulkOrders()
+        {
+
+            if (!checkLoggedIn())
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
+            else
+            {                
+                BulkData data = new BulkData();
+                ViewBulkOrdersModel model = new ViewBulkOrdersModel();
+                model.lstBulkOrders = data.GetBulkOrderData();
+                model.lstBulkOrders = model.lstBulkOrders.OrderByDescending(bo => bo.OrderPaid).ToList();
+                model.lstBulkOrderBatches = data.GetBulkOrderBatches();
+                return View(model);
+            }
+        }
+
+        public string UpdateBulkOrderPaid(string bulkOrderId, string orderPaid)
+        {
+
+            if (!checkLoggedIn())
+            {
+                return "false";
+            } else
+            {
+                BulkData data = new BulkData();
+                bool orderHasBeenPaid = Convert.ToBoolean(orderPaid);
+
+                if (orderHasBeenPaid)
+                {
+                    data.UpdateBulkOrderPaid(Convert.ToInt32(bulkOrderId), false);
+                    return "true";
+                }
+                else
+                {
+                    data.UpdateBulkOrderPaid(Convert.ToInt32(bulkOrderId), true);
+                    return "true";
+                }
+            }
+            
+
+        }
+
+        public string UpdateBulkOrderBatchId(string bulkOrderId, string batchId)
+        {
+            BulkData data = new BulkData();
+            data.UpdateBulkOrderBatchId(Convert.ToInt32(bulkOrderId), Convert.ToInt32(batchId));
+            return "true";
+        }
+
+        public ActionResult BulkDigitizing()
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (checkLoggedIn() || checkDigitizer())
+                {
+                    List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
+                    BulkData data = new BulkData();
+                    lstBulkOrders = data.GetBulkOrderData();
+                    lstBulkOrders.RemoveAll(bo => !bo.OrderPaid);
+                    return View(lstBulkOrders);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+
+        }
+        public ActionResult BulkOrderDetailsPopup(int bulkOrderId)
+        {
+            
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (checkLoggedIn())
+                {
+                    BulkOrder bulkOrder = new BulkOrder();
+                    BulkData data = new BulkData();
+                    bulkOrder = data.GetBulkOrder(bulkOrderId, "", "");
+
+                    bulkOrder.BarcodeImage = "BO-" + bulkOrderId.ToString() + ".jpg";
+                    if(!System.IO.File.Exists(HttpRuntime.AppDomainAppPath + "/Images/Barcodes/" + bulkOrder.BarcodeImage))
+                    {
+                        //generate barcode image
+                        IBarcodeWriter barcodeWriter = new BarcodeWriter
+                        {
+                            Format = BarcodeFormat.CODE_39,
+                            Options = new EncodingOptions
+                            {
+                                Height = 100,
+                                Width = 300
+                            }
+                        };
+                        Bitmap barcode = barcodeWriter.Write("BO-" + bulkOrderId.ToString());
+                        barcode.Save(HttpRuntime.AppDomainAppPath + "/Images/Barcodes/" + bulkOrder.BarcodeImage);
+                    } else
+                    {
+                        //do nothing
+                    }
+
+                    return PartialView("BulkOrderDetailsPopup", bulkOrder);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+
+        }
+
+        public ActionResult AddBulkRework(int bulkOrderBatchId, int bulkOrderItemId, string bulkOrderBlankName, int parentBulkOrderId, int parentBulkOrderBatchId, string note, int quantity, int bulkReworkId)
+        {
+            dynamic model = new ExpandoObject();
+            
+            model.bulkOrderBatchId = bulkOrderBatchId;
+            model.bulkOrderItemId = bulkOrderItemId;
+            model.bulkOrderBlankName = bulkOrderBlankName;
+            model.parentBulkOrderId = parentBulkOrderId;
+            model.parentBulkOrderBatchId = parentBulkOrderBatchId;
+            model.quantity = quantity;
+            model.bulkReworkId = bulkReworkId;
+            model.note = note;
+
+            return PartialView("AddBulkRework", model);
+        }
+
+        public string CreateBulkRework(string bulkOrderBatchId, string bulkOrderItemId, string bulkOrderBlankName, string quantity, string note, string status, string reworkId)
+        {
+            BulkData data = new BulkData();
+            int intBulkReworkId = Convert.ToInt32(reworkId);
+
+            bool missingBlank = false;
+
+            if(Convert.ToInt32(bulkOrderBatchId) > 0)
+            {
+                missingBlank = true;
+            }
+
+            if(intBulkReworkId > 0)
+            {
+                data.UpdateBulkRework(Convert.ToInt32(quantity), Convert.ToString(note), Convert.ToString(status), intBulkReworkId);
+            } 
+            else
+            {
+                intBulkReworkId = data.CreateBulkRework(Convert.ToInt32(bulkOrderItemId), Convert.ToInt32(bulkOrderBatchId), Convert.ToInt32(quantity), Convert.ToString(note), Convert.ToBoolean(missingBlank), Convert.ToString(bulkOrderBlankName));
+            }            
+
+            var success = intBulkReworkId > 0;
+
+            return success.ToString();
+        }
+
+        public ActionResult AddNote(int bulkOrderId, int bulkOrderItemId, int designId, int parentBulkOrderId)
+        {
+            dynamic model = new ExpandoObject();
+            if(bulkOrderId > 0)
+            {
+                model.noteType = "bulkOrder";
+                model.idVal = bulkOrderId;
+                model.parentBulkOrderId = parentBulkOrderId;
+            }
+            if(bulkOrderItemId > 0)
+            {
+                model.noteType = "bulkOrderItem";
+                model.idVal = bulkOrderItemId;
+                model.parentBulkOrderId = parentBulkOrderId;
+            }
+            if(designId > 0)
+            {
+                model.noteType = "design";
+                model.idVal = designId;
+                model.parentBulkOrderId = parentBulkOrderId;
+            }
+            
+            return PartialView("AddNote", model);
+        }
+
+        public string CreateNote(string noteType, string idVal, string parentBulkOrderId, string text, string attachment)
+        {            
+            BulkData data = new BulkData();
+            int noteId = 0;
+
+            if(noteType == "bulkOrder")
+            {
+                noteId = data.CreateNote(Convert.ToInt32(idVal), 0, 0, Convert.ToInt32(parentBulkOrderId), text, attachment, 0);
+            }
+            else if (noteType == "bulkOrderItem")
+            {
+                noteId = data.CreateNote(0, Convert.ToInt32(idVal), 0, Convert.ToInt32(parentBulkOrderId), text, attachment, 0);
+            }
+            else if (noteType == "design")
+            {
+                noteId = data.CreateNote(0, 0, Convert.ToInt32(idVal), Convert.ToInt32(parentBulkOrderId), text, attachment, 0);
+            }
+
+            var success = noteId > 0;
+
+            return success.ToString();
+        }
+
+        public ActionResult SetBulkDesign()
+        {
+            return PartialView();
+        }
+
+        public string SetBulkOrderDesign(string bulkOrderId, string designId)
+        {
+            if (!checkLoggedIn())
+            {
+                return "false";
+            }
+            else
+            {
+                BulkData data = new BulkData();
+                data.UpdateBulkOrderDesign(Convert.ToInt32(bulkOrderId), Convert.ToInt32(designId));
+                return "true";
+
+            }
+
         }
 
     }

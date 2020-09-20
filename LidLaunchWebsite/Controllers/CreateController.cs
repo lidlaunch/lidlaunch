@@ -23,7 +23,7 @@ namespace LidLaunchWebsite.Controllers
                 {                    
                     //get list of hat types
                     HatCreationHats model = new HatCreationHats();
-                    ProductData data = new ProductData();
+                    HatData data = new HatData();
                     model.lstHatTypes = data.GetHatTypes();
                     return View(model);
                 }
@@ -42,11 +42,12 @@ namespace LidLaunchWebsite.Controllers
         {
             CompleteModel model = new CompleteModel();
             ProductData productData = new ProductData();
+            HatData hatData = new HatData();
             List<Category> lstCategories = new List<Category>();
             List<HatType> lstHatTypes = new List<HatType>();
             List<Product> lstParentProducts = new List<Product>();
             lstCategories = productData.GetCategories();
-            lstHatTypes = productData.GetHatTypes();
+            lstHatTypes = hatData.GetHatTypes();
             lstParentProducts = productData.GetDesignerProductsForParentList(Convert.ToInt32(Session["DesignerID"]));
             model.lstCategories = lstCategories;
             model.lstHatTypes = lstHatTypes;
@@ -112,13 +113,13 @@ namespace LidLaunchWebsite.Controllers
                         //var fileName = Path.GetFileName(file);
                         var extension = Path.GetExtension(fileContent.FileName);
                         System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
-                        if (extension != ".png")
+                        if (extension.ToLower() != ".png")
                         {
                             returnValue = "PNG";
                         }
                         else
                         {
-                            if (image.Width <= 500 && image.Height <= 500)
+                            if (image.Width < 500 && image.Height < 500)
                             {
                                 returnValue = "SIZE";
                             }
@@ -146,7 +147,7 @@ namespace LidLaunchWebsite.Controllers
                                 //} else
                                 //{
                                 var fileName = Guid.NewGuid().ToString() + extension;
-                                var path = Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), fileName);
+                                var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Temp", fileName);
                                 //using (var fileStream = System.IO.File.Create(path))
                                 //{
                                 //    stream.CopyTo(fileStream);
@@ -197,10 +198,11 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
+                Logger.Log("Error Uploading Artwork: " + ex.Message.ToString());
                 return "";
             }
 
-            var json = new JavaScriptSerializer().Serialize(returnValue);
+            var json = returnValue;
             return json;
         }
 
@@ -215,34 +217,42 @@ namespace LidLaunchWebsite.Controllers
 
         public Bitmap Crop(Bitmap bmp)
         {
-            // Find the min/max non-white/transparent pixels
-            Point min = new Point(int.MaxValue, int.MaxValue);
-            Point max = new Point(int.MinValue, int.MinValue);
-
-            for (int x = 0; x < bmp.Width; ++x)
+            try
             {
-                for (int y = 0; y < bmp.Height; ++y)
-                {
-                    Color pixelColor = bmp.GetPixel(x, y);
-                    if (!(pixelColor.A == 0))
-                    {
-                        if (x < min.X) min.X = x;
-                        if (y < min.Y) min.Y = y;
+                // Find the min/max non-white/transparent pixels
+                Point min = new Point(int.MaxValue, int.MaxValue);
+                Point max = new Point(int.MinValue, int.MinValue);
 
-                        if (x > max.X) max.X = x;
-                        if (y > max.Y) max.Y = y;
+                for (int x = 0; x < bmp.Width; ++x)
+                {
+                    for (int y = 0; y < bmp.Height; ++y)
+                    {
+                        Color pixelColor = bmp.GetPixel(x, y);
+                        if (!(pixelColor.A == 0))
+                        {
+                            if (x < min.X) min.X = x;
+                            if (y < min.Y) min.Y = y;
+
+                            if (x > max.X) max.X = x;
+                            if (y > max.Y) max.Y = y;
+                        }
                     }
                 }
-            }
 
-            // Create a new bitmap from the crop rectangle
-            Rectangle cropRectangle = new Rectangle(min.X, min.Y, max.X - min.X, max.Y - min.Y);
-            Bitmap newBitmap = new Bitmap(cropRectangle.Width, cropRectangle.Height);
-            using (Graphics g = Graphics.FromImage(newBitmap))
+                // Create a new bitmap from the crop rectangle
+                Rectangle cropRectangle = new Rectangle(min.X, min.Y, max.X - min.X, max.Y - min.Y);
+                Bitmap newBitmap = new Bitmap(cropRectangle.Width, cropRectangle.Height);
+                using (Graphics g = Graphics.FromImage(newBitmap))
+                {
+                    g.DrawImage(bmp, 0, 0, cropRectangle, GraphicsUnit.Pixel);
+                }
+                return newBitmap;
+            } 
+            catch(Exception ex)
             {
-                g.DrawImage(bmp, 0, 0, cropRectangle, GraphicsUnit.Pixel);
-            }
-            return newBitmap;
+                Logger.Log("Error Cropping: " + ex.Message.ToString());
+                return null;
+            }            
         }
 
         public string CreateDesign(string x, string y, string width, string height, string typeId, string colorId)
@@ -256,40 +266,15 @@ namespace LidLaunchWebsite.Controllers
                 }
                 else
                 {
-                    var color = "";
-                    if (Convert.ToInt32(colorId) == 1)
-                    {
-                        color = "Black";
-                    }
-                    if (Convert.ToInt32(colorId) == 2)
-                    {
-                        color = "White";
-                    }
-                    var artworkPath = Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), Session["TempDesignArtworkImagePath"].ToString());
 
-                    var hatImagePath = Path.Combine(Server.MapPath("~/Images/HatAssets"), "HatFrontBlack.png");
+                    HatData hatData = new HatData();
+                    var lstHatTypes = hatData.GetHatTypes();
+
                     int hatTypeId = Convert.ToInt32(typeId);
-                    //standard flexfit
-                    if (hatTypeId == 2)
-                    {
-                        hatImagePath = Path.Combine(Server.MapPath("~/Images/HatAssets"), "HatFront" + color + ".png");
-                    }
-                    else if (hatTypeId == 3)
-                    {
-                        hatImagePath = Path.Combine(Server.MapPath("~/Images/HatAssets"), "TruckFront" + color + ".png");
-                    }
-                    else if (hatTypeId == 4)
-                    {
-                        hatImagePath = Path.Combine(Server.MapPath("~/Images/HatAssets"), "DadCapFront" + color + ".png");
-                    }
-                    else if (hatTypeId == 5)
-                    {
-                        hatImagePath = Path.Combine(Server.MapPath("~/Images/HatAssets"), "CurveSnapFront" + color + ".png");
-                    }
-                    else if (hatTypeId == 6)
-                    {
-                        hatImagePath = Path.Combine(Server.MapPath("~/Images/HatAssets"), "FlatSnapFront" + color + ".png");
-                    }
+                    int hatColorId = Convert.ToInt32(colorId);
+                    var hatImagePath = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/HatAssets", lstHatTypes.Where(ht => ht.Id == hatTypeId).FirstOrDefault().lstColors.Where(c => c.colorId == hatColorId).FirstOrDefault().creationImage);                                       
+
+                    var artworkPath = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Temp", Session["TempDesignArtworkImagePath"].ToString());                    
                     
                     var hatBitmap = new System.Drawing.Bitmap(hatImagePath);
                     var artworkBitmap = new System.Drawing.Bitmap(artworkPath);
@@ -329,7 +314,7 @@ namespace LidLaunchWebsite.Controllers
                     //g.FillRectangles(shadowBrush, new System.Drawing.RectangleF[] { rect });
                     tempFullPath = Guid.NewGuid().ToString() + ".png";
                     Session["FullImagePreview"] = tempFullPath;
-                    hatBitmap.Save(Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), tempFullPath));
+                    hatBitmap.Save(Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Temp", tempFullPath));
 
                     g.Dispose();
                     hatBitmap.Dispose();
@@ -338,39 +323,23 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
+                Logger.Log("Error Creating Design: " + ex.Message.ToString());
                 return "";
             }
             var json = new JavaScriptSerializer().Serialize(tempFullPath);
             return json;
         }
 
-        public bool GeneratePreviewImage(string artworkPath, int productId, int hatTypeId, string color)
+        public string GeneratePreviewImage(string artworkPath, int productId, int hatTypeId, int hatColorId)
         {
             try
             {
-                string hatImagePath = "";
-                if (hatTypeId == 2)
-                {
-                    hatImagePath = Path.Combine(Server.MapPath("~/Images/HatAssets"), "HatFront" + color + ".png");
-                }
-                else if (hatTypeId == 3)
-                {
-                    hatImagePath = Path.Combine(Server.MapPath("~/Images/HatAssets"), "TruckFront" + color + ".png");
-                }
-                else if (hatTypeId == 4)
-                {
-                    hatImagePath = Path.Combine(Server.MapPath("~/Images/HatAssets"), "DadCapFront" + color + ".png");
-                }
-                else if (hatTypeId == 5)
-                {
-                    hatImagePath = Path.Combine(Server.MapPath("~/Images/HatAssets"), "CurveSnapFront" + color + ".png");
-                }
-                else if (hatTypeId == 6)
-                {
-                    hatImagePath = Path.Combine(Server.MapPath("~/Images/HatAssets"), "FlatSnapFront" + color + ".png");
-                }
+                HatData hatData = new HatData();
+                var lstHatTypes = hatData.GetHatTypes();
+                var hatImagePath = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/HatAssets", lstHatTypes.Where(ht => ht.Id == hatTypeId).FirstOrDefault().lstColors.Where(c => c.colorId == hatColorId).FirstOrDefault().creationImage);
+
                 var hatBitmap = new System.Drawing.Bitmap(hatImagePath);
-                artworkPath = Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), artworkPath);
+                artworkPath = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Temp", artworkPath);
                 var artworkBitmap = new System.Drawing.Bitmap(artworkPath);
                 var fullPath = "";
 
@@ -388,41 +357,22 @@ namespace LidLaunchWebsite.Controllers
                 System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(hatBitmap);
                 g.DrawImage(artworkBitmap, new System.Drawing.Point(artworkX, artworkY));
                 
-                fullPath = Guid.NewGuid().ToString() + ".png";
-                hatBitmap.Save(Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), fullPath));
+                var fileName = Guid.NewGuid().ToString() + ".png";
+                hatBitmap.Save(Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/InUse", fileName));
 
                 g.Dispose();
                 hatBitmap.Dispose();
                 artworkBitmap.Dispose();
 
-                if (hatTypeId == 2)
-                {
-                    Session["Type2PreviewImage"] = fullPath;                    
-                }
-                else if (hatTypeId == 3)
-                {
-                    Session["Type3PreviewImage"] = fullPath;
-                }
-                else if (hatTypeId == 4)
-                {
-                    Session["Type4PreviewImage"] = fullPath;
-                }
-                else if (hatTypeId == 5)
-                {
-                    Session["Type5PreviewImage"] = fullPath;
-                }
-                else if (hatTypeId == 6)
-                {
-                    Session["Type6PreviewImage"] = fullPath;
-                }               
+
+                return fileName;      
 
             }
             catch (Exception ex)
             {
-                return false;
+                Logger.Log("Error Generating Preview Image: " + ex.Message.ToString());
+                return "";
             }
-            
-            return true;
         }
 
         public string AcceptDesign()
@@ -448,13 +398,13 @@ namespace LidLaunchWebsite.Controllers
                     var currentHatTypeId = Convert.ToInt32(Session["HatTypeID"]);
                     var currentColorId = Convert.ToInt32(Session["ColorID"]);
 
-                    if (!System.IO.File.Exists(Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["TempDesignArtworkImagePath"].ToString())))
+                    if (!System.IO.File.Exists(Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/InUse", Session["TempDesignArtworkImagePath"].ToString())))
                     {
-                        System.IO.File.Copy(Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), Session["TempDesignArtworkImagePath"].ToString()), Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["TempDesignArtworkImagePath"].ToString()));
+                        System.IO.File.Copy(Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Temp", Session["TempDesignArtworkImagePath"].ToString()), Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/InUse", Session["TempDesignArtworkImagePath"].ToString()));
                     }
-                    if(!System.IO.File.Exists(Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["FullImagePreview"].ToString())))
+                    if(!System.IO.File.Exists(Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/InUse", Session["FullImagePreview"].ToString())))
                     {
-                        System.IO.File.Copy(Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), Session["FullImagePreview"].ToString()), Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["FullImagePreview"].ToString()));
+                        System.IO.File.Copy(Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Temp", Session["FullImagePreview"].ToString()), Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/InUse", Session["FullImagePreview"].ToString()));
                     }
 
                     var designId = designData.CreateDesign(Session["TempDesignArtworkImagePath"].ToString(), Session["FullImagePreview"].ToString(), width, height, x, y, Convert.ToDecimal(emWidth), Convert.ToDecimal(emHeight), Convert.ToDecimal(emX), Convert.ToDecimal(emY));
@@ -465,37 +415,7 @@ namespace LidLaunchWebsite.Controllers
                         if (productId > 0)
                         {
                             success = true;
-                            Session["ProductID"] = productId;
-                            var color = "";
-                            if(currentColorId == 1)
-                            {
-                                color = "Black";
-                            }
-                            if (currentColorId == 2)
-                            {
-                                color = "White";
-                            }
-                            //genertate all hat type images
-                            if (currentHatTypeId != 2)
-                            {
-                                GeneratePreviewImage(Session["TempDesignArtworkImagePath"].ToString(), productId, 2, color);
-                            }
-                            if (currentHatTypeId != 3)
-                            {
-                                GeneratePreviewImage(Session["TempDesignArtworkImagePath"].ToString(), productId, 3, color);
-                            }
-                            if (currentHatTypeId != 4)
-                            {
-                                GeneratePreviewImage(Session["TempDesignArtworkImagePath"].ToString(), productId, 4, color);
-                            }
-                            if (currentHatTypeId != 5)
-                            {
-                                GeneratePreviewImage(Session["TempDesignArtworkImagePath"].ToString(), productId, 5, color);
-                            }
-                            if (currentHatTypeId != 6)
-                            {
-                                GeneratePreviewImage(Session["TempDesignArtworkImagePath"].ToString(), productId, 6, color);
-                            }
+                            Session["ProductID"] = productId;                            
                         }
                         
                     } else
@@ -506,6 +426,7 @@ namespace LidLaunchWebsite.Controllers
             }
             catch (Exception ex)
             {
+                Logger.Log("Error Accepting Design: " + ex.Message.ToString());
                 return "";
             }
             var json = new JavaScriptSerializer().Serialize(success);
@@ -521,103 +442,92 @@ namespace LidLaunchWebsite.Controllers
             Session["ColorID"] = Convert.ToInt32(colorId);
             return new JavaScriptSerializer().Serialize(true);
         }
-        public string UpdateProduct(string name, string description, string categoryId, string privateProduct, List<Int32> hatTypes, string parentProductId)
+        public string GetHatTypeColors(string typeId)
         {
-            if (!checkLoggedIn())
+            return "";
+
+        }
+        public string UpdateProduct(string name, string description, string categoryId, string privateProduct, List<string> hatTypes, string parentProductId)
+        {
+            try
             {
-                return "";
-            }
-            else
-            {
-                ProductData productData = new ProductData();
-                var productId = Convert.ToInt32(Session["ProductID"]);
-                var currentColorId = Convert.ToInt32(Session["ColorID"]);
-                foreach ( Int32 typeId in hatTypes)
+                if (!checkLoggedIn())
                 {
-                    if (typeId == Convert.ToInt32(Session["HatTypeID"]))
+                    return "";
+                }
+                else
+                {
+                    ProductData productData = new ProductData();
+                    var productId = Convert.ToInt32(Session["ProductID"]);
+                    foreach (string type in hatTypes)
                     {
-                        //do nothing
-                    } else
-                    {
-                        if(typeId == 2)
+                        var trimmedType = type.TrimEnd(',');
+                        string[] splitType = trimmedType.Split(':');
+                        var typeId = Convert.ToInt32(splitType[0]);
+                        var colors = splitType[1].Split(',');
+
+                        if (Convert.ToInt32(Session["HatTypeID"]) != typeId)
                         {
-                            productData.CreateProductType(productId, typeId, Session["Type2PreviewImage"].ToString(), currentColorId);
-                            if (!System.IO.File.Exists(Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["Type2PreviewImage"].ToString())))
+                            foreach (string color in colors)
                             {
-                                System.IO.File.Copy(Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), Session["Type2PreviewImage"].ToString()), Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["Type2PreviewImage"].ToString()));
-                            }
-                        }
-                        if (typeId == 3)
-                        {
-                            productData.CreateProductType(productId, typeId, Session["Type3PreviewImage"].ToString(), currentColorId);
-                            if (!System.IO.File.Exists(Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["Type3PreviewImage"].ToString())))
-                            {
-                                System.IO.File.Copy(Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), Session["Type3PreviewImage"].ToString()), Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["Type3PreviewImage"].ToString()));
-                            }
-                        }
-                        if (typeId == 4)
-                        {
-                            productData.CreateProductType(productId, typeId, Session["Type4PreviewImage"].ToString(), currentColorId);
-                            if (!System.IO.File.Exists(Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["Type4PreviewImage"].ToString())))
-                            {
-                                System.IO.File.Copy(Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), Session["Type4PreviewImage"].ToString()), Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["Type4PreviewImage"].ToString()));
-                            }
-                        }
-                        if (typeId == 5)
-                        {
-                            productData.CreateProductType(productId, typeId, Session["Type5PreviewImage"].ToString(), currentColorId);
-                            if (!System.IO.File.Exists(Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["Type5PreviewImage"].ToString())))
-                            {
-                                System.IO.File.Copy(Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), Session["Type5PreviewImage"].ToString()), Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["Type5PreviewImage"].ToString()));
-                            }
-                        }
-                        if (typeId == 6)
-                        {
-                            productData.CreateProductType(productId, typeId, Session["Type6PreviewImage"].ToString(), currentColorId);
-                            if (!System.IO.File.Exists(Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["Type6PreviewImage"].ToString())))
-                            {
-                                System.IO.File.Copy(Path.Combine(Server.MapPath("~/Images/DesignImages/Temp"), Session["Type6PreviewImage"].ToString()), Path.Combine(Server.MapPath("~/Images/DesignImages/InUse"), Session["Type6PreviewImage"].ToString()));
+                                var colorId = Convert.ToInt32(color);
+                                var previewFileName = GeneratePreviewImage(Session["TempDesignArtworkImagePath"].ToString(), productId, typeId, colorId);
+                                productData.CreateProductType(productId, typeId, previewFileName, colorId);
                             }
                         }
                     }
-                }
 
-                var success = productData.UpdateProduct(name, description, Convert.ToInt32(Session["ProductID"].ToString()), Convert.ToInt32(categoryId), Convert.ToBoolean(privateProduct), Convert.ToInt32(parentProductId));
-                var json = new JavaScriptSerializer().Serialize(Session["ProductID"].ToString());
-                Session["TempDesignArtworkImagePath"] = null;
-                Session["ArtworkX"] = null;
-                Session["ArtworkY"] = null;
-                Session["ArtworkWidth"] = null;
-                Session["ArtworkHeight"] = null;
-                Session["FullImagePreview"] = null;
-                Session["ProductID"] = null;
-                return json;
+                    var success = productData.UpdateProduct(name, description, Convert.ToInt32(Session["ProductID"].ToString()), Convert.ToInt32(categoryId), Convert.ToBoolean(privateProduct), Convert.ToInt32(parentProductId));
+                    var json = new JavaScriptSerializer().Serialize(Session["ProductID"].ToString());
+                    Session["TempDesignArtworkImagePath"] = null;
+                    Session["ArtworkX"] = null;
+                    Session["ArtworkY"] = null;
+                    Session["ArtworkWidth"] = null;
+                    Session["ArtworkHeight"] = null;
+                    Session["FullImagePreview"] = null;
+                    Session["ProductID"] = null;
+                    return json;
+                }
             }
+            catch(Exception ex)
+            {
+                Logger.Log("Error Updating Product: " + ex.Message.ToString());
+                return "";
+            }
+            
         }
         public string UpdateProductExisting(string name, string description, string categoryId, string privateProduct, string remove, string parentProductId)
         {
-            if (!checkLoggedIn())
+            try
             {
+                if (!checkLoggedIn())
+                {
+                    return "";
+                }
+                else
+                {
+                    ProductData productData = new ProductData();
+                    var productId = Convert.ToInt32(Session["ProductID"]);
+
+                    var success = productData.UpdateProductExisting(name, description, Convert.ToInt32(Session["ProductID"].ToString()), Convert.ToInt32(categoryId), Convert.ToBoolean(privateProduct), Convert.ToBoolean(remove), Convert.ToInt32(parentProductId));
+                    var json = new JavaScriptSerializer().Serialize(Session["ProductID"].ToString());
+                    Session["TempDesignArtworkImagePath"] = null;
+                    Session["ArtworkX"] = null;
+                    Session["ArtworkY"] = null;
+                    Session["ArtworkWidth"] = null;
+                    Session["ArtworkHeight"] = null;
+                    Session["FullImagePreview"] = null;
+                    Session["ProductID"] = null;
+                    return json;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("Error Updating Existing Product: " + ex.Message.ToString());
                 return "";
             }
-            else
-            {
-                ProductData productData = new ProductData();
-                var productId = Convert.ToInt32(Session["ProductID"]);                
-
-                var success = productData.UpdateProductExisting(name, description, Convert.ToInt32(Session["ProductID"].ToString()), Convert.ToInt32(categoryId), Convert.ToBoolean(privateProduct), Convert.ToBoolean(remove), Convert.ToInt32(parentProductId));
-                var json = new JavaScriptSerializer().Serialize(Session["ProductID"].ToString());
-                Session["TempDesignArtworkImagePath"] = null;
-                Session["ArtworkX"] = null;
-                Session["ArtworkY"] = null;
-                Session["ArtworkWidth"] = null;
-                Session["ArtworkHeight"] = null;
-                Session["FullImagePreview"] = null;
-                Session["ProductID"] = null;
-                return json;
-            }
-        }      
-
+        }
 
     }
 }

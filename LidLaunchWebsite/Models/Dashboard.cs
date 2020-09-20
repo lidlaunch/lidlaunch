@@ -74,7 +74,7 @@ namespace LidLaunchWebsite.Models
         public string ArtSource { get; set; }
         public string PreviewImage { get; set; }
         public string DigitizedFile { get; set; }
-        public string DigitizedInfoImage { get; set; }
+        public string DigitizedProductionSheet { get; set; }
         public string DigitizedPreview { get; set; }
         public int ProductId { get; set; }
         public List<HatTypeSize> lstHatTypeSizes { get; set; }
@@ -112,7 +112,7 @@ namespace LidLaunchWebsite.Models
         public string ArtSource { get; set; }
         public string PreviewImage { get; set; }
         public string DigitizedFile { get; set; }
-        public string DigitizedInfoImage { get; set; }
+        public string DigitizedProductionSheet { get; set; }
         public string DigitizedPreview { get; set; }
         public decimal EmbroiderdWidth { get; set; }
         public decimal EmbroideredHeight { get; set; }
@@ -121,5 +121,16 @@ namespace LidLaunchWebsite.Models
         public string TypeText { get; set; }
         public string ProductIdentifier { get; set; }
         public string HatColor { get; set; }
+    }
+    public class HatManager
+    {
+        public List<HatType> lstHatTypes { get; set; }
+    }        
+
+
+    public class ViewBulkOrdersModel
+    {
+        public List<BulkOrder> lstBulkOrders { get; set; }
+        public List<OrderBatch> lstBulkOrderBatches { get; set; }
     }
 }

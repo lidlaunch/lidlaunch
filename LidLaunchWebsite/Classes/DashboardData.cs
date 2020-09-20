@@ -48,7 +48,7 @@ namespace LidLaunchWebsite.Classes
                             sales.ProductImage = dr["PreviewImage"].ToString();
                             sales.SaleProfitNumber = Convert.ToInt32(dr["SaleProfitNumber"]);
 
-                            model.Profit += sales.SaleProfitNumber * 8;
+                            model.Profit += sales.SaleProfitNumber * 5;
                             model.TotalProductsSold += sales.TotalSales;
 
                             lstSales.Add(sales);
@@ -213,8 +213,8 @@ namespace LidLaunchWebsite.Classes
                     decimal paypalCut = (decimal)0.039;
                     decimal packagingMaterialPrice = (decimal)0.25;
                     decimal shippingPrice = (decimal)3.34;
-                    decimal hatProductionPrice = (decimal)8.90;
-                    decimal designerProfit = (decimal)8.00;
+                    decimal hatProductionPrice = (decimal)6;
+                    decimal designerProfit = (decimal)5.00;
 
                     if (ds.Tables[1].Rows.Count > 0)
                     {
@@ -238,7 +238,7 @@ namespace LidLaunchWebsite.Classes
 
                     model.EstimatedShippingCosts = (shippingPrice * model.TotalSalesCount);
                     model.EstimatedExcessShipping = model.TotalShippingCollected - model.EstimatedShippingCosts;
-                    model.EstimatedTotalProfit = ((25 - boxPrice - packagingMaterialPrice - hatProductionPrice - designerProfit) * model.TotalSalesCount);
+                    model.EstimatedTotalProfit = ((19.99M - boxPrice - packagingMaterialPrice - hatProductionPrice - designerProfit) * model.TotalSalesCount);
                     model.EstimatedTotalProfit = model.EstimatedTotalProfit - (model.TotalSales * paypalCut);
 
                     return model;
@@ -316,7 +316,7 @@ namespace LidLaunchWebsite.Classes
                             sale.ArtSource = dr["ArtSource"].ToString();
                             sale.PreviewImage = dr["PreviewImage"].ToString();
                             sale.DigitizedFile = dr["DigitizedFile"].ToString();
-                            sale.DigitizedInfoImage = dr["DigitizedInfoImage"].ToString();
+                            sale.DigitizedProductionSheet = dr["DigitizedProductionSheet"].ToString();                            
                             sale.DigitizedPreview = dr["DigitizedPreview"].ToString();
                             sale.DigitizingCost = Convert.ToDecimal(dr["DigitizingCost"].ToString());
                             sale.TypeText = dr["TypeText"].ToString();
@@ -360,7 +360,7 @@ namespace LidLaunchWebsite.Classes
                                 batchSale.PreviewImage = sale.PreviewImage;
                                 batchSale.ProductId = sale.ProductId;
                                 batchSale.DigitizedFile = sale.DigitizedFile;
-                                batchSale.DigitizedInfoImage = sale.DigitizedInfoImage;
+                                batchSale.DigitizedProductionSheet = sale.DigitizedProductionSheet;
                                 batchSale.DigitizedPreview = sale.DigitizedPreview;
                                 List<Sale> lstSales = new List<Sale>();
                                 lstSales.Add(sale);
@@ -408,7 +408,7 @@ namespace LidLaunchWebsite.Classes
                             sale.ArtSource = dr["ArtSource"].ToString();
                             sale.PreviewImage = dr["PreviewImage"].ToString();
                             sale.DigitizedFile = dr["DigitizedFile"].ToString();
-                            sale.DigitizedInfoImage = dr["DigitizedInfoImage"].ToString();
+                            sale.DigitizedProductionSheet = dr["DigitizedProductionSheet"].ToString();
                             sale.DigitizedPreview = dr["DigitizedPreview"].ToString();
                             sale.DigitizingCost = Convert.ToDecimal(dr["DigitizingCost"].ToString());
                             sale.TypeText = dr["TypeText"].ToString();
@@ -453,7 +453,7 @@ namespace LidLaunchWebsite.Classes
                                 batchSale.PreviewImage = sale.PreviewImage;
                                 batchSale.ProductId = sale.ProductId;
                                 batchSale.DigitizedFile = sale.DigitizedFile;
-                                batchSale.DigitizedInfoImage = sale.DigitizedInfoImage;
+                                batchSale.DigitizedProductionSheet = sale.DigitizedProductionSheet;
                                 batchSale.DigitizedPreview = sale.DigitizedPreview;
                                 List<Sale> lstSales = new List<Sale>();
                                 lstSales.Add(sale);
@@ -565,7 +565,7 @@ namespace LidLaunchWebsite.Classes
                             sale.ArtSource = dr["ArtSource"].ToString();
                             sale.PreviewImage = dr["PreviewImage"].ToString();
                             sale.DigitizedFile = dr["DigitizedFile"].ToString();
-                            sale.DigitizedInfoImage = dr["DigitizedInfoImage"].ToString();
+                            sale.DigitizedProductionSheet = dr["DigitizedProductionSheet"].ToString();
                             sale.DigitizedPreview = dr["DigitizedPreview"].ToString();
                             sale.DigitizingCost = Convert.ToDecimal(dr["DigitizingCost"].ToString());
                             sale.TypeText = dr["TypeText"].ToString();
@@ -610,7 +610,7 @@ namespace LidLaunchWebsite.Classes
                                 batchSale.PreviewImage = sale.PreviewImage;
                                 batchSale.ProductId = sale.ProductId;
                                 batchSale.DigitizedFile = sale.DigitizedFile;
-                                batchSale.DigitizedInfoImage = sale.DigitizedInfoImage;
+                                batchSale.DigitizedProductionSheet = sale.DigitizedProductionSheet;
                                 batchSale.DigitizedPreview = sale.DigitizedPreview;
                                 List<Sale> lstSales = new List<Sale>();
                                 lstSales.Add(sale);

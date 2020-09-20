@@ -16,14 +16,16 @@
 
     @foreach (LidLaunchWebsite.Models.Product product in Model)
     {
-        <tr>
-            <td>@product.DesignerId</td>
-            <td>@product.Name</td>
-            <td>@product.Description</td>
-            <td><a href="~/Images/DesignImages/InUse/@product.Design.PreviewImage" target="_blank"><img src="~/Images/DesignImages/InUse/@product.Design.PreviewImage" width="100" /></a></td>
-            <td><a href="~/Images/DesignImages/InUse/@product.Design.ArtSource" target="_blank">Artwork</a></td>
-            <td><a href="#" onclick="ApproveProduct(@product.Id)">Approve</a></td>
-        </tr>
+    <tr>
+        <td>@product.DesignerId</td>
+        <td>@product.Name</td>
+        <td>@product.Description</td>
+        <td><a href="~/Images/DesignImages/InUse/@product.Design.PreviewImage" target="_blank"><img src="~/Images/DesignImages/InUse/@product.Design.PreviewImage" width="100" /></a></td>
+        <td><a href="~/Images/DesignImages/InUse/@product.Design.ArtSource" target="_blank">Artwork</a></td>
+        <td><a href="#" onclick="ApproveProduct(@product.Id)">Approve</a></td>
+        <td><a href="#" onclick="DenyProduct(@product.Id, this)">Deny</a></td>
+        <td><input type="text" id="txtDenyReason"/></td>
+    </tr>
     }
 </table>
 

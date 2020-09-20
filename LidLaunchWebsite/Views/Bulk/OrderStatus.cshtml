@@ -1,0 +1,180 @@
+﻿@model LidLaunchWebsite.Models.BulkOrder
+@using System;
+@using System.Web.Script.Serialization;
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<div class="centerInner">
+    <h2>Order Status</h2>
+
+    <div id="orderProgressBar">
+        <div class="progressChunk complete">Order Placed</div>
+        @if (Model.OrderPaid)
+        {
+            <div class="progressChunk complete">Payment</div>
+        }
+        else
+        {
+            <div class="progressChunk">Payment</div>
+        }
+        @if (Model.lstDesigns.Any(d => d.DigitizedFile == "" || !d.CustomerApproved))
+        {
+            <div class="progressChunk">Artwork Setup/Digitizing</div>
+        }
+        else
+        {
+            <div class="progressChunk complete">Artwork Setup/Digitizing</div>
+        }
+        @if (Model.OrderComplete)
+        {
+            <div class="progressChunk complete">Production</div>
+            <div class="progressChunk complete last">Shipped</div>
+        }
+        else
+        {
+            <div class="progressChunk">Production</div>
+            <div class="progressChunk last">Shipped</div>
+        }
+
+    </div>
+    <div id="progressLegend">
+        <span style="height:11px; width:11px; background:#39b91c; display:inline-block; border:1px solid #000;"></span> =  Complete
+        <br />
+        <span style="height:11px; width:11px; background:#fff; display:inline-block; border:1px solid #000;"></span> =  In Progess
+    </div>
+
+    @if (Model.OrderPaid)
+    {
+        <div id="orderStatusText" class="importantSection">
+            Your estimated Ship date is from <b> @Model.ProjectedShipDateShort - @Model.ProjectedShipDateLong </b>.
+        </div>
+    }
+
+    <div><b>Id:</b> @Model.Id </div>
+    <div><b>Order Date:</b> @Model.OrderDate</div>
+    @if (Model.PaymentDate != DateTime.MinValue)
+    {
+        <div><b>Payment Date:</b> @Model.PaymentDate</div>
+    }
+    else
+    {
+        <div><b>Payment Date:</b>N/A </div>
+    }
+    <div><b>Your Info:</b> @Model.CustomerName - @Model.CustomerEmail - @Model.CustomerPhone</div>   
+    <table>
+        <tr>
+            <td><div><b>Art Source:</b><br /><a href="~/Images/BulkOrderArtwork/@Model.ArtworkImage" target="_blank"><img src="~/Images/BulkOrderArtwork/@Model.ArtworkImage" style="max-height:100px;max-width:100px;" /></a></div></td>
+            <td>
+                <div>
+                    <b>Artwork Position:</b><br />
+                    @if (Model.ArtworkPosition == "left")
+                    {
+                        <img src="~/Images/LeftPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
+                    }
+                    @if (Model.ArtworkPosition == "right")
+                    {
+                        <img src="~/Images/RightPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
+                    }
+                    @if (Model.ArtworkPosition == "center")
+                    {
+                        <img src="~/Images/CenterPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
+                    }
+                </div>
+            </td>
+        </tr>
+    </table>   
+    
+    <div class="importantSection"><b>Order Notes:</b> @Model.OrderNotes </div>
+    @if (!Model.lstDesigns.Any(d => d.DigitizedFile == ""))
+    {
+        <div id="orderDigizing">
+            <h2>Digitized Designs:</h2>
+            <p><i>Please note colors in these previews will often times not be the exact color(s) used in final stitching. We will match your logo colors and color requests as closely as possible.</i></p>
+            @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns)
+            {
+                <div class="orderDigitizingPreview">
+                    <a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" width="300" /></a>
+                </div>
+            }
+        </div>
+        if (Model.lstDesigns.Any(d => !d.CustomerApproved))
+        {
+            <div id="approveDigitizing" class="clear"><a href="javascript:void(0);" onclick="approveDigitizing(@Model.Id)">Approve Digitizing</a></div>
+        }
+        else
+        {
+            <div id="approveDigitizing" class="clear digitizingApproved">Digitizing Approved</div>             
+        }
+    }
+
+    <div class="clear" id="orderItems">
+        <h2>Order Items:</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Cost</th>
+                </tr>
+                @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.lstItems)
+                {
+                    <tr>
+                        <td>@item.ItemName</td>
+                        <td>@item.ItemQuantity</td>
+                        <td>$@item.ItemCost</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <h2>Order Total: $@Model.OrderTotal </h2>
+
+    </div>
+
+
+    <span id="productList" style="display:none;">
+        [
+        @{ int count = 1; }
+        @{ List<LidLaunchWebsite.Models.BulkOrderItem> filteredList = new List<LidLaunchWebsite.Models.BulkOrderItem>();}
+        @{ filteredList.AddRange(Model.lstItems);}
+        @{ filteredList.RemoveAll(l => l.ItemName == "Shipping");}
+        @foreach (LidLaunchWebsite.Models.BulkOrderItem item in filteredList)
+        {
+            var jsonString = "";
+            
+            if (count == filteredList.Count)
+            {
+                jsonString = "{\"name\":\"" + item.ItemName + "\",\"quantity\":\"" + item.ItemQuantity + "\",\"price\":\"" + item.ItemCost + "\",\"currency\":\"USD\"}";
+            }
+            else
+            {
+                jsonString = "{\"name\":\"" + item.ItemName + "\",\"quantity\":\"" + item.ItemQuantity + "\",\"price\":\"" + item.ItemCost + "\",\"currency\":\"USD\"},";
+            }
+
+            @jsonString
+            count++;
+        }
+        ]
+    </span>
+    @if (!Model.OrderPaid)
+    {
+        <a href="javascript:void(0);" onclick="processBulkPaymentShowPaypal(@Model.OrderTotal,'@Model.PaymentCompleteGuid', @Model.ShippingCost, @Model.OrderSubTotal);"><div id="PayNow">Pay Now</div></a>
+    }
+    else
+    {
+        <div id="PayNow" style="background:#eee;color:#000;">Payment Received</div>
+    }
+</div>
+
+
+<div id="paypalPaymentButtonsPopup" style="display:none;">
+    <div id="paypalPaymentButtonsInner">
+        <h1>Pay now using PayPal</h1>
+        <h2>A PayPal account is not required.</h2>
+        <div id="paypal-button-container-bulk"></div>
+        <div style="margin-top:30px;">
+            If Paying by credit/debit card click <b>PayPal</b> above and select the button outlined below. You do not need a PayPal account to check out.
+            <br /><br />
+            <img src="~/Images/PayWithDebit-CreditCard.png" width="500" />
+        </div>
+    </div>
+</div>
+

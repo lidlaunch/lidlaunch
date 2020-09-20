@@ -152,7 +152,7 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
-        public bool UpdateDesignDigitizedInfoImage(int designId, string digitizedInfoImage)
+        public bool UpdateDesignEMBFile(int designId, string embFileName)
         {
             var data = new SQLData();
             try
@@ -161,9 +161,42 @@ namespace LidLaunchWebsite.Classes
                 DataSet ds = new DataSet();
                 using (data.conn)
                 {
-                    SqlCommand sqlComm = new SqlCommand("UpdateDesignDigitizedInfoImage", data.conn);
+                    SqlCommand sqlComm = new SqlCommand("UpdateDesignEMBFile", data.conn);
                     sqlComm.Parameters.AddWithValue("@designId", designId);
-                    sqlComm.Parameters.AddWithValue("@digitizedInfoImage", digitizedInfoImage);
+                    sqlComm.Parameters.AddWithValue("@embFileName", embFileName);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+        
+        public bool UpdateDesignDigitizedProductionSheet(int designId, string DigitizedProductionSheet)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateDesignDigitizedProductionSheet", data.conn);
+                    sqlComm.Parameters.AddWithValue("@designId", designId);
+                    sqlComm.Parameters.AddWithValue("@DigitizedProductionSheet", DigitizedProductionSheet);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();

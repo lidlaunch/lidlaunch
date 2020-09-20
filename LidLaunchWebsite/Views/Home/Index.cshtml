@@ -1,57 +1,177 @@
 ﻿@{
     ViewBag.Title = "Lid Launch - Buy, Create and Sell Custom Hats Online. We handle everything for you!";
 }
-
+<script type="text/javascript">
+    fbq('track', "PageView");
+</script>
 
 <div id="searchBox">
-    <div id="searchBoxTop">
-        <span class="SearchTag">
-            Find new hats you'll love.
-        </span>
-        <div id="searhHolder">
-            <input type="text" id="search" placeholder="search..." />
-            <div id="searchButton"><img src="@Url.Content("~/Images/search.jpg")" width="40" height="40" /></div>
+    <div class="centerInner">
+        <div id="searchBoxTop">
+            <a href="/Bulk"><img src="~/Images/HomeHero.png" /></a>
+            <!--/nothing now-->
+            @*<div class="introText left">
+                    <i class="far fa-edit icon"></i>
+                    <br />
+                    <br />
+                    Create your own designs
+                    <br />
+                    & earn $5 per sale!
+                </div>
+                <div class="introText right">
+                    <i class="fas fa-boxes icon"></i>
+                    <br />
+                    <br />
+                    Order hats in bulk starting
+                    <br />
+                    at $15 each!
+                </div>*@
+        </div>
+    </div><!--/centerInner-->
+    <div class="clear"></div>
+    @*<div id="searchBoxBottom">
+            <div class="centerInner">
+                <div class="introButtons left">
+                    <div id="button" onclick="window.location = '/Create/GetStarted'" class="desktopStartSelling">
+                        Start Selling <i class="fas fa-rocket"></i>
+                    </div>/button
+                    <div id="button" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);" class="mobileStartSelling" style="display:none;">
+                        Start Selling <i class="fas fa-rocket"></i>
+                    </div>/button
+                </div>
+                <div class="introButtons right">
+                    <div id="button" onclick="window.location = '/Bulk'">
+                        Buy Bulk <i class="fas fa-rocket"></i>
+                    </div>/button
+                </div>
+            </div>/centerInner
+        </div>/searchBoxBottom*@
+</div><!--/searchBox-->
+<div id="examples">
+
+</div>
+<div id="videoSection">
+    <div class="centerInner">
+        <div id="asideVideo">
+            <table style="width:500px; margin-top:55px;text-align:right;">
+                <tr>
+                    <td>
+                        Lid Launch is a husband and wife owned and operated business. We are located in the St.Louis area.
+                    </td>
+                    <td>
+                        <img src="@Url.Content("~/Images/fam2.jpg")" width="300" />
+                    </td>
+                </tr>
+            </table>
+
+        </div><!--asideVideo-->
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/HdW6zOLnqHs?&controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+</div>
+<div class="clear"></div>
+<div id="RecentWork">
+    <div id="pastWorkHolder">
+        <img src="~/Images/PastWorkNeon.png" />
+    </div>
+    <!-- Slideshow container -->
+    <div class="slideshow-container">
+        <!-- Full-width images with number and caption text -->
+        <div class="mySlides fade">
+            <img src="~/Images/Examples/Example1.jpg" style="width:100%">
         </div>
 
+        <div class="mySlides fade">
+            <img src="~/Images/Examples/Example2.jpg" style="width:100%">
+        </div>
+
+        <div class="mySlides fade">
+            <img src="~/Images/Examples/Example3.jpg" style="width:100%">
+        </div>
+
+        <div class="mySlides fade">
+            <img src="~/Images/Examples/Example4.jpg" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="~/Images/Examples/Example5.jpg" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="~/Images/Examples/Example6.jpg" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="~/Images/Examples/Example7.jpg" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="~/Images/Examples/Example8.jpg" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="~/Images/Examples/Example9.jpg" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="~/Images/Examples/Example10.jpg" style="width:100%">
+        </div>
+        <div id="slideShowCover">
+            <img src="~/Images/SliderOverTV.png" />
+        </div>
     </div>
-    <div id="searchBoxBottom">
-        <div id="tagLine">
-            Can't find that hat that fits you? Make your own...FREE!
-        </div><!--/tagLine-->
-        <div id="button" onclick="window.location = '/Create/GetStarted'">
-            Start Selling
-        </div><!--/button-->
+</div>
+<script type="text/javascript">
+    var slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        for (i = 0; i < slides.length; i++) {
+            $(slides[i]).hide();
+            //slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) { slideIndex = 1 }
+        $(slides[slideIndex - 1]).fadeIn();
+        //slides[slideIndex - 1].style.display = "block";
+        setTimeout(showSlides, 2000); // Change image every 2 seconds
+    }
+</script>
+<div class="clear"></div>
+<div id="searchBox" class="earn">
+    <div class="centerInner">
+        <div id="searchBoxTop">
+            <a href="/Create"><img src="~/Images/StartEarningHero.png" /></a>
+        </div>
     </div>
 </div><!--/searchBox-->
-
-<div id="banner">
-
-</div>
-<div id="paypalCreditBanner">
-    <script type="text/javascript" data-pp-payerid="YGM642QKHYWE8" data-pp-placementtype="728x90" data-pp-style="BLKWHTYLRG">
-        (function (d, t) { "use strict"; var s = d.getElementsByTagName(t)[0], n = d.createElement(t); n.src = "//www.paypalobjects.com/upstream/bizcomponents/js/merchant.js"; s.parentNode.insertBefore(n, s); }(document, "script"));
-    </script>
-</div>
-
+<div class="clear"></div>
 <div>
     <div id="ProductListSection">
-        <h2>Recently Added Hats</h2>
+        <div id="searchHome">
+            <span class="SearchTag">
+                Find new hats you will love..
+            </span>
+            <div id="searhHolder">
+                <input type="text" id="search" placeholder="search..." />
+                <div id="searchButton"><img src="@Url.Content("~/Images/search.jpg")" width="40" height="40" /></div>
+            </div>
+        </div>
+        <div class="clear"></div>
         @foreach (LidLaunchWebsite.Models.WebsiteProduct prod in Model)
         {
             <div class="productListed" onclick="window.location='/Product?id=@prod.ProductId'">
                 <img src="~/Images/DesignImages/InUse/@prod.Image" width="250" class="productImage" /><br />
                 <span class="prodName">@prod.Name</span><br />
-                <span class="prodPrice">$25</span>
+                <span class="prodPrice">
+                    $@prod.Price
+                </span>
                 @if (prod.ParentCount > 0)
                 {
                     <div class="multiOptionsIcon">
-                        <img src="~/Images/MoreColors.png" height="20"/><br/>More color options available
+                        <img src="~/Images/MoreColors.png" height="20" /><br />More color options available
                     </div>
                 }
             </div>
         }
     </div>
 </div><!--/twoThirds-->
+
 
 <style type="text/css">
     #content {

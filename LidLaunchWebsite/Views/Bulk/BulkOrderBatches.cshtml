@@ -1,0 +1,15 @@
+﻿@model List<LidLaunchWebsite.Models.OrderBatch>
+@{
+    ViewBag.Title = "BulkOrderBatches";
+}
+
+<h2>BulkOrderBatches</h2>
+<div id="bulkOrderDetailsPopup">
+    <div id="bulkOrderDetailsPopupContent">
+        <span onclick="$('#bulkOrderDetailsPopup').hide();" class="closeButton" style="position:absolute; top:5px;right:5px;">X</span>
+        @foreach (LidLaunchWebsite.Models.OrderBatch batch in Model)
+        {
+            <div id="@batch.BatchId"><a href="~/Bulk/BulkOrderBatch?bulkBatchId=@batch.BatchId" target="_blank">@batch.BatchId - @batch.DateBatched - @batch.Status</a></div>
+        }
+    </div>
+</div>

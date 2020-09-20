@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "HatTypeEdit";
+}
+
+<h2>HatTypeEdit</h2>
+
+
+        <div>
+            <span id="hatTypeId">@Model.Id</span>
+        </div>
+        <div>
+            Hat Type Name <br />
+            <input id="hatTypeName" type="text" value="@Model.Name"/>
+        </div>
+        <div>
+            Description <br />
+            <input id="hatTypeDescription" type="text" value="@Model.Description"/>
+        </div>
+        <div>
+            Manufacturer <br />
+            <select id="manufacturer">
+                <option value="1">FlexFit</option>
+                <option value="2">Yupong</option>
+                <option value="3">Richardson</option>                
+            </select>
+        </div>
+        <div>
+            Product Identifier <br />
+            <input id="hatTypeProductIdentifier" type="text" value="@Model.ProductIdentifier" />
+        </div>
+        <div>
+            Base Price <br />
+            <input id="hatTypeBasePrice" type="text" value="@Model.BasePrice" />
+        </div>
+        <div id="hatTypeColors">
+            Design Preview Images
+            @if (Model.lstColors != null)
+            {
+                foreach (LidLaunchWebsite.Models.HatColor hatColor in Model.lstColors)
+                {
+                <div class="hatTypeEditRow">
+                    <span class="colorId">@hatColor.colorId</span>
+                    <div>
+                        Color Name: <input class="colorName" type="text" value="@hatColor.color"/>
+                    </div>
+                    <div class="hatTypeColorCode">
+                        <div class="cp color" style="background-color:#@hatColor.colorCode"></div>
+                        <input class="colorCode" type="text" value="@hatColor.colorCode" />
+                    </div>
+                    <div class="hatTypeColorImage clear">
+                        <img class="hatStyleImg" src="~/Images/HatAssets/@hatColor.creationImage" width="240" />
+                        <input class="creationImage" type="text" value="@hatColor.creationImage" />
+                        <input type="file" class="creationImageUpload"/>
+                    </div>
+                    <div class="hatTypeColorAvailable">
+                        Available to use: <input class="availableToCreate" type="checkbox" checked="@hatColor.availableToCreate" />
+                    </div>
+                    <hr />
+                </div>
+
+                }     
+            }
+        </div>
+        <div class="addHatTypeColor AddToCartButton" onclick="addNewHatTypeColorRow();">
+            Add Hat Type Color
+        </div>
+        <div>
+            Hat Style Preview Image
+            <img class="hatTypePreviewImg" src="~/Images/HatAssets/@Model.ProductImage" width="240" />
+            <input class="hatTypePreview" type="text" value="@Model.ProductImage" />
+            <input type="file" class="hatTypePreviewUpload" />
+        </div>
+        <div>
+            
+        </div>
+        <div class="clear">
+            <span onclick="saveHatType();">Save</span>
+        </div>
+
+
+        <div class="hatTypeEditRowTemplate" style="display:none;">
+            <div class="hatTypeEditRow">
+                <span class="colorId">0</span>
+                <div>
+                    Color Name: <input class="colorName" type="text" value="" />
+                </div>
+                <div class="hatTypeColorCode">
+                    <div class="cp color" style="background-color:#ffffff"></div>
+                    <input class="colorCode" type="text" value="ffffff" />
+                </div>
+                <div class="hatTypeColorImage clear">
+                    <img class="hatStyleImg" src="" width="240" />
+                    <input class="creationImage" type="text" value="" />
+                    <input type="file" class="creationImageUpload"/>
+                </div>
+                <div class="hatTypeColorAvailable">
+                    Available to use: <input class="availableToCreate" type="checkbox" />
+                </div>
+                <hr />
+            </div>
+        </div>
+

@@ -1,0 +1,30 @@
+﻿@model LidLaunchWebsite.Models.BulkBatchOrder
+@{
+    ViewBag.Title = "PrintBulkOrderBatchBulkOrders";
+}
+<style type="text/css">
+    #bulkOrderDetailsPopup {
+        display: inline;
+        background: unset;
+        height: auto;        
+        position:relative;
+    }
+    #bulkOrderDetailsPopupContent {
+        margin: unset;
+        width: auto;
+    }
+    #header, #mobileNav, .mainNavigation, #footer, #minFooter {
+        display: none;
+    }
+    .bulkOrderPrint {
+        page-break-after: always;
+    }
+</style>
+
+@foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model.lstBulkOrders)
+{
+<div class="bulkOrderPrint">
+    @{Html.RenderAction("BulkOrderDetailsPopup", "Dashboard", new { bulkOrderId = bulkOrder.Id });}    
+</div>    
+}
+

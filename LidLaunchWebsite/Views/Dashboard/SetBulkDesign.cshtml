@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "SetBulkDesign";
+}
+<div id="setBulkDesignPopup">
+    <div id="setBulkDesignPopupInner">
+        <span onclick="$('#setBulkDesignPopup').hide();" class="closeButton" style="position:absolute; top:5px;right:5px;">X</span>
+        <input id="txtBulkDesignEmail" type="text" placeholder="search by email..." />
+        <div><input type="button" value="Search Designs" class="smallButton" onclick="searchBulkDesigns()" /></div>
+        <div>
+            <table id="designImageHolder">
+
+            </table>
+        </div>
+    </div>
+</div>

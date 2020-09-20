@@ -9,10 +9,13 @@ namespace LidLaunchWebsite.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Desscription { get; set; }
+        public string Description { get; set; }
         public string ImagePreview { get; set; }
         public string ProductImage { get; set; }
-        public List<string> lstColors { get; set; }
+        public string ProductIdentifier { get; set; }
+        public int ManufacturerId { get; set; }
+        public decimal BasePrice { get; set; }
+        public List<HatColor> lstColors { get; set; }
     }
     public class CompleteModel
     {

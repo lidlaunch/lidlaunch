@@ -14,7 +14,8 @@ namespace LidLaunchWebsite.Controllers
         public ActionResult Index(int id)
         {
             ProductData productData = new ProductData();
-            Product product = productData.GetProduct(Convert.ToInt32(id), 0);
+
+            Product product = productData.GetProductForProductPage(Convert.ToInt32(id));
             ProductPageProduct productPageProduct = new ProductPageProduct();
             productPageProduct.Product = product;
             Designer designer = new Designer();
@@ -22,6 +23,13 @@ namespace LidLaunchWebsite.Controllers
             List<HatType> lstHatType = new List<HatType>();
             List<Product> lstChildProducts = new List<Product>();
             lstHatType = productData.GetProductHatTypes(Convert.ToInt32(id));
+
+            product.TypeId = lstHatType.FirstOrDefault().Id;
+            product.TypeText = lstHatType.FirstOrDefault().Name;
+            product.ColorId = lstHatType.FirstOrDefault().lstColors.FirstOrDefault().colorId;
+            product.Design = new Design();
+            product.Design.PreviewImage = lstHatType.FirstOrDefault().ProductImage;
+
             if (product.ParentProductId == 0)
             {
                 lstChildProducts = productData.GetChildHatList(product.Id);
@@ -29,8 +37,8 @@ namespace LidLaunchWebsite.Controllers
             else
             {
                 lstChildProducts = productData.GetChildHatList(product.ParentProductId);
-                Product parentProduct = productData.GetProduct(product.ParentProductId, 0);
-                lstChildProducts.Add(parentProduct);
+                //Product parentProduct = productData.GetProduct(product.ParentProductId);
+                //lstChildProducts.Add(parentProduct);
             }
             
             productPageProduct.lstHatTypes = lstHatType;

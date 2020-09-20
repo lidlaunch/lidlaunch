@@ -17,7 +17,10 @@ namespace LidLaunchWebsite.Models
         public decimal EmbroideredY { get; set; }
         public string DigitizedFile { get; set; }
         public string DigitizedPreview { get; set; }
-        public string DigitizedInfoImage { get; set; }
+        public string DigitizedProductionSheet { get; set; }
+        public string EMBFile { get; set; }
+        public List<Note> lstNotes { get; set; }
+        public bool CustomerApproved { get; set; }
 
     }
 }

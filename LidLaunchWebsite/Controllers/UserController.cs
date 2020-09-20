@@ -110,7 +110,9 @@ namespace LidLaunchWebsite.Controllers
             Designer designer = new Designer();
             designer = designerData.GetDesigner(user.Id);
             Session["UserID"] = user.Id;
+            Session["UserEmail"] = user.Email;
             Session["DesignerID"] = designer.Id;
+            Logger.Log("User Logged In");
             return json;
         }
         public string SendPasswordResetEmail(string email)

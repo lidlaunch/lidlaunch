@@ -21,6 +21,7 @@ namespace LidLaunchWebsite
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/checkout.css",
                       "~/Content/site.css"));
         }
     }

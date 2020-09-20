@@ -1,0 +1,2119 @@
+﻿
+@{
+    ViewBag.Title = "Order Custom Hats - Lid Launch";
+}
+<style type="text/css">
+    #footer {
+        padding-bottom: 200px;
+    }
+
+    #content {
+        padding-top: 0;
+    }
+</style>
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<span id="isBulkOrder" class="hidden">true</span>
+<div id="bulkOrderingContainer">
+    <div id="bulkProgressBar" class="centerInner">
+        <div class="left">
+            <div class="bulkProgressBarStep selected" onclick="changeBulkOrderSection('intro');" id="introStepButton"><img src="~/Images/hiStepIcon.png" height="40" />Intro</div>
+            <div class="bulkProgressBarStep" onclick="changeBulkOrderSection('hats');" id="hatsStepButton"><img src="~/Images/hatStepIcon.png" height="40" />Select Hats</div>
+            <div class="bulkProgressBarStep" onclick="changeBulkOrderSection('art');" id="artStepButton"><img src="~/Images/artStepIcon.png" height="40" />Upload Design</div>
+            <div class="bulkProgressBarStep" onclick="changeBulkOrderSection('checkout');"><img src="~/Images/cartStepIcon.png" height="40" />Checkout</div>
+        </div>
+        <div class="right">
+            <div class="bulkProgressBarContinuteButton" onclick="goToNextStep(currentOrderStep);">Start</div>
+        </div>
+
+    </div>
+    <div id="bulkIntro" class="centerInner">
+        <div id="bulkIntroInner">
+            <div class="left">
+                <h2>Our custom hats start at $15/each</h2>
+                <table class="priceList">
+                    <tr>
+                        <td>1-24</td>
+                        <td>$15</td>
+                    </tr>
+                    <tr>
+                        <td>24-48</td>
+                        <td>$14</td>
+                    </tr>
+                    <tr>
+                        <td>48-72</td>
+                        <td>$13</td>
+                    </tr>
+                    <tr>
+                        <td>72-96</td>
+                        <td>$12</td>
+                    </tr>
+                    <tr>
+                        <td>96-120</td>
+                        <td>$11</td>
+                    </tr>
+                    <tr>
+                        <td>120+</td>
+                        <td>$10</td>
+                    </tr>
+                </table>
+                <p>Order 12 or more to get <b>FREE</b> artwork setup.</p>
+            </div>
+            <div class="right">
+                <iframe width="500" height="280" src="https://www.youtube.com/embed/HdW6zOLnqHs?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="margin-top:30px;"></iframe>
+            </div>
+        </div>
+        <div id="getStartedBar" onclick="changeBulkOrderSection('hats');">
+            <div class="startBulk">
+                GET STARTED
+            </div>
+        </div>
+        <div id="customerReviews">
+            <div id="fiveStarHolder"><img src="~/Images/5stars.png" /> - What our customers are saying</div>
+            <img src="~/Images/CustomerReviews1.jpg" />
+            <img src="~/Images/CustomerReviews2.jpg" />
+        </div>
+    </div>
+    <div id="bulkHatTypeSelect" class="centerInner" style="display:none;">
+        <div id="bulkHatSelectContainer">
+            <div class="hatTypeSelectRegion">
+                <div class="hatBrand" id="FlexFit">
+                    <div class="hatBrandLogo left">
+                        <img src="~/Images/flexfit-logo.png" height="60" />
+                    </div>
+                </div>
+                <div class="hatBrandStyleOptions clear" id="flexFitStyles">
+                    <div class="hatBrandStyleRegion clear">
+                        <div class="hatTitle" onclick="$('#FlexFit6277').toggle();">
+                            <div class="title left">Original FlexFit 6277 Fitted</div>
+                            <div class="right">Expand/Collapse</div>
+                        </div>
+                        <div class="hatStyleSelectArea" id="FlexFit6277" style="display:none;">
+                            <div class="hatStyleImage">
+                                <img src="~/Images/FlexFit6277/hat_01.jpg" />
+                            </div>
+                            <div class="hatStyleSetQty">
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>S/M</td>
+                                            <td>L/XL</td>
+                                            <td>XL/XXL</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_02.jpg" /></td>
+                                            <td class="colorOption">BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_03.jpg" /></td>
+                                            <td class="colorOption">BROWN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_04.jpg" /></td>
+                                            <td class="colorOption">COR. BLUE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_05.jpg" /></td>
+                                            <td class="colorOption">DARK GRAY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_07.jpg" /></td>
+                                            <td class="colorOption">DARK NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        @*<tr>
+                                                <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_08.jpg" /></td>
+                                                <td class="colorOption">FRESH GREEN</td>
+                                                <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                <td></td>
+                                            </tr>*@
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_09.jpg" /></td>
+                                            <td class="colorOption">GOLD</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_10.jpg" /></td>
+                                            <td class="colorOption">GRAY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_11.jpg" /></td>
+                                            <td class="colorOption">KHAKI</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_12.jpg" /></td>
+                                            <td class="colorOption">MAROON</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_13.jpg" /></td>
+                                            <td class="colorOption">NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_14.jpg" /></td>
+                                            <td class="colorOption">OLIVE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>S/M</td>
+                                            <td>L/XL</td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_15.jpg" /></td>
+                                            <td class="colorOption">ORANGE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_16.jpg" /></td>
+                                            <td class="colorOption">PEPPER GREEN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_17.jpg" /></td>
+                                            <td class="colorOption">PINK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_18.jpg" /></td>
+                                            <td class="colorOption">PURPLE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_19.jpg" /></td>
+                                            <td class="colorOption">RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_20.jpg" /></td>
+                                            <td class="colorOption">ROYAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_21.jpg" /></td>
+                                            <td class="colorOption">SILVER</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_22.jpg" /></td>
+                                            <td class="colorOption">SPRUCE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_23.jpg" /></td>
+                                            <td class="colorOption">STONE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_24.jpg" /></td>
+                                            <td class="colorOption">WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_25.jpg" /></td>
+                                            <td class="colorOption">MULTICAM</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6277/hat_26.jpg" /></td>
+                                            <td class="colorOption">MULTICAM BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><!--/hatStyleSetQty-->
+                        </div><!--/hatStyleSelectArea-->
+                    </div><!--/hatBrandStyleRegion-->
+                    <div class="hatBrandStyleRegion clear">
+                        <div class="hatTitle" onclick="$('#FlexFitTrucker').toggle();">
+                            <div class="title left">FlexFit Trucker Mesh Fitted</div>
+                            <div class="right">Expand/Collapse</div>
+                        </div>
+                        <div class="hatStyleSelectArea" id="FlexFitTrucker" style="display:none;">
+                            <div class="hatStyleImage">
+                                <img src="~/Images/FlexFit6511/hat_01.jpg" />
+                            </div>
+                            <div class="hatStyleSetQty">
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_03.jpg" /></td>
+                                            <td class="colorOption">BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_04.jpg" /></td>
+                                            <td class="colorOption">BROWN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_05.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_06.jpg" /></td>
+                                            <td class="colorOption">DARK NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_08.jpg" /></td>
+                                            <td class="colorOption">NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_09.jpg" /></td>
+                                            <td class="colorOption">RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_10.jpg" /></td>
+                                            <td class="colorOption">ROYAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_11.jpg" /></td>
+                                            <td class="colorOption">WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_12.jpg" /></td>
+                                            <td class="colorOption">BLACK/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_13.jpg" /></td>
+                                            <td class="colorOption">BROWN/ KHAKI</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_15.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_17.jpg" /></td>
+                                            <td class="colorOption">NAVY/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_18.jpg" /></td>
+                                            <td class="colorOption">PINK/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_19.jpg" /></td>
+                                            <td class="colorOption">RED/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_20.jpg" /></td>
+                                            <td class="colorOption">RED/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_21.jpg" /></td>
+                                            <td class="colorOption">ROYAL/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr class="hidden">
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_22.jpg" /></td>
+                                            <td class="colorOption">HEATHER/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_23.jpg" /></td>
+                                            <td class="colorOption">HEATHER/ NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_24.jpg" /></td>
+                                            <td class="colorOption">HEATHER/ RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_25.jpg" /></td>
+                                            <td class="colorOption">HEATHER/ ROYAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit6511/hat_26.jpg" /></td>
+                                            <td class="colorOption">HEATHER/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><!--/hatStyleSetQty-->
+                        </div><!--/hatStyleSelectArea-->
+                    </div><!--/hatBrandStyleRegion-->
+                    <div class="hatBrandStyleRegion clear">
+                        <div class="hatTitle" onclick="$('#FlexFit110').toggle();">
+                            <div class="title left">FlexFit 110 Trucker Snap Back</div>
+                            <div class="right">Expand/Collapse</div>
+                        </div>
+                        <div class="hatStyleSelectArea" id="FlexFit110" style="display:none;">
+                            <div class="hatStyleImage">
+                                <img src="~/Images/FlexFit110/hat_01.jpg" />
+                            </div>
+                            <div class="hatStyleSetQty">
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="hidden">
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit110/hat_03.jpg" /></td>
+                                            <td class="colorOption">BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit110/hat_02.jpg" /></td>
+                                            <td class="colorOption">WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit110/hat_04.jpg" /></td>
+                                            <td class="colorOption">Black/ White</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit110/hat_05.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit110/hat_06.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr class="hidden">
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit110/hat_07.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr class="hidden">
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit110/hat_12.jpg" /></td>
+                                            <td class="colorOption">HEATHER/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+<tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit110/hat_08.jpg" /></td>
+                                            <td class="colorOption">NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit110/hat_09.jpg" /></td>
+                                            <td class="colorOption">NAVY/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit110/hat_10.jpg" /></td>
+                                            <td class="colorOption">RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit110/hat_11.jpg" /></td>
+                                            <td class="colorOption">RED/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit110/hat_12.jpg" /></td>
+                                            <td class="colorOption">ROYAL/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><!--/hatStyleSetQty-->
+                        </div><!--/hatStyleSelectArea-->
+                    </div><!--/hatBrandStyleRegion-->
+                    <div class="hatBrandStyleRegion clear">
+                        <div class="hatTitle" onclick="$('#FlexFit210').toggle();">
+                            <div class="title left">FlexFit Premium 210 Fitted Flat Bill</div>
+                            <div class="right">Expand/Collapse</div>
+                        </div>
+                        <div class="hatStyleSelectArea" id="FlexFit210" style="display:none;">
+                            <div class="hatStyleImage">
+                                <img src="~/Images/FlexFit210/hat_01.jpg" />
+                            </div>
+                            <div class="hatStyleSetQty">
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>S/M</td>
+                                            <td>L/XL</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit210/hat_03.jpg" /></td>
+                                            <td class="colorOption">BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit210/hat_04.jpg" /></td>
+                                            <td class="colorOption">BROWN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit210/hat_05.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit210/hat_06.jpg" /></td>
+                                            <td class="colorOption">DARK NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit210/hat_09.jpg" /></td>
+                                            <td class="colorOption">GRAY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit210/hat_10.jpg" /></td>
+                                            <td class="colorOption">RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit210/hat_11.jpg" /></td>
+                                            <td class="colorOption">ROYAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/FlexFit210/hat_12.jpg" /></td>
+                                            <td class="colorOption">WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><!--/hatStyleSetQty-->
+                        </div><!--/hatStyleSelectArea-->
+                    </div><!--/hatBrandStyleRegion-->
+                </div><!--/hatBrandStyleOptions-->
+
+            </div><!--/hatTypeSelectRegion-->
+            <div class="hatTypeSelectRegion">
+                <div class="hatBrand" id="Yupoong">
+                    <div class="hatBrandLogo left">
+                        <img src="~/Images/yupoong.png" height="40" />
+                    </div>
+                </div>
+                <div class="hatBrandStyleOptions clear" id="yupoongStyles">
+                    <div class="hatBrandStyleRegion clear">
+                        <div class="hatTitle" onclick="$('#6089FlatbillSnapback').toggle();">
+                            <div class="title left">Flat Bill Snapback</div>
+                            <div class="right">Expand/Collapse</div>
+                        </div>
+                        <div class="hatStyleSelectArea" id="6089FlatbillSnapback" style="display:none;">
+                            <div class="hatStyleImage">
+                                <img src="~/Images/Yupoong/6089/hat_01.jpg" />
+                            </div>
+                            <div class="hatStyleSetQty">
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_02.jpg" /></td>
+                                            <td class="colorOption">WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_03.jpg" /></td>
+                                            <td class="colorOption">BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_04.jpg" /></td>
+                                            <td class="colorOption">BLACK/ CAMO</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_05.jpg" /></td>
+                                            <td class="colorOption">BLACK/ NEON GREEN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_06.jpg" /></td>
+                                            <td class="colorOption">BLACK/ NEON ORANGE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_07.jpg" /></td>
+                                            <td class="colorOption">BLACK/ PINK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_08.jpg" /></td>
+                                            <td class="colorOption">BLACK/ PURPLE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_09.jpg" /></td>
+                                            <td class="colorOption">BLACK/ RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_10.jpg" /></td>
+                                            <td class="colorOption">BLACK/ SILVER</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_11.jpg" /></td>
+                                            <td class="colorOption">BLACK/ TEAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_12.jpg" /></td>
+                                            <td class="colorOption">CAMO/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_13.jpg" /></td>
+                                            <td class="colorOption">DARK GRAY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_14.jpg" /></td>
+                                            <td class="colorOption">DARK HEATHER</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_15.jpg" /></td>
+                                            <td class="colorOption">DARK HEATHER/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_16.jpg" /></td>
+                                            <td class="colorOption">DARK HEATHER/ RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_17.jpg" /></td>
+                                            <td class="colorOption">DARK NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_18.jpg" /></td>
+                                            <td class="colorOption">GREEN CAMO</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_19.jpg" /></td>
+                                            <td class="colorOption">HEATHER GRAY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_20.jpg" /></td>
+                                            <td class="colorOption">HEATHER GRAY/ NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_21.jpg" /></td>
+                                            <td class="colorOption">HEATHER GRAY/ PURPLE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_22.jpg" /></td>
+                                            <td class="colorOption">HEATHER/ GRAY RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_23.jpg" /></td>
+                                            <td class="colorOption">HEATHER GRAY/ ROYAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_24.jpg" /></td>
+                                            <td class="colorOption">HEATHER GRAY/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_25.jpg" /></td>
+                                            <td class="colorOption">MAROON</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_26.jpg" /></td>
+                                            <td class="colorOption">MULTICAM ALPINE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_27.jpg" /></td>
+                                            <td class="colorOption">MULTICAM ARID</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_28.jpg" /></td>
+                                            <td class="colorOption">MULTICAM BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_29.jpg" /></td>
+                                            <td class="colorOption">MULTICAM GREEN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_30.jpg" /></td>
+                                            <td class="colorOption">MULTICAM TROPIC</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_31.jpg" /></td>
+                                            <td class="colorOption">NATURAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_32.jpg" /></td>
+                                            <td class="colorOption">NATURAL/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_33.jpg" /></td>
+                                            <td class="colorOption">NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_34.jpg" /></td>
+                                            <td class="colorOption">NAVY/ RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_35.jpg" /></td>
+                                            <td class="colorOption">ORANGE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_36.jpg" /></td>
+                                            <td class="colorOption">PURPLE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_37.jpg" /></td>
+                                            <td class="colorOption">RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_38.jpg" /></td>
+                                            <td class="colorOption">ROYAL BLUE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_39.jpg" /></td>
+                                            <td class="colorOption">SILVER</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6089/hat_40.jpg" /></td>
+                                            <td class="colorOption">SPRUCE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div><!--/hatStyleSetQty-->
+                        </div><!--/hatStyleSelectArea-->
+                    </div><!--/hatBrandStyleRegion-->
+                    <div class="hatBrandStyleRegion clear">
+                        <div class="hatTitle" onclick="$('#DadCap').toggle();">
+                            <div class="title left">Dad Cap</div>
+                            <div class="right">Expand/Collapse</div>
+                        </div>
+                        <div class="hatStyleSelectArea" id="DadCap" style="display:none;">
+                            <div class="hatStyleImage">
+                                <img src="~/Images/Yupoong/DadCap/hat_01.jpg" />
+                            </div>
+                            <div class="hatStyleSetQty">
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_02.jpg" /></td>
+                                            <td class="colorOption">WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_03.jpg" /></td>
+                                            <td class="colorOption">BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_04.jpg" /></td>
+                                            <td class="colorOption">CRANBERRY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_05.jpg" /></td>
+                                            <td class="colorOption">DARK GREY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_06.jpg" /></td>
+                                            <td class="colorOption">GREEN CAMO</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_07.jpg" /></td>
+                                            <td class="colorOption">KHAKI</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_08.jpg" /></td>
+                                            <td class="colorOption">LIGHT BLUE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_09.jpg" /></td>
+                                            <td class="colorOption">MULTICAM ALPINE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_10.jpg" /></td>
+                                            <td class="colorOption">MULTICAM ARID</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_11.jpg" /></td>
+                                            <td class="colorOption">MULTICAM BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_12.jpg" /></td>
+                                            <td class="colorOption">MULTICAM GREEN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_13.jpg" /></td>
+                                            <td class="colorOption">MULTICAM TROPIC</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_14.jpg" /></td>
+                                            <td class="colorOption">NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_15.jpg" /></td>
+                                            <td class="colorOption">ORANGE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_16.jpg" /></td>
+                                            <td class="colorOption">PINK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/DadCap/hat_17.jpg" /></td>
+                                            <td class="colorOption">SPRUCE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><!--/hatStyleSetQty-->
+                        </div><!--/hatStyleSelectArea-->
+                    </div><!--/hatBrandStyleRegion-->
+                    <div class="hatBrandStyleRegion clear">
+                        <div class="hatTitle" onclick="$('#6606TruckerSnapback').toggle();">
+                            <div class="title left">Trucker Snapback</div>
+                            <div class="right">Expand/Collapse</div>
+                        </div>
+                        <div class="hatStyleSelectArea" id="6606TruckerSnapback" style="display:none;">
+                            <div class="hatStyleImage">
+                                <img src="~/Images/Yupoong/TruckerSnapback/hat_01.jpg" />
+                            </div>
+                            <div class="hatStyleSetQty">
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_02.jpg" /></td>
+                                            <td class="colorOption">WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_03.jpg" /></td>
+                                            <td class="colorOption">BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_04.jpg" /></td>
+                                            <td class="colorOption">BLACK/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_05.jpg" /></td>
+                                            <td class="colorOption">BLACK/ WHITE/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_06.jpg" /></td>
+                                            <td class="colorOption">BROWN/ KHAKI</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_07.jpg" /></td>
+                                            <td class="colorOption">CARAMEL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr  style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_08.jpg" /></td>
+                                            <td class="colorOption">CARAMEL/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_09.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_10.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_11.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_12.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ NEON GREEN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_13.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ NEON ORANGE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_14.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_15.jpg" /></td>
+                                            <td class="colorOption">COYOTE BROWN/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_16.jpg" /></td>
+                                            <td class="colorOption">CRANBERRY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_17.jpg" /></td>
+                                            <td class="colorOption">EVERGREEN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_18.jpg" /></td>
+                                            <td class="colorOption">EVERGREEN/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_19.jpg" /></td>
+                                            <td class="colorOption">GREEN CAMO/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_20.jpg" /></td>
+                                            <td class="colorOption">HEATHER GRAY/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_21.jpg" /></td>
+                                            <td class="colorOption">HEATHER GRAY/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_22.jpg" /></td>
+                                            <td class="colorOption">KAHKI</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_23.jpg" /></td>
+                                            <td class="colorOption">KRYPTEK HIGHLANDER</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_24.jpg" /></td>
+                                            <td class="colorOption">KRYPTEK PONTUS</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_25.jpg" /></td>
+                                            <td class="colorOption">KRYPTEK RAID</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_26.jpg" /></td>
+                                            <td class="colorOption">KRYPTEK TYPON</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_27.jpg" /></td>
+                                            <td class="colorOption">KRYPTEK WRAITH</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_28.jpg" /></td>
+                                            <td class="colorOption">MAROON/ GRAY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_29.jpg" /></td>
+                                            <td class="colorOption">MOSS/ KHAKI</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_30.jpg" /></td>
+                                            <td class="colorOption">MULTICAM ALPINE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_31.jpg" /></td>
+                                            <td class="colorOption">MULTICAM ARID/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_32.jpg" /></td>
+                                            <td class="colorOption">MULTICAM ARID/ TAN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_33.jpg" /></td>
+                                            <td class="colorOption">MULTICAM BACK/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_34.jpg" /></td>
+                                            <td class="colorOption">MULTICAM GREEN/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_35.jpg" /></td>
+                                            <td class="colorOption">MULTICAM GREEN/ KHAKI</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_36.jpg" /></td>
+                                            <td class="colorOption">MULTICAM TROPIC/ GREEN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_37.jpg" /></td>
+                                            <td class="colorOption">NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_49.jpg" /></td>
+                                            <td class="colorOption">NAVY/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_38.jpg" /></td>
+                                            <td class="colorOption">NAVY/ SILVER</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_39.jpg" /></td>
+                                            <td class="colorOption">NAVY/ WHITE/ NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_40.jpg" /></td>
+                                            <td class="colorOption">PINK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_41.jpg" /></td>
+                                            <td class="colorOption">RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_42.jpg" /></td>
+                                            <td class="colorOption">RED/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_43.jpg" /></td>
+                                            <td class="colorOption">RED/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_44.jpg" /></td>
+                                            <td class="colorOption">ROYAL/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_45.jpg" /></td>
+                                            <td class="colorOption">RUSTIC ORANGE/ KHAKI</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_46.jpg" /></td>
+                                            <td class="colorOption">SILVER</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_47.jpg" /></td>
+                                            <td class="colorOption">STEEL BLUE/ SILVER</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/TruckerSnapback/hat_48.jpg" /></td>
+                                            <td class="colorOption">TURQUOISE/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+                            </div><!--/hatStyleSetQty-->
+                        </div><!--/hatStyleSelectArea-->
+                    </div><!--/hatBrandStyleRegion-->
+                    <div class="hatBrandStyleRegion clear">
+                        <div class="hatTitle" onclick="$('#6006').toggle();">
+                            <div class="title left">Flat Bill Trucker Snapback</div>
+                            <div class="right">Expand/Collapse</div>
+                        </div>
+                        <div class="hatStyleSelectArea" id="6006" style="display:none;">
+                            <div class="hatStyleImage">
+                                <img src="~/Images/Yupoong/6006/hat_01.jpg" />
+                            </div>
+                            <div class="hatStyleSetQty">
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_02.jpg" /></td>
+                                            <td class="colorOption">WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_03.jpg" /></td>
+                                            <td class="colorOption">BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_04.jpg" /></td>
+                                            <td class="colorOption">BLACK/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_05.jpg" /></td>
+                                            <td class="colorOption">BLACK/ WHITE/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_06.jpg" /></td>
+                                            <td class="colorOption">BROWN/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_07.jpg" /></td>
+                                            <td class="colorOption">CAR. BLUE/ WHITE / CAR. BLUE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_08.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_09.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_10.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_11.jpg" /></td>
+                                            <td class="colorOption">KELLY/ WHITE/ KELLY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_12.jpg" /></td>
+                                            <td class="colorOption">MULTICAM ALPINE/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_13.jpg" /></td>
+                                            <td class="colorOption">MULTICAM ARID/ BROWN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_14.jpg" /></td>
+                                            <td class="colorOption">MULTICAM ARID/ TAN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_15.jpg" /></td>
+                                            <td class="colorOption">MULTICAM BLACK/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_16.jpg" /></td>
+                                            <td class="colorOption">MULTICAM GREEN/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_17.jpg" /></td>
+                                            <td class="colorOption">MULTICAM TROPIC/ GREEN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_18.jpg" /></td>
+                                            <td class="colorOption">NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_19.jpg" /></td>
+                                            <td class="colorOption">NAVY/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_20.jpg" /></td>
+                                            <td class="colorOption">NAVY/ WHITE/ NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_21.jpg" /></td>
+                                            <td class="colorOption">PINK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_22.jpg" /></td>
+                                            <td class="colorOption">PINK/ WHITE/ PINK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_23.jpg" /></td>
+                                            <td class="colorOption">RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_24.jpg" /></td>
+                                            <td class="colorOption">RED/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_25.jpg" /></td>
+                                            <td class="colorOption">RED/ WHITE/ RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_26.jpg" /></td>
+                                            <td class="colorOption">ROYAL/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_27.jpg" /></td>
+                                            <td class="colorOption">ROYAL/ WHITE/ ROYAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td class="hatPreviewImage"><img src="~/Images/Yupoong/6006/hat_28.jpg" /></td>
+                                            <td class="colorOption">SILVER/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><!--/hatStyleSetQty-->
+                        </div><!--/hatStyleSelectArea-->
+                    </div><!--/hatBrandStyleRegion-->
+                    <div class="hatBrandStyleRegion clear">
+                        <div class="hatTitle" onclick="$('#ShortBeanies').toggle();">
+                            <div class="title left">Beanies</div>
+                            <div class="right">Expand/Collapse</div>
+                        </div>
+                        <div class="hatStyleSelectArea" id="ShortBeanies" style="display:none;">
+                            <div class="hatStyleImage">
+                                <img src="~/Images/Yupoong/ShortBeanies.jpg" />
+                            </div>
+                            <div class="hatStyleSetQty">
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#fff;"></td>
+                                            <td class="colorOption">WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#000;"></td>
+                                            <td class="colorOption">BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#eca6c2;"></td>
+                                            <td class="colorOption">BABY PINK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#eb7126;"></td>
+                                            <td class="colorOption">BLAZE ORANGE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#423736;"></td>
+                                            <td class="colorOption">BROWN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#88583b;"></td>
+                                            <td class="colorOption">CARAMEL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#769fc6;"></td>
+                                            <td class="colorOption">CAROLINA BLUE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#3f3b38;"></td>
+                                            <td class="colorOption">DARK GREY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#ef9a20;"></td>
+                                            <td class="colorOption">GOLD</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#bbb7b4;"></td>
+                                            <td class="colorOption">HEATHER</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#4b0e27;"></td>
+                                            <td class="colorOption">MAROON</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#21273c;"></td>
+                                            <td class="colorOption">NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#6f6a5e;"></td>
+                                            <td class="colorOption">OLIVE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#513d7f;"></td>
+                                            <td class="colorOption">PURPLE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#b91531;"></td>
+                                            <td class="colorOption">RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#014f92;"></td>
+                                            <td class="colorOption">ROYAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#86c442;"></td>
+                                            <td class="colorOption">SAFETY GREEN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#b8f64f;"></td>
+                                            <td class="colorOption">SAFETY YELLOW</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#013423;"></td>
+                                            <td class="colorOption">SPRUCE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><!--/hatStyleSetQty-->
+                        </div><!--/hatStyleSelectArea-->
+                    </div><!--/hatBrandStyleRegion-->
+                    <div class="hatBrandStyleRegion clear">
+                        <div class="hatTitle" onclick="$('#CuffedBeanies').toggle();">
+                            <div class="title left">Cuffed Beanies</div>
+                            <div class="right">Expand/Collapse</div>
+                        </div>
+                        <div class="hatStyleSelectArea" id="CuffedBeanies" style="display:none;">
+                            <div class="hatStyleImage">
+                                <img src="~/Images/Yupoong/CuffedBeanies.jpg" />
+                            </div>
+                            <div class="hatStyleSetQty">
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#fff;"></td>
+                                            <td class="colorOption">WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#000;"></td>
+                                            <td class="colorOption">BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#eca6c2;"></td>
+                                            <td class="colorOption">BABY PINK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#eb7126;"></td>
+                                            <td class="colorOption">BLAZE ORANGE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#423736;"></td>
+                                            <td class="colorOption">BROWN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#88583b;"></td>
+                                            <td class="colorOption">CARAMEL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#769fc6;"></td>
+                                            <td class="colorOption">CAROLINA BLUE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#3f3b38;"></td>
+                                            <td class="colorOption">DARK GREY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#ef9a20;"></td>
+                                            <td class="colorOption">GOLD</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#bbb7b4;"></td>
+                                            <td class="colorOption">HEATHER</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#4b0e27;"></td>
+                                            <td class="colorOption">MAROON</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#21273c;"></td>
+                                            <td class="colorOption">NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#6f6a5e;"></td>
+                                            <td class="colorOption">OLIVE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#513d7f;"></td>
+                                            <td class="colorOption">PURPLE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#b91531;"></td>
+                                            <td class="colorOption">RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#014f92;"></td>
+                                            <td class="colorOption">ROYAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#86c442;"></td>
+                                            <td class="colorOption">SAFETY GREEN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#b8f64f;"></td>
+                                            <td class="colorOption">SAFETY YELLOW</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="beanieColorCell" style="background:#013423;"></td>
+                                            <td class="colorOption">SPRUCE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><!--/hatStyleSetQty-->
+                        </div><!--/hatStyleSelectArea-->
+                    </div><!--/hatBrandStyleRegion-->
+                </div><!--/hatBrandStyleOptions-->
+            </div><!--/hatTypeSelectRegion-->
+            <div class="hatTypeSelectRegion">
+                <div class="hatBrand" id="Richardson">
+                    <div class="hatBrandLogo left">
+                        <img src="~/Images/richardson.gif" height="60" />
+                    </div>
+                </div>
+                <div class="hatBrandStyleOptions clear" id="richardsonStyles">
+                    <div class="hatBrandStyleRegion clear">
+                        <div class="hatTitle" onclick="$('#Richardson112').toggle();">
+                            <div class="title left">Richardson 112 Trucker Snapback</div>
+                            <div class="right">Expand/Collapse</div>
+                        </div>
+                        <div class="hatStyleSelectArea" id="Richardson112" style="display:none;">
+                            <div class="hatStyleImage">
+                                <img src="~/Images/RichardsonHats/hat_01.jpg" />
+                            </div>
+                            <div class="hatStyleSetQty">
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_08.jpg" /></td>
+                                            <td class="colorOption">BLACK/ CHARCOAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_09.jpg" /></td>
+                                            <td class="colorOption">BLACK/ GOLD</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_11.jpg" /></td>
+                                            <td class="colorOption">BLACK/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_10.jpg" /></td>
+                                            <td class="colorOption">BLACK/ VEGAS GOLD</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_03.jpg" /></td>
+                                            <td class="colorOption">BROWN/ KHAKI</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_04.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_12.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL COL. BLUE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_13.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ KELLY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_06.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ NEON BLUE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_14.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ NEON ORANGE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_15.jpg" /></td>
+                                            <td class="colorOption">CHAROCAL/ NEON PINK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_17.jpg" /></td>
+                                            <td class="colorOption">CHAROCAL/ NEON YELLOW</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_18.jpg" /></td>
+                                            <td class="colorOption">CHAROCAL/ ORANGE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_19.jpg" /></td>
+                                            <td class="colorOption">CHAROCAL/ RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_20.jpg" /></td>
+                                            <td class="colorOption">CHAROCAL/ ROYAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_21.jpg" /></td>
+                                            <td class="colorOption">CHAROCAL/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_22.jpg" /></td>
+                                            <td class="colorOption">COL. BLUE/ KHAKI</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_23.jpg" /></td>
+                                            <td class="colorOption">COL. BLUE/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_24.jpg" /></td>
+                                            <td class="colorOption">CARDINAL/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_25.jpg" /></td>
+                                            <td class="colorOption">CYAN/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_26.jpg" /></td>
+                                            <td class="colorOption">DARK GREEN/ GOLD</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_27.jpg" /></td>
+                                            <td class="colorOption">DARK GREEN/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_28.jpg" /></td>
+                                            <td class="colorOption">HOT PINK/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_29.jpg" /></td>
+                                            <td class="colorOption">HOT PINK/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_30.jpg" /></td>
+                                            <td class="colorOption">HEATHER GRAY/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_31.jpg" /></td>
+                                            <td class="colorOption">KELLY/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_32.jpg" /></td>
+                                            <td class="colorOption">KELLY/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_33.jpg" /></td>
+                                            <td class="colorOption">KHAKI/ BURGUNDY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr class="hidden">
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_34.jpg" /></td>
+                                            <td class="colorOption">KHAKI/ COFFEE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr class="hidden">
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_35.jpg" /></td>
+                                            <td class="colorOption">KHAKI/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr class="hidden">
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_36.jpg" /></td>
+                                            <td class="colorOption">LODEN/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_37.jpg" /></td>
+                                            <td class="colorOption">MAROON/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_38.jpg" /></td>
+                                            <td class="colorOption">NAVY/ ORANGE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table style="width:50%; float:left;">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>OSFA</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_39.jpg" /></td>
+                                            <td class="colorOption">NAVY/ RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_40.jpg" /></td>
+                                            <td class="colorOption">NAVY/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_41.jpg" /></td>
+                                            <td class="colorOption">ORANGE/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_42.jpg" /></td>
+                                            <td class="colorOption">ORANGE/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_43.jpg" /></td>
+                                            <td class="colorOption">PURPLE/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_44.jpg" /></td>
+                                            <td class="colorOption">RED/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_45.jpg" /></td>
+                                            <td class="colorOption">RED/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_46.jpg" /></td>
+                                            <td class="colorOption">ROYAL/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_47.jpg" /></td>
+                                            <td class="colorOption">ROYAL/ RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_48.jpg" /></td>
+                                            <td class="colorOption">ROYAL/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_49.jpg" /></td>
+                                            <td class="colorOption">CHARCOAL/ NEON GREEN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_50.jpg" /></td>
+                                            <td class="colorOption">HEATHER/ DARK GREEN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_51.jpg" /></td>
+                                            <td class="colorOption">HEATHER/ NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_52.jpg" /></td>
+                                            <td class="colorOption">HEATHER/ RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_53.jpg" /></td>
+                                            <td class="colorOption">HEATHER/ ROYAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_54.jpg" /></td>
+                                            <td class="colorOption">HEATHER/ WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr class="hidden">
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_55.jpg" /></td>
+                                            <td class="colorOption">WHITE/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_56.jpg" /></td>
+                                            <td class="colorOption">WHITE/ DARK GREEN</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_57.jpg" /></td>
+                                            <td class="colorOption">WHITE/ MAROON</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_58.jpg" /></td>
+                                            <td class="colorOption">WHITE/ NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_59.jpg" /></td>
+                                            <td class="colorOption">WHITE/ RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_60.jpg" /></td>
+                                            <td class="colorOption">WHITE/ ROYAL</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_62.jpg" /></td>
+                                            <td class="colorOption">BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_63.jpg" /></td>
+                                            <td class="colorOption">NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_64.jpg" /></td>
+                                            <td class="colorOption">WHITE</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_65.jpg" /></td>
+                                            <td class="colorOption">BLACK/ WHITE/ RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_66.jpg" /></td>
+                                            <td class="colorOption">COL. BLUE/ WHITE/ NAVY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_67.jpg" /></td>
+                                            <td class="colorOption">GRAY/ CHARCOAL/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_68.jpg" /></td>
+                                            <td class="colorOption">NAVY/ WHITE/ RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_69.jpg" /></td>
+                                            <td class="colorOption">ORANGE/ WHITE/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_70.jpg" /></td>
+                                            <td class="colorOption">RED/ WHITE/ BLACK</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_71.jpg" /></td>
+                                            <td class="colorOption">RED/ WHITE/ NAvY</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="hatPreviewImage"><img src="~/Images/RichardsonHats/hat_72.jpg" /></td>
+                                            <td class="colorOption">ROYAL/ WHITE/ RED</td>
+                                            <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div><!--/hatStyleSetQty-->
+                        </div><!--/hatStyleSelectArea-->
+                    </div><!--/hatBrandStyleRegion-->
+                </div><!--/hatBrandStyleOptions-->
+            </div><!--/hatTypeSelectRegion-->
+        </div>
+    </div>
+    <div id="bulkArtworkStep" class="centerInner" style="display:none;">
+        <div id="designUploadContent">
+            <h2>Upload the artwork you would like to include on your hats.</h2>
+            <div id="preSetupArtwork" onclick="togglePresetArtwork()">
+                <input type="checkbox" id="artworkPresetup" onclick="togglePresetArtwork()" /> Check this box if you have ordered hats from us in the past and your artwork is already setup in our system.
+            </div>
+            <div>
+                <input type="file" id="bulkArtwork" />
+            </div>
+        </div>
+        <div id="designPlacement">
+            <h2>Click where would you like the artwork placed on the hat.</h2>
+
+            <div id="placementSelect">
+                <div class="placementOption" id="left" onclick="$('#artPlacement').text('left');$('.placementOption#left').addClass('selected');$('.placementOption#right').removeClass('selected');$('.placementOption#center').removeClass('selected');">
+                    <img src="~/Images/LeftPlacement.jpg" class="placementImage" />
+                </div>
+                <div class="placementOption" id="center" onclick="$('#artPlacement').text('center');$('.placementOption#left').removeClass('selected');$('.placementOption#right').removeClass('selected');$('.placementOption#center').addClass('selected');">
+                    <img src="~/Images/CenterPlacement.jpg" class="placementImage" />
+                </div>
+                <div class="placementOption" id="right" onclick="$('#artPlacement').text('right');$('.placementOption#left').removeClass('selected');$('.placementOption#right').addClass('selected');$('.placementOption#center').removeClass('selected');">
+                    <img src="~/Images/RightPlacement.jpg" class="placementImage" />
+                </div>
+                <span id="artPlacement" style="display:none;"></span>
+            </div>
+        </div>
+        <div id="designComments" class="clear">
+            <h2>Please tell us any specific instructions or details about your order that you think we should know.</h2>
+            <p><b>For Example:</b> <i>Match stitching color to back mesh / Use red stitching on black hats / Match logo coloring as close as possible / Remove phone number from artwork</i></p>
+            <div>
+                <textarea class="productDetailsTextMulti textBoxMulti" id="txtDetails" placeholder="Order Information" rows="10"></textarea>
+            </div>
+        </div>
+        <div id="designProcessExplained">
+            <h2>We will convert and digitize your artwork. You will recieve mockups and stitching proofs for approval before the hats are stitched. We work with you to ensure the end product is going to be exactly what you want.</h2>
+        </div>
+    </div><!--/bulkArtworkStep-->
+    <div id="bulkReadyToBuy" class="centerInner" style="display:none;">
+        <a href="javascript:void(0);" onclick="showBulkCart();"><div id="bulkPaymentButton">Ready To Buy</div></a>
+    </div>
+    <div id="totalBottomBar">
+        <div class="currentTotalContent">
+            <b>Current Total: <span id="bottomTotal">$0</span></b>
+            <br /><i> <span id="totalHatCount">0</span> hats (<span id="totalHatCost">$0</span>) <span id="artworkSetupFee">- artwork setup ($30 - buy 12 or more to get free artwork setup)</span></i>            
+        </div>
+
+    </div>
+</div>
+
+
+<div id="checkoutPopoup" style="display:none;" class="bulkCartPopup" >
+    <div class="centerInner">
+        <div class="close" onclick="$('#checkoutPopoup').hide();" style="color:black;">X</div>
+        <div id="checkoutHolderLeft">
+            <div id="chckoutWizzard">
+                @{ Html.RenderPartial("~/Views/Cart/ProcessPayment.cshtml"); }
+            </div>
+            <div id="paypalButtons" class="hidden">
+                <h1>Select a payment option below</h1>
+                <span id="paymentCompleteGuid" style="display:none;">@Model.PaymentCompleteGuid</span>
+                <div id="paypal-button-container-bulk"></div>
+            </div>
+        </div>
+        <div id="checkoutHolderRight">
+                <table class="checkOutCartItems" id="cartItems">
+                    <tbody>
+
+                    </tbody>
+                </table>
+                <table class="checkOutCartItems" style="margin-top:10px;">
+                    <tbody>
+                        <tr><td colspan="4"><hr></td></tr>
+                        <tr>
+                            <td colspan="3">Sub Total:</td>
+                            <td style="text-align:right;"><span id="bulkCartSubTotal">$0.00</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">Shipping:</td>
+                            <td style="text-align:right;">$<span id="shippingCost">0</span></td>
+                        </tr>
+                        <tr><td colspan="4"><hr></td></tr>
+                        <tr>
+                            <td colspan="3" style="font-weight:bold;">Total:</td>
+                            <td style="text-align:right; font-weight:bold;">$<span id="lblTotal">0</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div><!--/cetnerInner-->
+</div><!--/checkoutPopup-->
+

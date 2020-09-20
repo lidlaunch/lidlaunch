@@ -1,0 +1,31 @@
+﻿@model LidLaunchWebsite.Models.BulkBatchOrder
+@{
+    ViewBag.Title = "BulkOrderBatch";
+}
+
+<h2>BulkOrderBatch</h2>
+
+<a href="~/Bulk/PrintBulkOrderBatchBulkOrders?bulkBatchId=@Model.batchInfo.BatchId" target="_blank"><input type="button" value="PRINT ALL BATCHED ORDERS" class="smallButton" /></a>
+
+<table>
+    @foreach (LidLaunchWebsite.Models.BulkOrderItem itemToOrder in Model.lstItemsToOrder)
+    {
+
+        <tr>
+            <td>
+                @itemToOrder.ItemName
+            </td>
+            <td>
+                @itemToOrder.ItemQuantity
+            </td>
+        </tr>
+
+    }
+</table>
+
+@foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model.lstBulkOrders)
+{
+    <div><a href="~/Dashboard/BulkOrderDetailsPopup?bulkOrderId=@bulkOrder.Id" target="_blank">@bulkOrder.Id</a></div>
+}
+
+

@@ -29,90 +29,125 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/cupertino/jquery-ui.css" />
+    <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
     @Scripts.Render("~/Scripts/CommonFunctions.js")
     @Scripts.Render("~/Scripts/HatCreation.js")
     @Scripts.Render("~/Scripts/Designer.js")
     @Scripts.Render("~/Scripts/Product.js")
     @Scripts.Render("~/Scripts/Cart.js")
+    @Scripts.Render("~/Scripts/Bulk.js")
     @Scripts.Render("~/Scripts/Dashboard.js")
+    @Scripts.Render("~/Scripts/Checkout.js")
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116128249-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-116128249-1');
+    </script>
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '450717395469044');
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none"
+             src="https://www.facebook.com/tr?id=450717395469044&ev=PageView&noscript=1" />
+    </noscript>
+    <!-- End Facebook Pixel Code -->
 </head>
 <body>
     <div>
+        @*<div id="backgroundVideo">
+            <video autoplay loop muted>
+                <source src="@Url.Content("~/Images/BackgroundVideo.mp4")" type="video/mp4" />
+            </video>
+        </div>*@
         <div id="wrapper">
             <div id="InnerWrapperContent">
                 <div id="header">
-                    <div id="logo">
-                        <a href="@Url.Action("Index","Home")"><img src="@Url.Content("~/Images/logo.jpg")" /></a>
-                    </div><!--/logo-->
-                    <div id="topSearch">
-                        <input type="text" id="searchTop" placeholder="search..." />
-                    </div>
-                    <div id="navigation">
-                        <ul>
-                            <li>@Html.ActionLink("Shop", "Index", "Shop")</li>
-                            <li id="desktopCreate">@Html.ActionLink("Create", "GetStarted", "Create")</li>
-                            <li id="mobileCreate" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);"><a href="#">Create</a></li>
-                            @if (Convert.ToInt32(Session["UserID"]) > 0)
-                            {
-                            <li>
-                                <a href="#" onclick="showProfileLinks();">Profile</a>
-                                <ul id="profileMenu">
-                                    <li>@Html.ActionLink("Dashboard", "Designer", "Dashboard")</li>
-                                    <li>@Html.ActionLink("Logout", "Logout", "User")</li>
-                                    @if (Convert.ToInt32(Session["UserID"]) == 1)
-    {
-                                <li>@Html.ActionLink("Profit", "Profit", "Dashboard")</li>
-                                <li>@Html.ActionLink("Approval", "PendingProducts", "Dashboard")</li>
-                                <li>@Html.ActionLink("Orders", "Orders", "Dashboard")</li>
-                                <li>@Html.ActionLink("Needs Digitizing", "NeedsDigitizing", "Dashboard")</li>
-                                <li>@Html.ActionLink("Order Batching", "CreateBatch", "Dashboard")</li>
-}
-                                </ul>   
-                            </li>
-                                                               
-                            }
-                            else
-                            {
-                                <li>@Html.ActionLink("Login", "Login", "User")</li>
-                            }
-                            <li class="last">
-                                <div onclick="window.location = '/Cart/Cart'">
-                                    <img src="~/Images/shopping-cart (1).png" style="width:35px; height:35px" class="cartIcon" />
-                                    <div><span id="cartTotal">@Convert.ToInt32(@Session["TotalCartQuantity"])</span> Items</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                    <div class="centerInner">
+                        <div id="logo">
+                            <a href="@Url.Action("Index","Home")"><img src="@Url.Content("~/Images/logo.png")" /></a>
+                        </div><!--/logo-->
+                        <div id="topSearch">
+                            <input type="text" id="searchTop" placeholder="search..." />
+                        </div>
+                        <div id="navigation">
+                            <ul>
+                                <li>@Html.ActionLink("Order", "Index", "Bulk")</li>
+                                <li>@Html.ActionLink("Shop", "Index", "Shop")</li>
+                                <li id="desktopCreate">@Html.ActionLink("Create", "GetStarted", "Create")</li>
+                                <li id="mobileCreate" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);"><a href="#">Create</a></li>
+
+                                @if (Convert.ToInt32(Session["UserID"]) > 0)
+                                {
+                                    <li>
+                                        <a href="#" onclick="showProfileLinks();">Profile</a>
+                                        <ul id="profileMenu" style="display:none;">
+                                            <li>@Html.ActionLink("Dashboard", "Designer", "Dashboard")</li>
+                                            <li>@Html.ActionLink("Logout", "Logout", "User")</li>
+                                            @if (Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 643)
+                                            {
+                                                <li>@Html.ActionLink("Profit", "Profit", "Dashboard")</li>
+                                                <li>@Html.ActionLink("Approval", "PendingProducts", "Dashboard")</li>
+                                                <li>@Html.ActionLink("Orders", "Orders", "Dashboard")</li>
+                                                <li>@Html.ActionLink("Bulk Orders", "ViewBulkOrders", "Dashboard")</li>
+                                                <li>@Html.ActionLink("Needs Digitizing", "NeedsDigitizing", "Dashboard")</li>
+                                                <li>@Html.ActionLink("Order Batching", "CreateBatch", "Dashboard")</li>
+                                                <li>@Html.ActionLink("Hat Manager", "HatManager", "Dashboard")</li>
+                                            }
+                                            @if ((Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 643) || Convert.ToString(Session["UserEmail"]) == "digitizing@lidlaunch.com")
+                                            {
+                                                <li>@Html.ActionLink("Bulk Digitizing", "BulkDigitizing", "Dashboard")</li>
+                                            }
+                                        </ul>
+                                    </li>
+
+                                }
+                                else
+                                {
+                                    <li>@Html.ActionLink("Login", "Login", "User")</li>
+                                }
+                                <li class="last">
+                                    <div onclick="window.location = '/Cart/Cart'">
+                                        <img src="~/Images/shopping-cart (1).png" style="width:35px; height:35px" class="cartIcon" />
+                                        <div><span id="cartTotal">@Convert.ToInt32(@Session["TotalCartQuantity"])</span> Items</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div><!--/navigation-->
+                    </div><!--/centerInner-->
+                </div><!--/header-->
                 <div id="mobileNav" onclick="showNav();">
-                    <div id="categoryLable">||| Categories</div>
+                    <div id="categoryLable"><img src="~/Images/hamburger.png" /> Categories</div>
                 </div>
                 <div class="mainNavigation">
-                    @{
-                        Html.RenderAction("Menu", "Home");
-                    }                    
-                    @*<div class="dropdown">
-            <div class="dropbtn"> Locations </div>
-        </div>
-        <div class="dropdown">
-            <div class="dropbtn"> Sports </div>
-        </div>*@
-                    @*<div class="dropdown">
-            <div class="dropbtn"> Entertainment </div>
-            <div class="dropdown-content">
-                <div class="">Basketball</div>
-                <div class="">Baseball</div>
-            </div><!-- end ngIf: pCat.ChildCategories.length > 0 -->
-        </div><!-- end ngRepeat: pCat in $ctrl.list -->*@
-                </div>
-
+                    <div class="centerInner">
+                        @{
+                            Html.RenderAction("Menu", "Home");
+                        }
+                    </div><!--/centerInner-->
+                </div><!--/mainNavigation-->
                 <div id="content">
                     @RenderBody()
                 </div><!--/content-->
 
             </div>
         </div>
-        
+
         <div id="footer">
             <div id="footerContent">
                 <div class="left50">
@@ -129,7 +164,8 @@
                 <div class="left50">
                     <div style="margin:0 auto; width:175px; text-align:center;">
                         <p>Embroidered in the <b>USA</b>!</p>
-                        <img src="~/Images/America.png" height="100" />
+                        <img src="~/Images/America.png" height="100" /><br/>
+                        <p>Contact us - info@lidlaunch.com</p>
                     </div>
                 </div>
             </div>
