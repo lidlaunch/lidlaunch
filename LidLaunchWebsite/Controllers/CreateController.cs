@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -117,7 +118,7 @@ namespace LidLaunchWebsite.Controllers
                         }
                         else
                         {
-                            if (image.Width < 500 || image.Height < 500)
+                            if (image.Width <= 500 && image.Height <= 500)
                             {
                                 returnValue = "SIZE";
                             }
@@ -153,8 +154,42 @@ namespace LidLaunchWebsite.Controllers
                                 bmp.Save(path);
                                 Session["TempDesignArtworkImagePath"] = fileName;
                                 returnValue = fileName;
-                                //}                               
+
+                                bool convertToStitching = true;
+
+                                if (convertToStitching)
+                                {
+                                    //save to convert FTP
+                                    try
+                                    {
+                                        string ftpAddress = "stitchdynamics3.com/";
+                                        string username = "veristitchast";
+                                        string password = "v5t1tch";
+
+                                        using (stream)
+                                        {
+                                            byte[] buffer = ReadFully(stream);
+
+                                            WebRequest request = WebRequest.Create("ftp://" + ftpAddress + "/" + "LidLaunch" + "/" + fileName);
+                                            request.Method = WebRequestMethods.Ftp.UploadFile;
+                                            request.Credentials = new NetworkCredential(username, password);
+                                            Stream reqStream = request.GetRequestStream();
+                                            reqStream.Write(buffer, 0, buffer.Length);
+                                            reqStream.Close();
+                                        }
+
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine(ex.ToString());
+
+                                    }
+                                }
+
                                 
+
+                                //}                               
+
                             }
                         }
                     }
@@ -167,6 +202,15 @@ namespace LidLaunchWebsite.Controllers
 
             var json = new JavaScriptSerializer().Serialize(returnValue);
             return json;
+        }
+
+        public static byte[] ReadFully(Stream input)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                input.CopyTo(ms);
+                return ms.ToArray();
+            }
         }
 
         public Bitmap Crop(Bitmap bmp)
