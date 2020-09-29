@@ -16,7 +16,7 @@
                 <div class="productListed" onclick="window.location='/Product?id=@prod.ProductId'">
                     <img src="~/Images/DesignImages/InUse/@prod.Image" width="250" class="productImage" /><br />
                     <span class="prodName">@prod.Name</span><br />
-                    <span class="prodPrice">$19.99</span>
+                    <span class="prodPrice">$@prod.Price</span>
                     @if (prod.ParentCount > 0)
                     {
                         <div class="multiOptionsIcon">

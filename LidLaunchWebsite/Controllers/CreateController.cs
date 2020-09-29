@@ -156,7 +156,7 @@ namespace LidLaunchWebsite.Controllers
                                 Session["TempDesignArtworkImagePath"] = fileName;
                                 returnValue = fileName;
 
-                                bool convertToStitching = true;
+                                bool convertToStitching = false;
 
                                 if (convertToStitching)
                                 {

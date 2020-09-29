@@ -363,7 +363,7 @@ namespace LidLaunchWebsite.Classes
                         }
                         if(product.ApplyMethod.ToLower() == "embroidery")
                         {
-                            product.Price = 19.99M;
+                            product.Price = 24.99M;
                         } 
                         else if (product.ApplyMethod.ToLower() == "leatherpatch")
                         {
@@ -371,7 +371,7 @@ namespace LidLaunchWebsite.Classes
                         } 
                         else
                         {
-                            product.Price = 19.99M;
+                            product.Price = 24.99M;
                         }
                        
                     }                   
@@ -446,7 +446,7 @@ namespace LidLaunchWebsite.Classes
                         }
                         if (product.ApplyMethod.ToLower() == "embroidery")
                         {
-                            product.Price = 19.99M;
+                            product.Price = 24.99M;
                         }
                         else if (product.ApplyMethod.ToLower() == "leatherpatch")
                         {
@@ -454,7 +454,7 @@ namespace LidLaunchWebsite.Classes
                         }
                         else
                         {
-                            product.Price = 19.99M;
+                            product.Price = 24.99M;
                         }
 
                     }
@@ -768,7 +768,7 @@ namespace LidLaunchWebsite.Classes
                         webProd.ApplyMethod = Convert.ToString(row["ApplyMethod"]);
                         if (webProd.ApplyMethod.ToLower() == "embroidery")
                         {
-                            webProd.Price = 19.99M;
+                            webProd.Price = 24.99M;
                         }
                         else if (webProd.ApplyMethod.ToLower() == "leatherpatch")
                         {
@@ -776,7 +776,7 @@ namespace LidLaunchWebsite.Classes
                         }
                         else
                         {
-                            webProd.Price = 19.99M;
+                            webProd.Price = 24.99M;
                         }
 
                         lstWebsiteProducts.Add(webProd);
@@ -840,7 +840,7 @@ namespace LidLaunchWebsite.Classes
                         webProd.ApplyMethod = Convert.ToString(row["ApplyMethod"]);
                         if (webProd.ApplyMethod.ToLower() == "embroidery")
                         {
-                            webProd.Price = 19.99M;
+                            webProd.Price = 24.99M;
                         }
                         else if (webProd.ApplyMethod.ToLower() == "leatherpatch")
                         {
@@ -848,7 +848,7 @@ namespace LidLaunchWebsite.Classes
                         }
                         else
                         {
-                            webProd.Price = 19.99M;
+                            webProd.Price = 24.99M;
                         }
 
                         lstWebsiteProducts.Add(webProd);
