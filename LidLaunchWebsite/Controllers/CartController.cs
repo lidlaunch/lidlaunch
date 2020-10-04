@@ -55,7 +55,7 @@ namespace LidLaunchWebsite.Controllers
                 }
                 if (prod.ApplyMethod.ToLower() == "embroidery")
                 {
-                    cart.Total += prod.Quantity * 19.99M;
+                    cart.Total += prod.Quantity * 24.99M;
                 }
                 if (prod.ApplyMethod.ToLower() == "leatherpatch")
                 {
@@ -319,7 +319,7 @@ namespace LidLaunchWebsite.Controllers
                 totalProducts += prod.Quantity;
                 if(prod.ApplyMethod.ToLower() == "embroidery")
                 {
-                    cart.Total += prod.Quantity * 19.99M;
+                    cart.Total += prod.Quantity * 24.99M;
                 }
                 if(prod.ApplyMethod.ToLower() == "leatherpatch")
                 {
@@ -327,7 +327,7 @@ namespace LidLaunchWebsite.Controllers
                 }
             }
 
-            //cart.Total = totalProducts * 19.99M;
+            //cart.Total = totalProducts * 24.99M;
 
             cart.lstProducts = lstProducts;
             Session["Cart"] = cart;
@@ -368,7 +368,7 @@ namespace LidLaunchWebsite.Controllers
                 }
                 if (prod.ApplyMethod.ToLower() == "embroidery")
                 {
-                    cart.Total += prod.Quantity * 19.99M;
+                    cart.Total += prod.Quantity * 24.99M;
                 }
                 if (prod.ApplyMethod.ToLower() == "leatherpatch")
                 {
@@ -381,7 +381,7 @@ namespace LidLaunchWebsite.Controllers
                 lstProducts.Remove(lstProducts[indexToRemove]);
             }
 
-            //cart.Total = totalProducts * 19.99M;
+            //cart.Total = totalProducts * 24.99M;
 
             cart.lstProducts = lstProducts;
             Session["Cart"] = cart;
