@@ -2809,6 +2809,71 @@ input[type=text], input[type=password], select, input[type=number] {
     #mobileCart {
         display: block;
     }
+
+    .bulkOrderList {
+        width: 100%;
+        display: block;
+        overflow-x: scroll;
+    }
+    #bulkOrderDetailsPopup {
+        width:100vw;
+        height:100vh;
+    }
+    #bulkOrderDetailsPopupContent {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 0;
+        display: block;
+        left: 0;
+        margin-left: 0;
+        position: relative;
+        padding: 0;
+    }
+    #bulkOrderDetailsPopupContent #TopInfoBar {
+        height:auto;
+    }
+    #bulkOrderDetailsPopupContent #barcode {
+        display: none;
+    }
+    #bulkOrderDetailsPopupContent #BulkOrderId, #BulkOrderDate {
+        float: unset;
+    }
+    #bulkOrderDetailsPopupContent #bulkOrderDetails {
+        float: unset;
+        width: 100%;
+        padding:0;
+    }
+    #bulkOrderDetailsPopupContent #bulkOrderItems {
+        float: unset;
+        width: 100%;
+        display: block;
+        overflow-x: scroll;
+    }
+    #bulkOrderDetailsPopupContent #bulkOrderDesigns {
+        display: block;
+        width: 100%;
+        overflow-x: scroll;
+    }
+    #setBulkDesignPopupInner {
+        width: 100vw;
+        padding: 10px 0;
+    }
+    #setBulkDesignPopup {
+        position: absolute;
+        width: 100vw;
+    }
+    #notePopupInner {
+        width: 100vw;
+        padding: 10px 0;
+    }
+    #notePopUp {
+        position: absolute;
+        width: 100vw;
+    }
+    #addBulkReworkPopup {
+        position: absolute;
+        width: 100vw;
+    }
 }
 
 @media only screen and (max-width: 750px) {
