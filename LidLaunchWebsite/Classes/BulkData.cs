@@ -90,7 +90,7 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
-        public List<BulkOrder> GetBulkOrderData()
+        public List<BulkOrder> GetBulkOrderData(string filter)
         {
             var data = new SQLData();
             List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
@@ -100,7 +100,7 @@ namespace LidLaunchWebsite.Classes
                 using (data.conn)
                 {
                     SqlCommand sqlComm = new SqlCommand("GetBulkOrders", data.conn);
-                    //sqlComm.Parameters.AddWithValue("@startDate", startDate);
+
                     //sqlComm.Parameters.AddWithValue("@endDate", endDate);             
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
@@ -110,8 +110,32 @@ namespace LidLaunchWebsite.Classes
 
                     da.Fill(ds);
 
-                    lstBulkOrders = BuildBulkOrdersList(ds);                        
+                    lstBulkOrders = BuildBulkOrdersList(ds);
 
+                    if (filter == "" || filter == null)
+                    {
+                        lstBulkOrders = lstBulkOrders.Where(b => b.OrderPaid).ToList();
+                    }
+                    else if (filter == "rework")
+                    {
+                        lstBulkOrders = lstBulkOrders.Where(b => b.lstItems.Any(i => i.BulkRework.Status == "In Progress") && b.OrderPaid).ToList();
+                    }
+                    else if (filter == "45days")
+                    {
+                        lstBulkOrders = lstBulkOrders.Where(b => b.PaymentDate <= DateTime.Now && b.PaymentDate >= DateTime.Now.AddDays(-45) && b.OrderPaid).ToList();
+                    }
+                    else if (filter == "pending")
+                    {
+                        lstBulkOrders = lstBulkOrders.Where(b => !b.OrderComplete && b.OrderPaid).ToList();
+                    }
+                    else if (filter == "unpaid")
+                    {
+                        lstBulkOrders = lstBulkOrders.Where(b => !b.OrderPaid).ToList();
+                    }
+                    else
+                    {
+                        lstBulkOrders = lstBulkOrders.Where(b => b.Id == Convert.ToInt32(filter.Replace("BO-", ""))).ToList();
+                    }
                 }
 
                 return lstBulkOrders;

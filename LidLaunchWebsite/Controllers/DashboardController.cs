@@ -695,7 +695,7 @@ namespace LidLaunchWebsite.Controllers
         }
 
 
-        public ActionResult ViewBulkOrders()
+        public ActionResult ViewBulkOrders(string filter)
         {
 
             if (!checkLoggedIn())
@@ -706,7 +706,7 @@ namespace LidLaunchWebsite.Controllers
             {                
                 BulkData data = new BulkData();
                 ViewBulkOrdersModel model = new ViewBulkOrdersModel();
-                model.lstBulkOrders = data.GetBulkOrderData();
+                model.lstBulkOrders = data.GetBulkOrderData(filter);
                 model.lstBulkOrders = model.lstBulkOrders.OrderByDescending(bo => bo.OrderPaid).ToList();
                 model.lstBulkOrderBatches = data.GetBulkOrderBatches();
                 return View(model);
@@ -754,7 +754,7 @@ namespace LidLaunchWebsite.Controllers
                 {
                     List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
                     BulkData data = new BulkData();
-                    lstBulkOrders = data.GetBulkOrderData();
+                    lstBulkOrders = data.GetBulkOrderData("");
                     lstBulkOrders.RemoveAll(bo => !bo.OrderPaid);
                     return View(lstBulkOrders);
                 }
@@ -923,6 +923,47 @@ namespace LidLaunchWebsite.Controllers
 
             }
 
+        }
+
+        public ActionResult BulkSalesReport()
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (Convert.ToInt32(Session["UserID"]) == 1)
+                {
+                    DashboardData data = new DashboardData();
+                    BulkSalesReport report = data.GetBulkSalesReport(DateTime.Now.AddDays(-30), DateTime.Now);
+                    return View(report);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+
+        }
+
+        public ActionResult AdminPanel()
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (checkLoggedIn())
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
         }
 
     }

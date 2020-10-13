@@ -535,7 +535,7 @@ input[type=text], input[type=password], select, input[type=number] {
 }
 
 #footer {
-    height: 232px;
+    height: 260px;
     clear: both;
     margin-top: 20px;
     background: #eee;
@@ -1900,6 +1900,10 @@ input[type=text], input[type=password], select, input[type=number] {
     background: url("/Images/designUploadTop.jpg");
 }
 
+#bulkOrderingContainer {
+    border-top: 4px solid #fff;
+}
+
 #bulkOrderingContainer h1 {
     color: #39b91c;
     font-size: 68px;
@@ -2380,6 +2384,20 @@ input[type=text], input[type=password], select, input[type=number] {
     cursor: pointer;
 }
 
+.adminPanelLink {
+    width: 200px;
+    height: 100px;
+    background: #39b91c;
+    color: white;
+    display: block;
+    float: left;
+    margin: 20px;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 100px;
+    font-weight: bold;
+}
+
 
 @media only screen and (max-height: 840px) {
     #previewHatContent {
@@ -2482,7 +2500,7 @@ input[type=text], input[type=password], select, input[type=number] {
     }
 
     #mobileNav {
-        display: block;
+        display: none;
         height: 40px;
         width: 100%;
         background: #ddd;
@@ -2678,13 +2696,10 @@ input[type=text], input[type=password], select, input[type=number] {
         min-width: 100%;
     }
 
-    #footer {
-        height: 240px;
-    }
 
-        #footer ul {
-            padding-left: 0;
-        }
+    #footer ul {
+        padding-left: 0;
+    }
 
     .cartDetails .productPrice {
         font-size: 21px;
@@ -3222,9 +3237,6 @@ input[type=text], input[type=password], select, input[type=number] {
     }
     #bulkIntroInner .right {
         display:none;
-    }
-    #footer {
-        height:250px;
     }
 
 }

@@ -1,0 +1,11 @@
+﻿@model LidLaunchWebsite.Models.BulkSalesReport
+@{
+    ViewBag.Title = "BulkSalesReport";
+}
+    <ul>
+        @foreach (LidLaunchWebsite.Models.BulkSale sale in Model.BulkSales)
+        {
+            <li>@sale.Date - @sale.OrderCount - @sale.OrderTotals</li>
+        }
+    </ul>
+

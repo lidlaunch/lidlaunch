@@ -74,7 +74,7 @@ function SubmitOrder() {
                 currency: 'USD'
             });
             setTimeout(function () {
-                window.location = 'http://lidlaunch.com/cart/payment?PaymentCode=' + result;
+                window.location = 'https://lidlaunch.com/cart/payment?PaymentCode=' + result;
             }, 1500);
 
         },

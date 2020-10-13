@@ -246,6 +246,7 @@
     <Compile Include="Classes\DashboardData.cs" />
     <Compile Include="Classes\UserData.cs" />
     <Compile Include="Controllers\BulkController.cs" />
+    <Compile Include="Models\BulkSalesReport.cs" />
     <Compile Include="Controllers\EddudezController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -798,6 +799,8 @@
     <Content Include="Views\Dashboard\MissingBlanks.cshtml" />
     <Content Include="Views\Dashboard\AddBulkRework.cshtml" />
     <Content Include="Views\OrderDigitizing\Index.cshtml" />
+    <Content Include="Views\Dashboard\BulkSalesReport.cshtml" />
+    <Content Include="Views\Dashboard\AdminPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

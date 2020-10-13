@@ -5,9 +5,22 @@
 <script type="text/javascript">
     var url = '@Url.Action("BulkOrderDetailsPopup", "DashBoard")';
     var bulkBatchesUrl = '@Url.Action("BulkOrderBatches", "Bulk")';
+    $(document).ready(function () {
+        $('#idSeach').on('keypress', function (e) {
+            if (e.which === 13) {
+                window.location = '/Dashboard/ViewBulkOrders?filter=' + $(this).val();
+            }
+        });
+    });
 </script>
 <span onclick="createBulkOrderBatch()" class="left" style="margin:10px;"><input type="button" value="Create Bulk Batch" class="smallButton" /></span>
 <span onclick="$('#popUpHolder').load(bulkBatchesUrl);" class="left" style="margin:10px;"><input type="button" value="View Bulk Batches" class="smallButton" /></span>
+<span onclick="window.location = '/Dashboard/ViewBulkOrders';" class="left" style="margin:10px;"><input type="button" value="Show All" class="smallButton" /></span>
+<span onclick="window.location = '/Dashboard/ViewBulkOrders?filter=rework';" class="left" style="margin:10px;"><input type="button" value="Show Rework" class="smallButton" /></span>
+<span onclick="window.location = '/Dashboard/ViewBulkOrders?filter=45days';" class="left" style="margin:10px;"><input type="button" value="Show 45 Days" class="smallButton" /></span>
+<span onclick="window.location = '/Dashboard/ViewBulkOrders?filter=pending';" class="left" style="margin:10px;"><input type="button" value="Show All Pending" class="smallButton" /></span>
+<span onclick="window.location = '/Dashboard/ViewBulkOrders?filter=unpaid';" class="left" style="margin:10px;"><input type="button" value="Unpaid" class="smallButton" /></span>
+<input type="text" id="idSeach" class="left" style="padding:10px;margin:10px;"/>
 <table class="bulkOrderList clear">
     <tbody>
         <tr>
@@ -25,8 +38,6 @@
         </tr>
         @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model.lstBulkOrders)
         {
-            if (bulkOrder.OrderPaid)
-            {
     <tr style="background:#ccc;">
 
 
@@ -103,52 +114,9 @@
             </select>
         </td>
     </tr>                
-            }
         }
     </tbody>
 </table>
-<h3>Not Paid Orders</h3>
-<table>
-    <tbody>
-        <tr>
-            <td><b>Id</b></td>
-            <td><b>Order Date</b></td>
-            <td><b>Customer Info</b></td>
-            <td><b>Order Notes</b></td>
-            <td><b>Artwork Position</b></td>
-            <td><b>Art Source</b></td>
-            <td><b>Order Paid</b></td>
-            <td><b>CSTLINK</b></td>
-            <td><b>VIEW</b></td>
-        </tr>
-        @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model.lstBulkOrders)
-        {
-            if (!bulkOrder.OrderPaid)
-            {
-            <tr style="background:#ccc;">
-                <td>@bulkOrder.Id</td>
-                <td>@bulkOrder.OrderDate.ToString("MM/dd/yyyy")</td>
-                <td>@bulkOrder.CustomerName<br />@bulkOrder.CustomerEmail<br />@bulkOrder.CustomerPhone</td>
-                <td>@bulkOrder.OrderNotes</td>
-                <td>@bulkOrder.ArtworkPosition</td>
-                <td><a href="~/Images/BulkOrderArtwork/@bulkOrder.ArtworkImage" target="_blank"><img src="~/Images/BulkOrderArtwork/@bulkOrder.ArtworkImage" style="max-height:100px;max-width:100px;" /></a></td>
-                @if (bulkOrder.OrderPaid)
-                {
-                    <td style="background: #39b91c; text-align:center;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','true',this)">$@bulkOrder.OrderTotal</a></td>
-                }
-                else
-                {
-                    <td style="background:red; text-align:center;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','false',this)">$@bulkOrder.OrderTotal</a></td>
-                }
-                <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@bulkOrder.PaymentGuid" target="_blank" class="ViewBulkLink"><input type="button" value="CSTLINK" class="smallButton" /></a></td>
-                <td><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);"><input type="button" value="VIEW" class="smallButton" /></span></td>
-            </tr>
-
-            }
-        }
-    </tbody>
-</table>
-
 <div id="popUpHolder">
 
 </div>

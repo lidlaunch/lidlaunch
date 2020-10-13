@@ -715,5 +715,58 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
+
+        public BulkSalesReport GetBulkSalesReport (DateTime startRange, DateTime endRange)
+        {
+            var data = new SQLData();
+            BulkSalesReport salesReport = new BulkSalesReport();
+            salesReport.BulkSales = new List<BulkSale>();
+            try
+            {
+                
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetDailyBulkSales", data.conn);
+                    sqlComm.Parameters.AddWithValue("@startDate", startRange);
+                    sqlComm.Parameters.AddWithValue("@endDate", endRange);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+                }
+                if (ds.Tables.Count > 0)
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            BulkSale sale = new BulkSale();
+                            sale.Date = Convert.ToDateTime(dr["OrderDate"].ToString());
+                            sale.OrderTotals = Convert.ToInt32(dr["OrderTotals"].ToString());
+                            sale.OrderCount = Convert.ToInt32(dr["OrderCount"].ToString());
+                            salesReport.BulkSales.Add(sale);
+                        }
+                    }
+                }
+
+                return salesReport;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("Bulk Sales Report Error: " + ex.Message.ToString());
+                return salesReport;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
     }
 }

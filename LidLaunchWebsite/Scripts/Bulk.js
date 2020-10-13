@@ -421,18 +421,19 @@ function verifyAndShowPaypal() {
             success: function (result) {
                 if (result == "") {
                     //do nothing
-                    displayPopupNotification('error.', 'error', false);
+                    displayPopupNotification('Sorry there was an error creating your order.', 'error', false);
                 } else {
                     //set the url for the file link and show the link 
                     hideLoading();
                     $('#chckoutWizzard').hide();
                     $('#paypalButtons').slideDown();
                     $('#paypal-button-container-bulk').empty();
+                    $('#checkoutPopoup').find('.close').hide();
                     renderBulkCartPaypalButtons(currentGrandTotalCost, currentBulkProductList, $('#paymentCompleteGuid').text(), shippingCost, (currentGrandTotalCost - currentShippingTotal));
                 }
             },
             error: function (xhr, status, p3, p4) {
-                displayPopupNotification('Error.', 'error', false);
+                displayPopupNotification('Sorry there was an error creating your order.', 'error', false);
             }
         });
     } else {
@@ -555,11 +556,11 @@ function createBulkOrderBatch() {
 function togglePresetArtwork() {
     if ($('#artworkPresetup').prop("checked")) {
         $('#artworkPresetup').prop("checked", false);
-        $('#bulkArtwork').show();
+        //$('#bulkArtwork').show();
         updateBulkTotals();
     } else {
         $('#artworkPresetup').prop("checked", true);
-        $('#bulkArtwork').hide();
+        //$('#bulkArtwork').hide();
         updateBulkTotals();
     }
 }

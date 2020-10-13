@@ -89,8 +89,8 @@
                             <ul>
                                 <li>@Html.ActionLink("Order", "Index", "Bulk")</li>
                                 <li>@Html.ActionLink("Shop", "Index", "Shop")</li>
-                                <li id="desktopCreate">@Html.ActionLink("Create", "GetStarted", "Create")</li>
-                                <li id="mobileCreate" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);"><a href="#">Create</a></li>
+                                @*<li id="desktopCreate">@Html.ActionLink("Create", "GetStarted", "Create")</li>
+                                <li id="mobileCreate" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);"><a href="#">Create</a></li>*@
 
                                 @if (Convert.ToInt32(Session["UserID"]) > 0)
                                 {
@@ -101,15 +101,9 @@
                                             <li>@Html.ActionLink("Logout", "Logout", "User")</li>
                                             @if (Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 643)
                                             {
-                                                <li>@Html.ActionLink("Profit", "Profit", "Dashboard")</li>
-                                                <li>@Html.ActionLink("Approval", "PendingProducts", "Dashboard")</li>
-                                                <li>@Html.ActionLink("Orders", "Orders", "Dashboard")</li>
-                                                <li>@Html.ActionLink("Bulk Orders", "ViewBulkOrders", "Dashboard")</li>
-                                                <li>@Html.ActionLink("Needs Digitizing", "NeedsDigitizing", "Dashboard")</li>
-                                                <li>@Html.ActionLink("Order Batching", "CreateBatch", "Dashboard")</li>
-                                                <li>@Html.ActionLink("Hat Manager", "HatManager", "Dashboard")</li>
+                                                <li>@Html.ActionLink("Admin Panel", "AdminPanel", "Dashboard")</li>                                               
                                             }
-                                            @if ((Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 643) || Convert.ToString(Session["UserEmail"]) == "digitizing@lidlaunch.com")
+                                            @if (Convert.ToString(Session["UserEmail"]) == "digitizing@lidlaunch.com")
                                             {
                                                 <li>@Html.ActionLink("Bulk Digitizing", "BulkDigitizing", "Dashboard")</li>
                                             }
@@ -131,10 +125,10 @@
                         </div><!--/navigation-->
                     </div><!--/centerInner-->
                 </div><!--/header-->
-                <div id="mobileNav" onclick="showNav();">
+                <div id="mobileNav" onclick="showNav();" class="hidden">
                     <div id="categoryLable"><img src="~/Images/hamburger.png" /> Categories</div>
                 </div>
-                <div class="mainNavigation">
+                <div class="mainNavigation hidden">
                     <div class="centerInner">
                         @{
                             Html.RenderAction("Menu", "Home");
@@ -152,8 +146,9 @@
             <div id="footerContent">
                 <div class="left50">
                     <ul>
+                        <li><a href="~/Bulk">Order</a></li>
                         <li><a href="~/Shop">Shop</a></li>
-                        <li><a href="~/Create/GetStarted">Create</a></li>
+                        <li><a href="~/Create/GetStarted">Sell Your Designs</a></li>
                         <li><a href="~/Terms/TermsAndConditions">Terms & Conditions</a></li>
                         <li><a href="~/Terms/Returns">Returns</a></li>
                         <li><a href="~/Terms/Privacy">Privacy</a></li>

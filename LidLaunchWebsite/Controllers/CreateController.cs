@@ -463,6 +463,12 @@ namespace LidLaunchWebsite.Controllers
                     {
                         var trimmedType = type.TrimEnd(',');
                         string[] splitType = trimmedType.Split(':');
+                        //int typeIdResult = 0;
+                        //if(int.TryParse(splitType[0], out typeIdResult))
+                        //{
+                        //    typeIdResult = Convert.ToInt32(splitType[0]);
+                        //}
+                        //var typeId = typeIdResult;
                         var typeId = Convert.ToInt32(splitType[0]);
                         var colors = splitType[1].Split(',');
 
