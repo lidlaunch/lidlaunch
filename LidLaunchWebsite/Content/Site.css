@@ -2831,7 +2831,7 @@ input[type=text], input[type=password], select, input[type=number] {
         overflow-x: scroll;
     }
     #bulkOrderDetailsPopup {
-        width:100vw;
+        width:96vw;
         height:100vh;
     }
     #bulkOrderDetailsPopupContent {
@@ -2875,10 +2875,10 @@ input[type=text], input[type=password], select, input[type=number] {
     }
     #setBulkDesignPopup {
         position: absolute;
-        width: 100vw;
+        width: 50vw;
     }
     #notePopupInner {
-        width: 100vw;
+        width: 50vw;
         padding: 10px 0;
     }
     #notePopUp {
