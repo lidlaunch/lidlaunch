@@ -34,6 +34,18 @@ namespace LidLaunchWebsite.Models
         public string ProjectedShipDateLong { get; set; }
         public int BulkOrderBatchId { get; set; }
         public string BarcodeImage { get; set; }
+        public string ShipToName { get; set; }
+        public string ShipToAddress { get; set; }
+        public string ShipToCity { get; set; }
+        public string ShipToState { get; set; }
+        public string ShipToZip { get; set; }
+        public string ShipToPhone { get; set; }
+        public string BillToName { get; set; }
+        public string BilltoAddress { get; set; }
+        public string BillToCity { get; set; }
+        public string BillToState { get; set; }
+        public string BillToZip { get; set; }
+        public string BillToPhone { get; set; }
     }
 
     public class BulkBatchOrder

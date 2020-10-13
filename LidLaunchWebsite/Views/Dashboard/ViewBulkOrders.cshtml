@@ -68,7 +68,7 @@
             }
         }
 
-        <td><span class="bulkOrderId">@bulkOrder.Id</span></td>
+        <td><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);"> @bulkOrder.Id </span></td>
         <td>@bulkOrder.OrderDate.ToString("MM/dd/yyyy")</td>
         <td>@bulkOrder.CustomerName<br />@bulkOrder.CustomerEmail<br />@bulkOrder.CustomerPhone</td>
         <td>@bulkOrder.OrderNotes</td>

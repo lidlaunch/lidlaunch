@@ -166,12 +166,14 @@ namespace LidLaunchWebsite.Controllers
                                         string ftpAddress = "stitchdynamics3.com/";
                                         string username = "veristitchast";
                                         string password = "v5t1tch";
+                                        var newImage = ScaleImage(image, 300, 300);
 
                                         using (stream)
                                         {
-                                            byte[] buffer = ReadFully(stream);
+                                            ImageConverter _imageConverter = new ImageConverter();
+                                            byte[] buffer = (byte[])_imageConverter.ConvertTo(newImage, typeof(byte[]));
 
-                                            WebRequest request = WebRequest.Create("ftp://" + ftpAddress + "/" + "LidLaunch" + "/" + fileName);
+                                            WebRequest request = WebRequest.Create("ftp://" + ftpAddress + "/" + fileName);
                                             request.Method = WebRequestMethods.Ftp.UploadFile;
                                             request.Credentials = new NetworkCredential(username, password);
                                             Stream reqStream = request.GetRequestStream();
@@ -253,6 +255,23 @@ namespace LidLaunchWebsite.Controllers
                 Logger.Log("Error Cropping: " + ex.Message.ToString());
                 return null;
             }            
+        }
+
+        public Image ScaleImage(Image image, int maxWidth, int maxHeight)
+        {
+            var ratioX = (double)maxWidth / image.Width;
+            var ratioY = (double)maxHeight / image.Height;
+            var ratio = Math.Min(ratioX, ratioY);
+
+            var newWidth = (int)(image.Width * ratio);
+            var newHeight = (int)(image.Height * ratio);
+
+            var newImage = new Bitmap(newWidth, newHeight);
+
+            using (var graphics = Graphics.FromImage(newImage))
+                graphics.DrawImage(image, 0, 0, newWidth, newHeight);
+
+            return newImage;
         }
 
         public string CreateDesign(string x, string y, string width, string height, string typeId, string colorId)
