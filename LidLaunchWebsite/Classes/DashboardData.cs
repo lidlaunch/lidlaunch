@@ -745,7 +745,7 @@ namespace LidLaunchWebsite.Classes
                         foreach (DataRow dr in ds.Tables[0].Rows)
                         {
                             BulkSale sale = new BulkSale();
-                            sale.Date = Convert.ToDateTime(dr["OrderDate"].ToString());
+                            sale.Date = Convert.ToDateTime(dr["OrderDate"].ToString()).ToString("MM/dd/yyyy");
                             sale.OrderTotals = Convert.ToInt32(dr["OrderTotals"].ToString());
                             sale.OrderCount = Convert.ToInt32(dr["OrderCount"].ToString());
                             salesReport.BulkSales.Add(sale);

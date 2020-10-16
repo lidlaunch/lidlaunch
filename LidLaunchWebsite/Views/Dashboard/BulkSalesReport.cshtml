@@ -2,10 +2,56 @@
 @{
     ViewBag.Title = "BulkSalesReport";
 }
-    <ul>
-        @foreach (LidLaunchWebsite.Models.BulkSale sale in Model.BulkSales)
-        {
-            <li>@sale.Date - @sale.OrderCount - @sale.OrderTotals</li>
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    var data = [];
+    @*@foreach (LidLaunchWebsite.Models.BulkSale sale in Model.BulkSales)
+    {
+        @:data.push(JSON.parse(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(sale))));
+
+    }*@
+    console.log(data);
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+
+
+
+    function drawChart() {
+
+
+        var data = new google.visualization.DataTable();
+
+        var dataArray = JSON.parse('@Html.Raw(Json.Encode(Model.BulkSales))');
+
+        data.addColumn('string', 'date');
+        data.addColumn('number', 'sales');
+        data.addColumn('number', 'orders');
+
+        for (var i = 0; i < dataArray.length; i++) {
+            // Setting.
+            data.addRow([dataArray[i].Date, dataArray[i].OrderTotals, dataArray[i].OrderCount]);
         }
-    </ul>
+        var options = {
+        title: 'Bulk Order Sales',
+        legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+
+        chart.draw(data, options);
+    }
+</script>
+
+
+<div id="curve_chart" style="width: 100%; height: 500px"></div>
+
+<ul>
+    @foreach (LidLaunchWebsite.Models.BulkSale sale in Model.BulkSales)
+    {
+        <li>@sale.Date - @sale.OrderCount - @sale.OrderTotals</li>
+    }
+</ul>
 

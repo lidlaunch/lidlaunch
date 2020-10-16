@@ -11,7 +11,7 @@ namespace LidLaunchWebsite.Models
     }
     public class BulkSale
     { 
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
         public int OrderCount { get; set; }
         public int OrderTotals { get; set; }
     }
