@@ -244,8 +244,26 @@ namespace LidLaunchWebsite.Classes
             bulkOrder.ProjectedShipDateShort = AddBusinessDays(bulkOrder.PaymentDate, 10).ToString("MM/dd/yyyy");
             bulkOrder.ProjectedShipDateLong = AddBusinessDays(bulkOrder.PaymentDate, 14).ToString("MM/dd/yyyy");
             bulkOrder.BulkOrderBatchId = Convert.ToInt32(dr["BulkOrderBatchId"].ToString());
-            bulkOrder.lstItems = new List<BulkOrderItem>();           
-
+            bulkOrder.ShipToName = Convert.ToString(dr["ShipToName"].ToString());
+            bulkOrder.ShipToAddress = Convert.ToString(dr["ShipToAddress"].ToString());
+            bulkOrder.ShipToCity = Convert.ToString(dr["ShipToCity"].ToString());
+            bulkOrder.ShipToState = Convert.ToString(dr["ShipToState"].ToString());
+            bulkOrder.ShipToZip = Convert.ToString(dr["ShipToZip"].ToString());
+            bulkOrder.ShipToPhone = Convert.ToString(dr["ShipToPhone"].ToString());
+            bulkOrder.BillToName = Convert.ToString(dr["BillToName"].ToString());
+            bulkOrder.BillToAddress = Convert.ToString(dr["BillToAddress"].ToString());
+            bulkOrder.BillToCity = Convert.ToString(dr["BillToCity"].ToString());
+            bulkOrder.BillToState = Convert.ToString(dr["BillToState"].ToString());
+            bulkOrder.BillToZip = Convert.ToString(dr["BillToZip"].ToString());
+            bulkOrder.BillToPhone = Convert.ToString(dr["BillToPhone"].ToString());            
+            bulkOrder.ReadyForProduction = Convert.ToBoolean(dr["ReadyForProduction"].ToString());
+            bulkOrder.BackStitchingDesignId = Convert.ToInt32(dr["BackStitchingDesignId"].ToString());
+            bulkOrder.LeftStitchingDesignId = Convert.ToInt32(dr["LeftStitchingDesignId"].ToString());
+            bulkOrder.RightStitchingDesignId = Convert.ToInt32(dr["RightStitchingDesignId"].ToString());
+            bulkOrder.BackStitchingDesignComment = dr["BackStitchingDesignComment"].ToString();
+            bulkOrder.LeftStitchingDesignComment = dr["LeftStitchingDesignComment"].ToString();
+            bulkOrder.RightStitchingDesignComment = dr["RightStitchingDesignComment"].ToString();
+            bulkOrder.lstItems = new List<BulkOrderItem>();
 
             if (ds.Tables[1].Rows.Count > 0)
             {
@@ -323,8 +341,10 @@ namespace LidLaunchWebsite.Classes
                         design.EmbroideredX = Convert.ToDecimal(dr3["EmbroideredX"].ToString());
                         design.EmbroideredY = Convert.ToDecimal(dr3["EmbroideredY"].ToString());
                         design.CustomerApproved = Convert.ToBoolean(dr3["CustomerApproved"].ToString());
+                        design.InternallyApproved = Convert.ToBoolean(dr3["InternallyApproved"].ToString());
 
                         design.lstNotes = new List<Note>();
+                        design.lstRevisionNotes = new List<Note>();
                         if (ds.Tables[5].Rows.Count > 0)
                         {
                             foreach (DataRow drNote in ds.Tables[5].Rows)
@@ -338,7 +358,13 @@ namespace LidLaunchWebsite.Classes
                                     note.Attachment = Convert.ToString(drNote["Attachment"].ToString());
                                     note.CreatedDate = Convert.ToDateTime(drNote["CreatedDate"].ToString());
                                     note.CreatedUserId = Convert.ToInt32(drNote["CreatedUserId"].ToString());
-                                    design.lstNotes.Add(note);
+                                    if (Convert.ToBoolean(drNote["CustomerAdded"].ToString()))
+                                    {
+                                        design.lstRevisionNotes.Add(note);
+                                    } else
+                                    {
+                                        design.lstNotes.Add(note);
+                                    }                                    
                                 }
                             }
                         }
@@ -533,7 +559,7 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
-        public bool ApproveBulkOrderDigitizing(int bulkOrderId)
+        public bool ApproveBulkOrderDigitizing(int designId)
         {
             var data = new SQLData();
             try
@@ -543,7 +569,73 @@ namespace LidLaunchWebsite.Classes
                 using (data.conn)
                 {
                     SqlCommand sqlComm = new SqlCommand("ApproveBulkOrderDigitizing", data.conn);
-                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@designId", designId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+        public bool InternallyApproveBulkOrderDigitizing(int designId)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("InternallyApproveBulkOrderDigitizing", data.conn);
+                    sqlComm.Parameters.AddWithValue("@designId", designId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+        
+
+        public bool AddDigitizingRevision(int designId, string revisionComment, bool customerAdded)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("AddDigitizingRevision", data.conn);
+                    sqlComm.Parameters.AddWithValue("@designId", designId);
+                    sqlComm.Parameters.AddWithValue("@revisionComment", revisionComment);
+                    sqlComm.Parameters.AddWithValue("@customerAdded", customerAdded);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();
@@ -857,7 +949,7 @@ namespace LidLaunchWebsite.Classes
         }
 
 
-        public int CreateNote(int bulkOrderId, int bulkOrderItemId, int designId, int parentBulkOrderId, string text, string attachment, int userId)
+        public int CreateNote(int bulkOrderId, int bulkOrderItemId, int designId, int parentBulkOrderId, string text, string attachment, int userId, bool customerAdded)
         {
             var data = new SQLData();
             var noteId = 0;
@@ -876,6 +968,7 @@ namespace LidLaunchWebsite.Classes
                     sqlComm.Parameters.AddWithValue("@text", text);
                     sqlComm.Parameters.AddWithValue("@attachment", attachment);
                     sqlComm.Parameters.AddWithValue("@userId", userId);
+                    sqlComm.Parameters.AddWithValue("@userCreated", customerAdded);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();

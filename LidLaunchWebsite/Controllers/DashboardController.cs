@@ -570,15 +570,7 @@ namespace LidLaunchWebsite.Controllers
 
                         //update design digitized file in database
                         DesignData data = new DesignData();
-                        var success = data.UpdateDesignDigitizedPreview(Convert.ToInt32(designId), fileName);
-
-                        if(success)
-                        {
-                            BulkData bulkData = new BulkData();
-                            BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
-                            EmailFunctions email = new EmailFunctions();
-                            email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
-                        }
+                        var success = data.UpdateDesignDigitizedPreview(Convert.ToInt32(designId), fileName);                        
                     }
                 }
             }
@@ -771,7 +763,7 @@ namespace LidLaunchWebsite.Controllers
         }
         public ActionResult BulkOrderDetailsPopup(int bulkOrderId)
         {
-            
+             
             if (Convert.ToInt32(Session["UserID"]) > 0)
             {
                 if (checkLoggedIn())
@@ -856,7 +848,7 @@ namespace LidLaunchWebsite.Controllers
             return success.ToString();
         }
 
-        public ActionResult AddNote(int bulkOrderId, int bulkOrderItemId, int designId, int parentBulkOrderId)
+        public ActionResult AddNote(int bulkOrderId, int bulkOrderItemId, int designId, int parentBulkOrderId, bool revision, string customerAdded)
         {
             dynamic model = new ExpandoObject();
             if(bulkOrderId > 0)
@@ -864,39 +856,57 @@ namespace LidLaunchWebsite.Controllers
                 model.noteType = "bulkOrder";
                 model.idVal = bulkOrderId;
                 model.parentBulkOrderId = parentBulkOrderId;
+                model.customerAdded = customerAdded;
             }
             if(bulkOrderItemId > 0)
             {
                 model.noteType = "bulkOrderItem";
                 model.idVal = bulkOrderItemId;
                 model.parentBulkOrderId = parentBulkOrderId;
+                model.customerAdded = customerAdded;
             }
             if(designId > 0)
             {
-                model.noteType = "design";
+                if(revision)
+                {
+                    model.noteType = "designRevision";
+                }
+                else
+                {
+                    model.noteType = "design";
+                }                
                 model.idVal = designId;
                 model.parentBulkOrderId = parentBulkOrderId;
+                model.customerAdded = customerAdded;
             }
             
             return PartialView("AddNote", model);
         }
 
-        public string CreateNote(string noteType, string idVal, string parentBulkOrderId, string text, string attachment)
+        public string CreateNote(string noteType, string idVal, string parentBulkOrderId, string text, string attachment, bool customerAdded)
         {            
             BulkData data = new BulkData();
             int noteId = 0;
 
             if(noteType == "bulkOrder")
             {
-                noteId = data.CreateNote(Convert.ToInt32(idVal), 0, 0, Convert.ToInt32(parentBulkOrderId), text, attachment, 0);
+                noteId = data.CreateNote(Convert.ToInt32(idVal), 0, 0, Convert.ToInt32(parentBulkOrderId), text, attachment, 0, customerAdded);
             }
             else if (noteType == "bulkOrderItem")
             {
-                noteId = data.CreateNote(0, Convert.ToInt32(idVal), 0, Convert.ToInt32(parentBulkOrderId), text, attachment, 0);
+                noteId = data.CreateNote(0, Convert.ToInt32(idVal), 0, Convert.ToInt32(parentBulkOrderId), text, attachment, 0, customerAdded);
             }
             else if (noteType == "design")
             {
-                noteId = data.CreateNote(0, 0, Convert.ToInt32(idVal), Convert.ToInt32(parentBulkOrderId), text, attachment, 0);
+                noteId = data.CreateNote(0, 0, Convert.ToInt32(idVal), Convert.ToInt32(parentBulkOrderId), text, attachment, 0, customerAdded);
+            }
+            else if(noteType == "designRevision")
+            {
+                data.AddDigitizingRevision(Convert.ToInt32(idVal), text, customerAdded);
+                //BulkData bulkData = new BulkData();
+                //BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(parentBulkOrderId), "", "");
+                EmailFunctions email = new EmailFunctions();                
+                email.sendEmail("digitizing@lidlaunch.com", "Lid Launch", text, parentBulkOrderId + " : Revision Request", "robert@lidlaunch.com");
             }
 
             var success = noteId > 0;

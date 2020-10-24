@@ -2,7 +2,7 @@
 
 namespace LidLaunchWebsite.Models
 {
-    public class Design 
+    public class Design
     {
         public int Id { get; set; }
         public string ArtSource { get; set; }
@@ -20,7 +20,9 @@ namespace LidLaunchWebsite.Models
         public string DigitizedProductionSheet { get; set; }
         public string EMBFile { get; set; }
         public List<Note> lstNotes { get; set; }
+        public List<Note> lstRevisionNotes { get; set; }
         public bool CustomerApproved { get; set; }
-
+        public bool InternallyApproved { get; set; }
+        public bool Revision { get; set; }
     }
 }

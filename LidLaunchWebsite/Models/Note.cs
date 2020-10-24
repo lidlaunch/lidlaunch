@@ -10,6 +10,6 @@ namespace LidLaunchWebsite.Models
         public bool CustomerAdded { get; set; }
         public string Attachment { get; set; }
         public DateTime CreatedDate { get; set; }
-        public int CreatedUserId { get; set; }
+        public int CreatedUserId { get; set; }        
     }
 }

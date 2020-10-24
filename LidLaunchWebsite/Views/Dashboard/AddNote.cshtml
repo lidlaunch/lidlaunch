@@ -6,7 +6,7 @@
     <div id="notePopupInner">
         <span onclick="$('#notePopUp').hide();" class="closeButton" style="position:absolute; top:5px;right:5px;">X</span>
         <input id="noteText" type="text" placeholder="add note..." />
-        <div id="saveNote"><input type="button" value="Save Note" class="smallButton" onclick="saveNote('@Model.noteType','@Model.idVal', '@Model.parentBulkOrderId')" /></div>
+        <div id="saveNote"><input type="button" value="Save Note" class="smallButton" onclick="saveNote('@Model.noteType', '@Model.idVal', '@Model.parentBulkOrderId', '@Model.customerAdded');" /></div>
     </div>
 </div>
 

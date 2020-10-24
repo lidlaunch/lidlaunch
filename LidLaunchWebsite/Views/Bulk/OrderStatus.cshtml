@@ -58,7 +58,7 @@
     {
         <div><b>Payment Date:</b>N/A </div>
     }
-    <div><b>Your Info:</b> @Model.CustomerName - @Model.CustomerEmail - @Model.CustomerPhone</div>   
+    <div><b>Your Info:</b> @Model.CustomerName - @Model.CustomerEmail - @Model.CustomerPhone</div>
     <table>
         <tr>
             <td><div><b>Art Source:</b><br /><a href="~/Images/BulkOrderArtwork/@Model.ArtworkImage" target="_blank"><img src="~/Images/BulkOrderArtwork/@Model.ArtworkImage" style="max-height:100px;max-width:100px;" /></a></div></td>
@@ -80,29 +80,50 @@
                 </div>
             </td>
         </tr>
-    </table>   
-    
+    </table>
+
     <div class="importantSection"><b>Order Notes:</b> @Model.OrderNotes </div>
     @if (!Model.lstDesigns.Any(d => d.DigitizedFile == ""))
     {
-        <div id="orderDigizing">
-            <h2>Digitized Designs:</h2>
-            <p><i>Please note colors in these previews will often times not be the exact color(s) used in final stitching. We will match your logo colors and color requests as closely as possible.</i></p>
-            @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns)
-            {
-                <div class="orderDigitizingPreview">
-                    <a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" width="300" /></a>
-                </div>
-            }
+<div id="orderDigizing">
+    <h2>Digitized Designs:</h2>
+    <p><i>Please note colors in these previews will often times not be the exact color(s) used in final stitching. We will match your logo colors and color requests as closely as possible.</i></p>
+    @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns)
+    {
+        <div class="orderDigitizingPreview">
+            <a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" width="300" /></a>
         </div>
-        if (Model.lstDesigns.Any(d => !d.CustomerApproved))
+        if (!design.CustomerApproved)
         {
-            <div id="approveDigitizing" class="clear"><a href="javascript:void(0);" onclick="approveDigitizing(@Model.Id)">Approve Digitizing</a></div>
+            <div class="designApprovalGroup">
+                <div class="clear approveDigitizing"><input type="button" onclick="approveDigitizing(@design.Id, @Model.Id)" class="smallButton" value="Approve Digitizing"/></div>
+                <div class="clear requestRevision">
+                    <div class="revisionStartButton"><input type="button" onclick="startRevisionClick(this);" class="smallButton" value="Request Revision"/></div>
+                    <div class="hidden revisionText">
+                        <textarea class="revisionTextInput" placeholder="Enter Revision Comments Here..."></textarea>
+                        <input type="button" onclick="requestDigitizingRevision(@design.Id, $(this).closest('.designApprovalGroup').find('.revisionTextInput').val(), @Model.Id, true);" class="smallButton" value="Submit Revision"/>
+                        <input type="button" onclick="revisionCancelClick(this);" class="smallButton" value="Cancel"/>
+                    </div>
+                </div>
+                @if (design.lstRevisionNotes.Count > 0)
+                {
+                <h2>Revisions Requested:</h2>
+                <ul>
+                    @foreach (LidLaunchWebsite.Models.Note note in design.lstRevisionNotes)
+                    {
+                        <li>@note.Text</li>
+                    }
+                </ul>
+                }                
+            </div>
         }
         else
         {
-            <div id="approveDigitizing" class="clear digitizingApproved">Digitizing Approved</div>             
+            <div id="approveDigitizing" class="clear digitizingApproved">Digitizing Approved</div>
         }
+    }
+</div>
+        
     }
 
     <div class="clear" id="orderItems">
@@ -139,7 +160,7 @@
         @foreach (LidLaunchWebsite.Models.BulkOrderItem item in filteredList)
         {
             var jsonString = "";
-            
+
             if (count == filteredList.Count)
             {
                 jsonString = "{\"name\":\"" + item.ItemName + "\",\"quantity\":\"" + item.ItemQuantity + "\",\"price\":\"" + item.ItemCost + "\",\"currency\":\"USD\"}";

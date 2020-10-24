@@ -33,6 +33,14 @@ input[type=button].smallButton {
     padding: 10px;
     margin: 10px 0;
 }
+.smallButton {
+    font-size: 14px;
+    padding: 10px;
+    margin: 10px 0;
+    background: #39b91c;
+    display:block;
+    color:#fff;
+}
 
 input[type=text], input[type=password], select, input[type=number] {
     font-size: 18px;

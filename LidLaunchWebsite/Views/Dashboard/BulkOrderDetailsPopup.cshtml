@@ -89,7 +89,7 @@
                                     <td>@item.ItemQuantity</td>
                                     <td>@item.ItemCost</td>
                                     <td>@item.DesignId</td>
-                                    <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                                    <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
                                     <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.BulkRework.Quantity, note: '@item.BulkRework.Note', bulkReworkId: @item.BulkRework.Id });">@item.BulkRework.Quantity : @item.BulkRework.Note</a></td>
                                 </tr>
                             }
@@ -100,7 +100,7 @@
                                     <td>@item.ItemQuantity</td>
                                     <td>@item.ItemCost</td>
                                     <td>@item.DesignId</td>
-                                    <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                                    <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
                                     <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.BulkRework.Quantity, note: '@item.BulkRework.Note', bulkReworkId: @item.BulkRework.Id });">@item.BulkRework.Quantity : @item.BulkRework.Note</a></td>
                                 </tr>
                             }
@@ -112,7 +112,7 @@
                                 <td>@item.ItemQuantity</td>
                                 <td>@item.ItemCost</td>
                                 <td>@item.DesignId</td>
-                                <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                                <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
                                 <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.ItemQuantity, note: '', bulkReworkid: 0 });"><input type="button" value="Rework" class="smallButton" /></a></td>
                             </tr>
                         }
@@ -142,7 +142,7 @@
                     </tr>
                 }
             </table>
-            <a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: @Model.Id, bulkOrderItemId: 0 , designId: 0, parentBulkOrderId: @Model.Id });"><input type="button" value="Add Note" class="smallButton" /></a>
+            <a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: @Model.Id, bulkOrderItemId: 0 , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false });"><input type="button" value="Add Note" class="smallButton" /></a>
         </div>
         <div id="bulkOrderDesigns">
             <h3>Designs</h3>
@@ -160,38 +160,57 @@
                         <td>Add Note</td>
                     </tr>
                 </thead>
-                @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns)
-                {
-            <tr>
-                <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>
-                <td>@design.Height</td>
-                <td>@design.Width</td>
-                <td><a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName" target="_blank">@design.DigitizedFile</a></td>
-                <td><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" /></a></td>
-                <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
-                <td><a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">@design.EMBFile</a></td>
-                <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id });"><input type="button" value="Add Note" class="smallButton" /></a></td>
-            </tr>
-                    if (design.lstNotes.Count > 0)
+                <tbody>
+                    @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns)
                     {
-                        foreach (LidLaunchWebsite.Models.Note note in design.lstNotes)
+                    <tr>
+                        @if (!design.InternallyApproved)
                         {
-                            <tr>
-                                <td></td>
-                                <td colspan="3"><i class="noteDate">@note.CreatedDate</i> : @note.Text</td>
-                                <td>@note.Attachment</td>
-                            </tr>
+                            <td><input type="button" onclick="internallyApproveDigitizing(@design.Id, @Model.Id)" value="Approve" class="smallButton" /></td>
+                        }
+                        else
+                        {
+                        <td>Internally Approved</td>
+                        }
+                        <td><input type="button" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: true, customerAdded: false });" class="smallButton" value="Revision" /></td>
+                        <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>
+                        <td>@design.Height</td>
+                        <td>@design.Width</td>
+                        <td><a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName" target="_blank">@design.DigitizedFile</a></td>
+                        <td><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" /></a></td>
+                        <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
+                        <td><a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">@design.EMBFile</a></td>
+                        <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                    </tr>
+                        if (design.lstNotes.Count > 0)
+                        {
+                            foreach (LidLaunchWebsite.Models.Note note in design.lstNotes)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td colspan="3"><i class="noteDate">INTERNAL NOTES: @note.CreatedDate</i> : @note.Text</td>
+                                    <td>@note.Attachment</td>
+                                </tr>
+                            }
+                        }
+                        if (design.lstRevisionNotes.Count > 0)
+                        {
+                            foreach (LidLaunchWebsite.Models.Note note in design.lstRevisionNotes)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td colspan="3"><i class="noteDate">CUSTOMER NOTES: @note.CreatedDate</i> : @note.Text</td>
+                                    <td>@note.Attachment</td>
+                                </tr>
+                            }
                         }
                     }
-
-
-                }
-
-            </table>
+                    </tbody>
+                </table>
         </div>
         <div id="noteHolder"></div>
         <div id="bulkDesignSelectHolder"></div>
-        <div id="bulkReworkHolder"></div>
+        <div id="bulkReworkHolder"></div>        
         
     </div><!--bulkOrderDetailsPopupContent-->
 </div><!--/bulkOrderDetailsPopup-->

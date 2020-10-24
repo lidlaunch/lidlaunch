@@ -477,14 +477,14 @@ function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, p
     });
 }
 
-function saveNote(noteType, idVal, parentBulkOrderId) {
+function saveNote(noteType, idVal, parentBulkOrderId, customerAdded) {
     $.ajax({
         type: "POST",
         url: '/Dashboard/CreateNote',
         contentType: false,
         processData: false,
         data: JSON.stringify({
-            noteType: noteType, idVal: idVal, parentBulkOrderId: parentBulkOrderId, text: $('#noteText').val(), attachment: ''
+            noteType: noteType, idVal: idVal, parentBulkOrderId: parentBulkOrderId, text: $('#noteText').val(), attachment: '', customerAdded: customerAdded
         }),
         contentType: "application/json",
         success: function (result) {
@@ -501,15 +501,86 @@ function saveNote(noteType, idVal, parentBulkOrderId) {
     });
 }
 
+function internallyApproveDigitizing(id, bulkOrderId) {
+    $.ajax({
+        type: "POST",
+        url: '/Bulk/InternallyApproveDigitizing',
+        contentType: false,
+        processData: false,
+        data: JSON.stringify({
+            id: id,
+            bulkOrderId: bulkOrderId
+        }),
+        contentType: "application/json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('error.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                //reload bulk order window   
+                window.location.reload();
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error.', 'error', false);
+        }
+    });
+}
 
-function approveDigitizing(bulkOrderId) {
+function approveDigitizing(bulkOrderId, id) {
     $.ajax({
         type: "POST",
         url: '/Bulk/ApproveDigitizing',
         contentType: false,
         processData: false,
         data: JSON.stringify({
-            id: bulkOrderId
+            id: id,
+            bulkOrderId: bulkOrderId
+        }),
+        contentType: "application/json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('error.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                //reload bulk order window   
+                window.location.reload();
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error.', 'error', false);
+        }
+    });
+}
+
+function revisionCancelClick(that) {
+    var parent = $(that).closest('.designApprovalGroup');
+    $(parent).find('.approveDigitizing').show();
+    $(parent).find('.revisionText').hide();
+    $(parent).find('.revisionStartButton').show();
+}
+
+function startRevisionClick(that) {
+    var parent = $(that).closest('.designApprovalGroup');
+    $(parent).find('.approveDigitizing').hide();
+    $(parent).find('.revisionText').show();
+    $(parent).find('.revisionStartButton').hide();
+}
+
+
+function requestDigitizingRevision(id, revisionText, bulkOrderId, customerAdded) {
+    $.ajax({
+        type: "POST",
+        url: '/Bulk/RequestDigitizingRevision',
+        contentType: false,
+        processData: false,
+        data: JSON.stringify({
+            id: id,
+            text: revisionText,
+            bulkOrderId: bulkOrderId,
+            customerAdded: customerAdded
         }),
         contentType: "application/json",
         success: function (result) {

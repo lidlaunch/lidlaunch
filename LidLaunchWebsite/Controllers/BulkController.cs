@@ -82,13 +82,49 @@ namespace LidLaunchWebsite.Controllers
             return Newtonsoft.Json.JsonConvert.SerializeObject(lstDesigns);  
         }
 
+        public string RequestDigitizingRevision(string id, string text, string bulkOrderId, bool customerAdded)
+        {
+            BulkData data = new BulkData();
+            var success = data.AddDigitizingRevision(Convert.ToInt32(id), text, customerAdded);
+            if(success)
+            {
+                BulkData bulkData = new BulkData();
+                BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
+                EmailFunctions email = new EmailFunctions();
+                email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.revisionRequestedEmail(text), "Your Artwork Revision Request", "");
+                email.sendEmail("digitizing@lidlaunch.com", "Lid Launch", text, bulkOrderId + " : Revision Request", "robert@lidlaunch.com");
+            }
+            return success.ToString();
+        }
 
+        public string InternallyApproveDigitizing(string id, string bulkOrderId)
+        {
+            BulkData data = new BulkData();
+            var success = data.InternallyApproveBulkOrderDigitizing(Convert.ToInt32(id));
+            if (success)
+            {
+                BulkData bulkData = new BulkData();
+                BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
+                EmailFunctions email = new EmailFunctions();
+                if (!bulkOrder.lstDesigns.Any(d => !d.InternallyApproved))
+                {
+                    email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
+                }
+            }
+            return success.ToString();
+        }
 
-
-        public string ApproveDigitizing(string id)
+        public string ApproveDigitizing(string id, string bulkOrderId)
         {
             BulkData data = new BulkData();
             var success = data.ApproveBulkOrderDigitizing(Convert.ToInt32(id));
+            if (success)
+            {
+                BulkData bulkData = new BulkData();
+                BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
+                EmailFunctions email = new EmailFunctions();
+                email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingApproved(), "You Have Approved Your Artwork Previews", "");
+            }
             return success.ToString();
         }
 

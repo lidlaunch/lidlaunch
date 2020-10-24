@@ -41,11 +41,19 @@ namespace LidLaunchWebsite.Models
         public string ShipToZip { get; set; }
         public string ShipToPhone { get; set; }
         public string BillToName { get; set; }
-        public string BilltoAddress { get; set; }
+        public string BillToAddress { get; set; }
         public string BillToCity { get; set; }
         public string BillToState { get; set; }
         public string BillToZip { get; set; }
         public string BillToPhone { get; set; }
+        public bool ReadyForProduction { get; set; }
+        public int BackStitchingDesignId { get; set; }
+        public int LeftStitchingDesignId { get; set; }
+        public int RightStitchingDesignId { get; set; }
+        public string BackStitchingDesignComment { get; set; }
+        public string LeftStitchingDesignComment { get; set; }
+        public string RightStitchingDesignComment { get; set; }
+        public bool DigitizingEmailSent { get; set; }
     }
 
     public class BulkBatchOrder
