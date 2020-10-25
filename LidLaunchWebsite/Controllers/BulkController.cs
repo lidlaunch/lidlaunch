@@ -114,6 +114,25 @@ namespace LidLaunchWebsite.Controllers
             return success.ToString();
         }
 
+        public string InternallyApproveBulkOrder(string id, string approve)
+        {
+            BulkData data = new BulkData();
+            var success = data.InternallyApproveBulkOrder(Convert.ToInt32(id), Convert.ToBoolean(approve));
+            //if (success)
+            //{
+            //    BulkData bulkData = new BulkData();
+            //    BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(id), "", "");
+            //    EmailFunctions email = new EmailFunctions();
+            //    if (!bulkOrder.lstDesigns.Any(d => !d.InternallyApproved))
+            //    {
+            //        email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
+            //    }
+            //}
+            return success.ToString();
+        }
+
+        
+
         public string ApproveDigitizing(string id, string bulkOrderId)
         {
             BulkData data = new BulkData();

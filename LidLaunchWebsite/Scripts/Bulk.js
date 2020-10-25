@@ -501,6 +501,34 @@ function saveNote(noteType, idVal, parentBulkOrderId, customerAdded) {
     });
 }
 
+function InternallyApproveBulkOrder(id, approve) {
+    $.ajax({
+        type: "POST",
+        url: '/Bulk/InternallyApproveBulkOrder',
+        contentType: false,
+        processData: false,
+        data: JSON.stringify({
+            id: id,
+            approve: approve
+        }),
+        contentType: "application/json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('error.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                //reload bulk order window   
+                showBulkOrderDetailsPopup(id);
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error.', 'error', false);
+        }
+    });
+}
+
+
 function internallyApproveDigitizing(id, bulkOrderId) {
     $.ajax({
         type: "POST",
@@ -519,7 +547,7 @@ function internallyApproveDigitizing(id, bulkOrderId) {
             } else {
                 //set the url for the file link and show the link 
                 //reload bulk order window   
-                window.location.reload();
+                showBulkOrderDetailsPopup(bulkOrderId);
             }
         },
         error: function (xhr, status, p3, p4) {
@@ -528,7 +556,7 @@ function internallyApproveDigitizing(id, bulkOrderId) {
     });
 }
 
-function approveDigitizing(bulkOrderId, id) {
+function approveDigitizing(id, bulkOrderId) {
     $.ajax({
         type: "POST",
         url: '/Bulk/ApproveDigitizing',

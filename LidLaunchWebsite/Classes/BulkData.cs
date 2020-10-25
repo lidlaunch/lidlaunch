@@ -590,6 +590,40 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
+
+        public bool InternallyApproveBulkOrder(int bulkOrderId, bool approve)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("InternallyApproveBulkOrder", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@approve", approve);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
         public bool InternallyApproveBulkOrderDigitizing(int designId)
         {
             var data = new SQLData();

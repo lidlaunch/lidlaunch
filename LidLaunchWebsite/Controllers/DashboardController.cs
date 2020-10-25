@@ -570,7 +570,18 @@ namespace LidLaunchWebsite.Controllers
 
                         //update design digitized file in database
                         DesignData data = new DesignData();
-                        var success = data.UpdateDesignDigitizedPreview(Convert.ToInt32(designId), fileName);                        
+                        var success = data.UpdateDesignDigitizedPreview(Convert.ToInt32(designId), fileName);
+
+                        if (success)
+                        {
+                            BulkData bulkData = new BulkData();
+                            BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
+                            if(bulkOrder.lstDesigns.Find(d => d.Id == Convert.ToInt32(designId)).InternallyApproved && !bulkOrder.lstDesigns.Find(d => d.Id == Convert.ToInt32(designId)).CustomerApproved && !bulkOrder.OrderComplete)
+                            {
+                                EmailFunctions email = new EmailFunctions();
+                                email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
+                            }
+                        }
                     }
                 }
             }
