@@ -46,7 +46,9 @@ namespace LidLaunchWebsite.Controllers
                     newItem.quantity = bulkItem.ItemQuantity.ToString();
                     items.Add(newItem);
                 }
-                var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderPaymentEmail(items, bulkOrder.OrderTotal.ToString(), bulkOrder.Id.ToString(), bulkOrder.PaymentGuid), "Lid Launch Payment Confirmation", "");
+                var dateFrom = data.AddBusinessDays(DateTime.Now, 10).ToString("MM/dd/yyyy");
+                var dateTo = data.AddBusinessDays(DateTime.Now, 14).ToString("MM/dd/yyyy");
+                var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderPaymentEmail(items, bulkOrder.OrderTotal.ToString(), bulkOrder.Id.ToString(), bulkOrder.PaymentGuid, dateFrom + " - " + dateTo), "Lid Launch Payment Confirmation", "");
             }
             
             return View();
@@ -92,7 +94,7 @@ namespace LidLaunchWebsite.Controllers
                 BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
                 EmailFunctions email = new EmailFunctions();
                 email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.revisionRequestedEmail(text), "Your Artwork Revision Request", "");
-                email.sendEmail("digitizing@lidlaunch.com", "Lid Launch", text, bulkOrderId + " : Revision Request", "robert@lidlaunch.com");
+                email.sendEmail("digitizing@lidlaunch.com", "Lid Launch", text, bulkOrderId + " : Customer Revision Request", "robert@lidlaunch.com");
             }
             return success.ToString();
         }
@@ -147,7 +149,7 @@ namespace LidLaunchWebsite.Controllers
             return success.ToString();
         }
 
-        public string CreateBulkOrder(string items, string email, string artworkPlacement, string orderNotes, string orderTotal, string paymentCompleteGuid, string shippingCost, HttpPostedFileBase fileContent, string billToState, string billToAddress, string billToZip, string billToPhone, string billToCity, string billToName, string shipToState, string shipToAddress, string shipToZip, string shipToPhone, string shipToCity, string shipToName)
+        public string CreateBulkOrder(string items, string email, string artworkPlacement, string orderNotes, string orderTotal, string paymentCompleteGuid, string shippingCost, HttpPostedFileBase fileContent, string billToState, string billToAddress, string billToZip, string billToPhone, string billToCity, string billToName, string shipToState, string shipToAddress, string shipToZip, string shipToPhone, string shipToCity, string shipToName, string backStitching, string leftSideStitching, string rightSideStitching, string backStitchingComment, string leftSideStitchingComment, string rightSideStitchingComment)
         {
             try
             {
@@ -193,7 +195,7 @@ namespace LidLaunchWebsite.Controllers
 
                 BulkData bulkData = new BulkData();
                 var paymentGuid = Guid.NewGuid().ToString();
-                var orderId = bulkData.CreateBulkOrder(shipToName, email, shipToPhone, Convert.ToDecimal(orderTotal), orderNotes, artworkPath, artworkPlacement, cartItems, paymentCompleteGuid, paymentGuid, Convert.ToDecimal(shippingCost), shipToName, shipToAddress, shipToCity, shipToState, shipToZip, shipToPhone, billToName, billToAddress, billToCity, billToState, billToZip, billToPhone);
+                var orderId = bulkData.CreateBulkOrder(shipToName, email, shipToPhone, Convert.ToDecimal(orderTotal), orderNotes, artworkPath, artworkPlacement, cartItems, paymentCompleteGuid, paymentGuid, Convert.ToDecimal(shippingCost), shipToName, shipToAddress, shipToCity, shipToState, shipToZip, shipToPhone, billToName, billToAddress, billToCity, billToState, billToZip, billToPhone, Convert.ToBoolean(backStitching), Convert.ToBoolean(leftSideStitching), Convert.ToBoolean(rightSideStitching), backStitchingComment, leftSideStitchingComment, rightSideStitchingComment);
 
                 DesignData designData = new DesignData();
                 var designId = designData.CreateDesign(artworkPath, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M);

@@ -186,6 +186,13 @@ function processPayment() {
     var billZip = $('#txtBillingZip').val();
     var billPhone = $('#txtBillingPhone').val();
 
+    var backStitching = $('#chkBackStitching').prop("checked");
+    var leftSideStitching = $('#chkLeftSideStitching').prop("checked");
+    var rightSideStitching = $('#chkRightSideStitching').prop("checked");
+    var backStitchingComment = $('#txtBackStitching').val();
+    var rightSideStitchingComment = $('#txtRightSideStitching').val();
+    var leftSideStitchingComment = $('#txtLeftSideStitching').val();
+
     var shippingAddressJson = '{ "ShipToState" : "' + shipState + '", "ShipToStreet" : "' + shipAddress + '", "ShipToZip" : "' + shipZip + '", "ShipToCity" : "' + shipCity + '", "ShipToPhone" : "' + shipPhone + '", "ShipToFirstName" : "' + shipFirstName + '", "ShipToLastName" : "' + shipLastName + '" }';
     var billingAddressJson = "";
     if ($('#rdUseSameAsShipping').prop('checked') == true) {
@@ -231,6 +238,12 @@ function processPayment() {
     data.append("orderNotes", orderNotes);
     data.append("artworkPlacement", artworkPlacement);
     data.append("shippingCost", shippingcost);
+    data.append("backStitching", backStitching);
+    data.append("leftSideStitching", leftSideStitching);
+    data.append("rightSideStitching", rightSideStitching);
+    data.append("backStitchingComment", backStitchingComment);
+    data.append("leftSideStitchingComment", leftSideStitchingComment);
+    data.append("rightSideStitchingComment", rightSideStitchingComment);
     showLoading();
 
 

@@ -84,7 +84,7 @@ namespace LidLaunchWebsite.Controllers
             return View();
         }
 
-        public string PaymentWithCreditCard(string cartItems, string ccNumber, string ccExpMM, string ccExpYY, string ccV, string orderTotal, string billingAddress, string shippingAddress, string email,  string isBulkOrder, string orderNotes, string artworkPlacement, string shippingCost)
+        public string PaymentWithCreditCard(string cartItems, string ccNumber, string ccExpMM, string ccExpYY, string ccV, string orderTotal, string billingAddress, string shippingAddress, string email,  string isBulkOrder, string orderNotes, string artworkPlacement, string shippingCost, string backStitching, string leftSideStitching, string rightSideStitching, string backStitchingComment, string leftSideStitchingComment, string rightSideStitchingComment)
         {
 
             string paymentGuid = Guid.NewGuid().ToString();
@@ -219,7 +219,7 @@ namespace LidLaunchWebsite.Controllers
                             if (bulkOrder)
                             {
                                 BulkController bc = new BulkController();
-                                string orderResult = bc.CreateBulkOrder(cartItems, email, artworkPlacement, orderNotes, orderTotal, paymentGuid, shippingCost, fileContent, billAddress.State, billAddress.Street, billAddress.Zip, billAddress.PhoneNum, billAddress.City, billAddress.FirstName + " " + billAddress.LastName, shipAddress.ShipToState, shipAddress.ShipToStreet, shipAddress.ShipToZip, shipAddress.ShipToPhone, shipAddress.ShipToCity, shipAddress.ShipToFirstName + " " + shipAddress.ShipToLastName);
+                                string orderResult = bc.CreateBulkOrder(cartItems, email, artworkPlacement, orderNotes, orderTotal, paymentGuid, shippingCost, fileContent, billAddress.State, billAddress.Street, billAddress.Zip, billAddress.PhoneNum, billAddress.City, billAddress.FirstName + " " + billAddress.LastName, shipAddress.ShipToState, shipAddress.ShipToStreet, shipAddress.ShipToZip, shipAddress.ShipToPhone, shipAddress.ShipToCity, shipAddress.ShipToFirstName + " " + shipAddress.ShipToLastName, backStitching, leftSideStitching, rightSideStitching, backStitchingComment, leftSideStitchingComment, rightSideStitchingComment);
                             }
                             else
                             {

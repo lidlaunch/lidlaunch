@@ -916,8 +916,11 @@ namespace LidLaunchWebsite.Controllers
                 data.AddDigitizingRevision(Convert.ToInt32(idVal), text, customerAdded);
                 //BulkData bulkData = new BulkData();
                 //BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(parentBulkOrderId), "", "");
-                EmailFunctions email = new EmailFunctions();                
-                email.sendEmail("digitizing@lidlaunch.com", "Lid Launch", text, parentBulkOrderId + " : Revision Request", "robert@lidlaunch.com");
+                EmailFunctions email = new EmailFunctions();      
+                if(!customerAdded)
+                {
+                    email.sendEmail("digitizing@lidlaunch.com", "Lid Launch", text, parentBulkOrderId + " : Revision Request", "");
+                }                
             }
 
             var success = noteId > 0;

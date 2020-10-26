@@ -31,9 +31,23 @@
                     <td><input type="file" class="InfoFile" /><br /><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
                     <td><input type="file" class="EMBFile" /><br /><a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">@design.EMBFile</a></td>
                 </tr>
-                foreach (LidLaunchWebsite.Models.Note note in design.lstNotes)
+                if (design.lstNotes.Count > 0)
                 {
-                    <tr><td colspan="8">@note.CreatedDate : @note.Text</td></tr>
+                    foreach (LidLaunchWebsite.Models.Note note in design.lstNotes)
+                    {
+                        <tr>                            
+                            <td colspan="8"><i class="noteDate">INTERNAL NOTES: @note.CreatedDate</i> : @note.Text</td>                            
+                        </tr>
+                    }
+                }
+                if (design.lstRevisionNotes.Count > 0)
+                {
+                    foreach (LidLaunchWebsite.Models.Note note in design.lstRevisionNotes)
+                    {
+                        <tr>
+                            <td colspan="8"><i class="noteDate">CUSTOMER NOTES: @note.CreatedDate</i> : @note.Text</td>
+                        </tr>
+                    }
                 }
                 <tr style="height:1px; background:#000;"><td colspan="8"></td></tr>
             }

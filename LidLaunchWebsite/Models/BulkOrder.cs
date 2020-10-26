@@ -47,12 +47,12 @@ namespace LidLaunchWebsite.Models
         public string BillToZip { get; set; }
         public string BillToPhone { get; set; }
         public bool ReadyForProduction { get; set; }
-        public int BackStitchingDesignId { get; set; }
-        public int LeftStitchingDesignId { get; set; }
-        public int RightStitchingDesignId { get; set; }
-        public string BackStitchingDesignComment { get; set; }
-        public string LeftStitchingDesignComment { get; set; }
-        public string RightStitchingDesignComment { get; set; }
+        public bool BackStitching { get; set; }
+        public bool LeftStitching { get; set; }
+        public bool RightStitching { get; set; }
+        public string BackStitchingComment { get; set; }
+        public string LeftStitchingComment { get; set; }
+        public string RightStitchingComment { get; set; }
         public bool DigitizingEmailSent { get; set; }
     }
 

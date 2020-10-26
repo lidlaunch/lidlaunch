@@ -60,6 +60,28 @@
                     <td>Art Source:</td>
                     <td><img src="~/Images/BulkOrderArtwork/@Model.ArtworkImage" style="max-height:200px; max-width:200px;" /></td>
                 </tr>
+                @if (Model.BackStitching)
+                {
+                    <tr>
+                        <td>Back Stitching:</td>
+                        <td>@Model.BackStitchingComment</td>
+                    </tr>
+                }
+                @if (Model.LeftStitching)
+                {
+                    <tr>
+                        <td>Left Stitching:</td>
+                        <td>@Model.LeftStitchingComment</td>
+                    </tr>
+                }
+                @if (Model.RightStitching)
+                {
+                    <tr>
+                        <td>Right Stitching:</td>
+                        <td>@Model.RightStitchingComment</td>
+                    </tr>
+                }
+
                 <tr>
                     <td>Order Total:</td>
                     <td>@Model.OrderTotal</td>
@@ -74,7 +96,7 @@
                 </tr>
                 <tr>
                     <td>Shipped:</td>
-                    <td><input type="text" placeholder="tracking #" id="txtTrackingNumber" value="@Model.TrackingNumber"/><input type="button" value="Mark Order As Shipped" class="smallButton" onclick="setBulkOrderAsShipped(@Model.Id)"/></td>
+                    <td><input type="text" placeholder="tracking #" id="txtTrackingNumber" value="@Model.TrackingNumber" /><input type="button" value="Mark Order As Shipped" class="smallButton" onclick="setBulkOrderAsShipped(@Model.Id)" /></td>
                 </tr>
             </table>  
         </div><!--/bulkOrderDetails-->

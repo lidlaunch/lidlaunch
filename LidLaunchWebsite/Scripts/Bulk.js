@@ -218,6 +218,24 @@ function updateBulkTotals() {
 
     currentTotalCost = currentTotalBulkHatsCount * currentPrice;
 
+
+
+    if ($('#chkBackStitching').prop("checked")) {
+        currentTotalCost += (5 * currentTotalBulkHatsCount);
+        productList = productList + '{"name":"Back Stitching","quantity":' + currentTotalBulkHatsCount + ',"price":"5","currency":"USD"},';
+    }
+
+    if ($('#chkLeftSideStitching').prop("checked")) {
+        currentTotalCost += (5 * currentTotalBulkHatsCount);
+        productList = productList + '{"name":"Left Side Stitching","quantity":' + currentTotalBulkHatsCount + ',"price":"5","currency":"USD"},';
+    }
+
+    if ($('#chkRightSideStitching').prop("checked")) {
+        currentTotalCost += (5 * currentTotalBulkHatsCount);
+        productList = productList + '{"name":"Right Side Stitching","quantity":' + currentTotalBulkHatsCount + ',"price":"5","currency":"USD"},';
+    }
+
+
     var hasArtFee = false;
 
     if (currentTotalBulkHatsCount < 12 && $('#artworkPresetup').prop("checked") == false) {
@@ -243,8 +261,9 @@ function updateBulkTotals() {
     }
 
     for (var i = 0; i < length; i++) {
-
-        currentBulkProductList[i].price = currentPrice;
+        if (currentBulkProductList[i].name != 'Back Stitching' && currentBulkProductList[i].name != 'Left Side Stitching' && currentBulkProductList[i].name != 'Right Side Stitching') {
+            currentBulkProductList[i].price = currentPrice;
+        }        
     }
 
     $('#bottomTotal').text('$' + currentTotalCost);
@@ -350,6 +369,13 @@ function verifyAndShowPaypal() {
     var orderNotes = $('#txtDetails').val();
     var shippingCost = $('#shippingCost').text();
 
+    var backStitching = $('#chkBackStitching').prop("checked");
+    var leftSideStitching = $('#chkLeftSideStitching').prop("checked");
+    var rightSideStitching = $('#chkRightSideStitching').prop("checked");
+    var backStitchingComment = $('#txtBackStitching').val();
+    var rightSideStitchingComment = $('#txtRightSideStitching').val();
+    var leftSideStitchingComment = $('#txtLeftSideStitching').val();
+
     if ($('#artworkPresetup').prop("checked")) {
         orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
     }
@@ -411,6 +437,12 @@ function verifyAndShowPaypal() {
         data.append("shipToPhone", shipPhone);
         data.append("shipToCity", shipCity);
         data.append("shipToName", shipFirstName + ' ' + shipLastName);
+        data.append("backStitching", backStitching);
+        data.append("leftSideStitching", leftSideStitching);
+        data.append("rightSideStitching", rightSideStitching);
+        data.append("backStitchingComment", backStitchingComment);
+        data.append("leftSideStitchingComment", leftSideStitchingComment);
+        data.append("rightSideStitchingComment", rightSideStitchingComment);
         showLoading();
         $.ajax({
             type: "POST",
@@ -450,6 +482,7 @@ function processBulkPaymentShowPaypal(total, paymentCompleteGuid, shippingCost, 
 }
 
 function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, parentBulkOrderId, parentBulkOrderBatchId, reworkId) {
+    showLoading();
     $.ajax({
         type: "POST",
         url: '/Dashboard/CreateBulkRework',
@@ -464,9 +497,10 @@ function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, p
                 //do nothing
                 displayPopupNotification('error.', 'error', false);
             } else {
+                hideLoading();
                 if (bulkOrderBatchId != '' && bulkOrderBatchId != '0') {
                     alert('show the bulk order batch screen for batch id= ' + parentBulkOrderBatchId);
-                } else {
+                } else {                    
                     showBulkOrderDetailsPopup(parentBulkOrderId);
                 }
             }
@@ -478,6 +512,7 @@ function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, p
 }
 
 function saveNote(noteType, idVal, parentBulkOrderId, customerAdded) {
+    showLoading();
     $.ajax({
         type: "POST",
         url: '/Dashboard/CreateNote',
@@ -492,6 +527,7 @@ function saveNote(noteType, idVal, parentBulkOrderId, customerAdded) {
                 //do nothing
                 displayPopupNotification('error.', 'error', false);
             } else {
+                hideLoading();
                 showBulkOrderDetailsPopup(parentBulkOrderId);
             }
         },
@@ -502,6 +538,7 @@ function saveNote(noteType, idVal, parentBulkOrderId, customerAdded) {
 }
 
 function InternallyApproveBulkOrder(id, approve) {
+    showLoading();
     $.ajax({
         type: "POST",
         url: '/Bulk/InternallyApproveBulkOrder',
@@ -519,6 +556,7 @@ function InternallyApproveBulkOrder(id, approve) {
             } else {
                 //set the url for the file link and show the link 
                 //reload bulk order window   
+                hideLoading();
                 showBulkOrderDetailsPopup(id);
             }
         },
@@ -530,6 +568,7 @@ function InternallyApproveBulkOrder(id, approve) {
 
 
 function internallyApproveDigitizing(id, bulkOrderId) {
+    showLoading();
     $.ajax({
         type: "POST",
         url: '/Bulk/InternallyApproveDigitizing',
@@ -547,6 +586,7 @@ function internallyApproveDigitizing(id, bulkOrderId) {
             } else {
                 //set the url for the file link and show the link 
                 //reload bulk order window   
+                hideLoading();
                 showBulkOrderDetailsPopup(bulkOrderId);
             }
         },
@@ -557,6 +597,7 @@ function internallyApproveDigitizing(id, bulkOrderId) {
 }
 
 function approveDigitizing(id, bulkOrderId) {
+    showLoading();
     $.ajax({
         type: "POST",
         url: '/Bulk/ApproveDigitizing',
@@ -599,6 +640,7 @@ function startRevisionClick(that) {
 
 
 function requestDigitizingRevision(id, revisionText, bulkOrderId, customerAdded) {
+    showLoading();
     $.ajax({
         type: "POST",
         url: '/Bulk/RequestDigitizingRevision',
@@ -629,6 +671,7 @@ function requestDigitizingRevision(id, revisionText, bulkOrderId, customerAdded)
 
 
 function createBulkOrderBatch() {
+    showLoading();
     $.ajax({
         type: "POST",
         url: '/Bulk/CreateBulkOrderBatch',
@@ -663,6 +706,43 @@ function togglePresetArtwork() {
         updateBulkTotals();
     }
 }
+
+function toggleBackStitching() {
+    if ($('#chkBackStitching').prop("checked")) {
+        $('#chkBackStitching').prop("checked", false);
+        //$('#bulkArtwork').show();
+        updateBulkTotals();
+    } else {
+        $('#chkBackStitching').prop("checked", true);
+        //$('#bulkArtwork').hide();
+        updateBulkTotals();
+    }
+}
+
+function toggleRightSideStitching() {
+    if ($('#chkRightSideStitching').prop("checked")) {
+        $('#chkRightSideStitching').prop("checked", false);
+        //$('#bulkArtwork').show();
+        updateBulkTotals();
+    } else {
+        $('#chkRightSideStitching').prop("checked", true);
+        //$('#bulkArtwork').hide();
+        updateBulkTotals();
+    }
+}
+
+function toggleLeftSideStitching() {
+    if ($('#chkLeftSideStitching').prop("checked")) {
+        $('#chkLeftSideStitching').prop("checked", false);
+        //$('#bulkArtwork').show();
+        updateBulkTotals();
+    } else {
+        $('#chkLeftSideStitching').prop("checked", true);
+        //$('#bulkArtwork').hide();
+        updateBulkTotals();
+    }
+}
+
 
 
 function changeBulkOrderSection(section) {
@@ -794,6 +874,7 @@ function showBulkOrderDetailsPopup(bulkOrderId) {
 
 
 function setBulkOrderAsShipped(bulkOrderId) {
+    showLoading();
     $.ajax({
         type: "POST",
         url: '/Bulk/SetBulkOrderAsShipped',
@@ -811,6 +892,7 @@ function setBulkOrderAsShipped(bulkOrderId) {
             } else {
                 //set the url for the file link and show the link 
                 //reload bulk order window   
+                hideLoading();
                 showBulkOrderDetailsPopup(bulkOrderId);
             }
         },
@@ -821,6 +903,7 @@ function setBulkOrderAsShipped(bulkOrderId) {
 }
 
 function searchBulkDesigns() {
+    showLoading();
     $.ajax({
         type: "POST",
         url: '/Bulk/SearchBulkDesigns',
@@ -837,6 +920,7 @@ function searchBulkDesigns() {
             } else {
                 //loop through the results and show them all to chose from
                 //showBulkOrderDetailsPopup(bulkOrderId);
+                hideLoading();
                 var designs = JSON.parse(result);
                 for (i = 0; i < designs.length; i++) {
                     $('#designImageHolder').append('<tr><td><img src="https://lidlaunch.com/Images/DesignImages/Digitizing/Preview/' + designs[i].DigitizedPreview + '" widht="200" height="200" onclick="setBulkDesign(' + designs[i].Id + ')"/></td></tr>');
@@ -850,6 +934,7 @@ function searchBulkDesigns() {
 }
 
 function setBulkDesign(designId) {
+    showLoading();
     var bulkOrderId = $('#BulkOrderId').text();
     $.ajax({
         type: "POST",
@@ -868,6 +953,7 @@ function setBulkDesign(designId) {
             } else {
                 //set the url for the file link and show the link 
                 //reload bulk order window   
+                hideLoading();
                 showBulkOrderDetailsPopup(bulkOrderId);
             }
         },

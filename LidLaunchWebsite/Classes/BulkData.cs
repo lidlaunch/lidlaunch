@@ -10,7 +10,7 @@ namespace LidLaunchWebsite.Classes
 {
     public class BulkData
     {
-        public int CreateBulkOrder(string name, string email, string phoneNumber, decimal orderTotal, string artworkNotes, string artworkImage, string artworkPosition, List<PaypalItem> items, string paymentCompleteGuid, string paymentGuid, decimal shippingCost, string shipToName, string shipToAddress, string shipToCity, string shipToState, string shipToZip, string shipToPhone, string billToName, string billToAddress, string billToCity, string billToState, string billToZip, string billToPhone)
+        public int CreateBulkOrder(string name, string email, string phoneNumber, decimal orderTotal, string artworkNotes, string artworkImage, string artworkPosition, List<PaypalItem> items, string paymentCompleteGuid, string paymentGuid, decimal shippingCost, string shipToName, string shipToAddress, string shipToCity, string shipToState, string shipToZip, string shipToPhone, string billToName, string billToAddress, string billToCity, string billToState, string billToZip, string billToPhone, bool backStitching, bool leftSideStitching, bool rightSideStitching, string backStitchingComment, string leftSideStitchingComment, string rightSideStitchingComment)
         {
             var data = new SQLData();
             var orderId = 0;
@@ -43,6 +43,12 @@ namespace LidLaunchWebsite.Classes
                     sqlComm.Parameters.AddWithValue("@billToState", billToState);
                     sqlComm.Parameters.AddWithValue("@billToZip", billToZip);
                     sqlComm.Parameters.AddWithValue("@billToPhone", billToPhone);
+                    sqlComm.Parameters.AddWithValue("@backStitching", backStitching);
+                    sqlComm.Parameters.AddWithValue("@leftStitching", leftSideStitching);
+                    sqlComm.Parameters.AddWithValue("@rightStitching", rightSideStitching);
+                    sqlComm.Parameters.AddWithValue("@backStitchingComment", backStitchingComment);
+                    sqlComm.Parameters.AddWithValue("@leftStitchingComment", leftSideStitchingComment);
+                    sqlComm.Parameters.AddWithValue("@rightStitchingComment", rightSideStitchingComment);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();
@@ -257,12 +263,12 @@ namespace LidLaunchWebsite.Classes
             bulkOrder.BillToZip = Convert.ToString(dr["BillToZip"].ToString());
             bulkOrder.BillToPhone = Convert.ToString(dr["BillToPhone"].ToString());            
             bulkOrder.ReadyForProduction = Convert.ToBoolean(dr["ReadyForProduction"].ToString());
-            bulkOrder.BackStitchingDesignId = Convert.ToInt32(dr["BackStitchingDesignId"].ToString());
-            bulkOrder.LeftStitchingDesignId = Convert.ToInt32(dr["LeftStitchingDesignId"].ToString());
-            bulkOrder.RightStitchingDesignId = Convert.ToInt32(dr["RightStitchingDesignId"].ToString());
-            bulkOrder.BackStitchingDesignComment = dr["BackStitchingDesignComment"].ToString();
-            bulkOrder.LeftStitchingDesignComment = dr["LeftStitchingDesignComment"].ToString();
-            bulkOrder.RightStitchingDesignComment = dr["RightStitchingDesignComment"].ToString();
+            bulkOrder.BackStitching = Convert.ToBoolean(dr["BackStitching"].ToString());
+            bulkOrder.LeftStitching = Convert.ToBoolean(dr["LeftStitching"].ToString());
+            bulkOrder.RightStitching = Convert.ToBoolean(dr["RightStitching"].ToString());
+            bulkOrder.BackStitchingComment = dr["BackStitchingComment"].ToString();
+            bulkOrder.LeftStitchingComment = dr["LeftStitchingComment"].ToString();
+            bulkOrder.RightStitchingComment = dr["RightStitchingComment"].ToString();
             bulkOrder.lstItems = new List<BulkOrderItem>();
 
             if (ds.Tables[1].Rows.Count > 0)
@@ -342,6 +348,7 @@ namespace LidLaunchWebsite.Classes
                         design.EmbroideredY = Convert.ToDecimal(dr3["EmbroideredY"].ToString());
                         design.CustomerApproved = Convert.ToBoolean(dr3["CustomerApproved"].ToString());
                         design.InternallyApproved = Convert.ToBoolean(dr3["InternallyApproved"].ToString());
+                        design.Revision = Convert.ToBoolean(dr3["Revision"].ToString());
 
                         design.lstNotes = new List<Note>();
                         design.lstRevisionNotes = new List<Note>();
@@ -787,6 +794,7 @@ namespace LidLaunchWebsite.Classes
                                 design.EmbroideredX = Convert.ToDecimal(dr["EmbroideredX"].ToString());
                                 design.EmbroideredY = Convert.ToDecimal(dr["EmbroideredY"].ToString());
                                 design.CustomerApproved = Convert.ToBoolean(dr["CustomerApproved"].ToString());
+                                design.Revision = Convert.ToBoolean(dr["Revision"].ToString());
                                 lstDesigns.Add(design);
                             }
 
@@ -1061,7 +1069,7 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
-        private DateTime AddBusinessDays(DateTime startDate, int businessDays)
+        public DateTime AddBusinessDays(DateTime startDate, int businessDays)
         {
             int direction = Math.Sign(businessDays);
             if (direction == 1)
