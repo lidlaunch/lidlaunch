@@ -2383,9 +2383,26 @@ input[type=text], input[type=password], select, input[type=number] {
     margin: 30px auto;
     text-align: center;
 }
-    /*******************************************END BULK ORDERING****************************************************/
-    /*******************************************BEGIN HAT MANAGER STYLING*******************************************/
-    .addHatTypeColor {
+#colorLegend {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 60px;
+}
+.colorLegendItem {
+    width: 50px;
+    height: 50px;
+    display: block;
+    margin: 5px;
+    font-size: 10px;
+    float: left;
+    color:#fff;
+    text-align:center;
+    padding:5px;
+}
+/*******************************************END BULK ORDERING****************************************************/
+/*******************************************BEGIN HAT MANAGER STYLING*******************************************/
+.addHatTypeColor {
     background-color: greenyellow;
     color: #000;
     padding: 10px;
