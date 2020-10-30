@@ -61,7 +61,7 @@ namespace LidLaunchWebsite.Controllers
             BulkOrder bulkOrder = new BulkOrder();
             bulkOrder = data.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
 
-            if (bulkOrder != null && !bulkOrder.OrderComplete)
+            if (bulkOrder != null && !bulkOrder.OrderComplete && trackingNumber != "")
             {
                 var success = data.UpdateBulkOrderSetOrderAsShipped(Convert.ToInt32(bulkOrderId), trackingNumber);
                 EmailFunctions emailFunc = new EmailFunctions();
@@ -195,7 +195,7 @@ namespace LidLaunchWebsite.Controllers
 
                 BulkData bulkData = new BulkData();
                 var paymentGuid = Guid.NewGuid().ToString();
-                var orderId = bulkData.CreateBulkOrder(shipToName, email, shipToPhone, Convert.ToDecimal(orderTotal), orderNotes, artworkPath, artworkPlacement, cartItems, paymentCompleteGuid, paymentGuid, Convert.ToDecimal(shippingCost), shipToName, shipToAddress, shipToCity, shipToState, shipToZip, shipToPhone, billToName, billToAddress, billToCity, billToState, billToZip, billToPhone, Convert.ToBoolean(backStitching), Convert.ToBoolean(leftSideStitching), Convert.ToBoolean(rightSideStitching), backStitchingComment, leftSideStitchingComment, rightSideStitchingComment);
+                var orderId = bulkData.CreateBulkOrder(shipToName, email, shipToPhone, Convert.ToDecimal(orderTotal), orderNotes, artworkPath, artworkPlacement, cartItems, paymentCompleteGuid, paymentGuid, Convert.ToDecimal(shippingCost), shipToName, shipToAddress, shipToCity, shipToState, shipToZip, shipToPhone, billToName, billToAddress, billToCity, billToState, billToZip, billToPhone, Convert.ToBoolean(backStitching), Convert.ToBoolean(leftSideStitching), Convert.ToBoolean(rightSideStitching), Convert.ToString(backStitchingComment), Convert.ToString(leftSideStitchingComment), Convert.ToString(rightSideStitchingComment));
 
                 DesignData designData = new DesignData();
                 var designId = designData.CreateDesign(artworkPath, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M);
@@ -285,7 +285,7 @@ namespace LidLaunchWebsite.Controllers
                 }
                 else
                 {
-                    Logger.Log("Bulk Order Order ID was not > 0 : " + email + " - " + shipToName);
+                    Logger.Log("Bulk Order Order ID was not > 0 : " + email + " - " + shipToName + " ::: Items: " + items + " ::: OrderNotes: " + orderNotes + ", Total: " + orderTotal + ", Placement: " + artworkPlacement);
                     return "";
                 }
 
@@ -309,10 +309,17 @@ namespace LidLaunchWebsite.Controllers
 
         public string CreateBulkOrderBatch()
         {
-            BulkData data = new BulkData();
-            var batchId = data.CreateBulkOrderBatch();
+            if (checkAdminLoggedIn())
+            {
+                BulkData data = new BulkData();
+                var batchId = data.CreateBulkOrderBatch();
 
-            return batchId.ToString();
+                return batchId.ToString();
+            }
+            else
+            {
+                return "";
+            }            
         }
 
         public ActionResult BulkOrderBatches()
@@ -368,12 +375,29 @@ namespace LidLaunchWebsite.Controllers
 
             products.RemoveAll(p => p.ItemName == "Artwork Setup/Digitizing");
             products.RemoveAll(p => p.ItemName == "Shipping");
+            products.RemoveAll(p => p.ItemName == "Back Stitching");
+            products.RemoveAll(p => p.ItemName == "Left Side Stitching");
+            products.RemoveAll(p => p.ItemName == "Right Side Stitching");
 
             bulkBatchOrder.lstItemsToOrder = products;
 
             bulkBatchOrder.lstItemsToOrder = bulkBatchOrder.lstItemsToOrder.OrderByDescending(bo => bo.ItemName).ToList();
 
+            bulkBatchOrder.lstItemsToOrder.Add(new BulkOrderItem { ItemName = "TOTAL HATS", ItemQuantity = products.Sum(p => p.ItemQuantity), ItemCost = 0 });
+
             return View(bulkBatchOrder);
+        }
+
+        public bool checkAdminLoggedIn()
+        {
+            if (Convert.ToInt32(Session["UserID"]) == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

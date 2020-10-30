@@ -2266,6 +2266,10 @@ input[type=text], input[type=password], select, input[type=number] {
     margin-top: 20px;
 }
 
+.placementSelected {
+    border: 2px solid green;
+}
+
 .noteDate {
     font-size: 12px;
 }

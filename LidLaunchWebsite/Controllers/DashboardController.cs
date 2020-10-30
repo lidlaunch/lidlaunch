@@ -484,7 +484,17 @@ namespace LidLaunchWebsite.Controllers
                 return false;
             }
         }
-
+        public bool checkAdminLoggedIn()
+        {
+            if (Convert.ToInt32(Session["UserID"]) == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public bool checkLoggedIn()
         {            
             if (Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 643)
@@ -817,6 +827,74 @@ namespace LidLaunchWebsite.Controllers
 
         }
 
+        public ActionResult EditBulkOrderPopup(int bulkOrderId)
+        {
+
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (checkAdminLoggedIn())
+                {
+                    BulkOrder bulkOrder = new BulkOrder();
+                    BulkData data = new BulkData();
+                    bulkOrder = data.GetBulkOrder(bulkOrderId, "", "");
+
+                    return PartialView("EditBulkOrderPopup", bulkOrder);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+
+        }
+
+        public string UpdateBulkOrder(string items, string customerEmail, string artworkPosition, string bulkOrderId, string orderTotal)
+        {
+            List<BulkOrderItem> lstItems = new List<BulkOrderItem>();
+            lstItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<BulkOrderItem>>(items);
+            BulkData data = new BulkData();
+            foreach(BulkOrderItem item in lstItems)
+            {
+                if(item.Id == 0)
+                {
+                    data.AddBulkOrderItem(Convert.ToInt32(bulkOrderId), item.ItemName, Convert.ToInt32(item.ItemQuantity), Convert.ToDecimal(item.ItemCost));
+                } else
+                {
+                    data.UpdateBulkOrderItem(Convert.ToInt32(bulkOrderId), Convert.ToInt32(item.Id), item.ItemName, Convert.ToInt32(item.ItemQuantity), Convert.ToDecimal(item.ItemCost));
+                 }
+            }
+
+            data.UpdateBulkOrder(Convert.ToInt32(bulkOrderId), customerEmail, artworkPosition, Convert.ToDecimal(orderTotal));
+
+            HttpPostedFileBase fileContent = null;
+            if (Request.Files.Count > 0)
+            {
+                fileContent = Request.Files[0];
+            }
+
+            if (fileContent != null && fileContent.ContentLength > 0)
+            {
+                // get a stream
+                var stream = fileContent.InputStream;
+                // and optionally write the file to disk
+                var extension = Path.GetExtension(fileContent.FileName);
+
+                var fileName = Guid.NewGuid() + extension;
+                var artworkPath = fileName;
+                var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork", fileName);
+
+                fileContent.SaveAs(path);
+
+                data.UpdateBulkOrderArtwork(Convert.ToInt32(bulkOrderId), fileName);
+            }
+
+            return "true";
+        }
+
         public ActionResult AddBulkRework(int bulkOrderBatchId, int bulkOrderItemId, string bulkOrderBlankName, int parentBulkOrderId, int parentBulkOrderBatchId, string note, int quantity, int bulkReworkId)
         {
             dynamic model = new ExpandoObject();
@@ -919,7 +997,7 @@ namespace LidLaunchWebsite.Controllers
                 EmailFunctions email = new EmailFunctions();      
                 if(!customerAdded)
                 {
-                    email.sendEmail("digitizing@lidlaunch.com", "Lid Launch", text, parentBulkOrderId + " : Revision Request", "");
+                    email.sendEmail("digitizing@lidlaunch.com", "Lid Launch", text, parentBulkOrderId + " : Revision Request", "ronnie.dcd@gmail.com");
                 }                
             }
 

@@ -419,4 +419,68 @@ function updateBulkOrderPaid(bulkOrderId, orderPaid, that) {
 }
 
 
+function addBulkOrderItemEdit() {
+    var clonedTemplate = $('#bulkOrderItemEditTemplate').clone();
+    $('#bulkOrderItemsEdit tbody').append(clonedTemplate);    
+}
+function changePlacement(that) {
+    $('.editPlacementSelected').each(function () {
+        $(this).removeClass('placementSelected');
+    });
+    $(that).addClass('placementSelected');
+}
+function saveBulkOrderEdit(bulkOrderId) {
+    showLoading();
+    var customerEmail = $('#txtEditCustomerEmail').val();
+    var artworkPosition = $('.placementSelected').attr('id');
+    var artSource = $('#editArtworkUpload')[0].files;
+    var orderTotal = $('#txtOrderTotal').val();
+    var bulkOrderItems = '[';
+    var itemLength = $('#bulkOrderItemsEdit').find('.bulkOrderItemRow').length;
+    for (var i = 0; i < itemLength; i++) {
+        var tableRow = $('#bulkOrderItemsEdit').find('.bulkOrderItemRow')[i];
+        var id = $(tableRow).find('.bulkOrderItemId').text();
+        var name = $(tableRow).find('.txtBulkOrderItemName').val();
+        var qty = $(tableRow).find('.txtBulkOrderItemQuantity').val();
+        var cost = $(tableRow).find('.txtBulkOrderItemCost').val();
+        if (i == itemLength - 1) {
+            bulkOrderItems += '{"Id":"' + id + '","ItemName":"' + name + '","ItemQuantity":"' + qty + '","ItemCost":"' + cost + '"}'
+        } else {
+            bulkOrderItems += '{"Id":"' + id + '","ItemName":"' + name + '","ItemQuantity":"' + qty + '","ItemCost":"' + cost + '"},'
+        }        
+    }
+    bulkOrderItems += ']';
+    console.log(bulkOrderItems);
+
+    var data = new FormData();
+    data.append("file" + 0, artSource[0]);
+    data.append("items", bulkOrderItems);
+    data.append("customerEmail", customerEmail);
+    data.append("artworkPosition", artworkPosition);
+    data.append("bulkOrderId", bulkOrderId);
+    data.append("orderTotal", orderTotal);
+
+
+    $.ajax({
+        type: "POST",
+        url: '/Dashboard/UpdateBulkOrder',
+        contentType: false,
+        processData: false,
+        data: data,
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('Sorry there was an error updating the bulk order.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                hideLoading();
+                showBulkOrderDetailsPopup(bulkOrderId);
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Sorry there was an error creating your order.', 'error', false);
+        }
+    });
+}
+
 

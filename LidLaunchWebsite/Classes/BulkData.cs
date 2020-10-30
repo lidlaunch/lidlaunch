@@ -402,6 +402,142 @@ namespace LidLaunchWebsite.Classes
 
             return bulkOrder;
         }
+
+        public bool AddBulkOrderItem(int bulkOrderId, string itemName, int itemQuantity, decimal itemCost)
+        {
+            var data = new SQLData();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("CreateBulkOrderItem", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@name", itemName);
+                    sqlComm.Parameters.AddWithValue("@quantity", itemQuantity);
+                    sqlComm.Parameters.AddWithValue("@cost", itemCost);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool UpdateBulkOrderItem(int bulkOrderId, int itemId, string itemName, int itemQuantity, decimal itemCost)
+        {
+            var data = new SQLData();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderItem", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@itemId", itemId);
+                    sqlComm.Parameters.AddWithValue("@name", itemName);
+                    sqlComm.Parameters.AddWithValue("@quantity", itemQuantity);
+                    sqlComm.Parameters.AddWithValue("@cost", itemCost);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool UpdateBulkOrder(int bulkOrderId, string customerEmail, string artworkPosition, decimal orderTotal)
+        {
+            var data = new SQLData();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkOrder", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@customerEmail", customerEmail);
+                    sqlComm.Parameters.AddWithValue("@artworkPosition", artworkPosition);
+                    sqlComm.Parameters.AddWithValue("@orderTotal", orderTotal);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool UpdateBulkOrderArtwork(int bulkOrderId, string fileName)
+        {
+            var data = new SQLData();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderArtwork", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@fileName", fileName);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
         public bool UpdateBulkOrderPaid(int bulkOrderId, bool hasPaid)
         {
             var data = new SQLData();

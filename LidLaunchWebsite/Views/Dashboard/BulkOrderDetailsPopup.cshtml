@@ -205,7 +205,14 @@
                         }
                         else
                         {
-                        <td>Internally Approved</td>
+                            if (!design.CustomerApproved)
+                            {
+                                <td>Internally Approved</td>
+                            }
+                            else
+                            {
+                                <td>Internally Approved / Customer Approved</td>
+                            }
                         }
                         <td><input type="button" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: true, customerAdded: false });" class="smallButton" value="Revision" /></td>
                         <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>
@@ -243,15 +250,17 @@
                     </tbody>
                 </table>
         </div>
+        <input type="button" class="smallButton" value="Edit Bulk Order" onclick="$('#bulkOrderEditHolder').load(bulkOrderEditUrl, { bulkOrderId: @Model.Id });" />
         <div id="noteHolder"></div>
         <div id="bulkDesignSelectHolder"></div>
-        <div id="bulkReworkHolder"></div>        
-        
+        <div id="bulkReworkHolder"></div>       
+        <div id="bulkOrderEditHolder"></div>        
     </div><!--bulkOrderDetailsPopupContent-->
 </div><!--/bulkOrderDetailsPopup-->
 <script type="text/javascript">
     var addNoteUrl = '@Url.Action("AddNote", "Dashboard")';
     var selectBulkDesignUrl = '@Url.Action("SetBulkDesign", "Dashboard")';
     var addBulkReworkUrl = '@Url.Action("AddBulkRework", "Dashboard")';
+    var bulkOrderEditUrl = '@Url.Action("EditBulkOrderPopup", "Dashboard")';
 </script>
 
