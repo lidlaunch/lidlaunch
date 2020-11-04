@@ -34,6 +34,31 @@ function bindBatchDropdown() {
             
     });
 }
+
+function sendArtworkEmail(bulkOrderId, customerEmail) {
+    showLoading();
+    $.ajax({
+        type: "POST",
+        url: '/Dashboard/SendArtworkEmail?bulkOrderId=' + bulkOrderId + '&customerEmail=' + customerEmail,
+        contentType: false,
+        processData: false,
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('Error Sending Artwork Email.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                hideLoading();
+                showBulkOrderDetailsPopup(bulkOrderId);
+                
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error Sending Artwork Email, please try again.', 'error', false);
+        }
+    });
+}
+
 function bindDigitizingFilesInputs() {
     $('.EmbroideryFile').on('change', function (e) {
         var that = this;

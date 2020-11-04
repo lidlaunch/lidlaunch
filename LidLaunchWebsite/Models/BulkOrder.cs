@@ -54,6 +54,7 @@ namespace LidLaunchWebsite.Models
         public string LeftStitchingComment { get; set; }
         public string RightStitchingComment { get; set; }
         public bool DigitizingEmailSent { get; set; }
+        public bool ArtworkEmailSent { get; set; }
     }
 
     public class BulkBatchOrder

@@ -138,6 +138,14 @@ namespace LidLaunchWebsite.Classes
                     {
                         lstBulkOrders = lstBulkOrders.Where(b => !b.OrderPaid).ToList();
                     }
+                    else if (filter == "revision")
+                    {
+                        lstBulkOrders = lstBulkOrders.Where(b => b.lstDesigns.Any(d => d.Revision) && !b.ReadyForProduction).ToList();
+                    }
+                    else if (filter == "noart")
+                    {
+                        lstBulkOrders = lstBulkOrders.Where(b => b.lstDesigns.Any(d => d.ArtSource == "")).ToList();
+                    }
                     else
                     {
                         lstBulkOrders = lstBulkOrders.Where(b => b.Id == Convert.ToInt32(filter.Replace("BO-", ""))).ToList();
@@ -269,6 +277,7 @@ namespace LidLaunchWebsite.Classes
             bulkOrder.BackStitchingComment = dr["BackStitchingComment"].ToString();
             bulkOrder.LeftStitchingComment = dr["LeftStitchingComment"].ToString();
             bulkOrder.RightStitchingComment = dr["RightStitchingComment"].ToString();
+            bulkOrder.ArtworkEmailSent = Convert.ToBoolean(dr["ArtworkEmailSent"].ToString());
             bulkOrder.lstItems = new List<BulkOrderItem>();
 
             if (ds.Tables[1].Rows.Count > 0)
@@ -416,6 +425,37 @@ namespace LidLaunchWebsite.Classes
                     sqlComm.Parameters.AddWithValue("@name", itemName);
                     sqlComm.Parameters.AddWithValue("@quantity", itemQuantity);
                     sqlComm.Parameters.AddWithValue("@cost", itemCost);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool UpdateArtworkEmailSent(int bulkOrderId)
+        {
+            var data = new SQLData();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateArtworkEmailSent", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();

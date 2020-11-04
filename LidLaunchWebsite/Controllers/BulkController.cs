@@ -93,8 +93,7 @@ namespace LidLaunchWebsite.Controllers
                 BulkData bulkData = new BulkData();
                 BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
                 EmailFunctions email = new EmailFunctions();
-                email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.revisionRequestedEmail(text), "Your Artwork Revision Request", "");
-                email.sendEmail("digitizing@lidlaunch.com", "Lid Launch", text, bulkOrderId + " : Customer Revision Request", "robert@lidlaunch.com");
+                email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.revisionRequestedEmail(text), "Order " + bulkOrderId + " : Artwork Revision Request", "digitizing@lidlaunch.com");                
             }
             return success.ToString();
         }

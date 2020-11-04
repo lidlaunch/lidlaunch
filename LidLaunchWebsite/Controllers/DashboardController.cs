@@ -690,6 +690,23 @@ namespace LidLaunchWebsite.Controllers
             var json = new JavaScriptSerializer().Serialize(returnValue);
             return json;
         }
+
+        public string SendArtworkEmail(string bulkOrderId, string customerEmail)
+        {
+            BulkData bulkData = new BulkData();
+
+            var success = bulkData.UpdateArtworkEmailSent(Convert.ToInt32(bulkOrderId));
+            if (success)
+            {
+                EmailFunctions email = new EmailFunctions();
+                email.sendEmail(customerEmail, "Lid Launch Customer", email.requestArtworkEmail(bulkOrderId), "Order #" + bulkOrderId + " Artwork Request", "");
+            }
+
+            var json = new JavaScriptSerializer().Serialize(success);
+
+            return json;
+        }
+
         public string UpdateTracking(string orderProductId, string trackingNumber, string customerEmail)
         {
             DashboardData dashboardData = new DashboardData();
@@ -890,6 +907,9 @@ namespace LidLaunchWebsite.Controllers
                 fileContent.SaveAs(path);
 
                 data.UpdateBulkOrderArtwork(Convert.ToInt32(bulkOrderId), fileName);
+
+                EmailFunctions email = new EmailFunctions();
+                email.sendEmail("ronnie.dcd@gmail.com", "Dope Custom Designs", "The artwork is now available for order #" + bulkOrderId, "Order #" + bulkOrderId + " Artwork", "digitizing@lidlaunch.com");
             }
 
             return "true";
