@@ -167,6 +167,132 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
+        public decimal GetBlankCost(int bulkOrderBatchId)
+        {
+            var data = new SQLData();
+            List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
+            decimal totalBlankCost = 0.00M;
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetHatStyleTotalsByBatch", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderBatchId", bulkOrderBatchId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+
+                    if(ds.Tables[0].Rows.Count > 0)
+                    {
+                        foreach(DataRow dr in ds.Tables[0].Rows)
+                        {
+                            var itemName = Convert.ToString(dr["ItemName"].ToString());
+                            var itemQuantity = Convert.ToInt32(dr["ItemQuantity"].ToString());
+
+                            totalBlankCost += getItemBlankCostByItemName(itemName) * itemQuantity;
+                        }
+                    }
+                    
+
+                }
+
+                return totalBlankCost;
+            }
+            catch (Exception ex)
+            {
+                return totalBlankCost;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+            
+        }
+
+        public decimal getItemBlankCostByItemName(string itemName)
+        {
+            decimal itemCost = 0.00M;
+
+            if(itemName.Contains("FlexFit 110 Trucker Snapback"))
+            {
+                return 4.65M;
+            }
+            if (itemName.Contains("FlexFit 6277 - MULTICAM"))
+            {
+                return 6.49M;
+            }
+            if (itemName.Contains("FlexFit 6277"))
+            {
+                return 5.00M;
+            }            
+            if (itemName.Contains("FlexFit Premium 210"))
+            {
+                return 6.02M;
+            }
+            if (itemName.Contains("FlexFit Trucker"))
+            {
+                return 4.24M;
+            }
+            if (itemName.Contains("Richardson 112"))
+            {
+                return 3.70M;
+            }
+            if (itemName.Contains("Yupoong 6006 Flat Bill Trucker Snapback - MULTICAM"))
+            {
+                return 4.88M;
+            }
+            if (itemName.Contains("Yupoong 6006 Flat Bill Trucker Snapback"))
+            {
+                return 3.15M;
+            }
+            if (itemName.Contains("Yupoong 6606 Trucker Snapback - MULTICAM"))
+            {
+                return 4.88M;
+            }
+            if (itemName.Contains("Yupoong 6606 Trucker Snapback"))
+            {
+                return 3.15M;
+            }            
+            if (itemName.Contains("Yupoong Cuffed Beanie"))
+            {
+                return 1.84M;
+            }
+            if (itemName.Contains("Yupoong Short Beanie"))
+            {
+                return 1.85M;
+            }
+            if (itemName.Contains("Yupoong Flat Bill Snapback - MULTICAM"))
+            {
+                return 5.45M;
+            }
+            if (itemName.Contains("Yupoong Flat Bill Snapback"))
+            {
+                return 4.15M;
+            }
+            if (itemName.Contains("Yupoong Dad Cap - MULTICAM"))
+            {
+                return 5.85M;
+            }
+            if (itemName.Contains("Yupoong Dad Cap"))
+            {
+                return 4.15M;
+            }
+
+            Logger.Log(itemName);
+
+            return itemCost;
+
+        }
+
         public List<BulkOrder> GetBulkOrdersByBatchId(int batchId)
         {
             var data = new SQLData();

@@ -1,0 +1,24 @@
+﻿@model LidLaunchWebsite.Models.ViewBulkOrdersModel
+@{
+    ViewBag.Title = "BulkOrderPriority";
+}
+
+<h2>BulkOrderPriority</h2>
+
+@{
+    List<string> lstDates = new List<string>();
+    lstDates.AddRange(Model.lstBulkOrders.Select(b => b.ProjectedShipDateLong).Distinct().ToList());
+} 
+<ul>
+    @foreach (string date in lstDates)
+    {
+        <li>
+            <b>@date - @Model.lstBulkOrders.FindAll(b => b.ProjectedShipDateLong == date && !b.OrderComplete).SelectMany(bo => bo.lstItems).ToList().Sum(li => li.ItemQuantity)</b> 
+        </li>
+        foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model.lstBulkOrders.FindAll(b => b.ProjectedShipDateLong == date && !b.OrderComplete))
+        {
+            <li>@bulkOrder.Id - @bulkOrder.CustomerEmail - @bulkOrder.CustomerName - <b>@bulkOrder.lstItems.Sum(i => i.ItemQuantity)</b></li>
+        }
+    }
+</ul>
+

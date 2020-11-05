@@ -724,6 +724,23 @@ namespace LidLaunchWebsite.Controllers
             return json;
         }
 
+        public ActionResult BulkOrderPriority(string filter)
+        {
+
+            if (!checkLoggedIn())
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
+            else
+            {
+                BulkData data = new BulkData();
+                ViewBulkOrdersModel model = new ViewBulkOrdersModel();
+                model.lstBulkOrders = data.GetBulkOrderData(filter);
+                model.lstBulkOrders = model.lstBulkOrders.OrderByDescending(bo => bo.OrderPaid).ToList();
+                model.lstBulkOrderBatches = data.GetBulkOrderBatches();
+                return View(model);
+            }
+        }
 
         public ActionResult ViewBulkOrders(string filter)
         {

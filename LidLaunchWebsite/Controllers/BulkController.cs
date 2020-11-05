@@ -382,7 +382,12 @@ namespace LidLaunchWebsite.Controllers
 
             bulkBatchOrder.lstItemsToOrder = bulkBatchOrder.lstItemsToOrder.OrderByDescending(bo => bo.ItemName).ToList();
 
-            bulkBatchOrder.lstItemsToOrder.Add(new BulkOrderItem { ItemName = "TOTAL HATS", ItemQuantity = products.Sum(p => p.ItemQuantity), ItemCost = 0 });
+            bulkBatchOrder.lstItemsToOrder.Add(new BulkOrderItem { ItemName = "TOTAL HATS", ItemQuantity = products.Sum(p => p.ItemQuantity) });
+            bulkBatchOrder.lstItemsToOrder.Add(new BulkOrderItem { ItemName = "ESTIMATED TOTAL COST", ItemQuantity = Convert.ToInt32(data.GetBlankCost(Convert.ToInt32(bulkBatchId))) });
+
+            
+
+
 
             return View(bulkBatchOrder);
         }

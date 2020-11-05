@@ -802,6 +802,7 @@
     <Content Include="Views\Dashboard\BulkSalesReport.cshtml" />
     <Content Include="Views\Dashboard\AdminPanel.cshtml" />
     <Content Include="Views\Dashboard\EditBulkOrderPopup.cshtml" />
+    <Content Include="Views\Dashboard\BulkOrderPriority.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
