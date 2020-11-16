@@ -394,7 +394,7 @@ namespace LidLaunchWebsite.Controllers
 
         public bool checkAdminLoggedIn()
         {
-            if (Convert.ToInt32(Session["UserID"]) == 1)
+            if (Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 1579)
             {
                 return true;
             }

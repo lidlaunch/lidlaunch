@@ -2351,6 +2351,10 @@ input[type=text], input[type=password], select, input[type=number] {
     padding: 10px;
 }
 
+#printingTable {
+    display: none;
+}
+
 .bulkOrderPrint #bulkOrderDetailsPopupContent {
     max-height: unset;
     overflow-y: unset;
@@ -2358,12 +2362,46 @@ input[type=text], input[type=password], select, input[type=number] {
     position: unset;
 }
 
-.bulkOrderPrint .smallButton, .bulkOrderPrint .closeButton {
+.bulkOrderPrint .smallButton, .bulkOrderPrint .closeButton, .bulkOrderPrint #barcode .right, .bulkOrderPrint #bulkOrderDetails, .bulkOrderPrint #bulkOrderDesigns, .bulkOrderPrint #bulkOrderNotes, .bulkOrderPrint #bulkOrderItems h3 {
     display: none;
 }
 
+.bulkOrderPrint #bulkOrderItems {
+    clear:both;
+    margin-top:30px;
+    width:100%;
+}
+
+.bulkOrderPrint #BulkOrderId {
+    font-size:40px;
+    float:unset;
+}
+
+.bulkOrderPrint #BulkOrderDate {
+    font-size: 24px;
+    float: unset;
+}
+.bulkOrderPrint #bulkOrderItems #printingTable {
+    display: table;
+    width: 100%;
+}
+.bulkOrderPrint #bulkOrderItems #viewingTable {
+    display: none;
+    
+}
+.bulkOrderPrint #bulkOrderItems #printingTable td {
+    min-width: 100px;
+    padding: 10px;
+    border-bottom: 2px solid #000;
+    margin:5px 0;
+}
+.bulkOrderPrint #TopInfoBar {
+    height: auto;
+    text-align: right;
+}
+
 .reworkItem {
-    background:#ffb6b6;
+    background: #ffb6b6;
 }
 .reworkItem.complete {
     background: #b6ffc5;
@@ -2404,6 +2442,7 @@ input[type=text], input[type=password], select, input[type=number] {
     text-align:center;
     padding:5px;
 }
+
 /*******************************************END BULK ORDERING****************************************************/
 /*******************************************BEGIN HAT MANAGER STYLING*******************************************/
 .addHatTypeColor {

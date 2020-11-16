@@ -486,7 +486,7 @@ namespace LidLaunchWebsite.Controllers
         }
         public bool checkAdminLoggedIn()
         {
-            if (Convert.ToInt32(Session["UserID"]) == 1)
+            if (Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 1579)
             {
                 return true;
             }
@@ -497,7 +497,7 @@ namespace LidLaunchWebsite.Controllers
         }
         public bool checkLoggedIn()
         {            
-            if (Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 643)
+            if (Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 643 || Convert.ToInt32(Session["UserID"]) == 1579)
             {
                 return true;
             }
@@ -756,6 +756,31 @@ namespace LidLaunchWebsite.Controllers
                 model.lstBulkOrders = data.GetBulkOrderData(filter);
                 model.lstBulkOrders = model.lstBulkOrders.OrderByDescending(bo => bo.OrderPaid).ToList();
                 model.lstBulkOrderBatches = data.GetBulkOrderBatches();
+                return View(model);
+            }
+        }
+
+        public ActionResult MachinePanel (string bulkOrderId)
+        {
+
+            if (!checkLoggedIn())
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
+            else
+            {
+                BulkData data = new BulkData();
+                BulkOrder model = new BulkOrder();
+                if(bulkOrderId != "0")
+                {
+                    model = data.GetBulkOrder(Convert.ToInt32(bulkOrderId.Replace("BO-","")), "", "");
+                } else
+                {
+                    model.lstItems = new List<BulkOrderItem>();
+                    model.lstDesigns = new List<Design>();
+                    model.lstNotes = new List<Note>();                    
+                }
+                          
                 return View(model);
             }
         }

@@ -102,7 +102,7 @@
         </div><!--/bulkOrderDetails-->
         <div id="bulkOrderItems">
             <h3>Order Items</h3>
-            <table>
+            <table id="viewingTable">
                 <thead>
                     <tr>
                         <td>Item</td>
@@ -161,6 +161,32 @@
                                 <td>@note.Attachment</td>
                             </tr>
                         }
+                    }
+                </tbody>
+            </table>
+            <table id="printingTable">
+                <thead>
+                    <tr>
+                        <td>Item</td>
+                        <td>Qty</td>
+                        <td>Missing</td>
+                        <td>Ready</td>
+                        <td>Misc</td>                        
+                    </tr>
+                <tbody>
+                    @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.lstItems)
+                    {
+                        if (item.ItemName != "Shipping" && item.ItemName != "Back Stitching" && item.ItemName != "Left Side Stitching" && item.ItemName != "Right Side Stitching" && item.ItemName != "Artwork Setup/Digitizing")
+                        {
+                            <tr>
+                                <td>@item.ItemName</td>
+                                <td style="font-size:24px; font-weight:bold;">@item.ItemQuantity</td>
+                                <td style="font-size:24px;">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</td>
+                                <td style="font-size:24px;">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</td>
+                                <td style="font-size:24px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+                        }
+
                     }
                 </tbody>
             </table>
