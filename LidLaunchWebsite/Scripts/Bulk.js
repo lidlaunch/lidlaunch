@@ -75,10 +75,10 @@ function updateBulkTotals() {
                     totalHats += parseInt($(this).val());
                     var hatName = '';
                     if (currentSizeIndex == 0) {
-                        hatName = 'FlexFit Premium 210  - ' + hatColorText + ' - S/M';
+                        hatName = 'FlexFit Flat Bill Fitted  - ' + hatColorText + ' - S/M';
                     }
                     if (currentSizeIndex == 1) {
-                        hatName = 'FlexFit Premium 210  - ' + hatColorText + ' - L/XL';
+                        hatName = 'FlexFit Flat Bill Fitted  - ' + hatColorText + ' - L/XL';
                     }
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
                 }

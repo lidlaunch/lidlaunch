@@ -71,6 +71,19 @@
         font-weight: bold;
         padding: 10px;
     }
+    #bulkDesignButtons .smallButton {
+        float: left;
+        margin: 0 10px;
+    }
+
+    #bulkDesignButtons .smallButton.selected {
+        border:3px solid #000;
+    }
+
+    .pdfHolder {
+        clear:both;
+    }
+
 </style>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -210,9 +223,18 @@
     </div>
     <div id="bulkOrderDesignPdfs">
         <div id="bulkDesignButtons">
+            @{bool firstButton = true;}
             @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns)
             {
-                <input type="button" onclick="showDesignProductionSheet(@design.Id)" value="@design.Id" class="smallButton" />
+                if (firstButton)
+                {
+                    firstButton = false;
+                    <input type="button" onclick="showDesignProductionSheet(@design.Id, this)" value="@design.Name" class="smallButton selected" />
+                }
+                else
+                {
+                    <input type="button" onclick="showDesignProductionSheet(@design.Id, this)" value="@design.Name" class="smallButton" />
+                }
             }
         </div>
         <div id="designPdfHolder">
@@ -222,7 +244,7 @@
                 if (first)
                 {
                     first = false;
-                    <div id="@design.Id">
+                    <div id="@design.Id" class="pdfHolder">
                         <a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName left" target="_blank"><input type="button" class="smallButton" value="DOWNLOAD DST FILE" /></a>
                         <a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName left" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="30" /></a>
                         <iframe class="pdfIframe clear" src="https://lidlaunch.com/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet"></iframe>
@@ -230,7 +252,7 @@
                 }
                 else
                 {
-                    <div id="@design.Id" class="hidden">
+                    <div id="@design.Id" class="hidden pdfHolder">
                         <a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName left" target="_blank"><input type="button" class="smallButton" value="DOWNLOAD DST FILE" /></a>
                         <a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName left" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="30" /></a>
                         <iframe class="pdfIframe clear" src="https://lidlaunch.com/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet"></iframe>
@@ -248,3 +270,17 @@ else
 
 
 
+<script type="text/javascript">
+    function showDesignProductionSheet(designId, that) {
+        $('#bulkDesignButtons .smallButton').each(function () {
+            $(this).removeClass('selected');
+        });
+        $(that).addClass('selected');
+
+        $('.pdfHolder').each(function () {
+            $(this).hide();
+        });
+
+        $('#' + designId).show();
+    }
+</script>

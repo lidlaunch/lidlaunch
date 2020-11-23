@@ -426,7 +426,7 @@ namespace LidLaunchWebsite.Controllers
                         System.IO.File.Copy(Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Temp", Session["FullImagePreview"].ToString()), Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/InUse", Session["FullImagePreview"].ToString()));
                     }
 
-                    var designId = designData.CreateDesign(Session["TempDesignArtworkImagePath"].ToString(), Session["FullImagePreview"].ToString(), width, height, x, y, Convert.ToDecimal(emWidth), Convert.ToDecimal(emHeight), Convert.ToDecimal(emX), Convert.ToDecimal(emY));
+                    var designId = designData.CreateDesign(Session["TempDesignArtworkImagePath"].ToString(), Session["FullImagePreview"].ToString(), width, height, x, y, Convert.ToDecimal(emWidth), Convert.ToDecimal(emHeight), Convert.ToDecimal(emX), Convert.ToDecimal(emY), "Front", "", "", "", "");
                     var productId = 0;
                     if (designId > 0)
                     {

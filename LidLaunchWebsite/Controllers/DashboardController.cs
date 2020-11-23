@@ -437,6 +437,208 @@ namespace LidLaunchWebsite.Controllers
 
         }
 
+        public string CreateBulkDesign(string designName, string bulkOrderId)
+        {
+            bool success = false;
+            DesignData designData = new DesignData();
+            BulkData bulkData = new BulkData();
+            var artwworkFileName = "";
+            var dstFileName = "";
+            var pdfFileName = "";
+            var previewFileName = "";
+            var embFileName = "";
+
+            if (!checkLoggedIn() && !checkDigitizer())
+            {
+                //do nothing
+            }
+            else
+            {
+                var artSource = Request.Files["artSource"];
+                if (artSource != null && artSource.ContentLength > 0)
+                {
+                    // get a stream
+                    var stream = artSource.InputStream;
+                    // and optionally write the file to disk
+                    var extension = Path.GetExtension(artSource.FileName);
+
+                    artwworkFileName = Guid.NewGuid().ToString() + extension;
+
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork/", artwworkFileName);
+
+                    artSource.SaveAs(path);
+                }
+                var dst = Request.Files["dst"];
+                if (dst != null && dst.ContentLength > 0)
+                {
+                    // get a stream
+                    var stream = dst.InputStream;
+                    // and optionally write the file to disk
+                    var extension = Path.GetExtension(dst.FileName);
+
+                    dstFileName = Guid.NewGuid().ToString() + extension;
+
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", dstFileName);
+
+                    dst.SaveAs(path);
+                }
+                var pdf = Request.Files["pdf"];
+                if (pdf != null && pdf.ContentLength > 0)
+                {
+                    // get a stream
+                    var stream = pdf.InputStream;
+                    // and optionally write the file to disk
+                    var extension = Path.GetExtension(pdf.FileName);
+
+                    pdfFileName = Guid.NewGuid().ToString() + extension;
+
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Info", pdfFileName);
+
+                    pdf.SaveAs(path);
+                }
+                var pngPreviewew = Request.Files["pngPreview"];
+                if (pngPreviewew != null && pngPreviewew.ContentLength > 0)
+                {
+                    // get a stream
+                    var stream = pngPreviewew.InputStream;
+                    // and optionally write the file to disk
+                    var extension = Path.GetExtension(pngPreviewew.FileName);
+
+                    previewFileName = Guid.NewGuid().ToString() + extension;
+
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Preview", previewFileName);
+
+                    pngPreviewew.SaveAs(path);
+                }
+                var emb = Request.Files["emb"];
+                if (emb != null && emb.ContentLength > 0)
+                {
+                    // get a stream
+                    var stream = emb.InputStream;
+                    // and optionally write the file to disk
+                    var extension = Path.GetExtension(emb.FileName);
+
+                    embFileName = Guid.NewGuid().ToString() + extension;
+
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/EMB", embFileName);
+
+                    emb.SaveAs(path);
+                }
+
+                var designId = designData.CreateDesign(artwworkFileName, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, designName, dstFileName, pdfFileName, embFileName, previewFileName);
+
+                success = bulkData.CreateBulkOrderDesign(Convert.ToInt32(bulkOrderId), designId);
+
+            }
+
+
+        
+
+            var json = new JavaScriptSerializer().Serialize(success);
+            return json;
+        }
+
+        public string UpdateBulkDesign(string designName, string bulkOrderId, string designId)
+        {
+            bool success = false;
+            DesignData designData = new DesignData();
+            BulkData bulkData = new BulkData();
+            var artwworkFileName = "";
+            var dstFileName = "";
+            var pdfFileName = "";
+            var previewFileName = "";
+            var embFileName = "";
+
+            if (!checkLoggedIn() && !checkDigitizer())
+            {
+                //do nothing
+            }
+            else
+            {
+                var artSource = Request.Files["artSource"];
+                if (artSource != null && artSource.ContentLength > 0)
+                {
+                    // get a stream
+                    var stream = artSource.InputStream;
+                    // and optionally write the file to disk
+                    var extension = Path.GetExtension(artSource.FileName);
+
+                    artwworkFileName = Guid.NewGuid().ToString() + extension;
+
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork/", artwworkFileName);
+
+                    artSource.SaveAs(path);
+                }
+                var dst = Request.Files["dst"];
+                if (dst != null && dst.ContentLength > 0)
+                {
+                    // get a stream
+                    var stream = dst.InputStream;
+                    // and optionally write the file to disk
+                    var extension = Path.GetExtension(dst.FileName);
+
+                    dstFileName = Guid.NewGuid().ToString() + extension;
+
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", dstFileName);
+
+                    dst.SaveAs(path);
+                }
+                var pdf = Request.Files["pdf"];
+                if (pdf != null && pdf.ContentLength > 0)
+                {
+                    // get a stream
+                    var stream = pdf.InputStream;
+                    // and optionally write the file to disk
+                    var extension = Path.GetExtension(pdf.FileName);
+
+                    pdfFileName = Guid.NewGuid().ToString() + extension;
+
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Info", pdfFileName);
+
+                    pdf.SaveAs(path);
+                }
+                var pngPreviewew = Request.Files["pngPreview"];
+                if (pngPreviewew != null && pngPreviewew.ContentLength > 0)
+                {
+                    // get a stream
+                    var stream = pngPreviewew.InputStream;
+                    // and optionally write the file to disk
+                    var extension = Path.GetExtension(pngPreviewew.FileName);
+
+                    previewFileName = Guid.NewGuid().ToString() + extension;
+
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Preview", previewFileName);
+
+                    pngPreviewew.SaveAs(path);
+                }
+                var emb = Request.Files["emb"];
+                if (emb != null && emb.ContentLength > 0)
+                {
+                    // get a stream
+                    var stream = emb.InputStream;
+                    // and optionally write the file to disk
+                    var extension = Path.GetExtension(emb.FileName);
+
+                    embFileName = Guid.NewGuid().ToString() + extension;
+
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/EMB", embFileName);
+
+                    emb.SaveAs(path);
+                }
+
+
+                designData.UpdateDesignDigitizedFile(Convert.ToInt32(designId), dstFileName);
+                designData.UpdateDesignDigitizedPreview(Convert.ToInt32(designId), previewFileName);
+                designData.UpdateDesignDigitizedProductionSheet(Convert.ToInt32(designId), pdfFileName);
+                designData.UpdateDesignEMBFile(Convert.ToInt32(designId), embFileName);
+
+                success = true;
+            }
+
+            var json = new JavaScriptSerializer().Serialize(success);
+            return json;
+        }
+
         public string ApproveProduct(string id)
         {
             bool success = false;
@@ -1066,6 +1268,11 @@ namespace LidLaunchWebsite.Controllers
             var success = noteId > 0;
 
             return success.ToString();
+        }
+
+        public ActionResult UploadBulkDesign()
+        {
+            return PartialView();
         }
 
         public ActionResult SetBulkDesign()

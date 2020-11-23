@@ -23,6 +23,10 @@ namespace LidLaunchWebsite.Models
         public List<Note> lstRevisionNotes { get; set; }
         public bool CustomerApproved { get; set; }
         public bool InternallyApproved { get; set; }
-        public bool Revision { get; set; }
+        public bool Revision { get; set; }        
+        public string Name { get; set; }
+        public string StitchoutImage { get; set; }
+        public bool StitchoutApproved { get; set; }
+        public bool PredigitizingApproved { get; set; }
     }
 }

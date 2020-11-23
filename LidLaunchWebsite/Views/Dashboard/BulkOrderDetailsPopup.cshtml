@@ -208,9 +208,13 @@
         <div id="bulkOrderDesigns">
             <h3>Designs</h3>
             <a href="javascript:void(0);" onclick="$('#bulkDesignSelectHolder').load(selectBulkDesignUrl);"><input type="button" class="smallButton" value="SELECT PRE-EXISTING DESIGN" /></a>
+            <a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl);"><input type="button" class="smallButton" value="Add Design" /></a>
             <table>
                 <thead>
                     <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Name</td>
                         <td>Art Source</td>
                         <td>Height</td>
                         <td>Width</td>
@@ -241,6 +245,7 @@
                                 }
                             }
                             <td><input type="button" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: true, customerAdded: false });" class="smallButton" value="Revision" /></td>
+                            <td>@design.Name</td>
                             <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>
                             <td>@design.Height</td>
                             <td>@design.Width</td>
@@ -256,6 +261,7 @@
                             {
                                 <tr>
                                     <td></td>
+                                    <td></td>
                                     <td colspan="3"><i class="noteDate">INTERNAL NOTES: @note.CreatedDate</i> : @note.Text</td>
                                     <td>@note.Attachment</td>
                                 </tr>
@@ -266,6 +272,7 @@
                             foreach (LidLaunchWebsite.Models.Note note in design.lstRevisionNotes)
                             {
                                 <tr>
+                                    <td></td>
                                     <td></td>
                                     <td colspan="3"><i class="noteDate">CUSTOMER NOTES: @note.CreatedDate</i> : @note.Text</td>
                                     <td>@note.Attachment</td>
@@ -285,6 +292,7 @@
         <div id="bulkDesignSelectHolder"></div>
         <div id="bulkReworkHolder"></div>
         <div id="bulkOrderEditHolder"></div>
+        <div id="uploadDesignHolder"></div>
     </div><!--bulkOrderDetailsPopupContent-->
 </div><!--/bulkOrderDetailsPopup-->
 <script type="text/javascript">
@@ -292,5 +300,6 @@
     var selectBulkDesignUrl = '@Url.Action("SetBulkDesign", "Dashboard")';
     var addBulkReworkUrl = '@Url.Action("AddBulkRework", "Dashboard")';
     var bulkOrderEditUrl = '@Url.Action("EditBulkOrderPopup", "Dashboard")';
+    var uploadBulkDesignUrl = '@Url.Action("UploadBulkDesign", "Dashboard")';
 </script>
 

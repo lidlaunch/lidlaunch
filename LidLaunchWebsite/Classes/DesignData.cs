@@ -10,7 +10,7 @@ namespace LidLaunchWebsite.Classes
 {
     public class DesignData
     {
-        public int CreateDesign(string artSource, string previewImage, decimal width, decimal height, decimal x, decimal y, decimal embroideredWidth, decimal embroideredHeight, decimal embroideredX, decimal embroideredY)
+        public int CreateDesign(string artSource, string previewImage, decimal width, decimal height, decimal x, decimal y, decimal embroideredWidth, decimal embroideredHeight, decimal embroideredX, decimal embroideredY, string name, string dstFile, string pdfFile, string embFile, string previewPngFile)
         {
             var data = new SQLData();
             var designerId = 0;
@@ -32,6 +32,11 @@ namespace LidLaunchWebsite.Classes
                     sqlComm.Parameters.AddWithValue("@embroideredHeight", embroideredHeight);
                     sqlComm.Parameters.AddWithValue("@embroideredX", embroideredX);
                     sqlComm.Parameters.AddWithValue("@embroideredY", embroideredY);
+                    sqlComm.Parameters.AddWithValue("@name", name);
+                    sqlComm.Parameters.AddWithValue("@dst", dstFile);
+                    sqlComm.Parameters.AddWithValue("@pdf", pdfFile);
+                    sqlComm.Parameters.AddWithValue("emb", embFile);
+                    sqlComm.Parameters.AddWithValue("@previewPng", previewPngFile);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();

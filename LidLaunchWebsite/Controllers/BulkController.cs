@@ -197,7 +197,7 @@ namespace LidLaunchWebsite.Controllers
                 var orderId = bulkData.CreateBulkOrder(shipToName, email, shipToPhone, Convert.ToDecimal(orderTotal), orderNotes, artworkPath, artworkPlacement, cartItems, paymentCompleteGuid, paymentGuid, Convert.ToDecimal(shippingCost), shipToName, shipToAddress, shipToCity, shipToState, shipToZip, shipToPhone, billToName, billToAddress, billToCity, billToState, billToZip, billToPhone, Convert.ToBoolean(backStitching), Convert.ToBoolean(leftSideStitching), Convert.ToBoolean(rightSideStitching), Convert.ToString(backStitchingComment), Convert.ToString(leftSideStitchingComment), Convert.ToString(rightSideStitchingComment));
 
                 DesignData designData = new DesignData();
-                var designId = designData.CreateDesign(artworkPath, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M);
+                var designId = designData.CreateDesign(artworkPath, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, "Front", "", "", "", "");
 
                 bulkData.CreateBulkOrderDesign(orderId, designId);
 
@@ -331,13 +331,21 @@ namespace LidLaunchWebsite.Controllers
             return PartialView("BulkOrderBatches", lstBatches); ;
         }
 
-        public ActionResult PrintBulkOrderBatchBulkOrders(string bulkBatchId)
+        public ActionResult PrintBulkOrderBatchBulkOrders(string bulkBatchId, string rework)
         {
             BulkData data = new BulkData();
             BulkBatchOrder bulkBatchOrder = new BulkBatchOrder();
             List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
+            bool isRework = Convert.ToBoolean(rework);
 
-            lstBulkOrders = data.GetBulkOrdersByBatchId(Convert.ToInt32(bulkBatchId));
+            if(isRework)
+            {
+                lstBulkOrders = data.GetBulkOrderData("rework");
+            } else
+            {
+                lstBulkOrders = data.GetBulkOrdersByBatchId(Convert.ToInt32(bulkBatchId));
+            }
+            
 
             bulkBatchOrder.lstBulkOrders = lstBulkOrders;
 

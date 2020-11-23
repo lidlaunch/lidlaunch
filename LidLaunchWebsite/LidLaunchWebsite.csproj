@@ -804,6 +804,7 @@
     <Content Include="Views\Dashboard\EditBulkOrderPopup.cshtml" />
     <Content Include="Views\Dashboard\BulkOrderPriority.cshtml" />
     <Content Include="Views\Dashboard\MachinePanel.cshtml" />
+    <Content Include="Views\Dashboard\UploadBulkDesign.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

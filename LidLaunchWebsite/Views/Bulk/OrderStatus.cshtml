@@ -83,7 +83,7 @@
     </table>
 
     <div class="importantSection"><b>Order Notes:</b> @Model.OrderNotes </div>
-    @if (!Model.lstDesigns.Any(d => d.DigitizedFile == ""))
+    @if (!Model.lstDesigns.Any(d => d.DigitizedPreview == ""))
     {
 <div id="orderDigizing">
     <h2>Digitized Designs:</h2>
@@ -91,6 +91,7 @@
     @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns)
     {
         <div class="orderDigitizingPreview">
+            <h2>@design.Name</h2>
             <a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" width="300" /></a>
         </div>
         if (!design.CustomerApproved)

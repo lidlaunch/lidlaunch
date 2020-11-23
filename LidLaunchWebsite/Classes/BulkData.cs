@@ -124,7 +124,7 @@ namespace LidLaunchWebsite.Classes
                     }
                     else if (filter == "rework")
                     {
-                        lstBulkOrders = lstBulkOrders.Where(b => b.lstItems.Any(i => i.BulkRework.Status == "In Progress") && b.OrderPaid).ToList();
+                        lstBulkOrders = lstBulkOrders.Where(b => b.lstItems.Any(i => i.BulkRework.Status == "In Progress") && b.OrderPaid).ToList();                        
                     }
                     else if (filter == "45days")
                     {
@@ -233,7 +233,11 @@ namespace LidLaunchWebsite.Classes
             if (itemName.Contains("FlexFit 6277"))
             {
                 return 5.00M;
-            }            
+            }
+            if (itemName.Contains("FlexFit Flat Bill Fitted"))
+            {
+                return 5.32M;
+            }
             if (itemName.Contains("FlexFit Premium 210"))
             {
                 return 6.02M;
@@ -484,6 +488,7 @@ namespace LidLaunchWebsite.Classes
                         design.CustomerApproved = Convert.ToBoolean(dr3["CustomerApproved"].ToString());
                         design.InternallyApproved = Convert.ToBoolean(dr3["InternallyApproved"].ToString());
                         design.Revision = Convert.ToBoolean(dr3["Revision"].ToString());
+                        design.Name = Convert.ToString(dr3["Name"].ToString());
 
                         design.lstNotes = new List<Note>();
                         design.lstRevisionNotes = new List<Note>();

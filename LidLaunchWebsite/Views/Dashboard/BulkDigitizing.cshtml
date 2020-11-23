@@ -11,6 +11,7 @@
             }
             <tr style="font-weight:bold;">
                 <td>Design ID</td>
+                <td>Name</td>
                 <td>Art Source</td>
                 <td>Height</td>
                 <td>Width</td>
@@ -23,6 +24,7 @@
             {
                 <tr>
                     <td><span class="designId">@design.Id</span><span class="bulkOrderId hidden">@bulkOrder.Id</span></td>
+                    <td>@design.Name</td>
                     <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank"><img src="~/Images/BulkOrderArtwork/@design.ArtSource" height="200" /></a></td>
                     <td>@design.EmbroideredHeight</td>
                     <td>@design.EmbroideredWidth</td>
@@ -51,6 +53,6 @@
                 }
                 <tr style="height:1px; background:#000;"><td colspan="8"></td></tr>
             }
-            <tr style="height:5px; background:#39b91c;"><td colspan="8"></td></tr>
+            <tr style="height:10px; background:#39b91c;"><td colspan="8"></td></tr>
         }
     </table>

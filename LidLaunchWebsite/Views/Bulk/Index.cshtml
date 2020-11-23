@@ -493,7 +493,7 @@
                     </div><!--/hatBrandStyleRegion-->
                     <div class="hatBrandStyleRegion clear">
                         <div class="hatTitle" onclick="$('#FlexFit210').toggle();">
-                            <div class="title left">FlexFit Premium 210 Fitted Flat Bill</div>
+                            <div class="title left">FlexFit Flat Bill Fitted</div>
                             <div class="right">Expand/Collapse</div>
                         </div>
                         <div class="hatStyleSelectArea" id="FlexFit210" style="display:none;">
@@ -517,7 +517,7 @@
                                             <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
                                             <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="hidden">
                                             <td class="hatPreviewImage"><img src="~/Images/FlexFit210/hat_04.jpg" /></td>
                                             <td class="colorOption">BROWN</td>
                                             <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
@@ -529,7 +529,7 @@
                                             <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
                                             <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="hidden">
                                             <td class="hatPreviewImage"><img src="~/Images/FlexFit210/hat_09.jpg" /></td>
                                             <td class="colorOption">HEATHER GRAY</td>
                                             <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
@@ -1994,7 +1994,7 @@
         </div>
         <div id="designPlacement">
             <h2>Click where would you like the artwork placed on the hat.</h2>
-
+            <p>Our standard sizing for Centered designs is 2.5" tall and 4.2" wide (when possible). Offset designs will be a maximum 2.5" tall and 3.2" wide. If you would like different deminsions and your artwork will work for it, please let us know in the order notes. The maximum Embroiedery field size is 6.5" wide by 2.5" tall.</p>
             <div id="placementSelect">
                 <div class="placementOption" id="left" onclick="$('#artPlacement').text('left');$('.placementOption#left').addClass('selected');$('.placementOption#right').removeClass('selected');$('.placementOption#center').removeClass('selected');">
                     <img src="~/Images/LeftPlacement.jpg" class="placementImage" />
@@ -2012,7 +2012,7 @@
             <h2>Please tell us any specific instructions or details about your order that you think we should know.</h2>
             <p><b>For Example:</b> <i>If you ordered black hats and the text in your logo is black tell us what color stitching to use. Also, list out the colors of stitching you want on the different color hats you may have selected.</i></p>
             <div>
-                <textarea class="productDetailsTextMulti textBoxMulti" id="txtDetails" placeholder="Order Information" rows="10"></textarea>
+                <textarea class="productDetailsTextMulti textBoxMulti" id="txtDetails" placeholder="Order Notes" rows="10"></textarea>
             </div>
         </div>
         <div id="additionalEmbroideryLocations">
@@ -2031,8 +2031,9 @@
                 <input type="text" placeholder="Left Side Stitching Details" id="txtLeftSideStitching" />
             </div>
         </div>
-        <div id="designProcessExplained">
-            <h2>We will convert and digitize your artwork. You will receive mockups and stitching proofs for approval before the hats are stitched. We work with you to ensure the end product is going to be exactly what you want.</h2>
+        <div id="designProcessExplained">            
+            <h2>We will convert and digitize your artwork. You will receive mockups and stitching proofs for approval and feedback before the hats are stitched.</h2>
+            <p>The prices shown are for standard 2D embroirdery only. 3D Puff embroidery is an extra $5 per hat and is only possible on some designs and is billed separately.</p>
         </div>
     </div><!--/bulkArtworkStep-->
     <div id="bulkReadyToBuy" class="centerInner" style="display:none;">

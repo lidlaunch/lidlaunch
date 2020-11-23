@@ -2861,6 +2861,10 @@ input[type=text], input[type=password], select, input[type=number] {
         padding: 0 10px;
     }
 
+    #additionalEmbroideryLocations {
+        padding: 0 10px;
+    }
+
     #designComments {
         padding: 0 10px;
     }
