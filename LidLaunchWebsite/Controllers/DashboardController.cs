@@ -990,7 +990,7 @@ namespace LidLaunchWebsite.Controllers
         public string UpdateBulkOrderPaid(string bulkOrderId, string orderPaid)
         {
 
-            if (!checkLoggedIn())
+            if (Convert.ToInt32(Session["UserID"]) != 1)
             {
                 return "false";
             } else
@@ -1008,8 +1008,7 @@ namespace LidLaunchWebsite.Controllers
                     data.UpdateBulkOrderPaid(Convert.ToInt32(bulkOrderId), true);
                     return "true";
                 }
-            }
-            
+            }            
 
         }
 
