@@ -1983,13 +1983,13 @@
         <div id="designUploadContent">
             <h2>Upload the artwork you would like to include on your hats.</h2>
             <div id="preSetupArtwork" onclick="togglePresetArtwork()">
-                <input type="checkbox" id="artworkPresetup" onclick="togglePresetArtwork()" /> Check this box if you have ordered hats from us in the past and your artwork is already setup in our system.
+                <input type="checkbox" id="artworkPresetup" onclick="togglePresetArtwork()" /> Check this box <b>ONLY</b> if you have ordered hats from us in the past and your artwork is already setup in our system.
             </div>
             <div>
                 <input type="file" id="bulkArtwork" />
             </div>
             <div>
-                <p><i>Please keep in mind that really small details do not work well for embroidery and very small text will either need to be enlarged or removed entirely from some designs.</i></p>
+                <p style="color:red;"><i>Please keep in mind that really small details do not work well for embroidery. Very small text and details will need to be removed from some designs. <b>LESS IS MORE</b> when it comes to embroidery designs for hats.</i></p>
             </div>
         </div>
         <div id="designPlacement">
@@ -2010,23 +2010,23 @@
         </div>
         <div id="designComments" class="clear">
             <h2>Please tell us any specific instructions or details about your order that you think we should know.</h2>
-            <p><b>For Example:</b> <i>Match stitching color to back mesh / Use red stitching on black hats / Match logo coloring as close as possible / Remove phone number from artwork</i></p>
+            <p><b>For Example:</b> <i>If you ordered black hats and the text in your logo is black tell us what color stitching to use. Also, list out the colors of stitching you want on the different color hats you may have selected.</i></p>
             <div>
                 <textarea class="productDetailsTextMulti textBoxMulti" id="txtDetails" placeholder="Order Information" rows="10"></textarea>
             </div>
         </div>
         <div id="additionalEmbroideryLocations">
-            <h2>Add Additional Embroidery Locations.</h2>
-            <p>Each additional Embroidery location is $5 per hat. Please add a comment for what you are wanting to add to each location. If the additional location is only text there is no setup charges. If you want a separate logo, there will be a $15 setup fee.</p>
+            <h2>Add Back Stitching (TEXT ONLY)</h2>
+            <p>Back stitching is $5 per hat. Please add what text you want added to the back of the hats.</p>
             <div id="backStitching">
                 <div id="chkBackHolder" onclick="toggleBackStitching()"><input type="checkbox" id="chkBackStitching" onclick="toggleBackStitching()" /> Back Stitching</div>
                 <input type="text" placeholder="Back Stitching Details" id="txtBackStitching" />
             </div>
-            <div id="rightSideStitching">
+            <div id="rightSideStitching" class="hidden">
                 <div id="chkRightHolder" onclick="toggleRightSideStitching()"><input type="checkbox" id="chkRightSideStitching" onclick="toggleRightSideStitching()" /> Right Side Stitching</div>
                 <input type="text" placeholder="Right Side Stitching Details" id="txtRightSideStitching" />
             </div>
-            <div id="leftSideStitching">
+            <div id="leftSideStitching" class="hidden">
                 <div id="chkLeftHolder" onclick="toggleLeftSideStitching()"><input type="checkbox" id="chkLeftSideStitching" onclick="toggleLeftSideStitching()" /> Left Side Stitching</div>
                 <input type="text" placeholder="Left Side Stitching Details" id="txtLeftSideStitching" />
             </div>
