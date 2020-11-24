@@ -59,6 +59,32 @@ function sendArtworkEmail(bulkOrderId, customerEmail) {
     });
 }
 
+function releaseToDigitizer(bulkOrderId) {
+    showLoading();
+    $.ajax({
+        type: "POST",
+        url: '/Dashboard/ReleaseToDigitizer?bulkOrderId=' + bulkOrderId,
+        contentType: false,
+        processData: false,
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('Error Releasing To Digitizer.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                hideLoading();
+                showBulkOrderDetailsPopup(bulkOrderId);
+
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error Releasing To Digitizer.', 'error', false);
+        }
+    });
+}
+
+
+
 function bindDigitizingFilesInputs() {
     $('.EmbroideryFile').on('change', function (e) {
         var that = this;

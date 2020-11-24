@@ -408,6 +408,7 @@ namespace LidLaunchWebsite.Classes
             bulkOrder.LeftStitchingComment = dr["LeftStitchingComment"].ToString();
             bulkOrder.RightStitchingComment = dr["RightStitchingComment"].ToString();
             bulkOrder.ArtworkEmailSent = Convert.ToBoolean(dr["ArtworkEmailSent"].ToString());
+            bulkOrder.ReleaseToDigitizer = Convert.ToBoolean(dr["ReleaseToDigitizer"].ToString());
             bulkOrder.lstItems = new List<BulkOrderItem>();
 
             if (ds.Tables[1].Rows.Count > 0)
@@ -586,6 +587,37 @@ namespace LidLaunchWebsite.Classes
                 using (data.conn)
                 {
                     SqlCommand sqlComm = new SqlCommand("UpdateArtworkEmailSent", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool ReleaseToDigitizer (int bulkOrderId)
+        {
+            var data = new SQLData();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("ReleaseToDigitizer", data.conn);
                     sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;

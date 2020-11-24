@@ -60,6 +60,19 @@
                     <td>Art Source:</td>
                     <td><img src="~/Images/BulkOrderArtwork/@Model.ArtworkImage" style="max-height:200px; max-width:200px;" /></td>
                 </tr>
+                <tr>
+                    <td>Released To Digitizer:</td>
+                    <td>
+                        @if (Model.ReleaseToDigitizer)
+                        {
+                            <span>released</span>
+                        }
+                        else
+                        {
+                            <input type="button" class="smallButton" onclick="releaseToDigitizer(@Model.Id);" value="Release" />
+                        }
+                    </td>
+                </tr>
                 @if (Model.BackStitching)
                 {
                     <tr>

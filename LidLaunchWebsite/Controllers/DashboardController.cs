@@ -1019,6 +1019,21 @@ namespace LidLaunchWebsite.Controllers
             return "true";
         }
 
+        public string ReleaseToDigitizer(string bulkOrderId)
+        {
+            if (Convert.ToInt32(Session["UserID"]) == 1)
+            {
+                BulkData data = new BulkData();
+                data.ReleaseToDigitizer(Convert.ToInt32(bulkOrderId));
+                return "true";
+            }
+            else
+            {
+                return "false";
+            }            
+        }
+
+
         public ActionResult BulkDigitizing()
         {
             if (Convert.ToInt32(Session["UserID"]) > 0)
@@ -1029,6 +1044,7 @@ namespace LidLaunchWebsite.Controllers
                     BulkData data = new BulkData();
                     lstBulkOrders = data.GetBulkOrderData("");
                     lstBulkOrders.RemoveAll(bo => !bo.OrderPaid);
+                    lstBulkOrders.RemoveAll(bo => !bo.ReleaseToDigitizer);
                     return View(lstBulkOrders);
                 }
                 else
