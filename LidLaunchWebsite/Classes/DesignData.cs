@@ -10,6 +10,69 @@ namespace LidLaunchWebsite.Classes
 {
     public class DesignData
     {
+        public Design GetDesign(int designId)
+        {
+            var data = new SQLData();
+            Design design = new Design();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetDesignByDesignId", data.conn);
+                    sqlComm.Parameters.AddWithValue("@designId", designId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        DataRow dr = ds.Tables[0].Rows[0];
+                        
+                        design.Id = Convert.ToInt32(dr["Id"].ToString());
+                        design.ArtSource = Convert.ToString(dr["ArtSource"].ToString());
+                        design.PreviewImage = Convert.ToString(dr["PreviewImage"].ToString());
+                        design.DigitizedFile = Convert.ToString(dr["DigitizedFile"].ToString());
+                        design.DigitizedProductionSheet = Convert.ToString(dr["DigitizedProductionSheet"].ToString());
+                        design.EMBFile = Convert.ToString(dr["EMBFile"].ToString());
+                        design.DigitizedPreview = Convert.ToString(dr["DigitizedPreview"].ToString());
+                        design.Width = Convert.ToDecimal(dr["Width"].ToString());
+                        design.Height = Convert.ToDecimal(dr["Height"].ToString());
+                        design.X = Convert.ToDecimal(dr["X"].ToString());
+                        design.Y = Convert.ToDecimal(dr["Y"].ToString());
+                        design.EmbroideredWidth = Convert.ToDecimal(dr["EmbroideredWidth"].ToString());
+                        design.EmbroideredHeight = Convert.ToDecimal(dr["EmbroideredHeight"].ToString());
+                        design.EmbroideredX = Convert.ToDecimal(dr["EmbroideredX"].ToString());
+                        design.EmbroideredY = Convert.ToDecimal(dr["EmbroideredY"].ToString());
+                        design.CustomerApproved = Convert.ToBoolean(dr["CustomerApproved"].ToString());
+                        design.InternallyApproved = Convert.ToBoolean(dr["InternallyApproved"].ToString());
+                        design.Revision = Convert.ToBoolean(dr["Revision"].ToString());
+                        design.Name = Convert.ToString(dr["Name"].ToString());
+                    }
+
+                    }
+
+                return design;
+            }
+            catch (Exception ex)
+            {
+                return design;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+            
+                    
+
         public int CreateDesign(string artSource, string previewImage, decimal width, decimal height, decimal x, decimal y, decimal embroideredWidth, decimal embroideredHeight, decimal embroideredX, decimal embroideredY, string name, string dstFile, string pdfFile, string embFile, string previewPngFile)
         {
             var data = new SQLData();
@@ -58,7 +121,54 @@ namespace LidLaunchWebsite.Classes
                     data.conn.Close();
                 }
             }
-        }        
+        }
+
+        public bool UpdateDesign(string artSource, string previewImage, decimal width, decimal height, decimal x, decimal y, decimal embroideredWidth, decimal embroideredHeight, decimal embroideredX, decimal embroideredY, string name, string dstFile, string pdfFile, string embFile, string previewPngFile, int designId)
+        {
+            var data = new SQLData();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateDesign", data.conn);
+                    sqlComm.Parameters.AddWithValue("@artSource", artSource);
+                    sqlComm.Parameters.AddWithValue("@previewImage", previewImage);
+                    sqlComm.Parameters.AddWithValue("@width", width);
+                    sqlComm.Parameters.AddWithValue("@height", height);
+                    sqlComm.Parameters.AddWithValue("@x", x);
+                    sqlComm.Parameters.AddWithValue("@y", y);
+                    sqlComm.Parameters.AddWithValue("@embroideredWidth", embroideredWidth);
+                    sqlComm.Parameters.AddWithValue("@embroideredHeight", embroideredHeight);
+                    sqlComm.Parameters.AddWithValue("@embroideredX", embroideredX);
+                    sqlComm.Parameters.AddWithValue("@embroideredY", embroideredY);
+                    sqlComm.Parameters.AddWithValue("@name", name);
+                    sqlComm.Parameters.AddWithValue("@dst", dstFile);
+                    sqlComm.Parameters.AddWithValue("@pdf", pdfFile);
+                    sqlComm.Parameters.AddWithValue("emb", embFile);
+                    sqlComm.Parameters.AddWithValue("@previewPng", previewPngFile);
+                    sqlComm.Parameters.AddWithValue("@designId", designId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
         public bool DeleteDesign(int designId)
         {
             var data = new SQLData();

@@ -442,7 +442,7 @@ namespace LidLaunchWebsite.Controllers
             bool success = false;
             DesignData designData = new DesignData();
             BulkData bulkData = new BulkData();
-            var artwworkFileName = "";
+            var artworkFileName = "";
             var dstFileName = "";
             var pdfFileName = "";
             var previewFileName = "";
@@ -462,9 +462,9 @@ namespace LidLaunchWebsite.Controllers
                     // and optionally write the file to disk
                     var extension = Path.GetExtension(artSource.FileName);
 
-                    artwworkFileName = Guid.NewGuid().ToString() + extension;
+                    artworkFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
-                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork/", artwworkFileName);
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork/", artworkFileName);
 
                     artSource.SaveAs(path);
                 }
@@ -476,9 +476,9 @@ namespace LidLaunchWebsite.Controllers
                     // and optionally write the file to disk
                     var extension = Path.GetExtension(dst.FileName);
 
-                    dstFileName = Guid.NewGuid().ToString() + extension;
+                    dstFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
-                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", dstFileName);
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", "W" + bulkOrderId + "-" + designName + "-" + dstFileName);
 
                     dst.SaveAs(path);
                 }
@@ -490,7 +490,7 @@ namespace LidLaunchWebsite.Controllers
                     // and optionally write the file to disk
                     var extension = Path.GetExtension(pdf.FileName);
 
-                    pdfFileName = Guid.NewGuid().ToString() + extension;
+                    pdfFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
                     var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Info", pdfFileName);
 
@@ -504,7 +504,7 @@ namespace LidLaunchWebsite.Controllers
                     // and optionally write the file to disk
                     var extension = Path.GetExtension(pngPreviewew.FileName);
 
-                    previewFileName = Guid.NewGuid().ToString() + extension;
+                    previewFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
                     var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Preview", previewFileName);
 
@@ -518,21 +518,18 @@ namespace LidLaunchWebsite.Controllers
                     // and optionally write the file to disk
                     var extension = Path.GetExtension(emb.FileName);
 
-                    embFileName = Guid.NewGuid().ToString() + extension;
+                    embFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
                     var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/EMB", embFileName);
 
                     emb.SaveAs(path);
                 }
 
-                var designId = designData.CreateDesign(artwworkFileName, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, designName, dstFileName, pdfFileName, embFileName, previewFileName);
+                var designId = designData.CreateDesign(artworkFileName, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, designName, dstFileName, pdfFileName, embFileName, previewFileName);
 
                 success = bulkData.CreateBulkOrderDesign(Convert.ToInt32(bulkOrderId), designId);
 
-            }
-
-
-        
+            }        
 
             var json = new JavaScriptSerializer().Serialize(success);
             return json;
@@ -543,7 +540,7 @@ namespace LidLaunchWebsite.Controllers
             bool success = false;
             DesignData designData = new DesignData();
             BulkData bulkData = new BulkData();
-            var artwworkFileName = "";
+            var artworkFileName = "";
             var dstFileName = "";
             var pdfFileName = "";
             var previewFileName = "";
@@ -563,9 +560,9 @@ namespace LidLaunchWebsite.Controllers
                     // and optionally write the file to disk
                     var extension = Path.GetExtension(artSource.FileName);
 
-                    artwworkFileName = Guid.NewGuid().ToString() + extension;
+                    artworkFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
-                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork/", artwworkFileName);
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork/", artworkFileName);
 
                     artSource.SaveAs(path);
                 }
@@ -577,7 +574,7 @@ namespace LidLaunchWebsite.Controllers
                     // and optionally write the file to disk
                     var extension = Path.GetExtension(dst.FileName);
 
-                    dstFileName = Guid.NewGuid().ToString() + extension;
+                    dstFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
                     var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", dstFileName);
 
@@ -591,7 +588,7 @@ namespace LidLaunchWebsite.Controllers
                     // and optionally write the file to disk
                     var extension = Path.GetExtension(pdf.FileName);
 
-                    pdfFileName = Guid.NewGuid().ToString() + extension;
+                    pdfFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
                     var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Info", pdfFileName);
 
@@ -605,7 +602,7 @@ namespace LidLaunchWebsite.Controllers
                     // and optionally write the file to disk
                     var extension = Path.GetExtension(pngPreviewew.FileName);
 
-                    previewFileName = Guid.NewGuid().ToString() + extension;
+                    previewFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
                     var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Preview", previewFileName);
 
@@ -619,20 +616,15 @@ namespace LidLaunchWebsite.Controllers
                     // and optionally write the file to disk
                     var extension = Path.GetExtension(emb.FileName);
 
-                    embFileName = Guid.NewGuid().ToString() + extension;
+                    embFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
                     var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/EMB", embFileName);
 
                     emb.SaveAs(path);
                 }
 
+                success = designData.UpdateDesign(artworkFileName, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, designName, dstFileName, pdfFileName, embFileName, previewFileName, Convert.ToInt32(designId));
 
-                designData.UpdateDesignDigitizedFile(Convert.ToInt32(designId), dstFileName);
-                designData.UpdateDesignDigitizedPreview(Convert.ToInt32(designId), previewFileName);
-                designData.UpdateDesignDigitizedProductionSheet(Convert.ToInt32(designId), pdfFileName);
-                designData.UpdateDesignEMBFile(Convert.ToInt32(designId), embFileName);
-
-                success = true;
             }
 
             var json = new JavaScriptSerializer().Serialize(success);
@@ -1285,9 +1277,20 @@ namespace LidLaunchWebsite.Controllers
             return success.ToString();
         }
 
-        public ActionResult UploadBulkDesign()
+        public ActionResult UploadBulkDesign(string designId)
         {
-            return PartialView();
+            DesignData data = new DesignData();
+            Design design = new Design();
+
+            if(designId != "")
+            {
+                design = data.GetDesign(Convert.ToInt32(designId));
+            } else
+            {
+                design.Id = 0;
+            }
+            
+            return PartialView(design);
         }
 
         public ActionResult SetBulkDesign()

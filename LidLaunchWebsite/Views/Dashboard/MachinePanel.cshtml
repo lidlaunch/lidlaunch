@@ -98,7 +98,7 @@
     <input type="text" id="txtOrderId" />
 </div>
 
-@if (Model.Id > 0)
+@if (Model.Id > 0 && Model.ReadyForProduction && Model.OrderPaid)
 {
     <div id="bulkInfoPanel">
         <div id="TopInfoBar">
@@ -206,20 +206,7 @@
                     </tr>
                 }
             </table>
-        </div>
-        <div id="bulkOrderNotes">
-            <h3>Design Notes</h3>
-            <table>
-                @foreach (LidLaunchWebsite.Models.Note note in Model.lstDesigns.SelectMany(d => d.lstNotes))
-                {
-                    <tr class="importantNote">
-                        <td></td>
-                        <td colspan="3"><i class="noteDate">@note.CreatedDate</i> : @note.Text</td>
-                        <td>@note.Attachment</td>
-                    </tr>
-                }
-            </table>
-        </div>
+        </div>        
     </div>
     <div id="bulkOrderDesignPdfs">
         <div id="bulkDesignButtons">

@@ -1,23 +1,82 @@
-﻿@{
+﻿@model LidLaunchWebsite.Models.Design
+@{
     ViewBag.Title = "SetBulkDesign";
 }
 <div id="uploadBulkDesignPopup">
     <div id="uploadBulkDesignPopupInner">
         <span onclick="$('#uploadBulkDesignPopup').hide();" class="closeButton" style="position:absolute; top:5px;right:5px;">X</span>
         <select id="bulkDesignName">
-            <option value="Front">Alternate Front</option>
-            <option value="LeftSide">Left Side</option>
-            <option value="RightSide">Right Side</option>
-            <option value="Back">Back</option>
-            <option value="Beanie">Beanie</option>
+            @if (Model.Name == "Front")
+            {
+                <option value="Front" selected>Front</option>
+            }
+            else
+            {
+                <option value="Front">Front</option>
+            }
+            @if (Model.Name == "AltFront")
+            {
+                <option value="AltFront" selected>Alternate Front</option>
+            }
+            else
+            {
+                <option value="AltFront">Alternate Front</option>
+            }
+            @if (Model.Name == "LeftSide")
+            {
+                <option value="LeftSide" selected>Left Side</option>
+            }
+            else
+            {
+                <option value="LeftSide">Left Side</option>
+            }
+            @if (Model.Name == "RightSide")
+            {
+                <option value="RightSide" selected>Right Side</option>
+            }
+            else
+            {
+                <option value="RightSide">Right Side</option>
+            }
+            @if (Model.Name == "Back")
+            {
+                <option value="Back" selected>Back</option>
+            }
+            else
+            {
+                <option value="Back">Back</option>
+            }
+            @if (Model.Name == "Beanie")
+            {
+                <option value="Beanie" selected>Beanie</option>
+            }
+            else
+            {
+                <option value="Beanie">Beanie</option>
+            }
         </select>
-        Art Source: <input type="file" id="fileArtSource"/>
-        PNG PREVIEW: <input type="file" id="filePngPreview"/>
-        DST: <input type="file" id="fileDst"/>
-        PDF: <input type="file" id="filePdf"/>
-        EMB: <input type="file" id="fileEmb"/>
-        
-        <div><input type="button" value="Save Design" class="smallButton" onclick="saveBulkDesign()" /></div>
+        <br />
+        ART SOURCE: <input type="file" id="fileArtSource" value="@Model.ArtSource" /><img src="/Images/DesignImages/Digitizing/Preview/@Model.ArtSource" style="max-height:100px; max-width:100px;" />
+        <br />
+        PNG PREVIEW: <input type="file" id="filePngPreview" value="@Model.DigitizedPreview" /><img src="/Images/DesignImages/Digitizing/Preview/@Model.DigitizedPreview" style="max-height:100px; max-width:100px;" />
+        <br />
+        DST: <input type="file" id="fileDst" value="@Model.DigitizedFile" />
+        <br />
+        PDF: <input type="file" id="filePdf" value="@Model.DigitizedProductionSheet" />
+        <br />
+        EMB: <input type="file" id="fileEmb" value="@Model.EMBFile" />
+        <br />
+
+        @if (Model.Id == 0)
+        {
+            <div><input type="button" value="Save Design" class="smallButton" onclick="saveBulkDesign()" /></div>
+        }
+        @if (Model.Id > 0)
+        {
+            <div><input type="button" value="Update Design" class="smallButton" onclick="updateBulkDesign(@Model.Id)" /></div>
+        }
+        <div><input type="button" value="Cancel" class="smallButton" onclick="showBulkOrderDetailsPopup($('#BulkOrderId').text());" /></div>
+
     </div>
 </div>
 
@@ -26,7 +85,7 @@
     function saveBulkDesign() {
         var bulkOrderId = $('#BulkOrderId').text();
         var designName = $('#bulkDesignName').val();
-        var artSource = $('#fileArtSource')[0].files;    
+        var artSource = $('#fileArtSource')[0].files;
         var pngPreview = $('#filePngPreview')[0].files;
         var dst = $('#fileDst')[0].files;
         var pdf = $('#filePdf')[0].files;
@@ -53,7 +112,53 @@
                         //do nothing
                         displayPopupNotification('Sorry there was an error creating your design.', 'error', false);
                     } else {
-                        //set the url for the file link and show the link 
+                        //set the url for the file link and show the link
+                        hideLoading();
+                        showBulkOrderDetailsPopup(bulkOrderId);
+                    }
+                },
+                error: function (xhr, status, p3, p4) {
+                    displayPopupNotification('Sorry there was an error creating your design.', 'error', false);
+                }
+            });
+
+        } else {
+            displayPopupNotification('Please upload atleast a png preview, dst file, pdf AND emb file to save.', 'error', false);
+        }
+    }
+
+    function updateBulkDesign(designId) {
+        var bulkOrderId = $('#BulkOrderId').text();
+        var designName = $('#bulkDesignName').val();
+        var artSource = $('#fileArtSource')[0].files;
+        var pngPreview = $('#filePngPreview')[0].files;
+        var dst = $('#fileDst')[0].files;
+        var pdf = $('#filePdf')[0].files;
+        var emb = $('#fileEmb')[0].files;
+
+        if (pngPreview.length > 0 && dst.length > 0 && pdf.length > 0 && emb.length > 0) {
+            var data = new FormData();
+            data.append("artSource", artSource[0]);
+            data.append("pngPreview", pngPreview[0]);
+            data.append("dst", dst[0]);
+            data.append("pdf", pdf[0]);
+            data.append("emb", emb[0]);
+            data.append("designName", designName);
+            data.append("bulkOrderId", bulkOrderId);
+            data.append("designId", designId);
+
+            $.ajax({
+                type: "POST",
+                url: '/Dashboard/UpdateBulkDesign',
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (result) {
+                    if (result == "") {
+                        //do nothing
+                        displayPopupNotification('Sorry there was an error creating your design.', 'error', false);
+                    } else {
+                        //set the url for the file link and show the link
                         hideLoading();
                         showBulkOrderDetailsPopup(bulkOrderId);
                     }

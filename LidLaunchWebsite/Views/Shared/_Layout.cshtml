@@ -101,7 +101,8 @@
                                             <li>@Html.ActionLink("Logout", "Logout", "User")</li>
                                             @if (Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 643 || Convert.ToInt32(Session["UserID"]) == 1579)
                                             {
-                                                <li>@Html.ActionLink("Admin Panel", "AdminPanel", "Dashboard")</li>                                               
+                                                <li>@Html.ActionLink("Admin Panel", "AdminPanel", "Dashboard")</li>
+
                                             }
                                             @if (Convert.ToString(Session["UserEmail"]) == "digitizing@lidlaunch.com")
                                             {
@@ -159,7 +160,7 @@
                 <div class="left50">
                     <div style="margin:0 auto; width:175px; text-align:center;">
                         <p>Embroidered in the <b>USA</b>!</p>
-                        <img src="~/Images/America.png" height="100" /><br/>
+                        <img src="~/Images/America.png" height="100" /><br />
                         <p>Contact us - info@lidlaunch.com</p>
                     </div>
                 </div>
@@ -168,6 +169,9 @@
         <div id="minFooter">
             <img src="@Url.Content("~/Images/min.png")" height="30" />
         </div><!--/footer-->
+        <!-- Start of lidlaunch Zendesk Widget script -->
+        <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=90c7e64e-0eef-4c2f-9b33-1c8c9d976ff7"></script>
+        <!-- End of lidlaunch Zendesk Widget script -->
     </div>
     <div id="errorNotifcation" title="Error" style="display:none;">
         <div id="errorContent">

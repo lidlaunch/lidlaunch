@@ -228,14 +228,13 @@
                         <td></td>
                         <td></td>
                         <td>Name</td>
-                        <td>Art Source</td>
-                        <td>Height</td>
-                        <td>Width</td>
+                        <td>Art Source</td>                        
                         <td>Embroidery File</td>
                         <td>Transparent Preview</td>
                         <td>Production File</td>
                         <td>EMB File</td>
                         <td>Add Note</td>
+                        <td>Edit</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -259,14 +258,13 @@
                             }
                             <td><input type="button" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: true, customerAdded: false });" class="smallButton" value="Revision" /></td>
                             <td>@design.Name</td>
-                            <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>
-                            <td>@design.Height</td>
-                            <td>@design.Width</td>
+                            <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>                                                     
                             <td><a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName" target="_blank">@design.DigitizedFile</a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" /></a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">@design.EMBFile</a></td>
                             <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                            <td><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id });"><input type="button" class="smallButton" value="Edit Design" /></a></td>
                         </tr>
                         if (design.lstNotes.Count > 0)
                         {

@@ -2181,9 +2181,35 @@ input[type=text], input[type=password], select, input[type=number] {
     max-width: 100%;
 }
 
-    .bulkOrderList td {
-        padding: 5px;
-    }
+.bulkOrderList td {
+    padding: 5px;
+}
+
+#uploadBulkDesignPopup {
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: block;
+    top: 0;
+    right: 0;
+}
+#uploadBulkDesignPopupInner {
+    width: 1400px;
+    min-height: 500px;
+    height: auto;
+    background: #fff;
+    margin-top: 50px;
+    display: block;
+    padding: 10px;
+    position: fixed;
+    margin-left: 50%;
+    left: -700px;
+    max-height: 800px;
+    overflow-y: scroll;
+}
+
+
 
 #bulkOrderDetailsPopup {
     background: rgba(0,0,0,0.5);
