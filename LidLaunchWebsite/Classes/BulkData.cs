@@ -1195,6 +1195,7 @@ namespace LidLaunchWebsite.Classes
             }
             catch (Exception ex)
             {
+                Logger.Log("Error Building Bulk Order Object: " + ex.Message.ToString());
                 return bulkOrder;
             }
             finally

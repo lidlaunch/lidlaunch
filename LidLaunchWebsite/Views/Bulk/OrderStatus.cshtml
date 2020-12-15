@@ -1,8 +1,11 @@
 ﻿@model LidLaunchWebsite.Models.BulkOrder
 @using System;
 @using System.Web.Script.Serialization;
+@{
+    ViewBag.Title = "Order Status";
+}
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-<div class="centerInner">
+<div class="centerInner" style="padding:10px;">
     <h2>Order Status</h2>
 
     <div id="orderProgressBar">
@@ -15,7 +18,7 @@
         {
             <div class="progressChunk">Payment</div>
         }
-        @if (Model.lstDesigns.Any(d => d.DigitizedFile == "" || !d.CustomerApproved))
+        @if (Model.lstDesigns.Where(d => d.InternallyApproved).Any(d => d.DigitizedFile == "" || !d.CustomerApproved) || (Model.lstDesigns.Where(d => d.InternallyApproved).ToList().Count == 0))
         {
             <div class="progressChunk">Artwork Setup/Digitizing</div>
         }
@@ -25,21 +28,23 @@
         }
         @if (Model.OrderComplete)
         {
-            <div class="progressChunk complete">Production</div>
             <div class="progressChunk complete last">Shipped</div>
         }
         else
         {
-            <div class="progressChunk">Production</div>
             <div class="progressChunk last">Shipped</div>
         }
 
     </div>
     <div id="progressLegend">
-        <span style="height:11px; width:11px; background:#39b91c; display:inline-block; border:1px solid #000;"></span> =  Complete
+        @if (!Model.OrderComplete && Model.OrderPaid && !Model.lstDesigns.Where(d => d.InternallyApproved).Any(d => d.DigitizedFile == "" || !d.CustomerApproved) && Model.lstDesigns.Where(d => d.InternallyApproved).ToList().Count > 0)
+        {
+            <span style="font-weight:bold;">Your order is in the production queue and in line to be stitched on our machines. We will reach out to you if there are any adjustments that need to be made to your design during production. You will receive an email once your order has shipped.</span><br/><br />
+        }
+        <span style="height:11px; width:11px; background:#39b91c; display:inline-block; border:1px solid #000;"></span> = Complete
         <br />
-        <span style="height:11px; width:11px; background:#fff; display:inline-block; border:1px solid #000;"></span> =  In Progess
-    </div>
+        <span style="height:11px; width:11px; background:#fff; display:inline-block; border:1px solid #000;"></span> = In Progess
+        </div>
 
     @if (Model.OrderPaid)
     {
@@ -80,51 +85,72 @@
                 </div>
             </td>
         </tr>
+        @if (Model.BackStitching)
+        {
+            <tr>
+                <td><b>Back Stitching:</b></td>
+                <td>@Model.BackStitchingComment</td>
+            </tr>
+        }
+        @if (Model.LeftStitching)
+        {
+            <tr>
+                <td><b>Left Stitching:</b></td>
+                <td>@Model.LeftStitchingComment</td>
+            </tr>
+        }
+        @if (Model.RightStitching)
+        {
+            <tr>
+                <td><b>Right Stitching:</b></td>
+                <td>@Model.RightStitchingComment</td>
+            </tr>
+        }
     </table>
 
     <div class="importantSection"><b>Order Notes:</b> @Model.OrderNotes </div>
     @if (!Model.lstDesigns.Any(d => d.DigitizedPreview == ""))
     {
-<div id="orderDigizing">
-    <h2>Digitized Designs:</h2>
-    <p><i>Please note colors in these previews will often times not be the exact color(s) used in final stitching. We will match your logo colors and color requests as closely as possible.</i></p>
-    @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns)
-    {
-        <div class="orderDigitizingPreview">
-            <h2>@design.Name</h2>
-            <a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" width="300" /></a>
-        </div>
-        if (!design.CustomerApproved)
-        {
-            <div class="designApprovalGroup">
-                <div class="clear approveDigitizing"><input type="button" onclick="approveDigitizing(@design.Id, @Model.Id)" class="smallButton" value="Approve Digitizing"/></div>
-                <div class="clear requestRevision">
-                    <div class="revisionStartButton"><input type="button" onclick="startRevisionClick(this);" class="smallButton" value="Request Revision"/></div>
-                    <div class="hidden revisionText">
-                        <textarea class="revisionTextInput" placeholder="Enter Revision Comments Here..."></textarea>
-                        <input type="button" onclick="requestDigitizingRevision(@design.Id, $(this).closest('.designApprovalGroup').find('.revisionTextInput').val(), @Model.Id, true);" class="smallButton" value="Submit Revision"/>
-                        <input type="button" onclick="revisionCancelClick(this);" class="smallButton" value="Cancel"/>
-                    </div>
+        <div id="orderDigizing">
+            <h2>Digitized Designs:</h2>
+            <p><i>Please note colors in these previews are computer rendered and will not be the exact color(s) used in final stitching. Thread colors are more vibrant in person. We will match your logo colors and color requests as closely as possible.</i></p>
+            @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns.Where(d => d.InternallyApproved))
+            {
+                <div class="orderDigitizingPreview">
+                    <h2>@design.Name</h2>
+                    <a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" width="300" /></a>
                 </div>
-                @if (design.lstRevisionNotes.Count > 0)
+                if (!design.CustomerApproved)
                 {
-                <h2>Revisions Requested:</h2>
-                <ul>
-                    @foreach (LidLaunchWebsite.Models.Note note in design.lstRevisionNotes)
-                    {
-                        <li>@note.Text</li>
-                    }
-                </ul>
-                }                
-            </div>
-        }
-        else
-        {
-            <div id="approveDigitizing" class="clear digitizingApproved">Digitizing Approved</div>
-        }
-    }
-</div>
-        
+                    <div class="designApprovalGroup">
+                        <div class="clear approveDigitizing"><input type="button" onclick="approveDigitizing(@design.Id, @Model.Id)" class="smallButton" value="Approve Digitizing" /></div>
+                        <div class="clear requestRevision">
+                            <div class="revisionStartButton"><input type="button" onclick="startRevisionClick(this);" class="smallButton" value="Request Revision" /></div>
+                            <div class="hidden revisionText">
+                                <textarea class="revisionTextInput" placeholder="Enter Revision Comments Here..."></textarea>
+                                <input type="button" onclick="requestDigitizingRevision(@design.Id, $(this).closest('.designApprovalGroup').find('.revisionTextInput').val(), @Model.Id, true);" class="smallButton" value="Submit Revision" />
+                                <input type="button" onclick="revisionCancelClick(this);" class="smallButton" value="Cancel" />
+                            </div>
+                        </div>
+                        @if (design.lstRevisionNotes.Count > 0)
+                        {
+                            <h2>Revisions Requested:</h2>
+                            <ul>
+                                @foreach (LidLaunchWebsite.Models.Note note in design.lstRevisionNotes)
+                                {
+                                    <li>@note.Text</li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div id="approveDigitizing" class="clear digitizingApproved">Digitizing Approved</div>
+                }
+            }
+        </div>
+
     }
 
     <div class="clear" id="orderItems">

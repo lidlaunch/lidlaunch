@@ -2301,7 +2301,7 @@ input[type=text], input[type=password], select, input[type=number] {
 }
 
 #orderProgressBar {
-    width: 708px;
+    width: 570px;
     height: 40px;
     border: 1px solid #000;
 }

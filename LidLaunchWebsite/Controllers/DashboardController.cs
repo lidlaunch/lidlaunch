@@ -478,7 +478,7 @@ namespace LidLaunchWebsite.Controllers
 
                     dstFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
-                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", "W" + bulkOrderId + "-" + designName + "-" + dstFileName);
+                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", dstFileName);
 
                     dst.SaveAs(path);
                 }

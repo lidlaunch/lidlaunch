@@ -38,6 +38,17 @@
     @Scripts.Render("~/Scripts/Bulk.js")
     @Scripts.Render("~/Scripts/Dashboard.js")
     @Scripts.Render("~/Scripts/Checkout.js")
+    <!-- Google Tag Manager -->
+    <script>
+    (function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-KF9TN3B');</script>
+    <!-- End Google Tag Manager -->
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116128249-1"></script>
     <script>
@@ -69,12 +80,18 @@
     <!-- End Facebook Pixel Code -->
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KF9TN3B"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div>
         @*<div id="backgroundVideo">
-            <video autoplay loop muted>
-                <source src="@Url.Content("~/Images/BackgroundVideo.mp4")" type="video/mp4" />
-            </video>
-        </div>*@
+                <video autoplay loop muted>
+                    <source src="@Url.Content("~/Images/BackgroundVideo.mp4")" type="video/mp4" />
+                </video>
+            </div>*@
         <div id="wrapper">
             <div id="InnerWrapperContent">
                 <div id="header">
@@ -90,7 +107,7 @@
                                 <li>@Html.ActionLink("Order", "Index", "Bulk")</li>
                                 <li>@Html.ActionLink("Shop", "Index", "Shop")</li>
                                 @*<li id="desktopCreate">@Html.ActionLink("Create", "GetStarted", "Create")</li>
-                                <li id="mobileCreate" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);"><a href="#">Create</a></li>*@
+                                    <li id="mobileCreate" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);"><a href="#">Create</a></li>*@
 
                                 @if (Convert.ToInt32(Session["UserID"]) > 0)
                                 {

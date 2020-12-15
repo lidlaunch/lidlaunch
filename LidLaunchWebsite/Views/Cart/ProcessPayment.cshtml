@@ -1,6 +1,6 @@
 ﻿<script type="text/javascript">
     $(document).ready(function () {
-        $('#txtCardNumber').keyup(function () {       
+        $('#txtCardNumber').keyup(function () {
             var formattedText = cc_format($(this).val());
             $(this).val(formattedText);
         });
@@ -25,7 +25,7 @@
             <div class="left" id="showHideSummary">Show order summary</div>
             <div class="right" id="lblMobileTotal">$0.00</div>
         </div>
-        <div id="clonedCart" >
+        <div id="clonedCart">
 
         </div>
     </div>
@@ -116,7 +116,7 @@
                     </select>
                 </td>
                 <td>
-                    <input type="number" placeholder="ZIP code" id="txtShippingZip" maxlength="5" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
+                    <input type="number" placeholder="ZIP code" id="txtShippingZip" maxlength="5" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                 </td>
             </tr>
             <tr>
@@ -127,7 +127,7 @@
             </tr>
         </table>
         <div>
-            <input type="button" value="Continue To Payment" class="smallButton right checkoutProgressButton" onclick="proceedToPayment();"/>
+            <input type="button" value="Continue To Payment" class="smallButton right checkoutProgressButton" onclick="proceedToPayment();" />
         </div>
     </div><!--/shipingSection-->
 
@@ -156,17 +156,17 @@
                 </tr>
                 <tr id="userCreditCardRadioHolder" onclick="useCreditCard()">
                     <td>
-                        <input type="radio" id="rdCreditCard" checked/> Credit card
+                        <input type="radio" id="rdCreditCard" checked /> Credit card
                     </td>
                 </tr>
                 <tr id="creditCardEntry">
                     <td colspan="2">
                         <table class="subTable">
                             <tr>
-                                <td colspan="3" style="position:relative;"><input type="text" placeholder="Card number" id="txtCardNumber" minlength="13" maxlength="23"/><img src="~/Images/ccavailable.png" style="position:absolute; right:6px; top:11px;"/></td>
+                                <td colspan="3" style="position:relative;"><input type="text" placeholder="Card number" id="txtCardNumber" minlength="13" maxlength="23" /><img src="~/Images/ccavailable.png" style="position:absolute; right:6px; top:11px;" /></td>
                             </tr>
                             <tr>
-                                <td colspan="3"><input type="text" placeholder="Name on card" id="txtNameOnCard"/></td>
+                                <td colspan="3"><input type="text" placeholder="Name on card" id="txtNameOnCard" /></td>
                             </tr>
                             <tr>
                                 <td style="width:25%;">
@@ -185,7 +185,7 @@
                                         <option value="11">11</option>
                                         <option value="12">12</option>
                                     </select>
-                                @*<input type="number" placeholder="Exp MM" id="txtExpirationMonth" minlength="1" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>*@
+                                    @*<input type="number" placeholder="Exp MM" id="txtExpirationMonth" minlength="1" maxlength="2" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>*@
                                 </td>
                                 <td style="width:25%;">
                                     <select id="selExpirationYear">
@@ -200,18 +200,18 @@
                                         <option value="27">2027</option>
                                         <option value="28">2028</option>
                                         <option value="29">2029</option>
-                                        <option value="30">2030</option>                                        
+                                        <option value="30">2030</option>
                                     </select>
                                     @*<input type="number" placeholder="Exp YYYY" id="txtExpirationYear" minlength="4" maxlength="4" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />*@
                                 </td>
-                                <td style="width:50%;"><input type="number" placeholder="Security code" id="txtSecurityCode" minlength="3" maxlength="4" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/></td>
+                                <td style="width:50%;"><input type="number" placeholder="Security code" id="txtSecurityCode" minlength="3" maxlength="4" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" /></td>
                             </tr>
                         </table>
                     </td>
                 </tr>
                 <tr id="usePaypalRadioHolder" onclick="usePaypal()">
                     <td>
-                        <input type="radio" id="rdPaypal" /> <img src="~/Images/paypal.png" alt="PayPal" style="vertical-align: middle; height: 20px;"/>
+                        <input type="radio" id="rdPaypal" /> <img src="~/Images/paypal.png" alt="PayPal" style="vertical-align: middle; height: 20px;" />
                     </td>
                 </tr>
                 <tr id="paypalEntry">
@@ -238,7 +238,7 @@
                     </td>
                 </tr>
                 <tr id="sameAsShippingRadioHolder" onclick="sameAsShipping()">
-                    <td><input type="radio" id="rdUseSameAsShipping" checked/>Same as shipping address</td>
+                    <td><input type="radio" id="rdUseSameAsShipping" checked />Same as shipping address</td>
                 </tr>
                 <tr id="differentBillingRadioHolder" onclick="useDifferentBillingAddress()">
                     <td><input type="radio" id="rdUsedifferentAddress" />Use a different address</td>
@@ -316,7 +316,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="number" placeholder="ZIP code" id="txtBillingZip" maxlength="5" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
+                                    <input type="number" placeholder="ZIP code" id="txtBillingZip" maxlength="5" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                                 </td>
                             </tr>
                             <tr>
@@ -333,8 +333,39 @@
         </div><!--/billingAddres-->
         <div id="completeOrderButtons">
             <a href="#" onclick="goBackToShipping()" class="left" style="line-height:80px;">< Go Back</a>
-            <input type="button" value="Pay now" class="smallButton right checkoutProgressButton" id="btnPayNow" onclick="validateCreditCardAndProcessPayment();"/>
-            <input type="button" value="Complete order" class="smallButton  right checkoutProgressButton" id="btnCompleteOrder" onclick="proceedToPayWithPaypal()"/>
+            <input type="button" value="Pay now" class="smallButton right checkoutProgressButton" id="btnPayNow" onclick="validateCreditCardAndProcessPayment();" />
+            <input type="button" value="Complete order" class="smallButton  right checkoutProgressButton" id="btnCompleteOrder" onclick="proceedToPayWithPaypal()" />
+
         </div>
+        @*<div id="agreementSection" style="text-align:right; font-size:14px; padding-left: 100px;">
+            <p>By Proceeding with payment you agree to our <a href="#" onclick="$('#salesAndDeliveryPopup').show();">Terms of Sale and Delivery</a>. Which includes our <a href="#" onclick="$('#returnsPopup').show();">Returns, Replacements and Cancellation Policies.</a></p>
+        </div>*@
     </div><!--/paymentStep-->
 </div><!--/checkoutContainer-->
+
+
+@*<div id="returnsPopup" class="termsPopup hidden">
+    <div class="right" style="margin-right:10px;">
+        <input type="button" onclick="$('#returnsPopup').hide();" value="CLOSE" class="smallButton" />
+    </div>
+    <div class="clear">
+        @{Html.RenderAction("returns", "terms");}
+    </div>
+    <div class="right" style="margin-right:10px;">
+        <input type="button" onclick="$('#returnsPopup').hide();" value="CLOSE" class="smallButton" />
+    </div>
+</div>
+
+<div id="salesAndDeliveryPopup" class="termsPopup hidden">
+    <div class="right" style="margin-right:10px;">
+        <input type="button" onclick="$('#salesAndDeliveryPopup').hide();" value="CLOSE" class="smallButton" />
+    </div>
+    <div class="clear">
+        @{Html.RenderAction("termsofsalesanddelivery", "terms");}
+    </div>
+    <div class="right" style="margin-right:10px;">
+        <input type="button" onclick="$('#salesAndDeliveryPopup').hide();" value="CLOSE" class="smallButton" />
+    </div>
+</div>*@
+
+

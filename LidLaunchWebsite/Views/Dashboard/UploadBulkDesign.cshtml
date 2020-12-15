@@ -100,7 +100,7 @@
             data.append("emb", emb[0]);
             data.append("designName", designName);
             data.append("bulkOrderId", bulkOrderId);
-
+            showLoading();
             $.ajax({
                 type: "POST",
                 url: '/Dashboard/CreateBulkDesign',
@@ -146,7 +146,7 @@
             data.append("designName", designName);
             data.append("bulkOrderId", bulkOrderId);
             data.append("designId", designId);
-
+            showLoading();
             $.ajax({
                 type: "POST",
                 url: '/Dashboard/UpdateBulkDesign',
