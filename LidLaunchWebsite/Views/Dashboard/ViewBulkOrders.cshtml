@@ -31,7 +31,7 @@
             <td><b>Order Date</b></td>
             <td><b>Customer Info</b></td>
             <td><b>Order Notes</b></td>
-            <td><b>Artwork Position</b></td>
+            <td><b>Has Extras</b></td>
             <td><b>Art Source</b></td>
             <td><b>Order Paid</b></td>
             <td><b>CSTLINK</b></td>
@@ -99,21 +99,22 @@
         <td>@bulkOrder.OrderDate.ToString("MM/dd/yyyy")</td>
         <td>@bulkOrder.CustomerName<br />@bulkOrder.CustomerEmail<br />@bulkOrder.CustomerPhone</td>
         <td>@bulkOrder.OrderNotes</td>
-        <td style="text-align:center;">
-            @if (bulkOrder.ArtworkPosition == "left")
+        <td>
+            @if(bulkOrder.lstItems.Any((li => li.ItemName.Contains("Side") || li.ItemName.Contains("Back") || li.ItemName.Contains("Beanie"))))
             {
-                <img src="~/Images/LeftPlacement.jpg" class="placementImage" style="max-height:60px;max-width:60px;" />
-            }
-            @if (bulkOrder.ArtworkPosition == "right")
-            {
-                <img src="~/Images/RightPlacement.jpg" class="placementImage" style="max-height:60px;max-width:60px;" />
-            }
-            @if (bulkOrder.ArtworkPosition == "center")
-            {
-                <img src="~/Images/CenterPlacement.jpg" class="placementImage" style="max-height:60px;max-width:60px;" />
+                <span>Extras</span>
             }
         </td>
-        <td><a href="~/Images/BulkOrderArtwork/@bulkOrder.ArtworkImage" target="_blank">[]</a></td>
+        <td>
+            @if (bulkOrder.ArtworkImage == "" && !bulkOrder.OrderNotes.Contains("ARTWORK PRE-EXISTIING"))
+            {
+                <span>NO<br />ART</span>
+            }
+            else
+            {
+                <a href="~/Images/BulkOrderArtwork/@bulkOrder.ArtworkImage" target="_blank">[]</a>
+            }
+        </td>
         @if (bulkOrder.OrderPaid)
         {
             <td style="background: #39b91c; text-align:center;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','true',this)">$@bulkOrder.OrderTotal</a></td>

@@ -51,7 +51,7 @@ namespace LidLaunchWebsite.Controllers
                 var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderPaymentEmail(items, bulkOrder.OrderTotal.ToString(), bulkOrder.Id.ToString(), bulkOrder.PaymentGuid, dateFrom + " - " + dateTo), "Lid Launch Payment Confirmation", "");
             }
             
-            return View();
+            return View(bulkOrder);
         }
 
         public string SetBulkOrderAsShipped(string bulkOrderId, string trackingNumber)

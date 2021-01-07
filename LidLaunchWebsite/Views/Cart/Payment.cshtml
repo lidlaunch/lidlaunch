@@ -1,10 +1,13 @@
-﻿@{
+﻿@model decimal
+@{
     ViewBag.Title = "Lid Launch - Thanks For Your Order!";
 }
-<div id="paymentContainer">
-    <h2>Payment Successful!</h2>
+    <div id="paymentContainer">
+        <h2>Payment Successful!</h2>
 
-    <p>Thank you for your order! We can't wait for you to be rocking some Lid Launch head gear! You will get email updates on the status of your order.</p>
-    <p>Your transaction has been completed, and a receipt for your purchase has been emailed to you.</p>
-</div>
+        <p>Thank you for your order! We can't wait for you to be rocking some Lid Launch head gear! You will get email updates on the status of your order.</p>
+        <p>Your transaction has been completed, and a receipt for your purchase has been emailed to you.</p>
+        <p>Your order total is: $<span id="orderTotal">@Model</span></p>
+    </div>
+
 

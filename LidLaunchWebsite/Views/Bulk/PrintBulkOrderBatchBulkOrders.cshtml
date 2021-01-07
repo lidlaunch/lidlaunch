@@ -25,7 +25,55 @@
 @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model.lstBulkOrders)
 {
 <div class="bulkOrderPrint">
-    @{Html.RenderAction("BulkOrderDetailsPopup", "Dashboard", new { bulkOrderId = bulkOrder.Id });}    
+    <div id="bulkOrderDetailsPopup">
+        <div id="bulkOrderDetailsPopupContent">
+            <div id="TopInfoBar">
+                <div id="barcode">
+                    <div class="left"><img src="~/Images/Barcodes/@bulkOrder.BarcodeImage" /></div>                    
+                </div>
+                <div class="clear">
+                    <div id="BulkOrderId">@bulkOrder.Id</div>
+                    <div id="BulkOrderDate">Payment Date: @bulkOrder.PaymentDate<br />Shipping Date: @bulkOrder.ProjectedShipDateShort - @bulkOrder.ProjectedShipDateLong <span onclick="$('#bulkOrderDetailsPopup').hide();" class="closeButton">X</span></div>
+                </div>
+            </div>            
+            <div id="bulkOrderItems">
+                <h3>Order Items</h3>                
+                <table id="printingTable">
+                    <thead>
+                        <tr>
+                            <td>Item</td>
+                            <td>Qty</td>
+                            <td>Missing</td>
+                            <td>Ready</td>
+                            <td>Misc</td>
+                        </tr>
+                    <tbody>
+                        @foreach (LidLaunchWebsite.Models.BulkOrderItem item in bulkOrder.lstItems)
+                        {
+                            if (item.ItemName != "Shipping" && item.ItemName != "Back Stitching" && item.ItemName != "Left Side Stitching" && item.ItemName != "Right Side Stitching" && item.ItemName != "Artwork Setup/Digitizing")
+                            {
+                                <tr>
+                                    <td>@item.ItemName</td>
+                                    <td style="font-size:24px; font-weight:bold;">@item.ItemQuantity</td>
+                                    <td style="font-size:24px;">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</td>
+                                    <td style="font-size:24px;">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</td>
+                                    <td style="font-size:24px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                </tr>
+                            }
+
+                        }
+                        <tr>
+                            <td style="font-size:24px; font-weight:bold;">Total Items: @bulkOrder.lstItems.Where(item => item.ItemName != "Shipping" && item.ItemName != "Back Stitching" && item.ItemName != "Left Side Stitching" && item.ItemName != "Right Side Stitching" && item.ItemName != "Artwork Setup/Digitizing").Sum(i => i.ItemQuantity)</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div><!--/bulkOrderItems-->
+        </div><!--bulkOrderDetailsPopupContent-->
+    </div><!--/bulkOrderDetailsPopup-->
 </div>    
 }
 

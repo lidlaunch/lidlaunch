@@ -73,8 +73,9 @@ namespace LidLaunchWebsite.Controllers
             {
                 cart.TotalWithShipping = cart.Total;
                 cart.Shipping = 0;
-            }            
+            }
 
+            Session["Cart"] = cart;
 
             return View(cart);
         }
@@ -540,17 +541,26 @@ namespace LidLaunchWebsite.Controllers
         }
         public virtual ActionResult Payment(string PaymentCode)
         {
-            //GET APPOINTMENT INFO AND UPDATE HAS PAID FOR THE APPOINTMENT
             OrderData orderData = new OrderData();
 
             var success = orderData.UpdateOrderHasPaid(PaymentCode);
+
+            Cart cart = new Cart();
+            decimal total = 0.00M;
+            
+
+            if (Session["Cart"] != null)
+            {
+                cart = (Cart)Session["Cart"];
+                total = cart.TotalWithShipping;
+            }
 
             Session["Cart"] = null;
             Session["TotalCartQuantity"] = null;
 
             var json = new JavaScriptSerializer().Serialize(success);
 
-            return View();
+            return View(total);
         }
     }
 }

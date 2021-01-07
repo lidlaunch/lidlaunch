@@ -1,10 +1,12 @@
-﻿@{
+﻿@model LidLaunchWebsite.Models.BulkOrder
+@{
     ViewBag.Title = "Lid Launch - Thanks For Your Order!";
 }
-<div id="paymentContainer">
-    <h2>Payment Successful!</h2>
+    <div id="paymentContainer">
+        <h2>Payment Successful!</h2>
 
-    <p>Thank you for your order! Our typical bulk order production time is 7-14 business days. We can't wait for you to be rocking some Lid Launch headwear! You will get email updates on the status of your order. We will start converting your artwork and you will receive mockups soon!</p>
-    <p>Your transaction has been completed, and a receipt for your purchase has been emailed to you.</p>
-</div>
+        <p>Thank you for your order! Our typical bulk order production time is 10-14 business days. We can't wait for you to be rocking some Lid Launch headwear! You will get email updates on the status of your order. We will start converting your artwork and you will receive mockups soon!</p>
+        <p>Your transaction has been completed, and a receipt for your purchase has been emailed to you.</p>
+        <p>Your order total is: $<span id="orderTotal">@Model.OrderTotal</span></p>
+    </div>
 

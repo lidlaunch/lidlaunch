@@ -300,7 +300,9 @@ namespace LidLaunchWebsite.Classes
         public List<BulkOrder> GetBulkOrdersByBatchId(int batchId)
         {
             var data = new SQLData();
+            var data2 = new SQLData();
             List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
+            List<BulkOrder> lstReworkOrders = new List<BulkOrder>();
             try
             {
                 DataSet ds = new DataSet();
@@ -320,6 +322,24 @@ namespace LidLaunchWebsite.Classes
 
                 }
 
+                DataSet ds2 = new DataSet();
+                using (data2.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetBulkReworkOrdersByBatchId", data2.conn);
+                    sqlComm.Parameters.AddWithValue("@batchId", batchId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds2);
+
+                    lstReworkOrders = BuildBulkOrdersList(ds2);
+                }
+
+                lstBulkOrders.AddRange(lstReworkOrders);
+
                 return lstBulkOrders;
             }
             catch (Exception ex)
@@ -331,6 +351,10 @@ namespace LidLaunchWebsite.Classes
                 if (data.conn != null)
                 {
                     data.conn.Close();
+                }
+                if (data2.conn != null)
+                {
+                    data2.conn.Close();
                 }
             }
         }
@@ -409,55 +433,55 @@ namespace LidLaunchWebsite.Classes
             bulkOrder.RightStitchingComment = dr["RightStitchingComment"].ToString();
             bulkOrder.ArtworkEmailSent = Convert.ToBoolean(dr["ArtworkEmailSent"].ToString());
             bulkOrder.ReleaseToDigitizer = Convert.ToBoolean(dr["ReleaseToDigitizer"].ToString());
+            bulkOrder.AdminReview = Convert.ToBoolean(dr["AdminReview"].ToString());
+            bulkOrder.AdminReviewComment = Convert.ToString(dr["AdminReviewComment"].ToString());
+            bulkOrder.BarcodeImage = "BO-" + bulkOrder.Id.ToString() + ".jpg";
             bulkOrder.lstItems = new List<BulkOrderItem>();
 
             if (ds.Tables[1].Rows.Count > 0)
             {
-                foreach (DataRow dr2 in ds.Tables[1].Rows)
-                {
-                    if (Convert.ToInt32(dr2["BulkOrderId"].ToString()) == bulkOrder.Id)
+                DataRow[] drsBulkOrderItems = ds.Tables[1].Select("BulkOrderId = " + bulkOrder.Id.ToString());
+                foreach (DataRow dr2 in drsBulkOrderItems)
+                {       
+                    BulkOrderItem item = new BulkOrderItem();
+                    item.BulkOrderId = bulkOrder.Id;
+                    item.Id = Convert.ToInt32(dr2["Id"].ToString());
+                    item.ItemName = Convert.ToString(dr2["ItemName"].ToString());
+                    item.ItemQuantity = Convert.ToInt32(dr2["ItemQuantity"].ToString());
+                    item.ItemCost = Convert.ToDecimal(dr2["ItemCost"].ToString());
+
+                    BulkRework bulkRework = new BulkRework();
+                    if (Convert.ToInt32(dr2["BulkReworkId"]) > 0)
+                    {                            
+                        item.BulkRework = GetBulkReworkById(Convert.ToInt32(dr2["BulkReworkId"]));
+                    } 
+                    else
                     {
-                        BulkOrderItem item = new BulkOrderItem();
-                        item.BulkOrderId = bulkOrder.Id;
-                        item.Id = Convert.ToInt32(dr2["Id"].ToString());
-                        item.ItemName = Convert.ToString(dr2["ItemName"].ToString());
-                        item.ItemQuantity = Convert.ToInt32(dr2["ItemQuantity"].ToString());
-                        item.ItemCost = Convert.ToDecimal(dr2["ItemCost"].ToString());
-
-                        BulkRework bulkRework = new BulkRework();
-                        if (Convert.ToInt32(dr2["BulkReworkId"]) > 0)
-                        {                            
-                            item.BulkRework = GetBulkReworkById(Convert.ToInt32(dr2["BulkReworkId"]));
-                        } 
-                        else
-                        {
-                            item.BulkRework = bulkRework;
-                        }
-
-                        if(item.ItemName == "Shipping")
-                        {
-                            bulkOrder.ShippingCost = item.ItemCost;
-                        }
-                        item.lstNotes = new List<Note>();
-                        if (ds.Tables[4].Rows.Count > 0)
-                        {
-                            foreach (DataRow drNote in ds.Tables[4].Rows)
-                            {
-                                if (Convert.ToInt32(drNote["BulkOrderItemId"].ToString()) == item.Id)
-                                {
-                                    Note note = new Note();
-                                    note.Id = Convert.ToInt32(drNote["Id"].ToString());
-                                    note.Text = Convert.ToString(drNote["Text"].ToString());
-                                    note.CustomerAdded = Convert.ToBoolean(drNote["CustomerAdded"].ToString());
-                                    note.Attachment = Convert.ToString(drNote["Attachment"].ToString());
-                                    note.CreatedDate = Convert.ToDateTime(drNote["CreatedDate"].ToString());
-                                    note.CreatedUserId = Convert.ToInt32(drNote["CreatedUserId"].ToString());
-                                    item.lstNotes.Add(note);
-                                }
-                            }
-                        }
-                        bulkOrder.lstItems.Add(item);
+                        item.BulkRework = bulkRework;
                     }
+
+                    if(item.ItemName == "Shipping")
+                    {
+                        bulkOrder.ShippingCost = item.ItemCost;
+                    }
+                    item.lstNotes = new List<Note>();
+                    if (ds.Tables[4].Rows.Count > 0)
+                    {
+                        DataRow[] drsBulkorderItemNotes = ds.Tables[4].Select("BulkOrderItemId = " + item.Id.ToString());
+                        foreach (DataRow drNote in drsBulkorderItemNotes)
+                        {                            
+                            Note note = new Note();
+                            note.Id = Convert.ToInt32(drNote["Id"].ToString());
+                            note.Text = Convert.ToString(drNote["Text"].ToString());
+                            note.CustomerAdded = Convert.ToBoolean(drNote["CustomerAdded"].ToString());
+                            note.Attachment = Convert.ToString(drNote["Attachment"].ToString());
+                            note.CreatedDate = Convert.ToDateTime(drNote["CreatedDate"].ToString());
+                            note.CreatedUserId = Convert.ToInt32(drNote["CreatedUserId"].ToString());
+                            item.lstNotes.Add(note);                            
+                        }
+                    }
+                    bulkOrder.lstItems.Add(item);
+                    
                 }
             }
 
@@ -466,78 +490,77 @@ namespace LidLaunchWebsite.Classes
             bulkOrder.lstDesigns = new List<Design>();
             if (ds.Tables[2].Rows.Count > 0)
             {
-                foreach (DataRow dr3 in ds.Tables[2].Rows)
+                DataRow[] drsDesigns = ds.Tables[2].Select("BulkOrderId = " + bulkOrder.Id.ToString());
+                foreach (DataRow dr3 in drsDesigns)
                 {
-                    if (Convert.ToInt32(dr3["BulkOrderId"].ToString()) == bulkOrder.Id)
-                    {
-                        Design design = new Design();
-                        design.Id = Convert.ToInt32(dr3["Id"].ToString());
-                        design.ArtSource = Convert.ToString(dr3["ArtSource"].ToString());
-                        design.PreviewImage = Convert.ToString(dr3["PreviewImage"].ToString());
-                        design.DigitizedFile = Convert.ToString(dr3["DigitizedFile"].ToString());
-                        design.DigitizedProductionSheet = Convert.ToString(dr3["DigitizedProductionSheet"].ToString());
-                        design.EMBFile = Convert.ToString(dr3["EMBFile"].ToString());
-                        design.DigitizedPreview = Convert.ToString(dr3["DigitizedPreview"].ToString());
-                        design.Width = Convert.ToDecimal(dr3["Width"].ToString());
-                        design.Height = Convert.ToDecimal(dr3["Height"].ToString());
-                        design.X = Convert.ToDecimal(dr3["X"].ToString());
-                        design.Y = Convert.ToDecimal(dr3["Y"].ToString());
-                        design.EmbroideredWidth = Convert.ToDecimal(dr3["EmbroideredWidth"].ToString());
-                        design.EmbroideredHeight = Convert.ToDecimal(dr3["EmbroideredHeight"].ToString());
-                        design.EmbroideredX = Convert.ToDecimal(dr3["EmbroideredX"].ToString());
-                        design.EmbroideredY = Convert.ToDecimal(dr3["EmbroideredY"].ToString());
-                        design.CustomerApproved = Convert.ToBoolean(dr3["CustomerApproved"].ToString());
-                        design.InternallyApproved = Convert.ToBoolean(dr3["InternallyApproved"].ToString());
-                        design.Revision = Convert.ToBoolean(dr3["Revision"].ToString());
-                        design.Name = Convert.ToString(dr3["Name"].ToString());
 
-                        design.lstNotes = new List<Note>();
-                        design.lstRevisionNotes = new List<Note>();
-                        if (ds.Tables[5].Rows.Count > 0)
+                    Design design = new Design();
+                    design.Id = Convert.ToInt32(dr3["Id"].ToString());
+                    design.ArtSource = Convert.ToString(dr3["ArtSource"].ToString());
+                    design.PreviewImage = Convert.ToString(dr3["PreviewImage"].ToString());
+                    design.DigitizedFile = Convert.ToString(dr3["DigitizedFile"].ToString());
+                    design.DigitizedProductionSheet = Convert.ToString(dr3["DigitizedProductionSheet"].ToString());
+                    design.EMBFile = Convert.ToString(dr3["EMBFile"].ToString());
+                    design.DigitizedPreview = Convert.ToString(dr3["DigitizedPreview"].ToString());
+                    design.Width = Convert.ToDecimal(dr3["Width"].ToString());
+                    design.Height = Convert.ToDecimal(dr3["Height"].ToString());
+                    design.X = Convert.ToDecimal(dr3["X"].ToString());
+                    design.Y = Convert.ToDecimal(dr3["Y"].ToString());
+                    design.EmbroideredWidth = Convert.ToDecimal(dr3["EmbroideredWidth"].ToString());
+                    design.EmbroideredHeight = Convert.ToDecimal(dr3["EmbroideredHeight"].ToString());
+                    design.EmbroideredX = Convert.ToDecimal(dr3["EmbroideredX"].ToString());
+                    design.EmbroideredY = Convert.ToDecimal(dr3["EmbroideredY"].ToString());
+                    design.CustomerApproved = Convert.ToBoolean(dr3["CustomerApproved"].ToString());
+                    design.InternallyApproved = Convert.ToBoolean(dr3["InternallyApproved"].ToString());
+                    design.Revision = Convert.ToBoolean(dr3["Revision"].ToString());
+                    design.Name = Convert.ToString(dr3["Name"].ToString());
+
+                    design.lstNotes = new List<Note>();
+                    design.lstRevisionNotes = new List<Note>();
+                    if (ds.Tables[5].Rows.Count > 0)
+                    {
+                        DataRow[] drsDesignNotes = ds.Tables[5].Select("DesignId = " + design.Id.ToString());
+                        foreach (DataRow drNote in drsDesignNotes)
                         {
-                            foreach (DataRow drNote in ds.Tables[5].Rows)
+                            if (Convert.ToInt32(drNote["DesignId"].ToString()) == design.Id)
                             {
-                                if (Convert.ToInt32(drNote["DesignId"].ToString()) == design.Id)
+                                Note note = new Note();
+                                note.Id = Convert.ToInt32(drNote["Id"].ToString());
+                                note.Text = Convert.ToString(drNote["Text"].ToString());
+                                note.CustomerAdded = Convert.ToBoolean(drNote["CustomerAdded"].ToString());
+                                note.Attachment = Convert.ToString(drNote["Attachment"].ToString());
+                                note.CreatedDate = Convert.ToDateTime(drNote["CreatedDate"].ToString());
+                                note.CreatedUserId = Convert.ToInt32(drNote["CreatedUserId"].ToString());
+                                if (Convert.ToBoolean(drNote["CustomerAdded"].ToString()))
                                 {
-                                    Note note = new Note();
-                                    note.Id = Convert.ToInt32(drNote["Id"].ToString());
-                                    note.Text = Convert.ToString(drNote["Text"].ToString());
-                                    note.CustomerAdded = Convert.ToBoolean(drNote["CustomerAdded"].ToString());
-                                    note.Attachment = Convert.ToString(drNote["Attachment"].ToString());
-                                    note.CreatedDate = Convert.ToDateTime(drNote["CreatedDate"].ToString());
-                                    note.CreatedUserId = Convert.ToInt32(drNote["CreatedUserId"].ToString());
-                                    if (Convert.ToBoolean(drNote["CustomerAdded"].ToString()))
-                                    {
-                                        design.lstRevisionNotes.Add(note);
-                                    } else
-                                    {
-                                        design.lstNotes.Add(note);
-                                    }                                    
-                                }
+                                    design.lstRevisionNotes.Add(note);
+                                } else
+                                {
+                                    design.lstNotes.Add(note);
+                                }                                    
                             }
                         }
-
-                        bulkOrder.lstDesigns.Add(design);
                     }
+
+                    bulkOrder.lstDesigns.Add(design);
                 }
+                
             }
 
             bulkOrder.lstNotes = new List<Note>();
             if (ds.Tables[3].Rows.Count > 0)
             {
-                foreach (DataRow dr4 in ds.Tables[3].Rows)
+                DataRow[] drsBulkOrderNotes = ds.Tables[3].Select("BulkOrderId = " + bulkOrder.Id.ToString());
+                foreach (DataRow dr4 in drsBulkOrderNotes)
                 {
-                    if (Convert.ToInt32(dr4["BulkOrderId"].ToString()) == bulkOrder.Id)
-                    {
-                        Note note = new Note();
-                        note.Id = Convert.ToInt32(dr4["Id"].ToString());
-                        note.Text = Convert.ToString(dr4["Text"].ToString());
-                        note.CustomerAdded = Convert.ToBoolean(dr4["CustomerAdded"].ToString());
-                        note.Attachment = Convert.ToString(dr4["Attachment"].ToString());
-                        note.CreatedDate = Convert.ToDateTime(dr4["CreatedDate"].ToString());
-                        note.CreatedUserId = Convert.ToInt32(dr4["CreatedUserId"].ToString());
-                        bulkOrder.lstNotes.Add(note);
-                    }
+                    Note note = new Note();
+                    note.Id = Convert.ToInt32(dr4["Id"].ToString());
+                    note.Text = Convert.ToString(dr4["Text"].ToString());
+                    note.CustomerAdded = Convert.ToBoolean(dr4["CustomerAdded"].ToString());
+                    note.Attachment = Convert.ToString(dr4["Attachment"].ToString());
+                    note.CreatedDate = Convert.ToDateTime(dr4["CreatedDate"].ToString());
+                    note.CreatedUserId = Convert.ToInt32(dr4["CreatedUserId"].ToString());
+                    bulkOrder.lstNotes.Add(note);                    
                 }
             }
 

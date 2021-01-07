@@ -979,6 +979,32 @@ namespace LidLaunchWebsite.Controllers
             }
         }
 
+        public ActionResult BulkOrderDetailsLookup(string bulkOrderId)
+        {
+
+            if (!checkLoggedIn())
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
+            else
+            {
+                BulkData data = new BulkData();
+                BulkOrder model = new BulkOrder();
+                if (bulkOrderId != "0")
+                {
+                    model = data.GetBulkOrder(Convert.ToInt32(bulkOrderId.Replace("BO-", "")), "", "");
+                }
+                else
+                {
+                    model.lstItems = new List<BulkOrderItem>();
+                    model.lstDesigns = new List<Design>();
+                    model.lstNotes = new List<Note>();
+                }
+
+                return View(model);
+            }
+        }
+
         public string UpdateBulkOrderPaid(string bulkOrderId, string orderPaid)
         {
 
@@ -1207,6 +1233,12 @@ namespace LidLaunchWebsite.Controllers
 
             return success.ToString();
         }
+
+        //public string CreateBulkReworkBatch()
+        //{
+        //    BulkData data = new BulkData();
+
+        //}
 
         public ActionResult AddNote(int bulkOrderId, int bulkOrderItemId, int designId, int parentBulkOrderId, bool revision, string customerAdded)
         {

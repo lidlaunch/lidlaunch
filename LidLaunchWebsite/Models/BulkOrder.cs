@@ -56,6 +56,8 @@ namespace LidLaunchWebsite.Models
         public bool DigitizingEmailSent { get; set; }
         public bool ArtworkEmailSent { get; set; }
         public bool ReleaseToDigitizer { get; set; }
+        public bool AdminReview { get; set; }
+        public string AdminReviewComment { get; set; }
     }
 
     public class BulkBatchOrder

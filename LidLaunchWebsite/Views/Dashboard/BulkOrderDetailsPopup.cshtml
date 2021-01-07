@@ -201,6 +201,13 @@
                         }
 
                     }
+                <tr>
+                    <td style="font-size:24px; font-weight:bold;">Total Items: @Model.lstItems.Where(item => item.ItemName != "Shipping" && item.ItemName != "Back Stitching" && item.ItemName != "Left Side Stitching" && item.ItemName != "Right Side Stitching" && item.ItemName != "Artwork Setup/Digitizing").Sum(i => i.ItemQuantity)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
                 </tbody>
             </table>
         </div><!--/bulkOrderItems-->

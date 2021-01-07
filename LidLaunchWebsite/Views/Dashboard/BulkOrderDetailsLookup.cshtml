@@ -1,0 +1,124 @@
+﻿@model LidLaunchWebsite.Models.BulkOrder
+@{
+    ViewBag.Title = "BulkOrderDetailsLookup";
+}
+<style type="text/css">
+    #footer {
+        display: none;
+    }
+
+    #header {
+        height: 50px;
+    }
+
+    #logo img {
+        width: 166px;
+    }
+
+    #navigation {
+        display: none;
+    }
+
+    #bulkInfoPanel {
+        padding: 20px;
+    }
+
+    #bulkInfoPanel {
+        width: 900px;
+        display: block;
+        height: 900px;
+        float: left;
+        overflow-y: scroll;
+    }
+
+    #bulkOrderDesignPdfs {
+        width: 900px;
+        display: block;
+        height: 900px;
+        float: left;
+    }
+
+    .pdfIframe {
+        width: 100%;
+        height: 800px;
+    }
+
+    #idSearchBox {
+        position: absolute;
+        top: 8px;
+        left: 498px;
+    }
+
+    #bulkDesignButtons {
+        height: 30px;
+    }
+
+    #designPdfHolder {
+        height: 800px;
+    }
+
+    #bulkOrderDetails {
+        width: 100%;
+    }
+
+    #bulkOrderItems {
+        width: 100%;
+    }
+
+    .importantNote {
+        background: red;
+        color: #fff;
+        font-weight: bold;
+        padding: 10px;
+    }
+    #bulkDesignButtons .smallButton {
+        float: left;
+        margin: 0 10px;
+    }
+
+    #bulkDesignButtons .smallButton.selected {
+        border:3px solid #000;
+    }
+
+    .pdfHolder {
+        clear:both;
+    }
+
+    iframe {
+        display:none;
+    }
+    #buklOrderLookupInfoHolder #bulkOrderDetailsPopup {
+        position:unset;
+    }
+    #barcode {
+        display: block !important;
+    }
+    #buklOrderLookupInfoHolder #bulkOrderDetailsPopupContent {
+        position: unset !important;
+        margin: 0 !important;
+        left: unset !important;
+        overflow-y: unset !important;
+        width: 100% !important;
+        height: auto !important;
+        max-height: unset !important;
+    }
+    
+
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#txtOrderId').on('keypress', function (e) {
+            if (e.which === 13) {
+                window.location = '/Dashboard/BulkOrderDetailsLookup?bulkOrderId=' + $(this).val();
+            }
+        });
+    });
+</script>
+<div id="idSearchBox">
+    <input type="text" id="txtOrderId" />
+</div>
+<div id="buklOrderLookupInfoHolder">
+    @if(@Model.Id > 0) {
+        Html.RenderAction("BulkOrderDetailsPopup", "Dashboard", new { bulkOrderId = @Model.Id });
+    }
+</div>
