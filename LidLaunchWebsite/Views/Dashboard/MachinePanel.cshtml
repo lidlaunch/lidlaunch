@@ -103,6 +103,7 @@
     <div id="bulkInfoPanel">
         <div id="TopInfoBar">
             <div class="left">
+                <a href="javascript:void(0);" onclick="$('#adminReviewHolder').load(adminReviewUrl, { bulkOrderId: @Model.Id, fromBulkEdit: false });"><input type="button" value="Admin Review" class="smallButton" /></a>
                 @if (Model.ReadyForProduction)
                 {
                     <img src="~/Images/InternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;float:left;" /><span style="font-size:32px; font-weight:bold; float:left;margin-left:10px;line-height:80px;">@Model.Id</span>
@@ -255,7 +256,7 @@ else
     <h1>Scan Bulk Order Barcode</h1>
 }
 
-
+<div id="adminReviewHolder"></div>
 
 <script type="text/javascript">
     function showDesignProductionSheet(designId, that) {
@@ -270,4 +271,7 @@ else
 
         $('#' + designId).show();
     }
+    
+    var adminReviewUrl = '@Url.Action("AdminReview", "Bulk")';
+
 </script>

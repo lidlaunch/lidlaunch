@@ -16,11 +16,12 @@
 <span onclick="createBulkOrderBatch()" class="left" style="margin:10px;"><input type="button" value="Create Bulk Batch" class="smallButton" /></span>
 <span onclick="$('#popUpHolder').load(bulkBatchesUrl);" class="left" style="margin:10px;"><input type="button" value="View Bulk Batches" class="smallButton" /></span>
 <span onclick="window.location = '/Dashboard/ViewBulkOrders';" class="left" style="margin:10px;"><input type="button" value="Show All" class="smallButton" /></span>
-<span onclick="window.location = '/Dashboard/ViewBulkOrders?filter=rework';" class="left" style="margin:10px;"><input type="button" value="Show Rework" class="smallButton" /></span>
-<span onclick="window.location = '/Dashboard/ViewBulkOrders?filter=45days';" class="left" style="margin:10px;"><input type="button" value="Show 45 Days" class="smallButton" /></span>
-<span onclick="window.location = '/Dashboard/ViewBulkOrders?filter=pending';" class="left" style="margin:10px;"><input type="button" value="Show All Pending" class="smallButton" /></span>
+<span onclick="window.location = '/Dashboard/ViewBulkOrders?filter=rework';" class="left" style="margin:10px;"><input type="button" value="Rework" class="smallButton" /></span>
+<span onclick="window.location = '/Dashboard/ViewBulkOrders?filter=45days';" class="left" style="margin:10px;"><input type="button" value="45 Days" class="smallButton" /></span>
+<span onclick="window.location = '/Dashboard/ViewBulkOrders?filter=pending';" class="left" style="margin:10px;"><input type="button" value="All Pending" class="smallButton" /></span>
 <span onclick="window.location = '/Dashboard/ViewBulkOrders?filter=unpaid';" class="left" style="margin:10px;"><input type="button" value="Unpaid" class="smallButton" /></span>
 <span onclick="window.location = '/Dashboard/ViewBulkOrders?filter=revision';" class="left" style="margin:10px;"><input type="button" value="Revision" class="smallButton" /></span>
+<span onclick="window.location = '/Dashboard/ViewBulkOrders?filter=review';" class="left" style="margin:10px;"><input type="button" value="Admin Review" class="smallButton" /></span>
 <span onclick="window.location = '/Dashboard/ViewBulkOrders?filter=noart';" class="left" style="margin:10px;"><input type="button" value="No Art" class="smallButton" /></span>
 <input type="text" id="idSeach" class="left" style="padding:10px;margin:10px;"/>
 <table class="bulkOrderList clear">
@@ -30,7 +31,7 @@
             <td><b>Id</b></td>
             <td><b>Order Date</b></td>
             <td><b>Customer Info</b></td>
-            <td><b>Order Notes</b></td>
+            <td><b>Pre- Existing</b></td>
             <td><b>Has Extras</b></td>
             <td><b>Art Source</b></td>
             <td><b>Order Paid</b></td>
@@ -94,19 +95,36 @@
             }
         }
 
+        @if (bulkOrder.AdminReview)
+        {
+            <td style="background-color:#000; color:#fff;"><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);" class="bulkOrderId"> @bulkOrder.Id </span></td>
+        }
+        else
+        {
+            <td><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);" class="bulkOrderId"> @bulkOrder.Id </span></td>
+        }
 
-        <td><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);" class="bulkOrderId"> @bulkOrder.Id </span></td>
         <td>@bulkOrder.OrderDate.ToString("MM/dd/yyyy")</td>
         <td>@bulkOrder.CustomerName<br />@bulkOrder.CustomerEmail<br />@bulkOrder.CustomerPhone</td>
-        <td>@bulkOrder.OrderNotes</td>
         <td>
-            @if(bulkOrder.lstItems.Any((li => li.ItemName.Contains("Side") || li.ItemName.Contains("Back") || li.ItemName.Contains("Beanie"))))
+            @if (bulkOrder.OrderNotes.Contains("ARTWORK PRE-EXISTING"))
+            {
+                <span>PRE-<br/>EXISTING</span>
+            }
+            else
+            {
+
+            }
+
+        </td>
+        <td>
+            @if (bulkOrder.lstItems.Any((li => li.ItemName.Contains("Side") || li.ItemName.Contains("Back") || li.ItemName.Contains("Beanie"))))
             {
                 <span>Extras</span>
             }
         </td>
         <td>
-            @if (bulkOrder.ArtworkImage == "" && !bulkOrder.OrderNotes.Contains("ARTWORK PRE-EXISTIING"))
+            @if (bulkOrder.ArtworkImage == "" && !bulkOrder.OrderNotes.Contains("ARTWORK PRE-EXISTING"))
             {
                 <span>NO<br />ART</span>
             }

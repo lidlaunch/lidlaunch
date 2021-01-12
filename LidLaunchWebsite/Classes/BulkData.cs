@@ -146,6 +146,10 @@ namespace LidLaunchWebsite.Classes
                     {
                         lstBulkOrders = lstBulkOrders.Where(b => b.lstDesigns.Any(d => d.ArtSource == "")).ToList();
                     }
+                    else if (filter == "review")
+                    {
+                        lstBulkOrders = lstBulkOrders.Where(b => b.AdminReview).ToList();
+                    }
                     else
                     {
                         lstBulkOrders = lstBulkOrders.Where(b => b.Id == Convert.ToInt32(filter.Replace("BO-", ""))).ToList();
@@ -1625,6 +1629,71 @@ namespace LidLaunchWebsite.Classes
                     SqlCommand sqlComm = new SqlCommand("UpdateBulkReworkStatus", data.conn);
                     sqlComm.Parameters.AddWithValue("@bulkReworkId", bulkReworkId);
                     sqlComm.Parameters.AddWithValue("@status", status);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool SaveAdminReview(int bulkOrderId, string comment)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateAdminReviewSetComment", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@comment", comment);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool UpdateAdminReviewFinished(int bulkOrderId)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateAdminReviewFinished", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);                    
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();
