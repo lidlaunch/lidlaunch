@@ -9,6 +9,7 @@
             <div id="barcode">
                 <div class="left"><img src="~/Images/Barcodes/@Model.BarcodeImage" /></div>
                 <div class="right">
+                    <a href="javascript:void(0);" onclick="$('#adminReviewHolder').load(adminReviewUrl, { bulkOrderId: @Model.Id, fromBulkEdit: true });"><input type="button" value="Admin Review" class="smallButton" /></a>
                     @if (Model.ReadyForProduction)
                     {
                         <img src="~/Images/InternallyApproved.png" style="max-height:100px;max-width:100px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.Id, false);" />
@@ -311,6 +312,7 @@
         <div id="bulkReworkHolder"></div>
         <div id="bulkOrderEditHolder"></div>
         <div id="uploadDesignHolder"></div>
+        <div id="adminReviewHolder"></div>
     </div><!--bulkOrderDetailsPopupContent-->
 </div><!--/bulkOrderDetailsPopup-->
 <script type="text/javascript">
@@ -319,5 +321,6 @@
     var addBulkReworkUrl = '@Url.Action("AddBulkRework", "Dashboard")';
     var bulkOrderEditUrl = '@Url.Action("EditBulkOrderPopup", "Dashboard")';
     var uploadBulkDesignUrl = '@Url.Action("UploadBulkDesign", "Dashboard")';
+    var adminReviewUrl = '@Url.Action("AdminReview", "Bulk")';
 </script>
 

@@ -12,6 +12,7 @@ using ShipStationAccess.V2.Models;
 using ZXing;
 using ZXing.Common;
 using System.Drawing;
+using System.Dynamic;
 
 namespace LidLaunchWebsite.Controllers
 {
@@ -130,9 +131,7 @@ namespace LidLaunchWebsite.Controllers
             //    }
             //}
             return success.ToString();
-        }
-
-        
+        }        
 
         public string ApproveDigitizing(string id, string bulkOrderId)
         {
@@ -398,6 +397,33 @@ namespace LidLaunchWebsite.Controllers
 
 
             return View(bulkBatchOrder);
+        }
+
+        public ActionResult AdminReview(int bulkOrderId, bool fromBulkEdit)
+        {
+            dynamic model = new ExpandoObject();
+
+            model.idVal = bulkOrderId;
+            model.fromBulkEdit = fromBulkEdit;         
+            
+
+            return PartialView("AdminReview", model);
+        }
+
+        public string SaveAdminReview(string bulkOrderId, string comment)
+        {
+            BulkData data = new BulkData();
+            var success = data.SaveAdminReview(Convert.ToInt32(bulkOrderId), comment);
+            
+            return success.ToString();
+        }
+
+        public string UpdateAdminReviewFinished(string bulkOrderId)
+        {
+            BulkData data = new BulkData();
+            var success = data.UpdateAdminReviewFinished(Convert.ToInt32(bulkOrderId));
+           
+            return success.ToString();
         }
 
         public bool checkAdminLoggedIn()

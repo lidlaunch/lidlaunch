@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "AdminReview";
+}
+<div id="adminReviewPopup" class="popup">
+    <div id="adminReviewPopupInner" class="smallPopupInner">
+        <span onclick="$('#adminReviewPopup').hide();" class="closeButton" style="position:absolute; top:5px;right:5px;">X</span>
+        <input id="txtAdminReviewComment" type="text" placeholder="Admin Review Reason..." />
+        <div id="saveAdminReview"><input type="button" value="Save Admin Review" class="smallButton" onclick="SaveAdminReview('@Model.idVal', '@Model.fromBulkEdit');" /></div>
+    </div>
+</div>
+
+

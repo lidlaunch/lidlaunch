@@ -962,3 +962,65 @@ function setBulkDesign(designId) {
         }
     });
 }
+
+function SaveAdminReview(bulkOrderId, fromBulkPopup) {
+    var comment = $('#txtAdminReviewComment').val();
+    showLoading();
+    $.ajax({
+        type: "POST",
+        url: '/Bulk/SaveAdminReview',
+        contentType: false,
+        processData: false,
+        data: JSON.stringify({
+            bulkOrderId: bulkOrderId,
+            comment: comment
+        }),
+        contentType: "application/json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('error.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                //reload bulk order window   
+                hideLoading();
+                if (fromBulkPopup) {
+                    showBulkOrderDetailsPopup(bulkOrderId);
+                }                
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error.', 'error', false);
+        }
+    });
+}
+
+function UpdateAdminReviewFinished(bulkOrderId, fromBulkPopup) {
+    showLoading();
+    $.ajax({
+        type: "POST",
+        url: '/Bulk/UpdateAdminReviewFinished',
+        contentType: false,
+        processData: false,
+        data: JSON.stringify({
+            bulkOrderId: bulkOrderId
+        }),
+        contentType: "application/json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('error.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                //reload bulk order window   
+                hideLoading();
+                if (fromBulkPopup) {
+                    showBulkOrderDetailsPopup(bulkOrderId);
+                } 
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error.', 'error', false);
+        }
+    });
+}

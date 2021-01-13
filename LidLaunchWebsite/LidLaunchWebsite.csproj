@@ -806,6 +806,7 @@
     <Content Include="Views\Dashboard\MachinePanel.cshtml" />
     <Content Include="Views\Dashboard\UploadBulkDesign.cshtml" />
     <Content Include="Views\Dashboard\BulkOrderDetailsLookup.cshtml" />
+    <Content Include="Views\Bulk\AdminReview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
