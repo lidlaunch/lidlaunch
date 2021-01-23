@@ -100,115 +100,123 @@
 
 @if (Model.Id > 0 && Model.ReadyForProduction && Model.OrderPaid)
 {
-    <div id="bulkInfoPanel">
-        <div id="TopInfoBar">
-            <div class="left">
-                <a href="javascript:void(0);" onclick="$('#adminReviewHolder').load(adminReviewUrl, { bulkOrderId: @Model.Id, fromBulkEdit: false });"><input type="button" value="Admin Review" class="smallButton" /></a>
-                @if (Model.ReadyForProduction)
-                {
-                    <img src="~/Images/InternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;float:left;" /><span style="font-size:32px; font-weight:bold; float:left;margin-left:10px;line-height:80px;">@Model.Id</span>
-                }
-                else
-                {
-                    <img src="~/Images/NotInternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;float:left;" /><span style="font-size:32px; font-weight:bold; float:left;margin-left:10px;line-height:80px;">@Model.Id</span>
-                }
-            </div>
-            <div class="right">
-                <div id="BulkOrderDate">Payment Date: @Model.PaymentDate<br />Shipping Date: @Model.ProjectedShipDateShort - @Model.ProjectedShipDateLong</div>
-            </div>
+<div id="bulkInfoPanel">
+    <div id="TopInfoBar">
+        <div class="left">
+            @if (Model.ReadyForProduction)
+            {
+                <img src="~/Images/InternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;float:left;" />
+                <img src="~/Images/AdminReview.png" style="max-height:80px;max-width:80px; cursor:pointer; float:left;margin-left:20px;" onclick="$('#adminReviewHolder').load(adminReviewUrl, { bulkOrderId: @Model.Id, fromBulkEdit: false });" />
+                <span style="font-size:32px; font-weight:bold; float:left;margin-left:10px;line-height:80px;">@Model.Id</span>
+            }
+            else
+            {
+                <img src="~/Images/NotInternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;float:left;" />
+                <img src="~/Images/AdminReview.png" style="max-height:80px;max-width:80px; cursor:pointer; float:left;margin-left:20px;" onclick="$('#adminReviewHolder').load(adminReviewUrl, { bulkOrderId: @Model.Id, fromBulkEdit: false });" />
+                <span style="font-size:32px; font-weight:bold; float:left;margin-left:10px;line-height:80px;">@Model.Id</span>
+            }
         </div>
-        <div id="bulkOrderDetails" class="clear">
-            <table>
-                <tr class="importantNote">
-                    <td>Customer Notes:</td>
-                    <td>@Model.OrderNotes</td>
-                </tr>
-                <tr>
-                    <td>Artwork Position:</td>
-                    <td>
-                        @if (Model.ArtworkPosition == "left")
-                        {
-                            <img src="~/Images/LeftPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
-                        }
-                        @if (Model.ArtworkPosition == "right")
-                        {
-                            <img src="~/Images/RightPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
-                        }
-                        @if (Model.ArtworkPosition == "center")
-                        {
-                            <img src="~/Images/CenterPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
-                        }
-                    </td>
-                </tr>
-                <tr>
-                    <td>Art Source:</td>
-                    <td><img src="~/Images/BulkOrderArtwork/@Model.ArtworkImage" style="max-height:200px; max-width:200px;" /></td>
-                </tr>
-                @if (Model.BackStitching)
-                {
-                    <tr>
-                        <td>Back Stitching:</td>
-                        <td>@Model.BackStitchingComment</td>
-                    </tr>
-                }
-                @if (Model.LeftStitching)
-                {
-                    <tr>
-                        <td>Left Stitching:</td>
-                        <td>@Model.LeftStitchingComment</td>
-                    </tr>
-                }
-                @if (Model.RightStitching)
-                {
-                    <tr>
-                        <td>Right Stitching:</td>
-                        <td>@Model.RightStitchingComment</td>
-                    </tr>
-                }
-            </table>
-        </div><!--/bulkOrderDetails-->
-        <div id="bulkOrderItems">
-            <h3>Order Items</h3>
-            <table id="viewingTable">
-                <tbody>
-                    @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.lstItems)
-                    {
-                        if (item.ItemName != "Shipping" && item.ItemName != "Artwork Setup/Digitizing")
-                        {
-                            <tr>
-                                <td>@item.ItemName</td>
-                                <td>@item.ItemQuantity</td>
-                            </tr>
-
-                            foreach (LidLaunchWebsite.Models.Note note in item.lstNotes)
-                            {
-                                <tr class="importantNote">
-                                    <td><i class="noteDate">@note.CreatedDate.ToString("MM/dd/yyyy")</i> : @note.Text</td>
-                                    <td>@note.Attachment</td>
-                                </tr>
-                            }
-                            <tr>
-                                <td colspan="2">-------------------------------------------------------------</td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-        </div><!--/bulkOrderItems-->
-        <div id="bulkOrderNotes">
-            <h3>Order Notes</h3>
-            <table>
-                @foreach (LidLaunchWebsite.Models.Note note in Model.lstNotes)
-                {
-                    <tr class="importantNote">
-                        <td></td>
-                        <td colspan="3"><i class="noteDate">@note.CreatedDate</i> : @note.Text</td>
-                        <td>@note.Attachment</td>
-                    </tr>
-                }
-            </table>
-        </div>        
+        <div class="left">
+            
+        </div>
+        <div class="right">
+            <div id="BulkOrderDate">Payment Date: @Model.PaymentDate<br />Shipping Date: @Model.ProjectedShipDateShort - @Model.ProjectedShipDateLong</div>
+        </div>
     </div>
+    <div id="bulkOrderDetails" class="clear">
+        <table>
+            <tr class="importantNote">
+                <td>Customer Notes:</td>
+                <td>@Model.OrderNotes</td>
+            </tr>
+            <tr>
+                <td>Artwork Position:</td>
+                <td>
+                    @if (Model.ArtworkPosition == "left")
+                    {
+                        <img src="~/Images/LeftOpPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
+                        <img src="~/Images/LeftPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
+                    }
+                    @if (Model.ArtworkPosition == "right")
+                    {
+                        <img src="~/Images/RightOpPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
+                        <img src="~/Images/RightPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
+                    }
+                    @if (Model.ArtworkPosition == "center")
+                    {
+                        <img src="~/Images/CenterPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>Art Source:</td>
+                <td><img src="~/Images/BulkOrderArtwork/@Model.ArtworkImage" style="max-height:200px; max-width:200px;" /></td>
+            </tr>
+            @if (Model.BackStitching)
+            {
+                <tr>
+                    <td>Back Stitching:</td>
+                    <td>@Model.BackStitchingComment</td>
+                </tr>
+            }
+            @if (Model.LeftStitching)
+            {
+                <tr>
+                    <td>Left Stitching:</td>
+                    <td>@Model.LeftStitchingComment</td>
+                </tr>
+            }
+            @if (Model.RightStitching)
+            {
+                <tr>
+                    <td>Right Stitching:</td>
+                    <td>@Model.RightStitchingComment</td>
+                </tr>
+            }
+        </table>
+    </div><!--/bulkOrderDetails-->
+    <div id="bulkOrderNotes">
+        <h3>Order Notes</h3>
+        <table>
+            @foreach (LidLaunchWebsite.Models.Note note in Model.lstNotes)
+            {
+                <tr class="importantNote">
+                    <td></td>
+                    <td colspan="3"><i class="noteDate">@note.CreatedDate</i> : @note.Text</td>
+                    <td>@note.Attachment</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div id="bulkOrderItems">
+        <h3>Order Items</h3>
+        <table id="viewingTable">
+            <tbody>
+                @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.lstItems)
+                {
+                    if (item.ItemName != "Shipping" && item.ItemName != "Artwork Setup/Digitizing")
+                    {
+                        <tr>
+                            <td>@item.ItemName</td>
+                            <td>@item.ItemQuantity</td>
+                        </tr>
+
+                        foreach (LidLaunchWebsite.Models.Note note in item.lstNotes)
+                        {
+                            <tr class="importantNote">
+                                <td><i class="noteDate">@note.CreatedDate.ToString("MM/dd/yyyy")</i> : @note.Text</td>
+                                <td>@note.Attachment</td>
+                            </tr>
+                        }
+                        <tr>
+                            <td colspan="2">-------------------------------------------------------------</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div><!--/bulkOrderItems-->
+</div>
     <div id="bulkOrderDesignPdfs">
         <div id="bulkDesignButtons">
             @{bool firstButton = true;}

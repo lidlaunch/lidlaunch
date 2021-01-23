@@ -8,8 +8,7 @@
         <div id="TopInfoBar">
             <div id="barcode">
                 <div class="left"><img src="~/Images/Barcodes/@Model.BarcodeImage" /></div>
-                <div class="right">
-                    <a href="javascript:void(0);" onclick="$('#adminReviewHolder').load(adminReviewUrl, { bulkOrderId: @Model.Id, fromBulkEdit: true });"><input type="button" value="Admin Review" class="smallButton" /></a>
+                <div class="right">                                        
                     @if (Model.ReadyForProduction)
                     {
                         <img src="~/Images/InternallyApproved.png" style="max-height:100px;max-width:100px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.Id, false);" />
@@ -18,6 +17,9 @@
                     {
                         <img src="~/Images/NotInternallyApproved.png" style="max-height:100px;max-width:100px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.Id, true);" />
                     }
+                </div>
+                <div class="right">
+                    <img src="~/Images/AdminReview.png" style="max-height:100px;max-width:100px; cursor:pointer;" onclick="$('#adminReviewHolder').load(adminReviewUrl, { bulkOrderId: @Model.Id, fromBulkEdit: true });" />
                 </div>
             </div>
             <div class="clear">
@@ -61,7 +63,14 @@
                     <td>Art Source:</td>
                     <td><img src="~/Images/BulkOrderArtwork/@Model.ArtworkImage" style="max-height:200px; max-width:200px;" /></td>
                 </tr>
-                <tr>
+                @if (Model.AdminReview)
+                {
+                    <tr style="background-color:red; color:#fff;">
+                        <td>Admin Review:</td>
+                        <td>@Model.AdminReviewComment</td>
+                    </tr>
+                }
+                <tr class="hidden">
                     <td>Released To Digitizer:</td>
                     <td>
                         @if (Model.ReleaseToDigitizer)

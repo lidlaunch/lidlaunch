@@ -291,6 +291,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\5stars.png" />
+    <Content Include="Images\AdminReview.png" />
     <Content Include="Images\America.png" />
     <Content Include="Images\artStepIcon.png" />
     <Content Include="Images\BannerImages.jpg" />
@@ -476,6 +477,8 @@
     <Content Include="Images\Icons\ms-icon-150x150.png" />
     <Content Include="Images\Icons\ms-icon-310x310.png" />
     <Content Include="Images\Icons\ms-icon-70x70.png" />
+    <Content Include="Images\InternallyApproved.png" />
+    <Content Include="Images\LeftOpPlacement.jpg" />
     <Content Include="Images\LeftPlacement.jpg" />
     <Content Include="Images\loading.gif" />
     <Content Include="Images\logo.jpg" />
@@ -483,6 +486,7 @@
     <Content Include="Images\LogoBG.jpg" />
     <Content Include="Images\min.png" />
     <Content Include="Images\MoreColors.png" />
+    <Content Include="Images\NotInternallyApproved.png" />
     <Content Include="Images\OurPastWorkBg.jpg" />
     <Content Include="Images\PastWorkNeon.png" />
     <Content Include="Images\paypal.png" />
@@ -558,6 +562,7 @@
     <Content Include="Images\RichardsonHats\hat_71.jpg" />
     <Content Include="Images\RichardsonHats\hat_72.jpg" />
     <Content Include="Images\RichardsonSectionBG.jpg" />
+    <Content Include="Images\RightOpPlacement.jpg" />
     <Content Include="Images\RightPlacement.jpg" />
     <Content Include="Images\search.jpg" />
     <Content Include="Images\SearchBack.jpg" />

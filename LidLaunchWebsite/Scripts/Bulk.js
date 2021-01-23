@@ -986,7 +986,9 @@ function SaveAdminReview(bulkOrderId, fromBulkPopup) {
                 hideLoading();
                 if (fromBulkPopup) {
                     showBulkOrderDetailsPopup(bulkOrderId);
-                }                
+                } else {
+                    window.location.reload();
+                }
             }
         },
         error: function (xhr, status, p3, p4) {

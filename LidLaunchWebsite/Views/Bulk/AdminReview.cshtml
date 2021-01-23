@@ -5,9 +5,45 @@
 <div id="adminReviewPopup" class="popup">
     <div id="adminReviewPopupInner" class="smallPopupInner">
         <span onclick="$('#adminReviewPopup').hide();" class="closeButton" style="position:absolute; top:5px;right:5px;">X</span>
-        <input id="txtAdminReviewComment" type="text" placeholder="Admin Review Reason..." />
+        <h2>Admin Review Reason:</h2>
+        <select id="selAdminReviewReason">
+            <option value="Need Back, Side OR Beanie Files">Need Back, Side OR Beanie Files</option>
+            <option value="Artwork Too Small">Artwork Too Small</option>
+            <option value="Artwork Too Large">Artwork Too Large</option>
+            <option value="Design Changes Needed">Design Changes Needed</option>
+            <option value="Need Clarification On Colors To Use">Need Clarification On Colors To Use</option>
+            <option value="Missing Thread Colors">Missing Thread Colors</option>
+            <option value="Artwork Not Pre-Existing">Artwork Not Pre-Existing</option>
+            <option value="Other">Other</option>
+        </select>
+        <input id="txtAdminReviewComment" type="text" placeholder="Admin Review Reason..." class="hidden" style="width:100%" value="Need Back, Side OR Beanie Files"/>
         <div id="saveAdminReview"><input type="button" value="Save Admin Review" class="smallButton" onclick="SaveAdminReview('@Model.idVal', '@Model.fromBulkEdit');" /></div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#selAdminReviewReason').change(function () {
+            if ($(this).val() == 'Other') {
+                $('#txtAdminReviewComment').show();
+                $('#txtAdminReviewComment').val('');
+            } else {
+                $('#txtAdminReviewComment').hide();
+                $('#txtAdminReviewComment').val($(this).val());
+            }            
+        });
+    });
+</script>
+
+<style type="text/css">
+    #selAdminReviewReason {
+        height:80px;
+        font-size:22px;
+    }
+    #selAdminReviewReason option {
+        height:80px;
+    }
+
+</style>
 
 
