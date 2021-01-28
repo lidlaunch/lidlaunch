@@ -1,0 +1,130 @@
+﻿@model LidLaunchWebsite.Models.ViewBulkOrdersModel
+@{
+    ViewBag.Title = "ShipBulkOrders";
+}
+<script type="text/javascript">
+    var bulkOrderShipUrl = '@Url.Action("ShipBulkOrderPopup", "DashBoard")';
+    $(document).ready(function () {
+        $('#idSeach').on('keypress', function (e) {
+            if (e.which === 13) {
+                window.location = '/Dashboard/ShipBulkOrders?filter=' + $(this).val();
+            }
+        });
+    });
+
+    function showBulkOrderShip (bulkOrderId) {
+        $('#popUpHolder').load(bulkOrderShipUrl, { bulkOrderId: bulkOrderId });
+    }
+</script>
+<span onclick="window.location = '/Dashboard/ShipBulkOrders?filter=test';" class="left" style="margin:10px;"><input type="button" value="test" class="smallButton" /></span>
+<span onclick="window.location = '/Dashboard/ShipBulkOrders?filter=test';" class="left" style="margin:10px;"><input type="button" value="test" class="smallButton" /></span>
+<span onclick="window.location = '/Dashboard/ShipBulkOrders?filter=test';" class="left" style="margin:10px;"><input type="button" value="test" class="smallButton" /></span>
+<input type="text" id="idSeach" class="left" style="padding:10px;margin:10px;"/>
+<table class="bulkOrderList clear">
+    <tbody>
+        <tr>
+            <td></td>
+            <td><b>Id</b></td>
+            <td><b>Order Date</b></td>
+            <td><b>10 Days Date</b></td>
+            <td><b>14 Days Date</b></td>
+            <td><b>Customer Info</b></td>
+            <td><b>Shipping Info</b></td>
+            <td><b>VIEW</b></td>
+        </tr>
+        @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model.lstBulkOrders)
+        {
+    <tr style="background:#ccc;">
+
+
+        @if (bulkOrder.lstItems.Any(i => i.BulkRework.Status == "In Progress"))
+        {
+            <td style="width:30px; background:#e92121;"></td>
+        }
+        else
+        {
+            if (bulkOrder.OrderComplete)
+            {
+                <td style="width:30px; background:#39b91c;"></td>
+            }
+            else
+            {
+                if (bulkOrder.ReadyForProduction)
+                {
+                    <td style="width:30px; background:#1372d3;"></td>
+                }
+                else
+                {
+                    if (bulkOrder.lstDesigns.Any(d => d.InternallyApproved == false))
+                    {
+                        if (bulkOrder.lstDesigns.Any(d => d.DigitizedPreview != ""))
+                        {
+                            <td style="width:30px; background:#f9fc04;"></td>
+                        }
+                        else
+                        {
+                            <td style="width:30px;"></td>
+                        }
+                    }
+                    else
+                    {
+                        if (bulkOrder.lstDesigns.Any(d => d.CustomerApproved == false))
+                        {
+                            if (bulkOrder.lstDesigns.Any(d => d.Revision))
+                            {
+                                <td style="width:30px; background:#8c4b00;"></td>
+                            }
+                            else
+                            {
+                                <td style="width:30px; background:#fc8a04;"></td>
+                            }
+                        }
+                        else
+                        {
+                            <td style="width:30px; background:#c504fc;"></td>
+                        }
+                    }
+                }
+            }
+        }
+
+        @if (bulkOrder.AdminReview)
+        {
+            <td style="background-color:#000; color:#fff;"><span class="bulkOrderId"> @bulkOrder.Id </span></td>
+        }
+        else
+        {
+            <td><span class="bulkOrderId"> @bulkOrder.Id </span></td>
+        }
+
+        <td>@bulkOrder.OrderDate.ToString("MM/dd/yyyy")</td>
+        <td>@bulkOrder.ProjectedShipDateShort</td>
+        <td>@bulkOrder.ProjectedShipDateLong</td>
+        <td>@bulkOrder.CustomerName<br />@bulkOrder.CustomerEmail<br />@bulkOrder.CustomerPhone</td>
+        <td>@bulkOrder.ShipToName<br />@bulkOrder.ShipToAddress<br />@bulkOrder.ShipToCity, @bulkOrder.ShipToState @bulkOrder.ShipToZip</td>
+        <td><span onclick="showBulkOrderShip(@bulkOrder.Id);"><input type="button" value="OPEN" class="smallButton" /></span></td>
+    </tr>                
+        }
+    </tbody>
+</table>
+
+<div id="colorLegend">
+    <div class="colorLegendItem" style="background-color:#e92121;">Rework</div>
+    <div class="colorLegendItem" style="background-color:#39b91c;">Complete</div>
+    <div class="colorLegendItem" style="background-color:#1372d3;">Ready For Production</div>
+    <div class="colorLegendItem" style="background-color:#ccc; color:#000;">Waiting For Digitizing</div>
+    <div class="colorLegendItem" style="background-color:#f9fc04; color:#000;">Awaiting Internal Digitizing Approval</div>
+    <div class="colorLegendItem" style="background-color:#fc8a04;">Awaiting Customer Digitizing Approval</div>
+    <div class="colorLegendItem" style="background-color:#8c4b00;">Revisions Requested</div>
+    <div class="colorLegendItem" style="background-color:#c504fc;">Customer Approved</div>
+</div>
+
+<div id="popUpHolder">
+
+</div>
+
+
+
+
+
+

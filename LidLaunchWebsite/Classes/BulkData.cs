@@ -342,6 +342,11 @@ namespace LidLaunchWebsite.Classes
                     lstReworkOrders = BuildBulkOrdersList(ds2);
                 }
 
+                foreach(BulkOrder bulkOrder in lstReworkOrders)
+                {
+                    bulkOrder.HasRework = true;
+                }
+
                 lstBulkOrders.AddRange(lstReworkOrders);
 
                 return lstBulkOrders;

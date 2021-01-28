@@ -58,6 +58,7 @@ namespace LidLaunchWebsite.Models
         public bool ReleaseToDigitizer { get; set; }
         public bool AdminReview { get; set; }
         public string AdminReviewComment { get; set; }
+        public bool HasRework { get; set; }
     }
 
     public class BulkBatchOrder

@@ -954,6 +954,22 @@ namespace LidLaunchWebsite.Controllers
             }
         }
 
+        public ActionResult ShipBulkOrders(string filter)
+        {
+            if (!checkLoggedIn())
+            {
+                return RedirectToAction("Index", "Home", null);
+            }
+            else
+            {
+                BulkData data = new BulkData();
+                ViewBulkOrdersModel model = new ViewBulkOrdersModel();
+                model.lstBulkOrders = data.GetBulkOrderData(filter);
+                model.lstBulkOrders = model.lstBulkOrders.OrderBy(bo => Convert.ToDateTime(bo.ProjectedShipDateLong)).ToList().OrderBy(bo => bo.OrderComplete).ToList();
+                return View(model);
+            }
+        }
+
         public ActionResult MachinePanel (string bulkOrderId)
         {
 
@@ -1076,6 +1092,35 @@ namespace LidLaunchWebsite.Controllers
             }
 
         }
+
+        public ActionResult ShipBulkOrderPopup(int bulkOrderId)
+        {
+
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (checkLoggedIn())
+                {
+                    BulkOrder bulkOrder = new BulkOrder();
+                    BulkData data = new BulkData();
+                    bulkOrder = data.GetBulkOrder(bulkOrderId, "", "");
+
+                    bulkOrder.BarcodeImage = "BO-" + bulkOrderId.ToString() + ".jpg";
+
+
+                    return PartialView("ShipBulkOrderPopup", bulkOrder);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }
+
+        }
+
         public ActionResult BulkOrderDetailsPopup(int bulkOrderId)
         {
              

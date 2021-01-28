@@ -17,6 +17,7 @@
         display: none;
     }
     .bulkOrderPrint {
+        page-break-before: always;
         page-break-after: always;
         clear: both;
     }
@@ -32,7 +33,14 @@
                     <div class="left"><img src="~/Images/Barcodes/@bulkOrder.BarcodeImage" /></div>                    
                 </div>
                 <div class="clear">
-                    <div id="BulkOrderId">@bulkOrder.Id</div>
+                    @if (@bulkOrder.HasRework)
+                    {
+                        <div id="BulkOrderId">REWORK: @bulkOrder.Id</div>
+                    }
+                    else
+                    {
+                        <div id="BulkOrderId">@bulkOrder.Id</div>
+                    }
                     <div id="BulkOrderDate">Payment Date: @bulkOrder.PaymentDate<br />Shipping Date: @bulkOrder.ProjectedShipDateShort - @bulkOrder.ProjectedShipDateLong <span onclick="$('#bulkOrderDetailsPopup').hide();" class="closeButton">X</span></div>
                 </div>
             </div>            
@@ -52,13 +60,21 @@
                         {
                             if (item.ItemName != "Shipping" && item.ItemName != "Back Stitching" && item.ItemName != "Left Side Stitching" && item.ItemName != "Right Side Stitching" && item.ItemName != "Artwork Setup/Digitizing")
                             {
-                                <tr>
-                                    <td>@item.ItemName</td>
-                                    <td style="font-size:24px; font-weight:bold;">@item.ItemQuantity</td>
-                                    <td style="font-size:24px;">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</td>
-                                    <td style="font-size:24px;">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</td>
-                                    <td style="font-size:24px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                                </tr>
+                        <tr>
+                            <td>@item.ItemName</td>
+                            <td style="font-size:24px; font-weight:bold;">@item.ItemQuantity</td>
+                            <td style="font-size:24px;">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</td>
+                            <td style="font-size:24px;">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</td>
+                            @if (item.BulkRework != null && item.BulkRework.Id > 0)
+                            {
+                                <td style="font-size:24px;">@item.BulkRework.Note</td>
+                            }
+                            else
+                            {
+                                <td style="font-size:24px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            }
+
+                        </tr>
                             }
 
                         }
