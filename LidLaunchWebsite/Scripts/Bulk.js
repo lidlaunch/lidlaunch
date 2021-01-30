@@ -481,7 +481,7 @@ function processBulkPaymentShowPaypal(total, paymentCompleteGuid, shippingCost, 
     $('#paypalPaymentButtonsPopup').show();
 }
 
-function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, parentBulkOrderId, parentBulkOrderBatchId, reworkId) {
+function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, parentBulkOrderId, parentBulkOrderBatchId, reworkId, shipping) {
     showLoading();
     $.ajax({
         type: "POST",
@@ -501,7 +501,12 @@ function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, p
                 if (bulkOrderBatchId != '' && bulkOrderBatchId != '0') {
                     alert('show the bulk order batch screen for batch id= ' + parentBulkOrderBatchId);
                 } else {                    
-                    showBulkOrderDetailsPopup(parentBulkOrderId);
+                    if (shipping) {
+                        showBulkOrderShip(parentBulkOrderId);
+                    } else {
+                        showBulkOrderDetailsPopup(parentBulkOrderId);
+                    }
+                    
                 }
             }
         },
@@ -511,7 +516,7 @@ function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, p
     });
 }
 
-function saveNote(noteType, idVal, parentBulkOrderId, customerAdded) {
+function saveNote(noteType, idVal, parentBulkOrderId, customerAdded, shipping) {
     showLoading();
     $.ajax({
         type: "POST",
@@ -528,7 +533,11 @@ function saveNote(noteType, idVal, parentBulkOrderId, customerAdded) {
                 displayPopupNotification('error.', 'error', false);
             } else {
                 hideLoading();
-                showBulkOrderDetailsPopup(parentBulkOrderId);
+                if (shipping) {
+                    showBulkOrderShip(parentBulkOrderId);
+                } else {
+                    showBulkOrderDetailsPopup(parentBulkOrderId);
+                }                
             }
         },
         error: function (xhr, status, p3, p4) {
@@ -873,7 +882,8 @@ function showBulkOrderDetailsPopup(bulkOrderId) {
 }
 
 
-function setBulkOrderAsShipped(bulkOrderId) {
+function setBulkOrderAsShipped(bulkOrderId, shipping) {
+    var noEmail = $('#chkNoEmail').prop("checked");
     showLoading();
     $.ajax({
         type: "POST",
@@ -882,7 +892,8 @@ function setBulkOrderAsShipped(bulkOrderId) {
         processData: false,
         data: JSON.stringify({
             bulkOrderId: bulkOrderId,
-            trackingNumber: $('#txtTrackingNumber').val()
+            trackingNumber: $('#txtTrackingNumber').val(),
+            noEmail: noEmail
         }),
         contentType: "application/json",
         success: function (result) {
@@ -893,7 +904,11 @@ function setBulkOrderAsShipped(bulkOrderId) {
                 //set the url for the file link and show the link 
                 //reload bulk order window   
                 hideLoading();
-                showBulkOrderDetailsPopup(bulkOrderId);
+                if (shipping) {
+                    showBulkOrderShip(bulkOrderId);
+                } else {
+                    showBulkOrderDetailsPopup(bulkOrderId);
+                }                
             }
         },
         error: function (xhr, status, p3, p4) {
@@ -965,6 +980,7 @@ function setBulkDesign(designId) {
 
 function SaveAdminReview(bulkOrderId, fromBulkPopup) {
     var comment = $('#txtAdminReviewComment').val();
+    var designerReview = $('#chkDesignerReview').prop("checked");
     showLoading();
     $.ajax({
         type: "POST",
@@ -973,7 +989,8 @@ function SaveAdminReview(bulkOrderId, fromBulkPopup) {
         processData: false,
         data: JSON.stringify({
             bulkOrderId: bulkOrderId,
-            comment: comment
+            comment: comment,
+            designerReview: designerReview
         }),
         contentType: "application/json",
         success: function (result) {

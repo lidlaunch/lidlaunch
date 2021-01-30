@@ -16,7 +16,8 @@
             <option value="Artwork Not Pre-Existing">Artwork Not Pre-Existing</option>
             <option value="Other">Other</option>
         </select>
-        <input id="txtAdminReviewComment" type="text" placeholder="Admin Review Reason..." class="hidden" style="width:100%" value="Need Back, Side OR Beanie Files"/>
+        <input id="txtAdminReviewComment" type="text" placeholder="Admin Review Reason..." class="hidden" style="width:100%" value="Need Back, Side OR Beanie Files"/><br/>
+        <input type="checkbox" id="chkDesignerReview"/> Designer Review<br />
         <div id="saveAdminReview"><input type="button" value="Save Admin Review" class="smallButton" onclick="SaveAdminReview('@Model.idVal', '@Model.fromBulkEdit');" /></div>
     </div>
 </div>

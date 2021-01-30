@@ -55,21 +55,28 @@ namespace LidLaunchWebsite.Controllers
             return View(bulkOrder);
         }
 
-        public string SetBulkOrderAsShipped(string bulkOrderId, string trackingNumber)
+        public string SetBulkOrderAsShipped(string bulkOrderId, string trackingNumber, string noEmail)
         {
             BulkData data = new BulkData();
 
             BulkOrder bulkOrder = new BulkOrder();
             bulkOrder = data.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
-
-            if (bulkOrder != null && !bulkOrder.OrderComplete && trackingNumber != "")
+            //if (bulkOrder != null && !bulkOrder.OrderComplete && trackingNumber != "")
+            if (bulkOrder != null && !bulkOrder.OrderComplete)
             {
                 var success = data.UpdateBulkOrderSetOrderAsShipped(Convert.ToInt32(bulkOrderId), trackingNumber);
                 EmailFunctions emailFunc = new EmailFunctions();
-                
-                var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderShippedEmail(trackingNumber), "Lid Launch Order Shipped", "");
 
-                return emailSuccess.ToString();
+                if (Convert.ToBoolean(noEmail))
+                {
+                    return success.ToString();
+                }
+                else
+                {
+                    var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderShippedEmail(trackingNumber), "Lid Launch Order Shipped", "");
+                    return emailSuccess.ToString();
+                }
+                
             }
 
             return "";
@@ -330,6 +337,16 @@ namespace LidLaunchWebsite.Controllers
             return PartialView("BulkOrderBatches", lstBatches); ;
         }
 
+        public ActionResult PrintPackingSlip(string bulkOrderId)
+        {
+            BulkData data = new BulkData();
+            BulkOrder bulkOrder = new BulkOrder();
+
+            bulkOrder = data.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
+
+            return View(bulkOrder);
+        }
+
         public ActionResult PrintBulkOrderBatchBulkOrders(string bulkBatchId, string rework)
         {
             BulkData data = new BulkData();
@@ -410,10 +427,10 @@ namespace LidLaunchWebsite.Controllers
             return PartialView("AdminReview", model);
         }
 
-        public string SaveAdminReview(string bulkOrderId, string comment)
+        public string SaveAdminReview(string bulkOrderId, string comment, string designerReview)
         {
             BulkData data = new BulkData();
-            var success = data.SaveAdminReview(Convert.ToInt32(bulkOrderId), comment);
+            var success = data.SaveAdminReview(Convert.ToInt32(bulkOrderId), comment, Convert.ToBoolean(designerReview));
             
             return success.ToString();
         }

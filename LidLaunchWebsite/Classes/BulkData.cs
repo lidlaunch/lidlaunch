@@ -148,7 +148,11 @@ namespace LidLaunchWebsite.Classes
                     }
                     else if (filter == "review")
                     {
-                        lstBulkOrders = lstBulkOrders.Where(b => b.AdminReview).ToList();
+                        lstBulkOrders = lstBulkOrders.Where(b => b.AdminReview && !b.DesignerReview && b.OrderPaid).ToList();
+                    }
+                    else if (filter == "designerReview")
+                    {
+                        lstBulkOrders = lstBulkOrders.Where(b => b.DesignerReview).ToList();
                     }
                     else
                     {
@@ -443,6 +447,7 @@ namespace LidLaunchWebsite.Classes
             bulkOrder.ArtworkEmailSent = Convert.ToBoolean(dr["ArtworkEmailSent"].ToString());
             bulkOrder.ReleaseToDigitizer = Convert.ToBoolean(dr["ReleaseToDigitizer"].ToString());
             bulkOrder.AdminReview = Convert.ToBoolean(dr["AdminReview"].ToString());
+            bulkOrder.DesignerReview = Convert.ToBoolean(dr["DesignerReview"].ToString());
             bulkOrder.AdminReviewComment = Convert.ToString(dr["AdminReviewComment"].ToString());
             bulkOrder.BarcodeImage = "BO-" + bulkOrder.Id.ToString() + ".jpg";
             bulkOrder.lstItems = new List<BulkOrderItem>();
@@ -1655,7 +1660,7 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
-        public bool SaveAdminReview(int bulkOrderId, string comment)
+        public bool SaveAdminReview(int bulkOrderId, string comment, bool designerReview)
         {
             var data = new SQLData();
             try
@@ -1667,6 +1672,7 @@ namespace LidLaunchWebsite.Classes
                     SqlCommand sqlComm = new SqlCommand("UpdateAdminReviewSetComment", data.conn);
                     sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
                     sqlComm.Parameters.AddWithValue("@comment", comment);
+                    sqlComm.Parameters.AddWithValue("@designerReview", designerReview);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();

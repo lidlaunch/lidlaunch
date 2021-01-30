@@ -118,8 +118,18 @@
                     <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@Model.PaymentGuid" target="_blank">Pay Link</a></td>
                 </tr>
                 <tr>
-                    <td>Shipped:</td>
-                    <td><input type="text" placeholder="tracking #" id="txtTrackingNumber" value="@Model.TrackingNumber" /><input type="button" value="Mark Order As Shipped" class="smallButton" onclick="setBulkOrderAsShipped(@Model.Id)" /></td>
+                    <td>Shipped:</td>                    
+                    <td>
+                        @if (Model.OrderComplete)
+                        {
+                            <span>SHIPPED</span>
+                        }
+                        else
+                        {
+                            <span>NOT SHIPPED</span>
+                        }
+                                    
+                    </td>
                 </tr>
             </table>
         </div><!--/bulkOrderDetails-->
@@ -148,7 +158,7 @@
                                     <td>@item.ItemCost</td>
                                     <td>@item.DesignId</td>
                                     <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
-                                    <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.BulkRework.Quantity, note: '@item.BulkRework.Note', bulkReworkId: @item.BulkRework.Id });">@item.BulkRework.Quantity : @item.BulkRework.Note</a></td>
+                                    <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.BulkRework.Quantity, note: '@item.BulkRework.Note', bulkReworkId: @item.BulkRework.Id, shipping: false  });">@item.BulkRework.Quantity : @item.BulkRework.Note</a></td>
                                 </tr>
                             }
                             else
@@ -158,8 +168,8 @@
                                     <td>@item.ItemQuantity</td>
                                     <td>@item.ItemCost</td>
                                     <td>@item.DesignId</td>
-                                    <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
-                                    <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.BulkRework.Quantity, note: '@item.BulkRework.Note', bulkReworkId: @item.BulkRework.Id });">@item.BulkRework.Quantity : @item.BulkRework.Note</a></td>
+                                    <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                                    <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.BulkRework.Quantity, note: '@item.BulkRework.Note', bulkReworkId: @item.BulkRework.Id, shipping: false  });">@item.BulkRework.Quantity : @item.BulkRework.Note</a></td>
                                 </tr>
                             }
                         }
@@ -170,8 +180,8 @@
                                 <td>@item.ItemQuantity</td>
                                 <td>@item.ItemCost</td>
                                 <td>@item.DesignId</td>
-                                <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
-                                <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.ItemQuantity, note: '', bulkReworkid: 0 });"><input type="button" value="Rework" class="smallButton" /></a></td>
+                                <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                                <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.ItemQuantity, note: '', bulkReworkid: 0, shipping: false  });"><input type="button" value="Rework" class="smallButton" /></a></td>
                             </tr>
                         }
 
@@ -233,7 +243,7 @@
                     </tr>
                 }
             </table>
-            <a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: @Model.Id, bulkOrderItemId: 0 , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false });"><input type="button" value="Add Note" class="smallButton" /></a>
+            <a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: @Model.Id, bulkOrderItemId: 0 , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a>
         </div>
         <div id="bulkOrderDesigns">
             <h3>Designs</h3>
@@ -273,14 +283,14 @@
                                     <td>Internally Approved / Customer Approved</td>
                                 }
                             }
-                            <td><input type="button" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: true, customerAdded: false });" class="smallButton" value="Revision" /></td>
+                            <td><input type="button" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: true, customerAdded: false, shipping: false });" class="smallButton" value="Revision" /></td>
                             <td>@design.Name</td>
                             <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>                                                     
                             <td><a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName" target="_blank">@design.DigitizedFile</a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" /></a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">@design.EMBFile</a></td>
-                            <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                            <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
                             <td><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id });"><input type="button" class="smallButton" value="Edit Design" /></a></td>
                         </tr>
                         if (design.lstNotes.Count > 0)

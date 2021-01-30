@@ -1237,7 +1237,7 @@ namespace LidLaunchWebsite.Controllers
             return "true";
         }
 
-        public ActionResult AddBulkRework(int bulkOrderBatchId, int bulkOrderItemId, string bulkOrderBlankName, int parentBulkOrderId, int parentBulkOrderBatchId, string note, int quantity, int bulkReworkId)
+        public ActionResult AddBulkRework(int bulkOrderBatchId, int bulkOrderItemId, string bulkOrderBlankName, int parentBulkOrderId, int parentBulkOrderBatchId, string note, int quantity, int bulkReworkId, bool shipping)
         {
             dynamic model = new ExpandoObject();
             
@@ -1249,6 +1249,7 @@ namespace LidLaunchWebsite.Controllers
             model.quantity = quantity;
             model.bulkReworkId = bulkReworkId;
             model.note = note;
+            model.shipping = shipping;
 
             return PartialView("AddBulkRework", model);
         }
@@ -1285,7 +1286,7 @@ namespace LidLaunchWebsite.Controllers
 
         //}
 
-        public ActionResult AddNote(int bulkOrderId, int bulkOrderItemId, int designId, int parentBulkOrderId, bool revision, string customerAdded)
+        public ActionResult AddNote(int bulkOrderId, int bulkOrderItemId, int designId, int parentBulkOrderId, bool revision, string customerAdded, bool shipping)
         {
             dynamic model = new ExpandoObject();
             if(bulkOrderId > 0)
@@ -1294,6 +1295,7 @@ namespace LidLaunchWebsite.Controllers
                 model.idVal = bulkOrderId;
                 model.parentBulkOrderId = parentBulkOrderId;
                 model.customerAdded = customerAdded;
+                model.shipping = shipping;
             }
             if(bulkOrderItemId > 0)
             {
@@ -1301,6 +1303,7 @@ namespace LidLaunchWebsite.Controllers
                 model.idVal = bulkOrderItemId;
                 model.parentBulkOrderId = parentBulkOrderId;
                 model.customerAdded = customerAdded;
+                model.shipping = shipping;
             }
             if(designId > 0)
             {
@@ -1315,6 +1318,7 @@ namespace LidLaunchWebsite.Controllers
                 model.idVal = designId;
                 model.parentBulkOrderId = parentBulkOrderId;
                 model.customerAdded = customerAdded;
+                model.shipping = shipping;
             }
             
             return PartialView("AddNote", model);

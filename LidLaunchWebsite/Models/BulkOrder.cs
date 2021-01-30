@@ -59,6 +59,7 @@ namespace LidLaunchWebsite.Models
         public bool AdminReview { get; set; }
         public string AdminReviewComment { get; set; }
         public bool HasRework { get; set; }
+        public bool DesignerReview { get; set; }
     }
 
     public class BulkBatchOrder

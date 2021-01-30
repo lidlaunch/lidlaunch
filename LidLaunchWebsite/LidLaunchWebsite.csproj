@@ -488,6 +488,7 @@
     <Content Include="Images\MoreColors.png" />
     <Content Include="Images\NotInternallyApproved.png" />
     <Content Include="Images\OurPastWorkBg.jpg" />
+    <Content Include="Images\PackingSlipHeader.jpg" />
     <Content Include="Images\PastWorkNeon.png" />
     <Content Include="Images\paypal.png" />
     <Content Include="Images\PayWithDebit-CreditCard.png" />
@@ -814,6 +815,7 @@
     <Content Include="Views\Bulk\AdminReview.cshtml" />
     <Content Include="Views\Dashboard\ShipBulkOrders.cshtml" />
     <Content Include="Views\Dashboard\ShipBulkOrderPopup.cshtml" />
+    <Content Include="Views\Bulk\PrintPackingSlip.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

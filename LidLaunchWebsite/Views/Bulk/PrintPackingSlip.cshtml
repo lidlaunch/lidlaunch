@@ -1,0 +1,145 @@
+﻿@model LidLaunchWebsite.Models.BulkOrder
+@{
+    ViewBag.Title = "PrintBulkOrderBatchBulkOrders";
+}
+    <script type="text/javascript">
+        window.print();
+        window.onafterprint = function () {
+            window.close();
+        }
+    </script>
+    <style type="text/css">
+    @@page {
+        size: auto;   /* auto is the initial value */
+        margin: 0;  /* this affects the margin in the printer settings */
+    }
+    #header, #mobileNav, .mainNavigation, #footer, #minFooter, #launcher {
+        display: none;
+    }
+    .packingSlip {
+        page-break-before: always;
+        page-break-after: always;
+        clear: both;
+        width:700px;
+        margin:30px auto;
+    }
+    #thankYouSection {
+        font-size:16px;
+        border-bottom:2px solid #000;
+        padding-bottom:10px;
+        padding-top:10px;
+    }
+    #orderDetailSection {
+        margin: 20px;
+    }
+    #packSlipItems table {
+        display: table;
+        width: 100%;
+    }
+    #packSlipItems table td {
+        min-width: 100px;
+        padding: 10px;
+        border-bottom: 2px solid #000;
+        margin: 5px 0;
+        font-size:12px;
+    }
+    </style>
+
+<div class="packingSlip">
+    <img src="~/Images/PackingSlipHeader.jpg" />
+    <div id="thankYouSection">
+        @System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Model.ShipToName.Split(' ')[0].ToLower()),<br />
+        Thank you so much for your order and trusting us to create your custom headwear. We sincerely appreciate your business and hope to see you again soon!<br /><br />
+        Feel free to reach out to us at support@lidlaunch.com for any questions, comments or concerns. It is our goal to ensure every customer loves their end product they receive.<br /><br />
+        Sincerely,<br />
+        The Lid Launch Team
+    </div>
+    <div id="orderDetailSection">
+
+
+    </div>
+    <table>
+        <tr style="font-weight:bold;">
+            <td>Order ID:</td>
+            <td>BO-@Model.Id</td>
+        </tr>
+        <tr>
+            <td>Order Date:</td>
+            <td>@Model.OrderDate</td>
+        </tr>
+        <tr>
+            <td>Payment Date:</td>
+            <td>@Model.PaymentDate</td>
+        </tr>
+        <tr>
+            <td>Customer Name:</td>
+            <td>@Model.ShipToName</td>
+        </tr>
+        <tr>
+            <td>Customer Email:</td>
+            <td>@Model.CustomerEmail</td>
+        </tr>
+    </table>
+    <div style="margin-top:20px; padding:5px 0;"><b>Order Summary:</b></div>
+    <div id="packSlipItems">
+        <table>
+            <thead>
+                <tr>
+                    <td>Item</td>
+                    <td>Qty</td>
+                    <td>Price</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.lstItems)
+                {
+                    <tr>
+                        <td>@item.ItemName</td>
+                        <td>@item.ItemQuantity</td>
+                        <td>$@item.ItemCost</td>
+                    </tr>
+
+
+
+                }
+                <tr>
+                    <td><b>Order Total: $@Model.OrderTotal</b></td>
+                </tr>
+            </tbody>
+        </table>
+
+        @if (Model.lstItems.Any(item => item.BulkRework.Id > 0 && item.BulkRework.Status != "Complete"))
+        {
+            <div style="margin-top:20px; padding:5px 0;"><b>Shipping Seperately:</b></div>
+            <div>
+                The items listed below were either out of stock or damaged during production and will be shipping seperately. You will recieve an email with tracking information once they have shipped.
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Item</td>
+                        <td>Qty</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.lstItems.Where(item => item.BulkRework.Id > 0 && item.BulkRework.Status != "Complete"))
+                    {
+
+
+                        <tr>
+                            <td>@item.ItemName</td>
+                            <td>@item.BulkRework.Quantity</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+    </div><!--/bulkOrderItems-->
+</div>
+
+
+@*if (item.ItemName != "Shipping" && item.ItemName != "Back Stitching" && item.ItemName != "Left Side Stitching" && item.ItemName != "Right Side Stitching" && item.ItemName != "Artwork Setup/Digitizing")
+                {
+
+}*@
