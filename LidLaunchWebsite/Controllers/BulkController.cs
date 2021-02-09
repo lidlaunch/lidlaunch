@@ -361,7 +361,7 @@ namespace LidLaunchWebsite.Controllers
             {
                 lstBulkOrders = data.GetBulkOrdersByBatchId(Convert.ToInt32(bulkBatchId));
             }
-            
+            lstBulkOrders = lstBulkOrders.Where(b => b.OrderPaid && !b.OrderComplete).ToList();
 
             bulkBatchOrder.lstBulkOrders = lstBulkOrders;
 
@@ -375,6 +375,8 @@ namespace LidLaunchWebsite.Controllers
             List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
 
             lstBulkOrders = data.GetBulkOrdersByBatchId(Convert.ToInt32(bulkBatchId));
+
+            lstBulkOrders = lstBulkOrders.Where(b => b.OrderPaid).ToList();
 
             bulkBatchOrder.lstBulkOrders = lstBulkOrders;
             bulkBatchOrder.batchInfo = new OrderBatch();
