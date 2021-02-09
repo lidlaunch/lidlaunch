@@ -292,6 +292,7 @@ function processPayment() {
             }
         },
         error: function () {
+            //log error through web service
             displayPopupNotification('Please Contact Us. There was an issue processing your order.', 'error', false);
         }
     });
