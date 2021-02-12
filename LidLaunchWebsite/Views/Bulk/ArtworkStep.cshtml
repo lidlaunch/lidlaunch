@@ -1,0 +1,318 @@
+﻿<script type="text/javascript">
+    var artworkPreExisting = false;
+    function goToStepNumber(stepNumber) {
+        if (stepNumber == 1) {
+            $('#artworkStep1').slideDown();
+            $('#artworkStep2').hide();
+            $('#artworkStep3').hide();
+            $('#artworkStep4').hide();
+        }
+        if (stepNumber == 2) {
+            $('#artworkStep1').hide();
+            $('#artworkStep2').slideDown();
+            $('#artworkStep3').hide();
+            $('#artworkStep4').hide();
+        }
+        if (stepNumber == 3) {
+            $('#artworkStep1').hide();
+            $('#artworkStep2').hide();
+            $('#artworkStep3').slideDown();
+            $('#artworkStep4').hide();
+        }
+        if (stepNumber == 4) {
+            $('#artworkStep1').hide();
+            $('#artworkStep2').hide();
+            $('#artworkStep3').hide();
+            $('#artworkStep4').slideDown();
+        }
+    }
+    function firstTimeOrder() {
+        $('#artworkNew').show();
+        $('#artworkExisting').hide();
+        $('#artworkButtonLeft').addClass('selected');
+        $('#artworkButtonRight').removeClass('selected');
+        artworkPreExisting = false;
+        updateBulkTotals();
+    }
+    function preExistingOrder() {
+        $('#artworkNew').hide();
+        $('#artworkExisting').show();
+        $('#artworkButtonLeft').removeClass('selected');
+        $('#artworkButtonRight').addClass('selected');
+        artworkPreExisting = true;
+        updateBulkTotals();
+    }
+</script>
+<style type="text/css">
+    .artworkStepHeader {
+        padding: 20px;
+        background: #39b91c;
+        color: #fff;
+        font-size: 20px;
+        margin-top: 20px;
+    }
+    .artworkStep {
+        margin:0 10px;
+    }
+    .artworkStepButton {
+        width: 40%;
+        float: left;
+        padding: 0 2%;
+        height: 60px;
+        border-radius: 10px 10px 0 0;
+        background: #eee;
+        font-size: 20px;
+        color: #545454;
+        line-height: 60px;
+        text-align: center;
+        cursor: pointer;
+        margin: 0% 3%;
+    }
+    .artworkStepButton.selected {
+        background: #39b91c;
+        color:#fff;
+    }
+    #uploadArtworkHolder {
+        border: 8px solid #39b91c;
+        clear:both;
+        padding:10px;
+    }
+    #artworkStep1 {
+        margin-top:10px;
+    }
+    .thread {
+        width: 60px;
+        height: 80px;
+        float: left;
+        position: relative;
+        margin: 10px;
+        text-align: center;
+        font-size: 12px;
+    }
+    .thread .threadImage img {
+        width:100%;
+    }
+    #bulkArtworkStep h2 {
+        background: #eee;
+        padding: 20px;
+    }
+    #bulkArtworkStep p {
+        margin: 10px 10px;
+    }
+    @@media only screen and (max-width: 900px) {
+        .artworkStepButton {
+            font-size: 18px;
+        }
+    }
+
+    @@media only screen and (max-width: 700px) {
+        .artworkStepButton {
+            width: 40%;
+            float: left;
+            padding: 0 2%;
+            height: 50px;
+            border-radius: 10px 10px 0 0;
+            background: #eee;
+            font-size: 20px;
+            color: #545454;
+            line-height: 20px;
+            padding-top: 10px;
+            text-align: center;
+            cursor: pointer;
+            margin: 0% 3%;
+            font-size: 18px;
+        }
+    }
+</style>
+
+<div id="bulkArtworkStep" class="centerInner" style="display:none;">
+    <div id="artworkStep1" class="artworkStep clear">
+        <div id="artworkButtonLeft" class="artworkStepButton selected" onclick="firstTimeOrder()">
+            This Is My First Time Ordering
+        </div>
+        <div id="artworkButtonRight" class="artworkStepButton" onclick="preExistingOrder()">
+            I have Ordered With This Logo Before
+        </div>
+        <div id="uploadArtworkHolder">            
+            <div>
+                <p><b>Please Upload Your Artwork</b></p>
+                <p><input type="file" id="bulkArtwork" /></p> 
+                <p><b>1 FILE MAX</b> - Additional files can be emailed after your order is placed.</p>
+            </div>
+            <div id="artworkNew">
+                <div id="artworkGuidelines">
+                    <p>Please upload an image of the artwork you would like us to convert to use on your hats.</p>
+                    <p>We will convert and digitize your artwork. You will receive mockups and stitching proofs for approval and feedback before your hats are stitched.</p>
+                    <p>Orders are submitted as standard 2D embroirdery. 3D Puff embroidery is an extra $5 per hat and is only possible on some designs and is billed separately.</p>
+                    <p style="color:red;"><i>Please keep in mind that really small details do not work well for embroidery. Very small text and details will need to be removed from some designs. <b>LESS IS MORE</b> when it comes to embroidery designs.</i></p>
+                </div>
+            </div>
+            <div id="artworkExisting" style="display:none;">
+                Please upload an image to help us locate and verify your artwork we have setup previously. We will assign your pre-existing artwork file to your order.
+            </div>
+        </div><!--/uploadArtworkHolder-->
+    </div><!--/ArtworkStep1-->
+
+    <div id="artworkStep2Header" class="artworkStepHeader clear">
+        Artwork Placement
+    </div>
+    <div id="artworkStep2" class="artworkStep">
+        <h2>Click where would you like the artwork placed on the hat.<br/>
+            <span style="font-weight:normal; font-size:12px;">Our standard sizing for Centered designs is 2.5" tall and 4.2" wide (when possible). Offset designs will be a maximum 2.5" tall and 3.2" wide. If you would like different deminsions and your artwork will work for it, please let us know in the order notes. The maximum Embroiedery field size is 6.5" wide by 2.5" tall.</span>
+        </h2>
+        <div id="placementSelect">
+            <div class="placementOption" id="left" onclick="$('#artPlacement').text('left');$('.placementOption#left').addClass('selected');$('.placementOption#right').removeClass('selected');$('.placementOption#center').removeClass('selected');">
+                <img src="~/Images/LeftPlacement.jpg" class="placementImage" />
+            </div>
+            <div class="placementOption" id="center" onclick="$('#artPlacement').text('center');$('.placementOption#left').removeClass('selected');$('.placementOption#right').removeClass('selected');$('.placementOption#center').addClass('selected');">
+                <img src="~/Images/CenterPlacement.jpg" class="placementImage" />
+            </div>
+            <div class="placementOption" id="right" onclick="$('#artPlacement').text('right');$('.placementOption#left').removeClass('selected');$('.placementOption#right').addClass('selected');$('.placementOption#center').removeClass('selected');">
+                <img src="~/Images/RightPlacement.jpg" class="placementImage" />
+            </div>
+            <span id="artPlacement" style="display:none;"></span>
+        </div>
+    </div><!--/ArtworkStep2-->
+
+    <div id="artworkStep3Header" class="artworkStepHeader clear">
+        Thread Colors
+    </div>
+    <div id="artworkStep3" class="artworkStep">
+        <h2>These are the thread colors we use:</h2>
+        <div id="threadChart">
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1800Black.jpg" /></div>
+                <div class="threadName">Black</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1801White.jpg" /></div>
+                <div class="threadName">White</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1811Silver.jpg" /></div>
+                <div class="threadName">Silver</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1502Gray.jpg" /></div>
+                <div class="threadName">Gray</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1871LightBlue.jpg" /></div>
+                <div class="threadName">Light Blue</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1593NeonBlue.jpg" /></div>
+                <div class="threadName">Neon Blue</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1934Blue.jpg" /></div>
+                <div class="threadName">Blue</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1633Purple.jpg" /></div>
+                <div class="threadName">Purple</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1701NeonGreen.jpg" /></div>
+                <div class="threadName">Neon Green</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1651Green.jpg" /></div>
+                <div class="threadName">Green</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1823NeonYellow.jpg" /></div>
+                <div class="threadName">Neon Yellow</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1824Yellow.jpg" /></div>
+                <div class="threadName">Yellow</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1965NeonOrange.jpg" /></div>
+                <div class="threadName">Neon Orange</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1772Gold.jpg" /></div>
+                <div class="threadName">Gold</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1738Tan.jpg" /></div>
+                <div class="threadName">Tan</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1857Brown.jpg" /></div>
+                <div class="threadName">Brown</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1659DarkBrown.jpg" /></div>
+                <div class="threadName">Dark Brown</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1721NeonPink.jpg" /></div>
+                <div class="threadName">Neon Pink</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1637Red.jpg" /></div>
+                <div class="threadName">Red</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1982DarkRed.jpg" /></div>
+                <div class="threadName">Dark Red</div>
+            </div>
+        </div><!--/threadchart-->
+
+        <div class="clear">
+            <h2>
+                Color changes in your design are allowed in minimum quantites of 12 hats.<br/>
+                <span style="font-weight:normal; font-size:12px;"><b>For Example:</b> 12 Black Hats Red Stitching / 12 White Hats Black Stitching</span>
+            </h2>
+        </div>
+
+        <div id="itemColorList">
+
+        </div>
+
+
+        <div class="clear">
+            <h2>
+                Please tell us any specific instructions or details about your order that you think we should know.<br />
+                <span style="font-weight:normal; font-size:12px;"><b>For Example:</b> If you ordered black hats and the text in your logo is black tell us what color stitching to use. Also, list out the colors of stitching you want on the different color hats you may have selected. (1 Color Combination per 12 hats allowed)</span>
+            </h2>
+            <div>
+                <textarea class="productDetailsTextMulti textBoxMulti" id="txtDetails" placeholder="Order Notes" rows="10"></textarea>
+            </div>
+        </div>
+
+    </div><!--/ArtworkStep3-->
+
+    <div id="artworkStep4Header" class="artworkStepHeader clear">
+        Back Stitching
+    </div>
+    <div id="artworkStep4" class="artworkStep">
+        <h2>
+            Add Back Stitching (TEXT ONLY)<br />
+            <span style="font-weight:normal; font-size:12px;">Back stitching is $5 per hat. Please add what text you want added to the back of the hats.</span>
+        </h2>
+        <div id="backStitching">
+            <div id="chkBackHolder" onclick="toggleBackStitching()"><input type="checkbox" id="chkBackStitching" onclick="toggleBackStitching()" /> Back Stitching</div>
+            <input type="text" placeholder="Back Stitching Details" id="txtBackStitching" />
+        </div>
+        <div id="rightSideStitching" class="hidden">
+            <div id="chkRightHolder" onclick="toggleRightSideStitching()"><input type="checkbox" id="chkRightSideStitching" onclick="toggleRightSideStitching()" /> Right Side Stitching</div>
+            <input type="text" placeholder="Right Side Stitching Details" id="txtRightSideStitching" />
+        </div>
+        <div id="leftSideStitching" class="hidden">
+            <div id="chkLeftHolder" onclick="toggleLeftSideStitching()"><input type="checkbox" id="chkLeftSideStitching" onclick="toggleLeftSideStitching()" /> Left Side Stitching</div>
+            <input type="text" placeholder="Left Side Stitching Details" id="txtLeftSideStitching" />
+        </div>
+    </div><!--/ArtworkStep4-->
+
+
+
+
+
+    <div id="designProcessExplained">
+
+    </div>
+</div><!--/bulkArtworkStep-->

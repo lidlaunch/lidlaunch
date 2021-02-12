@@ -13,6 +13,7 @@ using ZXing;
 using ZXing.Common;
 using System.Drawing;
 using System.Dynamic;
+using System.Configuration;
 
 namespace LidLaunchWebsite.Controllers
 {
@@ -25,6 +26,33 @@ namespace LidLaunchWebsite.Controllers
             BulkOrder bulkOrder = new BulkOrder();
             bulkOrder.PaymentCompleteGuid = Guid.NewGuid().ToString();
             return View(bulkOrder);
+        }
+        public ActionResult IntoStep()
+        {
+            dynamic model = new ExpandoObject();
+
+            //model.idVal = bulkOrderId;
+            //model.fromBulkEdit = fromBulkEdit;
+
+            return PartialView("IntoStep", model);
+        }
+        public ActionResult HatSelectStep()
+        {
+            dynamic model = new ExpandoObject();
+
+            //model.idVal = bulkOrderId;
+            //model.fromBulkEdit = fromBulkEdit;
+
+            return PartialView("HatSelectStep", model);
+        }
+        public ActionResult ArtworkStep()
+        {
+            dynamic model = new ExpandoObject();
+
+            //model.idVal = bulkOrderId;
+            //model.fromBulkEdit = fromBulkEdit;
+
+            return PartialView("ArtworkStep", model);
         }
 
         public ActionResult Payment(string id)
@@ -158,6 +186,7 @@ namespace LidLaunchWebsite.Controllers
         {
             try
             {
+                var developmentMode = Convert.ToBoolean(ConfigurationManager.AppSettings["DevelopmentMode"]);
                 var jss = new JavaScriptSerializer();
                 var cartItems = jss.Deserialize<List<PaypalItem>>(items);
                 var artworkPath = "";
@@ -249,42 +278,45 @@ namespace LidLaunchWebsite.Controllers
                         Logger.Log("Error Sending Bulk Order Email Confirmation: Bulk Order ID: " + orderId.ToString() + " EmailTo: " + email + " - Exception: " + ex.Message.ToString());
                     }
 
-                    try
+                    if (!developmentMode)
                     {
-                        //insert order into ship station
-                        ShipStationCredentials credentials = new ShipStationCredentials("a733e1314b6f4374bd12f4a32d4263b9", "bd45d90bfbae40d39f5d7e8b3966f130");
-                        ShipStationService shipService = new ShipStationService(credentials);
-                        ShipStationAccess.V2.Models.Order.ShipStationOrder order = new ShipStationAccess.V2.Models.Order.ShipStationOrder();
-                        order.OrderNumber = "BO-" + orderId.ToString();
-                        order.OrderKey = "BO-" + orderId.ToString();
-                        order.OrderDate = DateTime.Now;
-                        ShipStationAddress billAddress = new ShipStationAddress();
-                        billAddress.Name = billToName;
-                        billAddress.Phone = billToPhone;
-                        billAddress.State = billToState;
-                        billAddress.PostalCode = billToZip;
-                        billAddress.Street1 = billToAddress;
-                        billAddress.City = billToCity;
-                        billAddress.Country = "US";
-                        order.BillingAddress = billAddress;
-                        ShipStationAddress shipAddress = new ShipStationAddress();
-                        shipAddress.Name = shipToName;
-                        shipAddress.Phone = shipToPhone;
-                        shipAddress.State = shipToState;
-                        shipAddress.PostalCode = shipToZip;
-                        shipAddress.Street1 = shipToAddress;
-                        shipAddress.City = shipToCity;
-                        shipAddress.Country = "US";
-                        order.ShippingAddress = shipAddress;
-                        order.CustomerEmail = email;
-                        order.AmountPaid = Convert.ToDecimal(orderTotal);
-                        order.CustomerNotes = orderNotes;
-                        order.OrderStatus = ShipStationAccess.V2.Models.Order.ShipStationOrderStatusEnum.awaiting_shipment;
-                        shipService.UpdateOrderAsync(order);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Log("Error Importing Into Ship Station: Bulk Order ID: " + ex.Message.ToString());
+                        try
+                        {
+                            //insert order into ship station
+                            ShipStationCredentials credentials = new ShipStationCredentials("a733e1314b6f4374bd12f4a32d4263b9", "bd45d90bfbae40d39f5d7e8b3966f130");
+                            ShipStationService shipService = new ShipStationService(credentials);
+                            ShipStationAccess.V2.Models.Order.ShipStationOrder order = new ShipStationAccess.V2.Models.Order.ShipStationOrder();
+                            order.OrderNumber = "BO-" + orderId.ToString();
+                            order.OrderKey = "BO-" + orderId.ToString();
+                            order.OrderDate = DateTime.Now;
+                            ShipStationAddress billAddress = new ShipStationAddress();
+                            billAddress.Name = billToName;
+                            billAddress.Phone = billToPhone;
+                            billAddress.State = billToState;
+                            billAddress.PostalCode = billToZip;
+                            billAddress.Street1 = billToAddress;
+                            billAddress.City = billToCity;
+                            billAddress.Country = "US";
+                            order.BillingAddress = billAddress;
+                            ShipStationAddress shipAddress = new ShipStationAddress();
+                            shipAddress.Name = shipToName;
+                            shipAddress.Phone = shipToPhone;
+                            shipAddress.State = shipToState;
+                            shipAddress.PostalCode = shipToZip;
+                            shipAddress.Street1 = shipToAddress;
+                            shipAddress.City = shipToCity;
+                            shipAddress.Country = "US";
+                            order.ShippingAddress = shipAddress;
+                            order.CustomerEmail = email;
+                            order.AmountPaid = Convert.ToDecimal(orderTotal);
+                            order.CustomerNotes = orderNotes;
+                            order.OrderStatus = ShipStationAccess.V2.Models.Order.ShipStationOrderStatusEnum.awaiting_shipment;
+                            shipService.UpdateOrderAsync(order);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log("Error Importing Into Ship Station: Bulk Order ID: " + ex.Message.ToString());
+                        }
                     }
                     return orderId.ToString();
                 }

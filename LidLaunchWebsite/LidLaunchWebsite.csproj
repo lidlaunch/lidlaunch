@@ -571,6 +571,26 @@
     <Content Include="Images\shopping-cart %281%29.png" />
     <Content Include="Images\SliderOverTV.png" />
     <Content Include="Images\StartEarningHero.png" />
+    <Content Include="Images\Threads\1502Gray.jpg" />
+    <Content Include="Images\Threads\1593NeonBlue.jpg" />
+    <Content Include="Images\Threads\1633Purple.jpg" />
+    <Content Include="Images\Threads\1637Red.jpg" />
+    <Content Include="Images\Threads\1651Green.jpg" />
+    <Content Include="Images\Threads\1659DarkBrown.jpg" />
+    <Content Include="Images\Threads\1701NeonGreen.jpg" />
+    <Content Include="Images\Threads\1721NeonPink.jpg" />
+    <Content Include="Images\Threads\1738Tan.jpg" />
+    <Content Include="Images\Threads\1772Gold.jpg" />
+    <Content Include="Images\Threads\1800Black.jpg" />
+    <Content Include="Images\Threads\1801White.jpg" />
+    <Content Include="Images\Threads\1811Silver.jpg" />
+    <Content Include="Images\Threads\1823NeonYellow.jpg" />
+    <Content Include="Images\Threads\1824Yellow.jpg" />
+    <Content Include="Images\Threads\1857Brown.jpg" />
+    <Content Include="Images\Threads\1871LightBlue.jpg" />
+    <Content Include="Images\Threads\1934Blue.jpg" />
+    <Content Include="Images\Threads\1965NeonOrange.jpg" />
+    <Content Include="Images\Threads\1982DarkRed.jpg" />
     <Content Include="Images\TopImage.jpg" />
     <Content Include="Images\TopImage2.jpg" />
     <Content Include="Images\TopImage3.jpg" />
@@ -816,6 +836,9 @@
     <Content Include="Views\Dashboard\ShipBulkOrders.cshtml" />
     <Content Include="Views\Dashboard\ShipBulkOrderPopup.cshtml" />
     <Content Include="Views\Bulk\PrintPackingSlip.cshtml" />
+    <Content Include="Views\Bulk\ArtworkStep.cshtml" />
+    <Content Include="Views\Bulk\HatSelectStep.cshtml" />
+    <Content Include="Views\Bulk\IntroStep.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

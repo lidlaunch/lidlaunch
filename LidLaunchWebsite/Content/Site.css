@@ -1172,16 +1172,17 @@ input[type=text], input[type=password], select, input[type=number] {
 .productDetailsTextMulti {
     height: 100px;
     display: inline-block;
-    font-size: 22px;
+    font-size: 18px;
     color: #000;
     padding: 0;
     padding-left: 5px;
-    border: 1px solid #bebebe;
+    border: 4px solid #bebebe;
     margin: 0 auto;
     margin-top: 24px;
     display: block;
     width: 560px;
     margin: 20px 20px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #previewImageComplete {
@@ -2895,7 +2896,7 @@ input[type=text], input[type=password], select, input[type=number] {
     }
 
     #bulkArtworkStep .productDetailsTextMulti {
-        width: auto;
+        width: 90%;
     }
 
     #designUploadContent {

@@ -215,7 +215,7 @@ function processPayment() {
         files = $('#bulkArtwork')[0].files;
         file = files[0];
         orderNotes = $('#txtDetails').val();
-        if ($('#artworkPresetup').prop("checked")) {
+        if (artworkPreExisting) {
             orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
         }
         artworkPlacement = $('#artPlacement').text();

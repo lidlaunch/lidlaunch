@@ -1,5 +1,4 @@
 ﻿var currentBulkProductList = [];
-var currentTotalBulkHatsCount = 0;
 var currentTotalCost = 0;
 var currentShippingTotal = 0;
 var currentGrandTotalCost = 0;
@@ -9,6 +8,82 @@ var totalHats = 0;
 function updateBulkTotals() {
     var productList = '[';
     totalHats = 0;
+
+    var shippingPrice = 15;
+    var currentBasePrice = 15;
+    var currentFlexFitBasePrice = 15;
+    currentShippingTotal = 5;
+
+    $('.hatStyleSetQty').find('.colorQty').each(function () {
+        if (parseInt($(this).val()) > 0) {
+            totalHats += parseInt($(this).val());
+        }
+    });
+    //shipping price section
+    if (totalHats >= 1000) {
+        currentShippingTotal = 250;
+    }
+    else if (totalHats >= 750) {
+        currentShippingTotal = 200;
+    }
+    else if (totalHats >= 500) {
+        currentShippingTotal = 150;
+    }
+    else if (totalHats >= 300) {
+        currentShippingTotal = 100;
+    }
+    else if (totalHats >= 120) {
+        currentShippingTotal = 50;
+    }
+    else if (totalHats >= 96) {
+        currentShippingTotal = 45;
+    }
+    else if (totalHats >= 72) {
+        currentShippingTotal = 35;
+    }
+    else if (totalHats >= 48) {
+        currentShippingTotal = 25;
+    }
+    else if (totalHats >= 24) {
+        currentShippingTotal = 20;        
+    }
+    else if (totalHats >= 12) {
+        currentShippingTotal = 15;
+    }
+    else if (totalHats >= 6) {
+        currentShippingTotal = 10;
+    }
+
+    //hat price section
+    if (totalHats >= 1200) {
+        currentBasePrice = 10;
+        currentFlexFitBasePrice = 10;
+    }
+    else if (totalHats >= 720) {
+        currentBasePrice = 10;
+        currentFlexFitBasePrice = 11;
+    }
+    else if (totalHats >= 288) {
+        currentBasePrice = 10;   
+        currentFlexFitBasePrice = 12;
+    }
+    else if (totalHats >= 144) {
+        currentFlexFitBasePrice = 13;
+        currentBasePrice = 11;        
+    }
+    else if (totalHats >= 96) {
+        currentFlexFitBasePrice = 14;
+        currentBasePrice = 12;
+    }
+    else if (totalHats >= 48) {
+        currentBasePrice = 13;
+    }
+    else if (totalHats >= 24) {
+        currentBasePrice = 14;
+    }
+
+    currentTotalCost = 0;
+
     $('#FlexFit6277 table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
@@ -22,7 +97,7 @@ function updateBulkTotals() {
                     //    var val = parseInt($(this).val()) + (12 - (parseInt($(this).val()) % 12));
                     //    $(this).val(val);
                     //}  
-                    totalHats += parseInt($(this).val());
+                    //totalHats += parseInt($(this).val());
                     var hatName = '';
                     if (currentSizeIndex == 0) {
                         hatName = 'FlexFit 6277 - ' + hatColorText + ' - S/M';
@@ -33,7 +108,15 @@ function updateBulkTotals() {
                     if (currentSizeIndex == 2) {
                         hatName = 'FlexFit 6277 - ' + hatColorText + ' - XL/XXL';
                     }
-                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+
+                    var hatPrice = currentFlexFitBasePrice;
+                    if (hatName.includes('MULTICAM')) {
+                        hatPrice = currentFlexFitBasePrice + 2;
+                    }
+
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
+
+                    currentTotalCost += parseInt($(this).val()) * hatPrice;
                 }
                 currentSizeIndex++;
             });
@@ -51,10 +134,13 @@ function updateBulkTotals() {
                     //    var val = parseInt($(this).val()) + (12 - (parseInt($(this).val()) % 12));
                     //    $(this).val(val);
                     //}
-                    totalHats += parseInt($(this).val());
+                    //totalHats += parseInt($(this).val());
                     hatName = 'FlexFit Trucker  - ' + hatColorText + ' - OSFA';
+                    var hatPrice = currentFlexFitBasePrice;
 
-                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
+
+                    currentTotalCost += parseInt($(this).val()) * hatPrice;
                 }
             });
         });
@@ -72,7 +158,7 @@ function updateBulkTotals() {
                     //    var val = parseInt($(this).val()) + (12 - (parseInt($(this).val()) % 12));
                     //    $(this).val(val);
                     //}
-                    totalHats += parseInt($(this).val());
+                    //totalHats += parseInt($(this).val());
                     var hatName = '';
                     if (currentSizeIndex == 0) {
                         hatName = 'FlexFit Flat Bill Fitted  - ' + hatColorText + ' - S/M';
@@ -80,7 +166,11 @@ function updateBulkTotals() {
                     if (currentSizeIndex == 1) {
                         hatName = 'FlexFit Flat Bill Fitted  - ' + hatColorText + ' - L/XL';
                     }
-                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+                    var hatPrice = currentFlexFitBasePrice;
+
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
+
+                    currentTotalCost += parseInt($(this).val()) * hatPrice;
                 }
                 currentSizeIndex++;
             });
@@ -91,9 +181,14 @@ function updateBulkTotals() {
             var hatColorText = $(this).find('.colorOption').text();
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
-                    totalHats += parseInt($(this).val());
+                    //totalHats += parseInt($(this).val());
                     var hatName = 'FlexFit 110 Trucker Snapback  - ' + hatColorText + ' - OSFA';
-                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+
+                    var hatPrice = currentFlexFitBasePrice;
+
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
+
+                    currentTotalCost += parseInt($(this).val()) * hatPrice;
                 }
             });
         });
@@ -103,9 +198,18 @@ function updateBulkTotals() {
             var hatColorText = $(this).find('.colorOption').text();
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
-                    totalHats += parseInt($(this).val());
-                    var hatName = 'Yupoong Flat Bill Snapback  - ' + hatColorText + ' - OSFA';
-                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+                    //totalHats += parseInt($(this).val());
+                    var hatName = 'Yupoong Flat Bill Snapback  - ' + hatColorText + ' - OSFA';                                   
+
+                    var hatPrice = currentBasePrice;     
+
+                    if (hatName.includes('MULTICAM')) {
+                        hatPrice = currentBasePrice + 2;
+                    }
+
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
+
+                    currentTotalCost += parseInt($(this).val()) * hatPrice;
                 }
             });
         });
@@ -115,9 +219,15 @@ function updateBulkTotals() {
             var hatColorText = $(this).find('.colorOption').text();
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
-                    totalHats += parseInt($(this).val());
+                    //totalHats += parseInt($(this).val());
+                    var hatPrice = currentBasePrice;
+                    if (hatName.includes('MULTICAM')) {
+                        hatPrice = currentBasePrice + 2;
+                    }
                     var hatName = 'Yupoong Dad Cap  - ' + hatColorText + ' - OSFA';
-                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
+
+                    currentTotalCost += parseInt($(this).val()) * hatPrice;
                 }
             });
         });
@@ -127,9 +237,15 @@ function updateBulkTotals() {
             var hatColorText = $(this).find('.colorOption').text();
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
-                    totalHats += parseInt($(this).val());
+                    //totalHats += parseInt($(this).val());
+                    var hatPrice = currentBasePrice;
+                    if (hatName.includes('MULTICAM')) {
+                        hatPrice = currentBasePrice + 2;
+                    }
                     var hatName = 'Yupoong 6606 Trucker Snapback  - ' + hatColorText + ' - OSFA';
-                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
+
+                    currentTotalCost += parseInt($(this).val()) * hatPrice;
                 }
             });
         });
@@ -139,9 +255,15 @@ function updateBulkTotals() {
             var hatColorText = $(this).find('.colorOption').text();
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
-                    totalHats += parseInt($(this).val());
+                    //totalHats += parseInt($(this).val());
+                    var hatPrice = currentBasePrice;
+                    if (hatName.includes('MULTICAM')) {
+                        hatPrice = currentBasePrice + 2;
+                    }
                     var hatName = 'Yupoong 6006 Flat Bill Trucker Snapback  - ' + hatColorText + ' - OSFA';
-                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
+
+                    currentTotalCost += parseInt($(this).val()) * hatPrice;
                 }
             });
         });
@@ -151,9 +273,14 @@ function updateBulkTotals() {
             var hatColorText = $(this).find('.colorOption').text();
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
-                    totalHats += parseInt($(this).val());
+                    //totalHats += parseInt($(this).val());
                     var hatName = 'Yupoong Short Beanie  - ' + hatColorText + ' - OSFA';
-                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+
+                    var hatPrice = currentBasePrice;
+
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
+
+                    currentTotalCost += parseInt($(this).val()) * hatPrice;
                 }
             });
         });
@@ -163,9 +290,14 @@ function updateBulkTotals() {
             var hatColorText = $(this).find('.colorOption').text();
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
-                    totalHats += parseInt($(this).val());
+                    //totalHats += parseInt($(this).val());
                     var hatName = 'Yupoong Cuffed Beanie  - ' + hatColorText + ' - OSFA';
-                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+
+                    var hatPrice = currentBasePrice;
+
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
+
+                    currentTotalCost += parseInt($(this).val()) * hatPrice;
                 }
             });
         });
@@ -175,76 +307,44 @@ function updateBulkTotals() {
             var hatColorText = $(this).find('.colorOption').text();
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
-                    totalHats += parseInt($(this).val());
+                    //totalHats += parseInt($(this).val());
                     var hatName = 'Richardson 112  - ' + hatColorText + ' - OSFA';
-                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + 15.00 + ',"currency":"USD"},';
+
+                    var hatPrice = currentBasePrice;
+
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
+
+                    currentTotalCost += parseInt($(this).val()) * hatPrice;
                 }
             });
         });
     });
-    var shippingPrice = 15;
-
-    currentTotalBulkHatsCount = totalHats;
-
-    var currentPrice = 15;
-    currentShippingTotal = 5;
-
-    if (currentTotalBulkHatsCount >= 120) {
-        currentPrice = 10;
-        currentShippingTotal = 50;
-    }
-    else if (currentTotalBulkHatsCount >= 96) {
-        currentPrice = 11;
-        currentShippingTotal = 35;
-    }
-    else if (currentTotalBulkHatsCount >= 72) {
-        currentPrice = 12;
-        currentShippingTotal = 25;
-    }
-    else if (currentTotalBulkHatsCount >= 48) {
-        currentPrice = 13;
-        currentShippingTotal = 20;
-    }
-    else if (currentTotalBulkHatsCount >= 24) {
-        currentShippingTotal = 15;
-        currentPrice = 14;
-    }
-    else if (currentTotalBulkHatsCount >= 12) {
-        currentShippingTotal = 10;
-    }
-    else if (currentTotalBulkHatsCount >= 6) {
-        currentShippingTotal = 5;
-    }
-
-    currentTotalCost = currentTotalBulkHatsCount * currentPrice;
+    
 
 
 
     if ($('#chkBackStitching').prop("checked")) {
-        currentTotalCost += (5 * currentTotalBulkHatsCount);
-        productList = productList + '{"name":"Back Stitching","quantity":' + currentTotalBulkHatsCount + ',"price":"5","currency":"USD"},';
+        currentTotalCost += (5 * totalHats);
+        productList = productList + '{"name":"Back Stitching","quantity":' + totalHats + ',"price":"5","currency":"USD"},';
     }
 
     if ($('#chkLeftSideStitching').prop("checked")) {
-        currentTotalCost += (5 * currentTotalBulkHatsCount);
-        productList = productList + '{"name":"Left Side Stitching","quantity":' + currentTotalBulkHatsCount + ',"price":"5","currency":"USD"},';
+        currentTotalCost += (5 * totalHats);
+        productList = productList + '{"name":"Left Side Stitching","quantity":' + totalHats + ',"price":"5","currency":"USD"},';
     }
 
     if ($('#chkRightSideStitching').prop("checked")) {
-        currentTotalCost += (5 * currentTotalBulkHatsCount);
-        productList = productList + '{"name":"Right Side Stitching","quantity":' + currentTotalBulkHatsCount + ',"price":"5","currency":"USD"},';
+        currentTotalCost += (5 * totalHats);
+        productList = productList + '{"name":"Right Side Stitching","quantity":' + totalHats + ',"price":"5","currency":"USD"},';
     }
 
-
-    var hasArtFee = false;
-
-    if (currentTotalBulkHatsCount < 12 && $('#artworkPresetup').prop("checked") == false) {
+    if (totalHats < 12 && artworkPreExisting == false) {
         currentTotalCost += 30;
         hasArtFee = true;
         productList = productList + '{"name":"Artwork Setup/Digitizing","quantity":"1","price":"30","currency":"USD"}';
-        $('#artworkSetupFee').show();
+        $('#artworkSetupBottom').show();
     } else {
-        $('#artworkSetupFee').hide();
+        $('#artworkSetupBottom').hide();
         productList = productList.slice(0, -1);
     }
 
@@ -254,21 +354,12 @@ function updateBulkTotals() {
 
     currentBulkProductList = JSON.parse(productList);
 
-    var length = currentBulkProductList.length;
+    console.log(currentBulkProductList);
 
-    if (hasArtFee) {
-        length = currentBulkProductList.length - 1;
-    }
-
-    for (var i = 0; i < length; i++) {
-        if (currentBulkProductList[i].name != 'Back Stitching' && currentBulkProductList[i].name != 'Left Side Stitching' && currentBulkProductList[i].name != 'Right Side Stitching') {
-            currentBulkProductList[i].price = currentPrice;
-        }        
-    }
 
     $('#bottomTotal').text('$' + currentTotalCost);
-    $('#totalHatCount').text(currentTotalBulkHatsCount);
-    $('#totalHatCost').text('$' + currentTotalBulkHatsCount * currentPrice + ' @ ' + currentPrice + '/each');
+    $('#totalHatCount').text(totalHats);
+    //$('#totalHatCost').text('$' + totalHats * currentPrice + ' @ ' + currentPrice + '/each');
 
     currentGrandTotalCost = currentTotalCost + currentShippingTotal;
 
@@ -376,7 +467,7 @@ function verifyAndShowPaypal() {
     var rightSideStitchingComment = $('#txtRightSideStitching').val();
     var leftSideStitchingComment = $('#txtLeftSideStitching').val();
 
-    if ($('#artworkPresetup').prop("checked")) {
+    if (artworkPreExisting) {
         orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
     }
 
@@ -704,18 +795,6 @@ function createBulkOrderBatch() {
     });
 }
 
-function togglePresetArtwork() {
-    if ($('#artworkPresetup').prop("checked")) {
-        $('#artworkPresetup').prop("checked", false);
-        //$('#bulkArtwork').show();
-        updateBulkTotals();
-    } else {
-        $('#artworkPresetup').prop("checked", true);
-        //$('#bulkArtwork').hide();
-        updateBulkTotals();
-    }
-}
-
 function toggleBackStitching() {
     if ($('#chkBackStitching').prop("checked")) {
         $('#chkBackStitching').prop("checked", false);
@@ -864,11 +943,11 @@ function validateArt() {
     var orderNotes = $('#txtDetails').val();
     var artPlacement = $('#artPlacement').text();
 
-    if ($('#artworkPresetup').prop("checked")) {
+    if (artworkPreExisting) {
         orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
     }
 
-    if ((files.length > 0 || $('#artworkPresetup').prop("checked")) && artPlacement != "") {
+    if ((files.length > 0 || artworkPreExisting) && artPlacement != "") {
         return true;
     } else {
         displayPopupNotification('Please upload your artwork if it is not already setup and select a placement location.', 'error', false);
