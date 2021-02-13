@@ -313,6 +313,8 @@
     <Content Include="Images\Examples1.jpg" />
     <Content Include="Images\Examples\Example1.jpg" />
     <Content Include="Images\Examples\Example10.jpg" />
+    <Content Include="Images\Examples\Example11.jpg" />
+    <Content Include="Images\Examples\Example12.jpg" />
     <Content Include="Images\Examples\Example2.jpg" />
     <Content Include="Images\Examples\Example3.jpg" />
     <Content Include="Images\Examples\Example4.jpg" />
@@ -580,7 +582,9 @@
     <Content Include="Images\Threads\1701NeonGreen.jpg" />
     <Content Include="Images\Threads\1721NeonPink.jpg" />
     <Content Include="Images\Threads\1738Tan.jpg" />
+    <Content Include="Images\Threads\1742Navy.jpg" />
     <Content Include="Images\Threads\1772Gold.jpg" />
+    <Content Include="Images\Threads\1795OliveGreen.jpg" />
     <Content Include="Images\Threads\1800Black.jpg" />
     <Content Include="Images\Threads\1801White.jpg" />
     <Content Include="Images\Threads\1811Silver.jpg" />

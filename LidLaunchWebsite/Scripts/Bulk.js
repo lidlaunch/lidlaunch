@@ -8,11 +8,33 @@ var totalHats = 0;
 function updateBulkTotals() {
     var productList = '[';
     totalHats = 0;
+    currentTotalCost = 0;
 
-    var shippingPrice = 15;
-    var currentBasePrice = 15;
-    var currentFlexFitBasePrice = 15;
+    var currentFlexFit6277BasePrice = 15;
+    var currentFlexFit6511BasePrice = 15;
+    var currentFlexFit110BasePrice = 15;
+    var currentFlexFitFlatBillBasePrice = 15;
+    var currentYupoong6089BasePrice = 15;
+    var currentYupoongDadCapBasePrice = 15;
+    var currentYupoong6606BasePrice = 15;
+    var currentYupoong6006BasePrice = 15;
+    var currentShortBeanieBasePrice = 15;
+    var currentCuffedBeanieBasePrice = 15;
+    var currentRichardson112BasePrice = 15;
+    
     currentShippingTotal = 5;
+
+    var totalFlexFit6277Hats = 0;
+    var totalFlexFit6511Hats = 0;
+    var totalFlexFit110Hats = 0;
+    var totalFlexFitFlatBillHats = 0;
+    var totalYupoong6089Hats = 0;
+    var totalYupoongDadCapHats = 0;
+    var totalYupoong6606Hats = 0;
+    var totalYupoong6006Hats = 0;
+    var totalShortBeanies = 0;
+    var totalCuffedBeanies = 0;
+    var totalRichardson112Hats = 0;
 
     $('.hatStyleSetQty').find('.colorQty').each(function () {
         if (parseInt($(this).val()) > 0) {
@@ -54,35 +76,34 @@ function updateBulkTotals() {
         currentShippingTotal = 10;
     }
 
-    //hat price section
-    if (totalHats >= 1200) {
-        currentBasePrice = 10;
-        currentFlexFitBasePrice = 10;
-    }
-    else if (totalHats >= 720) {
-        currentBasePrice = 10;
-        currentFlexFitBasePrice = 11;
-    }
-    else if (totalHats >= 288) {
-        currentBasePrice = 10;   
-        currentFlexFitBasePrice = 12;
-    }
-    else if (totalHats >= 144) {
-        currentFlexFitBasePrice = 13;
-        currentBasePrice = 11;        
-    }
-    else if (totalHats >= 96) {
-        currentFlexFitBasePrice = 14;
-        currentBasePrice = 12;
-    }
-    else if (totalHats >= 48) {
-        currentBasePrice = 13;
-    }
-    else if (totalHats >= 24) {
-        currentBasePrice = 14;
-    }
+    
 
-    currentTotalCost = 0;
+
+    $('#FlexFit6277 table').each(function () {
+        $(this).find('tr').each(function () {
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalFlexFit6277Hats += parseInt($(this).val());
+                }
+            });
+        });
+    });
+
+    if (totalFlexFit6277Hats >= 432) {
+        currentFlexFit6277BasePrice = 10;
+    }
+    else if (totalFlexFit6277Hats >= 288) {
+        currentFlexFit6277BasePrice = 11;
+    }
+    else if (totalFlexFit6277Hats >= 144) {
+        currentFlexFit6277BasePrice = 12;
+    }
+    else if (totalFlexFit6277Hats >= 96) {
+        currentFlexFit6277BasePrice = 13;
+    }
+    else if (totalFlexFit6277Hats >= 48) {
+        currentFlexFit6277BasePrice = 14;
+    }
 
     $('#FlexFit6277 table').each(function () {
         $(this).find('tr').each(function () {
@@ -109,9 +130,9 @@ function updateBulkTotals() {
                         hatName = 'FlexFit 6277 - ' + hatColorText + ' - XL/XXL';
                     }
 
-                    var hatPrice = currentFlexFitBasePrice;
+                    var hatPrice = currentFlexFit6277BasePrice;
                     if (hatName.includes('MULTICAM')) {
-                        hatPrice = currentFlexFitBasePrice + 2;
+                        hatPrice = currentFlexFit6277BasePrice + 2;
                     }
 
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
@@ -122,6 +143,33 @@ function updateBulkTotals() {
             });
         });
     });
+
+    $('#FlexFitTrucker table').each(function () {
+        $(this).find('tr').each(function () {
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalFlexFit6511Hats += parseInt($(this).val());
+                }
+            });
+        });
+    });
+
+    if (totalFlexFit6511Hats >= 432) {
+        currentFlexFit6511BasePrice = 10;
+    }
+    else if (totalFlexFit6511Hats >= 288) {
+        currentFlexFit6511BasePrice = 11;
+    }
+    else if (totalFlexFit6511Hats >= 144) {
+        currentFlexFit6511BasePrice = 12;
+    }
+    else if (totalFlexFit6511Hats >= 96) {
+        currentFlexFit6511BasePrice = 13;
+    }
+    else if (totalFlexFit6511Hats >= 48) {
+        currentFlexFit6511BasePrice = 14;
+    }
+
     $('#FlexFitTrucker table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
@@ -136,7 +184,7 @@ function updateBulkTotals() {
                     //}
                     //totalHats += parseInt($(this).val());
                     hatName = 'FlexFit Trucker  - ' + hatColorText + ' - OSFA';
-                    var hatPrice = currentFlexFitBasePrice;
+                    var hatPrice = currentFlexFit6511BasePrice;
 
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
 
@@ -145,6 +193,33 @@ function updateBulkTotals() {
             });
         });
     });
+
+    $('#FlexFit210 table').each(function () {
+        $(this).find('tr').each(function () {
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalFlexFitFlatBillHats += parseInt($(this).val());
+                }
+            });
+        });
+    });
+
+    if (totalFlexFitFlatBillHats >= 432) {
+        currentFlexFitFlatBillBasePrice = 10;
+    }
+    else if (totalFlexFitFlatBillHats >= 288) {
+        currentFlexFitFlatBillBasePrice = 11;
+    }
+    else if (totalFlexFitFlatBillHats >= 144) {
+        currentFlexFitFlatBillBasePrice = 12;
+    }
+    else if (totalFlexFitFlatBillHats >= 96) {
+        currentFlexFitFlatBillBasePrice = 13;
+    }
+    else if (totalFlexFitFlatBillHats >= 48) {
+        currentFlexFitFlatBillBasePrice = 14;
+    }
+
     $('#FlexFit210 table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
@@ -166,7 +241,7 @@ function updateBulkTotals() {
                     if (currentSizeIndex == 1) {
                         hatName = 'FlexFit Flat Bill Fitted  - ' + hatColorText + ' - L/XL';
                     }
-                    var hatPrice = currentFlexFitBasePrice;
+                    var hatPrice = currentFlexFitFlatBillBasePrice;
 
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
 
@@ -176,6 +251,33 @@ function updateBulkTotals() {
             });
         });
     });
+
+    $('#FlexFit110 table').each(function () {
+        $(this).find('tr').each(function () {
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalFlexFit110Hats += parseInt($(this).val());
+                }
+            });
+        });
+    });
+
+    if (totalFlexFit110Hats >= 432) {
+        currentFlexFit110BasePrice = 10;
+    }
+    else if (totalFlexFit110Hats >= 288) {
+        currentFlexFit110BasePrice = 11;
+    }
+    else if (totalFlexFit110Hats >= 144) {
+        currentFlexFit110BasePrice = 12;
+    }
+    else if (totalFlexFit110Hats >= 96) {
+        currentFlexFit110BasePrice = 13;
+    }
+    else if (totalFlexFit110Hats >= 48) {
+        currentFlexFit110BasePrice = 14;
+    }
+
     $('#FlexFit110 table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
@@ -184,7 +286,7 @@ function updateBulkTotals() {
                     //totalHats += parseInt($(this).val());
                     var hatName = 'FlexFit 110 Trucker Snapback  - ' + hatColorText + ' - OSFA';
 
-                    var hatPrice = currentFlexFitBasePrice;
+                    var hatPrice = currentFlexFit110BasePrice;
 
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
 
@@ -193,6 +295,33 @@ function updateBulkTotals() {
             });
         });
     });
+
+    $('#6089FlatbillSnapback table').each(function () {
+        $(this).find('tr').each(function () {
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalYupoong6089Hats += parseInt($(this).val());
+                }
+            });
+        });
+    });
+
+    if (totalYupoong6089Hats >= 288) {
+        currentYupoong6089BasePrice = 10;
+    }
+    else if (totalYupoong6089Hats >= 144) {
+        currentYupoong6089BasePrice = 11;
+    }
+    else if (totalYupoong6089Hats >= 96) {
+        currentYupoong6089BasePrice = 12;
+    }
+    else if (totalYupoong6089Hats >= 48) {
+        currentYupoong6089BasePrice = 13;
+    }
+    else if (totalYupoong6089Hats >= 24) {
+        currentYupoong6089BasePrice = 14;
+    }
+
     $('#6089FlatbillSnapback table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
@@ -201,10 +330,10 @@ function updateBulkTotals() {
                     //totalHats += parseInt($(this).val());
                     var hatName = 'Yupoong Flat Bill Snapback  - ' + hatColorText + ' - OSFA';                                   
 
-                    var hatPrice = currentBasePrice;     
+                    var hatPrice = currentYupoong6089BasePrice;     
 
                     if (hatName.includes('MULTICAM')) {
-                        hatPrice = currentBasePrice + 2;
+                        hatPrice = currentYupoong6089BasePrice + 2;
                     }
 
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
@@ -214,17 +343,45 @@ function updateBulkTotals() {
             });
         });
     });
+
+    $('#DadCap table').each(function () {
+        $(this).find('tr').each(function () {
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalYupoongDadCapHats += parseInt($(this).val());
+                }
+            });
+        });
+    });
+
+    if (totalYupoongDadCapHats >= 288) {
+        currentYupoongDadCapBasePrice = 10;
+    }
+    else if (totalYupoongDadCapHats >= 144) {
+        currentYupoongDadCapBasePrice = 11;
+    }
+    else if (totalYupoongDadCapHats >= 96) {
+        currentYupoongDadCapBasePrice = 12;
+    }
+    else if (totalYupoongDadCapHats >= 48) {
+        currentYupoongDadCapBasePrice = 13;
+    }
+    else if (totalYupoongDadCapHats >= 24) {
+        currentYupoongDadCapBasePrice = 14;
+    }
+
     $('#DadCap table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
                     //totalHats += parseInt($(this).val());
-                    var hatPrice = currentBasePrice;
-                    if (hatName.includes('MULTICAM')) {
-                        hatPrice = currentBasePrice + 2;
-                    }
+                    var hatPrice = currentYupoongDadCapBasePrice;
                     var hatName = 'Yupoong Dad Cap  - ' + hatColorText + ' - OSFA';
+                    if (hatName.includes('MULTICAM')) {
+                        hatPrice = currentYupoongDadCapBasePrice + 2;
+                    }
+                    
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
 
                     currentTotalCost += parseInt($(this).val()) * hatPrice;
@@ -232,17 +389,45 @@ function updateBulkTotals() {
             });
         });
     });
+
+    $('#6606TruckerSnapback table').each(function () {
+        $(this).find('tr').each(function () {
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalYupoong6606Hats += parseInt($(this).val());
+                }
+            });
+        });
+    });
+
+    if (totalYupoong6606Hats >= 288) {
+        currentYupoong6606BasePrice = 10;
+    }
+    else if (totalYupoong6606Hats >= 144) {
+        currentYupoong6606BasePrice = 11;
+    }
+    else if (totalYupoong6606Hats >= 96) {
+        currentYupoong6606BasePrice = 12;
+    }
+    else if (totalYupoong6606Hats >= 48) {
+        currentYupoong6606BasePrice = 13;
+    }
+    else if (totalYupoong6606Hats >= 24) {
+        currentYupoong6606BasePrice = 14;
+    }
+
     $('#6606TruckerSnapback table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
                     //totalHats += parseInt($(this).val());
-                    var hatPrice = currentBasePrice;
-                    if (hatName.includes('MULTICAM')) {
-                        hatPrice = currentBasePrice + 2;
-                    }
+                    var hatPrice = currentYupoong6606BasePrice;
                     var hatName = 'Yupoong 6606 Trucker Snapback  - ' + hatColorText + ' - OSFA';
+                    if (hatName.includes('MULTICAM')) {
+                        hatPrice = currentYupoong6606BasePrice + 2;
+                    }
+                    
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
 
                     currentTotalCost += parseInt($(this).val()) * hatPrice;
@@ -250,17 +435,45 @@ function updateBulkTotals() {
             });
         });
     });
+
+    $('#6006 table').each(function () {
+        $(this).find('tr').each(function () {
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalYupoong6006Hats += parseInt($(this).val());
+                }
+            });
+        });
+    });
+
+    if (totalYupoong6006Hats >= 288) {
+        currentYupoong6006BasePrice = 10;
+    }
+    else if (totalYupoong6006Hats >= 144) {
+        currentYupoong6006BasePrice = 11;
+    }
+    else if (totalYupoong6006Hats >= 96) {
+        currentYupoong6006BasePrice = 12;
+    }
+    else if (totalYupoong6006Hats >= 48) {
+        currentYupoong6006BasePrice = 13;
+    }
+    else if (totalYupoong6006Hats >= 24) {
+        currentYupoong6006BasePrice = 14;
+    }
+
     $('#6006 table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
             $(this).find('.colorQty').each(function () {
                 if (parseInt($(this).val()) > 0) {
                     //totalHats += parseInt($(this).val());
-                    var hatPrice = currentBasePrice;
-                    if (hatName.includes('MULTICAM')) {
-                        hatPrice = currentBasePrice + 2;
-                    }
+                    var hatPrice = currentYupoong6006BasePrice;
                     var hatName = 'Yupoong 6006 Flat Bill Trucker Snapback  - ' + hatColorText + ' - OSFA';
+                    if (hatName.includes('MULTICAM')) {
+                        hatPrice = currentYupoong6006BasePrice + 2;
+                    }
+                    
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
 
                     currentTotalCost += parseInt($(this).val()) * hatPrice;
@@ -268,6 +481,33 @@ function updateBulkTotals() {
             });
         });
     });
+
+    $('#ShortBeanies table').each(function () {
+        $(this).find('tr').each(function () {
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalShortBeanies += parseInt($(this).val());
+                }
+            });
+        });
+    });
+
+    if (totalShortBeanies >= 144) {
+        currentShortBeanieBasePrice = 10;
+    }
+    else if (totalShortBeanies >= 96) {
+        currentShortBeanieBasePrice = 11;
+    }
+    else if (totalShortBeanies >= 48) {
+        currentShortBeanieBasePrice = 12;
+    }
+    else if (totalShortBeanies >= 24) {
+        currentShortBeanieBasePrice = 13;
+    }
+    else if (totalShortBeanies >= 12) {
+        currentShortBeanieBasePrice = 14;
+    }
+
     $('#ShortBeanies table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
@@ -276,7 +516,7 @@ function updateBulkTotals() {
                     //totalHats += parseInt($(this).val());
                     var hatName = 'Yupoong Short Beanie  - ' + hatColorText + ' - OSFA';
 
-                    var hatPrice = currentBasePrice;
+                    var hatPrice = currentShortBeanieBasePrice;
 
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
 
@@ -285,6 +525,33 @@ function updateBulkTotals() {
             });
         });
     });
+
+    $('#CuffedBeanies table').each(function () {
+        $(this).find('tr').each(function () {
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalCuffedBeanies += parseInt($(this).val());
+                }
+            });
+        });
+    });
+
+    if (totalCuffedBeanies >= 144) {
+        currentCuffedBeanieBasePrice = 10;
+    }
+    else if (totalCuffedBeanies >= 96) {
+        currentCuffedBeanieBasePrice = 11;
+    }
+    else if (totalCuffedBeanies >= 48) {
+        currentCuffedBeanieBasePrice = 12;
+    }
+    else if (totalCuffedBeanies >= 24) {
+        currentCuffedBeanieBasePrice = 13;
+    }
+    else if (totalCuffedBeanies >= 12) {
+        currentCuffedBeanieBasePrice = 14;
+    }
+
     $('#CuffedBeanies table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
@@ -293,7 +560,7 @@ function updateBulkTotals() {
                     //totalHats += parseInt($(this).val());
                     var hatName = 'Yupoong Cuffed Beanie  - ' + hatColorText + ' - OSFA';
 
-                    var hatPrice = currentBasePrice;
+                    var hatPrice = currentCuffedBeanieBasePrice;
 
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
 
@@ -302,6 +569,33 @@ function updateBulkTotals() {
             });
         });
     });
+
+    $('#Richardson112 table').each(function () {
+        $(this).find('tr').each(function () {
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalRichardson112Hats += parseInt($(this).val());
+                }
+            });
+        });
+    });
+
+    if (totalRichardson112Hats >= 288) {
+        currentRichardson112BasePrice = 10;
+    }
+    else if (totalRichardson112Hats >= 144) {
+        currentRichardson112BasePrice = 11;
+    }
+    else if (totalRichardson112Hats >= 96) {
+        currentRichardson112BasePrice = 12;
+    }
+    else if (totalRichardson112Hats >= 48) {
+        currentRichardson112BasePrice = 13;
+    }
+    else if (totalRichardson112Hats >= 24) {
+        currentRichardson112BasePrice = 14;
+    }
+
     $('#Richardson112 table').each(function () {
         $(this).find('tr').each(function () {
             var hatColorText = $(this).find('.colorOption').text();
@@ -310,7 +604,7 @@ function updateBulkTotals() {
                     //totalHats += parseInt($(this).val());
                     var hatName = 'Richardson 112  - ' + hatColorText + ' - OSFA';
 
-                    var hatPrice = currentBasePrice;
+                    var hatPrice = currentRichardson112BasePrice;
 
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
 
@@ -560,7 +854,7 @@ function verifyAndShowPaypal() {
             }
         });
     } else {
-        displayPopupNotification('Use Google Chrome browser or Firefox!', 'error', false);
+        displayPopupNotification('Use Google Chrome or Firefox!', 'error', false);
     }
 
 }
@@ -588,7 +882,6 @@ function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, p
                 //do nothing
                 displayPopupNotification('error.', 'error', false);
             } else {
-                hideLoading();
                 if (bulkOrderBatchId != '' && bulkOrderBatchId != '0') {
                     alert('show the bulk order batch screen for batch id= ' + parentBulkOrderBatchId);
                 } else {                    
@@ -623,7 +916,6 @@ function saveNote(noteType, idVal, parentBulkOrderId, customerAdded, shipping) {
                 //do nothing
                 displayPopupNotification('error.', 'error', false);
             } else {
-                hideLoading();
                 if (shipping) {
                     showBulkOrderShip(parentBulkOrderId);
                 } else {
@@ -656,7 +948,6 @@ function InternallyApproveBulkOrder(id, approve) {
             } else {
                 //set the url for the file link and show the link 
                 //reload bulk order window   
-                hideLoading();
                 showBulkOrderDetailsPopup(id);
             }
         },
@@ -686,7 +977,6 @@ function internallyApproveDigitizing(id, bulkOrderId) {
             } else {
                 //set the url for the file link and show the link 
                 //reload bulk order window   
-                hideLoading();
                 showBulkOrderDetailsPopup(bulkOrderId);
             }
         },
@@ -947,16 +1237,18 @@ function validateArt() {
         orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
     }
 
-    if ((files.length > 0 || artworkPreExisting) && artPlacement != "") {
+    //if ((files.length > 0 || artworkPreExisting) && artPlacement != "") {
+    if (artPlacement != "") {
         return true;
     } else {
-        displayPopupNotification('Please upload your artwork if it is not already setup and select a placement location.', 'error', false);
+        displayPopupNotification('Select a placement location by clicking on the placement you would like.', 'error', false);
         return false;
     }
 
 }
 
 function showBulkOrderDetailsPopup(bulkOrderId) {
+    showLoading();
     $('#popUpHolder').load(url, { bulkOrderId: bulkOrderId });
 }
 
@@ -982,7 +1274,6 @@ function setBulkOrderAsShipped(bulkOrderId, shipping) {
             } else {
                 //set the url for the file link and show the link 
                 //reload bulk order window   
-                hideLoading();
                 if (shipping) {
                     showBulkOrderShip(bulkOrderId);
                 } else {
@@ -1047,7 +1338,6 @@ function setBulkDesign(designId) {
             } else {
                 //set the url for the file link and show the link 
                 //reload bulk order window   
-                hideLoading();
                 showBulkOrderDetailsPopup(bulkOrderId);
             }
         },
@@ -1079,7 +1369,6 @@ function SaveAdminReview(bulkOrderId, fromBulkPopup) {
             } else {
                 //set the url for the file link and show the link 
                 //reload bulk order window   
-                hideLoading();
                 if (fromBulkPopup) {
                     showBulkOrderDetailsPopup(bulkOrderId);
                 } else {
@@ -1111,7 +1400,6 @@ function UpdateAdminReviewFinished(bulkOrderId, fromBulkPopup) {
             } else {
                 //set the url for the file link and show the link 
                 //reload bulk order window   
-                hideLoading();
                 if (fromBulkPopup) {
                     showBulkOrderDetailsPopup(bulkOrderId);
                 } 

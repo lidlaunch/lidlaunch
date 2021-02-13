@@ -2,81 +2,125 @@
 @{
     ViewBag.Title = "SetBulkDesign";
 }
+<style type="text/css">
+    #uploadDesignInner {
+        width:400px;
+        margin:0 auto;
+    }
+</style>
 <div id="uploadBulkDesignPopup">
-    <div id="uploadBulkDesignPopupInner">
-        <span onclick="$('#uploadBulkDesignPopup').hide();" class="closeButton" style="position:absolute; top:5px;right:5px;">X</span>
-        <select id="bulkDesignName">
-            @if (Model.Name == "Front")
-            {
-                <option value="Front" selected>Front</option>
-            }
-            else
-            {
-                <option value="Front">Front</option>
-            }
-            @if (Model.Name == "AltFront")
-            {
-                <option value="AltFront" selected>Alternate Front</option>
-            }
-            else
-            {
-                <option value="AltFront">Alternate Front</option>
-            }
-            @if (Model.Name == "LeftSide")
-            {
-                <option value="LeftSide" selected>Left Side</option>
-            }
-            else
-            {
-                <option value="LeftSide">Left Side</option>
-            }
-            @if (Model.Name == "RightSide")
-            {
-                <option value="RightSide" selected>Right Side</option>
-            }
-            else
-            {
-                <option value="RightSide">Right Side</option>
-            }
-            @if (Model.Name == "Back")
-            {
-                <option value="Back" selected>Back</option>
-            }
-            else
-            {
-                <option value="Back">Back</option>
-            }
-            @if (Model.Name == "Beanie")
-            {
-                <option value="Beanie" selected>Beanie</option>
-            }
-            else
-            {
-                <option value="Beanie">Beanie</option>
-            }
-        </select>
-        <br />
-        ART SOURCE: <input type="file" id="fileArtSource" value="@Model.ArtSource" /><img src="/Images/DesignImages/Digitizing/Preview/@Model.ArtSource" style="max-height:100px; max-width:100px;" />
-        <br />
-        PNG PREVIEW: <input type="file" id="filePngPreview" value="@Model.DigitizedPreview" /><img src="/Images/DesignImages/Digitizing/Preview/@Model.DigitizedPreview" style="max-height:100px; max-width:100px;" />
-        <br />
-        DST: <input type="file" id="fileDst" value="@Model.DigitizedFile" />
-        <br />
-        PDF: <input type="file" id="filePdf" value="@Model.DigitizedProductionSheet" />
-        <br />
-        EMB: <input type="file" id="fileEmb" value="@Model.EMBFile" />
-        <br />
-
-        @if (Model.Id == 0)
-        {
-            <div><input type="button" value="Save Design" class="smallButton" onclick="saveBulkDesign()" /></div>
-        }
-        @if (Model.Id > 0)
-        {
-            <div><input type="button" value="Update Design" class="smallButton" onclick="updateBulkDesign(@Model.Id)" /></div>
-        }
-        <div><input type="button" value="Cancel" class="smallButton" onclick="showBulkOrderDetailsPopup($('#BulkOrderId').text());" /></div>
-
+    <div id="uploadBulkDesignPopupInner">        
+        <div id="uploadDesignInner">
+            <table>
+                <tr>
+                    <td>PLACEMENT:</td>
+                    <td>
+                        <select id="bulkDesignName">
+                            @if (Model.Name == "Front")
+                            {
+                                <option value="Front" selected>Front</option>
+                            }
+                            else
+                            {
+                                <option value="Front">Front</option>
+                            }
+                            @if (Model.Name == "AltFront")
+                            {
+                                <option value="AltFront" selected>Alternate Front</option>
+                            }
+                            else
+                            {
+                                <option value="AltFront">Alternate Front</option>
+                            }
+                            @if (Model.Name == "LeftSide")
+                            {
+                                <option value="LeftSide" selected>Left Side</option>
+                            }
+                            else
+                            {
+                                <option value="LeftSide">Left Side</option>
+                            }
+                            @if (Model.Name == "RightSide")
+                            {
+                                <option value="RightSide" selected>Right Side</option>
+                            }
+                            else
+                            {
+                                <option value="RightSide">Right Side</option>
+                            }
+                            @if (Model.Name == "Back")
+                            {
+                                <option value="Back" selected>Back</option>
+                            }
+                            else
+                            {
+                                <option value="Back">Back</option>
+                            }
+                            @if (Model.Name == "Beanie")
+                            {
+                                <option value="Beanie" selected>Beanie</option>
+                            }
+                            else
+                            {
+                                <option value="Beanie">Beanie</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        PNG PREVIEW:
+                    </td>
+                    <td>
+                        <input type="file" id="filePngPreview" value="@Model.DigitizedPreview" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        DST:
+                    </td>
+                    <td>
+                        <input type="file" id="fileDst" value="@Model.DigitizedFile" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>PDF:</td>
+                    <td>
+                        <input type="file" id="filePdf" value="@Model.DigitizedProductionSheet" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>EMB:</td>
+                    <td>
+                        <input type="file" id="fileEmb" value="@Model.EMBFile" />
+                    </td>
+                </tr>
+                @if (Model.Id > 0 && Model.InternallyApproved)
+                {
+                    <tr>
+                        <td colspan="2"><input type="checkbox" id="chkEmailCustomer" /> Notify Customer</td>
+                    </tr>
+                }
+                <tr>
+                    <td>
+                        @if (Model.Id == 0)
+                        {
+                            <div><input type="button" value="Save Design" class="smallButton" onclick="saveBulkDesign()" /></div>
+                        }
+                        @if (Model.Id > 0)
+                        {
+                            <div><input type="button" value="Update Design" class="smallButton" onclick="updateBulkDesign(@Model.Id)" /></div>
+                        }
+                    </td>
+                    <td>
+                        <input type="button" value="Cancel" class="smallButton" onclick="showBulkOrderDetailsPopup($('#BulkOrderId').text());" />
+                    </td>
+                </tr>
+            </table>
+            <div class="hidden">
+                ART SOURCE: <input type="file" id="fileArtSource" value="@Model.ArtSource" /><img src="/Images/DesignImages/Digitizing/Preview/@Model.ArtSource" style="max-height:100px; max-width:100px;" />
+            </div>
+        </div><!--/uploadDesignInner-->
     </div>
 </div>
 
@@ -90,6 +134,7 @@
         var dst = $('#fileDst')[0].files;
         var pdf = $('#filePdf')[0].files;
         var emb = $('#fileEmb')[0].files;
+        var notifyCustomer = $('#chkEmailCustomer').prop("checked");
 
         if (pngPreview.length > 0 && dst.length > 0 && pdf.length > 0 && emb.length > 0) {
             var data = new FormData();
@@ -100,6 +145,7 @@
             data.append("emb", emb[0]);
             data.append("designName", designName);
             data.append("bulkOrderId", bulkOrderId);
+            data.append("notifyCustomer", notifyCustomer);
             showLoading();
             $.ajax({
                 type: "POST",

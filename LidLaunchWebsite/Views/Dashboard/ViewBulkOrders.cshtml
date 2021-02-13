@@ -13,6 +13,11 @@
         });
     });
 </script>
+<style type="text/css">
+    iframe#launcher {
+        display:none;
+    }
+</style>
 <span onclick="createBulkOrderBatch()" class="left" style="margin:10px;"><input type="button" value="Create Bulk Batch" class="smallButton" /></span>
 <span onclick="$('#popUpHolder').load(bulkBatchesUrl);" class="left" style="margin:10px;"><input type="button" value="View Bulk Batches" class="smallButton" /></span>
 <span onclick="window.location = '/Dashboard/ViewBulkOrders';" class="left" style="margin:10px;"><input type="button" value="Show All" class="smallButton" /></span>

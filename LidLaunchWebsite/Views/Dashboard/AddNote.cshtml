@@ -4,8 +4,8 @@
 }
 <div id="notePopUp">
     <div id="notePopupInner">
-        <span onclick="$('#notePopUp').hide();" class="closeButton" style="position:absolute; top:5px;right:5px;">X</span>
-        <input id="noteText" type="text" placeholder="add note..." />
+        <span onclick="$('#notePopUp').hide();" class="closeButton" style="display:block; top:5px;right:5px; float:right;">X</span>
+        <textarea id="noteText" type="text" placeholder="add note..." style="width:90%; height:135px;"></textarea>
         <div id="saveNote"><input type="button" value="Save Note" class="smallButton" onclick="saveNote('@Model.noteType', '@Model.idVal', '@Model.parentBulkOrderId', '@Model.customerAdded', '@Model.shipping');" /></div>
     </div>
 </div>

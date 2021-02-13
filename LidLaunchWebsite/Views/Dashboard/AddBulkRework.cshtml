@@ -1,9 +1,9 @@
 ﻿<div id="addBulkReworkPopup">
-    <div id="addBulkReworkPopupInner">
-        <span onclick="$('#addBulkReworkPopup').hide();" class="closeButton" style="position:absolute; top:5px;right:5px;">X</span>
+    <div id="addBulkReworkPopupInner" style="padding:20px;">
+        <span onclick="$('#addBulkReworkPopup').hide();" class="closeButton" style="display:block; top:5px;right:5px; float:right;">X</span>
         <div><span id="bulkOrderBlankName">@Model.bulkOrderBlankName</span><input type="text" id="bulkReworkQuantity" value="@Model.quantity"/></div>     
-        <div><input id="bulkReworkNote" type="text" placeholder="note..." value="@Model.note"/></div>
-        <div>
+        <div style="margin:20px;"><input id="bulkReworkNote" type="text" placeholder="note..." value="@Model.note"/></div>
+        <div style="margin:20px;">
             <select id="selReworkStatus">
                 <option value="In Progress">In Progress</option>
                 <option value="Complete">Complete</option>

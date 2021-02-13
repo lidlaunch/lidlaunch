@@ -2,26 +2,33 @@
 @{
     ViewBag.Title = "BulkOrderDetailsPopup";
 }
-
+<script type="text/javascript">
+    hideLoading();
+</script>
+<style type="text/css">
+    #bulkBottomBar {
+        height: 80px;
+        display: block;
+        position: fixed;
+        width: 1400px;
+        top: 840px;
+        background: #fff;
+        left: -700px;
+        margin-left: 50%;
+        border-top: 5px solid #000;
+        padding: 10px;
+    }
+    .bottomBarLink {
+        float:left;
+        height:100px;
+        line-height:100px;
+        vertical-align:middle;
+        margin:0 20px;
+    }
+</style>
 <div id="bulkOrderDetailsPopup">
     <div id="bulkOrderDetailsPopupContent">
         <div id="TopInfoBar">
-            <div id="barcode">
-                <div class="left"><img src="~/Images/Barcodes/@Model.BarcodeImage" /></div>
-                <div class="right">                                        
-                    @if (Model.ReadyForProduction)
-                    {
-                        <img src="~/Images/InternallyApproved.png" style="max-height:100px;max-width:100px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.Id, false);" />
-                    }
-                    else
-                    {
-                        <img src="~/Images/NotInternallyApproved.png" style="max-height:100px;max-width:100px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.Id, true);" />
-                    }
-                </div>
-                <div class="right">
-                    <img src="~/Images/AdminReview.png" style="max-height:100px;max-width:100px; cursor:pointer;" onclick="$('#adminReviewHolder').load(adminReviewUrl, { bulkOrderId: @Model.Id, fromBulkEdit: true });" />
-                </div>
-            </div>
             <div class="clear">
                 <div id="BulkOrderId">@Model.Id</div>
                 <div id="BulkOrderDate">Payment Date: @Model.PaymentDate<br />Shipping Date: @Model.ProjectedShipDateShort - @Model.ProjectedShipDateLong <span onclick="$('#bulkOrderDetailsPopup').hide();" class="closeButton">X</span></div>
@@ -320,18 +327,40 @@
                     }
                 </tbody>
             </table>
-        </div>
-        <input type="button" class="smallButton" value="Edit Bulk Order" onclick="$('#bulkOrderEditHolder').load(bulkOrderEditUrl, { bulkOrderId: @Model.Id });" />
-        @if (!Model.ArtworkEmailSent && Model.lstDesigns.Any(d => d.ArtSource == ""))
-        {
-            <input type="button" class="smallButton" value="Send Artwork Email" onclick="sendArtworkEmail('@Model.Id','@Model.CustomerEmail');" />
-        }
+        </div>        
+        
         <div id="noteHolder"></div>
         <div id="bulkDesignSelectHolder"></div>
         <div id="bulkReworkHolder"></div>
         <div id="bulkOrderEditHolder"></div>
         <div id="uploadDesignHolder"></div>
         <div id="adminReviewHolder"></div>
+
+
+        <div id="bulkBottomBar">
+            <div class="bottomBarLink">
+                @if (Model.ReadyForProduction)
+                {
+                    <img src="~/Images/InternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.Id, false);" />
+                }
+                else
+                {
+                    <img src="~/Images/NotInternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.Id, true);" />
+                }
+            </div>
+            <div class="bottomBarLink">
+                <img src="~/Images/AdminReview.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="$('#adminReviewHolder').load(adminReviewUrl, { bulkOrderId: @Model.Id, fromBulkEdit: true });" />
+            </div>
+            @if (!Model.ArtworkEmailSent && Model.lstDesigns.Any(d => d.ArtSource == ""))
+            {
+                <div class="bottomBarLink">
+                    <input type="button" class="smallButton" value="Send Artwork Email" onclick="sendArtworkEmail('@Model.Id','@Model.CustomerEmail');" />
+                </div>
+            }
+            <div class="bottomBarLink">
+                <input type="button" class="smallButton" value="Edit Bulk Order" onclick="$('#bulkOrderEditHolder').load(bulkOrderEditUrl, { bulkOrderId: @Model.Id });" />
+            </div>
+        </div>
     </div><!--bulkOrderDetailsPopupContent-->
 </div><!--/bulkOrderDetailsPopup-->
 <script type="text/javascript">

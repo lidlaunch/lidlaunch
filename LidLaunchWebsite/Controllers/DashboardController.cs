@@ -437,7 +437,7 @@ namespace LidLaunchWebsite.Controllers
 
         }
 
-        public string CreateBulkDesign(string designName, string bulkOrderId)
+        public string CreateBulkDesign(string designName, string bulkOrderId, string notifyCustomer)
         {
             bool success = false;
             DesignData designData = new DesignData();
@@ -529,13 +529,19 @@ namespace LidLaunchWebsite.Controllers
 
                 success = bulkData.CreateBulkOrderDesign(Convert.ToInt32(bulkOrderId), designId);
 
+                if (success && Convert.ToBoolean(notifyCustomer))
+                {
+                    BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
+                    EmailFunctions email = new EmailFunctions();
+                    email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
+                }
             }        
 
             var json = new JavaScriptSerializer().Serialize(success);
             return json;
         }
 
-        public string UpdateBulkDesign(string designName, string bulkOrderId, string designId)
+        public string UpdateBulkDesign(string designName, string bulkOrderId, string designId, string notifyCustomer)
         {
             bool success = false;
             DesignData designData = new DesignData();
@@ -624,11 +630,41 @@ namespace LidLaunchWebsite.Controllers
                 }
 
                 success = designData.UpdateDesign(artworkFileName, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, designName, dstFileName, pdfFileName, embFileName, previewFileName, Convert.ToInt32(designId));
-
+                
+                if (success && Convert.ToBoolean(notifyCustomer))
+                {
+                    BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
+                    EmailFunctions email = new EmailFunctions();
+                    email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
+                }
             }
 
             var json = new JavaScriptSerializer().Serialize(success);
             return json;
+        }
+
+        public string ContactBulkCustomer(string bulkOrderId, string emailType)
+        {
+            try
+            {
+                if (checkLoggedIn())
+                {
+                    BulkData bulkData = new BulkData();
+                    BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
+                    EmailFunctions email = new EmailFunctions();
+                    //send email to customer about their order, revision request
+                    //email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
+                    return "true";
+                }
+                else
+                {
+                    return "";
+                }                
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }            
         }
 
         public string ApproveProduct(string id)
@@ -1079,6 +1115,7 @@ namespace LidLaunchWebsite.Controllers
                     lstBulkOrders = data.GetBulkOrderData("");
                     lstBulkOrders.RemoveAll(bo => !bo.OrderPaid);
                     lstBulkOrders.RemoveAll(bo => !bo.ReleaseToDigitizer);
+                    lstBulkOrders.RemoveAll(bo => bo.OrderComplete);
                     return View(lstBulkOrders);
                 }
                 else

@@ -39,7 +39,7 @@
     <div id="progressLegend">
         @if (!Model.OrderComplete && Model.OrderPaid && !Model.lstDesigns.Where(d => d.InternallyApproved).Any(d => d.DigitizedFile == "" || !d.CustomerApproved) && Model.lstDesigns.Where(d => d.InternallyApproved).ToList().Count > 0)
         {
-            <span style="font-weight:bold;">Your order is in the production queue and in line to be stitched on our machines. We will reach out to you if there are any adjustments that need to be made to your design during production. You will receive an email once your order has shipped.</span><br/><br />
+            <span style="font-weight:bold;">Your order is in the production queue and in line to be stitched on our machines. We will reach out to you if there are any adjustments that need to be made to your design during production. You will receive an email once your order has shipped. We procees orders around the clock and do everything we can to try and get orders out in our original estimated shipping window.</span><br/><br />
         }
         <span style="height:11px; width:11px; background:#39b91c; display:inline-block; border:1px solid #000;"></span> = Complete
         <br />
@@ -64,6 +64,8 @@
         <div><b>Payment Date:</b>N/A </div>
     }
     <div><b>Your Info:</b> @Model.CustomerName - @Model.CustomerEmail - @Model.CustomerPhone</div>
+    <div><b>Shipping Address:</b> @Model.ShipToName @Model.ShipToAddress @Model.ShipToCity,@Model.ShipToState @Model.ShipToZip</div>
+    <div><i>Please email us at support@lidlaunch.com if your shipping address is incorrect. Please include your order id @Model.Id in your email. .</i></div>
     <table>
         <tr>
             <td><div><b>Art Source:</b><br /><a href="~/Images/BulkOrderArtwork/@Model.ArtworkImage" target="_blank"><img src="~/Images/BulkOrderArtwork/@Model.ArtworkImage" style="max-height:100px;max-width:100px;" /></a></div></td>
@@ -109,7 +111,7 @@
     </table>
 
     <div class="importantSection"><b>Order Notes:</b> @Model.OrderNotes </div>
-    @if (!Model.lstDesigns.Any(d => d.DigitizedPreview == ""))
+    @if (Model.lstDesigns.Any(d => d.InternallyApproved && d.DigitizedPreview != ""))
     {
         <div id="orderDigizing">
             <h2>Digitized Designs:</h2>

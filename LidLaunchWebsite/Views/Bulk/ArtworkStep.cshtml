@@ -80,6 +80,9 @@
     #artworkStep1 {
         margin-top:10px;
     }
+    #artworkStep3 {
+        margin-top: 10px;
+    }
     .thread {
         width: 60px;
         height: 80px;
@@ -122,6 +125,9 @@
             margin: 0% 3%;
             font-size: 18px;
         }
+        #placementSelect {
+            min-height:90px;
+        }
     }
 </style>
 
@@ -148,7 +154,7 @@
                 </div>
             </div>
             <div id="artworkExisting" style="display:none;">
-                Please upload an image to help us locate and verify your artwork we have setup previously. We will assign your pre-existing artwork file to your order.
+                <p>Please upload an image to help us locate and verify your artwork we have setup previously. We will assign your pre-existing artwork file to your order.</p>
             </div>
         </div><!--/uploadArtworkHolder-->
     </div><!--/ArtworkStep1-->
@@ -157,7 +163,7 @@
         Artwork Placement
     </div>
     <div id="artworkStep2" class="artworkStep">
-        <h2>Click where would you like the artwork placed on the hat.<br/>
+        <h2>Select where would you like the artwork placed.<br/>
             <span style="font-weight:normal; font-size:12px;">Our standard sizing for Centered designs is 2.5" tall and 4.2" wide (when possible). Offset designs will be a maximum 2.5" tall and 3.2" wide. If you would like different deminsions and your artwork will work for it, please let us know in the order notes. The maximum Embroiedery field size is 6.5" wide by 2.5" tall.</span>
         </h2>
         <div id="placementSelect">
@@ -178,7 +184,10 @@
         Thread Colors
     </div>
     <div id="artworkStep3" class="artworkStep">
-        <h2>These are the thread colors we use:</h2>
+        <h2>
+            These are the thread colors we use:<br/>
+            <span style="font-weight:normal; font-size:12px;">Different screens can display colors differently. Colors are more vibrant in person. We only use high quality Madeira 100% polyester thread.</span>
+        </h2>
         <div id="threadChart">
             <div class="thread">
                 <div class="threadImage"><img src="~/Images/Threads/1800Black.jpg" /></div>
@@ -209,6 +218,10 @@
                 <div class="threadName">Blue</div>
             </div>
             <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1742Navy.jpg" /></div>
+                <div class="threadName">Navy</div>
+            </div>
+            <div class="thread">
                 <div class="threadImage"><img src="~/Images/Threads/1633Purple.jpg" /></div>
                 <div class="threadName">Purple</div>
             </div>
@@ -219,6 +232,10 @@
             <div class="thread">
                 <div class="threadImage"><img src="~/Images/Threads/1651Green.jpg" /></div>
                 <div class="threadName">Green</div>
+            </div>
+            <div class="thread">
+                <div class="threadImage"><img src="~/Images/Threads/1795OliveGreen.jpg" /></div>
+                <div class="threadName">Olive Green</div>
             </div>
             <div class="thread">
                 <div class="threadImage"><img src="~/Images/Threads/1823NeonYellow.jpg" /></div>
@@ -264,8 +281,8 @@
 
         <div class="clear">
             <h2>
-                Color changes in your design are allowed in minimum quantites of 12 hats.<br/>
-                <span style="font-weight:normal; font-size:12px;"><b>For Example:</b> 12 Black Hats Red Stitching / 12 White Hats Black Stitching</span>
+                Color changes in your design are allowed in quantites of 6 or more.<br/>
+                <span style="font-weight:normal; font-size:12px;"><b>For Example:</b> 6 Black Hats: Red Stitching / 6 White Hats: Black Stitching</span>
             </h2>
         </div>
 
@@ -277,7 +294,7 @@
         <div class="clear">
             <h2>
                 Please tell us any specific instructions or details about your order that you think we should know.<br />
-                <span style="font-weight:normal; font-size:12px;"><b>For Example:</b> If you ordered black hats and the text in your logo is black tell us what color stitching to use. Also, list out the colors of stitching you want on the different color hats you may have selected. (1 Color Combination per 12 hats allowed)</span>
+                <span style="font-weight:normal; font-size:12px;"><b>For Example:</b> If you ordered black hats and the text in your logo is black tell us what color stitching to use. Also, list out the colors of stitching you want on the different color hats you may have selected. (1 Color Combination per 6 or more hats allowed)</span>
             </h2>
             <div>
                 <textarea class="productDetailsTextMulti textBoxMulti" id="txtDetails" placeholder="Order Notes" rows="10"></textarea>
@@ -292,7 +309,7 @@
     <div id="artworkStep4" class="artworkStep">
         <h2>
             Add Back Stitching (TEXT ONLY)<br />
-            <span style="font-weight:normal; font-size:12px;">Back stitching is $5 per hat. Please add what text you want added to the back of the hats.</span>
+            <span style="font-weight:normal; font-size:12px;">Back stitching is $5 per hat. Please add what text you want added to the back of the hats. Limited</span>
         </h2>
         <div id="backStitching">
             <div id="chkBackHolder" onclick="toggleBackStitching()"><input type="checkbox" id="chkBackStitching" onclick="toggleBackStitching()" /> Back Stitching</div>

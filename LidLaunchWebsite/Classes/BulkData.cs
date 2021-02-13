@@ -301,7 +301,7 @@ namespace LidLaunchWebsite.Classes
 
             Logger.Log(itemName);
 
-            return itemCost;
+            return 5.00M;
 
         }
 

@@ -15,6 +15,8 @@
     function showBulkOrderShip (bulkOrderId) {
         $('#popUpHolder').load(bulkOrderShipUrl, { bulkOrderId: bulkOrderId });
     }
+
+    hideLoading();
 </script>
 <span onclick="window.location = '/Dashboard/ShipBulkOrders';" class="left" style="margin:10px;"><input type="button" value="ALL" class="smallButton" /></span>
 <input type="text" id="idSeach" class="left" style="padding:10px;margin:10px;"/>
