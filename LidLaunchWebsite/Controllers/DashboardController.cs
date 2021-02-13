@@ -1395,7 +1395,7 @@ namespace LidLaunchWebsite.Controllers
             return success.ToString();
         }
 
-        public ActionResult UploadBulkDesign(string designId)
+        public ActionResult UploadBulkDesign(string designId, string showEmailCheckbox)
         {
             DesignData data = new DesignData();
             Design design = new Design();
@@ -1406,6 +1406,11 @@ namespace LidLaunchWebsite.Controllers
             } else
             {
                 design.Id = 0;
+            }
+
+            if(!Convert.ToBoolean(showEmailCheckbox))
+            {
+                design.InternallyApproved = false;
             }
             
             return PartialView(design);

@@ -10,6 +10,7 @@
                 <tr><td colspan="8">@note.CreatedDate : @note.Text</td></tr>
             }
             <tr style="font-weight:bold;">
+                <td></td>
                 <td>Design ID</td>
                 <td>Name</td>
                 <td>Art Source</td>
@@ -22,17 +23,18 @@
             </tr>
             foreach (LidLaunchWebsite.Models.Design design in bulkOrder.lstDesigns)
             {
-                <tr>
-                    <td><span class="designId">@design.Id</span><span class="bulkOrderId hidden">@bulkOrder.Id</span></td>
-                    <td>@design.Name</td>
-                    <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank"><img src="~/Images/BulkOrderArtwork/@design.ArtSource" height="200" /></a></td>
-                    <td>@design.EmbroideredHeight</td>
-                    <td>@design.EmbroideredWidth</td>
-                    <td><input type="file" class="EmbroideryFile" /><br /><a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName" target="_blank">@design.DigitizedFile</a></td>
-                    <td><input type="file" class="TransparentPreview" /><br /><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" /></a></td>
-                    <td><input type="file" class="InfoFile" /><br /><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
-                    <td><input type="file" class="EMBFile" /><br /><a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">@design.EMBFile</a></td>
-                </tr>
+    <tr>
+        <td><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, showEmailCheckbox: false });"><input type="button" class="smallButton" value="Edit Design" /></a></td>
+        <td><span class="designId">@design.Id</span><span class="bulkOrderId hidden">@bulkOrder.Id</span></td>
+        <td>@design.Name</td>
+        <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Download</a></td>
+        <td>@design.EmbroideredHeight</td>
+        <td>@design.EmbroideredWidth</td>
+        <td><a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName" target="_blank">@design.DigitizedFile</a></td>
+        <td><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" /></a></td>
+        <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
+        <td><a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">@design.EMBFile</a></td>
+    </tr>
                 if (design.lstNotes.Count > 0)
                 {
                     foreach (LidLaunchWebsite.Models.Note note in design.lstNotes)
@@ -56,3 +58,9 @@
             <tr style="height:10px; background:#39b91c;"><td colspan="8"></td></tr>
         }
     </table>
+
+    <div id="uploadDesignHolder"></div>
+
+    <script type="text/javascript">
+        var uploadBulkDesignUrl = '@Url.Action("UploadBulkDesign", "Dashboard")';
+    </script>
