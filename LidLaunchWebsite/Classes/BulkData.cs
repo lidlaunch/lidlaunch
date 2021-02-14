@@ -445,6 +445,7 @@ namespace LidLaunchWebsite.Classes
             bulkOrder.LeftStitchingComment = dr["LeftStitchingComment"].ToString();
             bulkOrder.RightStitchingComment = dr["RightStitchingComment"].ToString();
             bulkOrder.ArtworkEmailSent = Convert.ToBoolean(dr["ArtworkEmailSent"].ToString());
+            bulkOrder.ColorConfirmationEmailSent = Convert.ToBoolean(dr["ColorConfirmationEmailSent"].ToString());
             bulkOrder.ReleaseToDigitizer = Convert.ToBoolean(dr["ReleaseToDigitizer"].ToString());
             bulkOrder.AdminReview = Convert.ToBoolean(dr["AdminReview"].ToString());
             bulkOrder.DesignerReview = Convert.ToBoolean(dr["DesignerReview"].ToString());
@@ -645,6 +646,39 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
+
+        public bool UpdateColorConfirmationEmailSent(int bulkOrderId)
+        {
+            var data = new SQLData();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateColorConfirmationEmailSent", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        
 
         public bool ReleaseToDigitizer (int bulkOrderId)
         {

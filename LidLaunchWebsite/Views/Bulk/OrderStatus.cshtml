@@ -49,7 +49,7 @@
     @if (Model.OrderPaid)
     {
         <div id="orderStatusText" class="importantSection">
-            Your estimated Ship date is from <b> @Model.ProjectedShipDateShort - @Model.ProjectedShipDateLong </b>.
+            Your estimated Ship date range is <b> @Model.ProjectedShipDateShort - @Model.ProjectedShipDateLong </b>.
         </div>
     }
 
@@ -110,48 +110,56 @@
         }
     </table>
 
-    <div class="importantSection"><b>Order Notes:</b> @Model.OrderNotes </div>
+    <div class="importantSection"><b>Order Notes:</b><br/><pre>@Model.OrderNotes</pre></div>
     @if (Model.lstDesigns.Any(d => d.InternallyApproved && d.DigitizedPreview != ""))
     {
-        <div id="orderDigizing">
-            <h2>Digitized Designs:</h2>
-            <p><i>Please note colors in these previews are computer rendered and will not be the exact color(s) used in final stitching. Thread colors are more vibrant in person. We will match your logo colors and color requests as closely as possible.</i></p>
-            @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns.Where(d => d.InternallyApproved))
-            {
-                <div class="orderDigitizingPreview">
-                    <h2>@design.Name</h2>
-                    <a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" width="300" /></a>
-                </div>
-                if (!design.CustomerApproved)
-                {
-                    <div class="designApprovalGroup">
-                        <div class="clear approveDigitizing"><input type="button" onclick="approveDigitizing(@design.Id, @Model.Id)" class="smallButton" value="Approve Digitizing" /></div>
-                        <div class="clear requestRevision">
-                            <div class="revisionStartButton"><input type="button" onclick="startRevisionClick(this);" class="smallButton" value="Request Revision" /></div>
-                            <div class="hidden revisionText">
-                                <textarea class="revisionTextInput" placeholder="Enter Revision Comments Here..."></textarea>
-                                <input type="button" onclick="requestDigitizingRevision(@design.Id, $(this).closest('.designApprovalGroup').find('.revisionTextInput').val(), @Model.Id, true);" class="smallButton" value="Submit Revision" />
-                                <input type="button" onclick="revisionCancelClick(this);" class="smallButton" value="Cancel" />
-                            </div>
-                        </div>
-                        @if (design.lstRevisionNotes.Count > 0)
-                        {
-                            <h2>Revisions Requested:</h2>
-                            <ul>
-                                @foreach (LidLaunchWebsite.Models.Note note in design.lstRevisionNotes)
-                                {
-                                    <li>@note.Text</li>
-                                }
-                            </ul>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <div id="approveDigitizing" class="clear digitizingApproved">Digitizing Approved</div>
-                }
-            }
+<div id="orderDigizing">
+    <h2>Digitized Designs:</h2>
+    <p><i>Please note colors in these previews are computer rendered and not a 100% exact representation of the color(s) of the thread used. Different screens also render colors differently. Rest assured our 100% polyester thread is very vibrant and looks great in person. We will match your logo colors and color requests as closely as possible using our color pallet.</i></p>
+    
+    <input type="button" id="showColorPallet" onclick="$('#colorPalletViewer').show(); $('#showColorPallet').hide(); " class="smallButton" value="Show Thread Color Pallet" />
+    <div id="colorPalletViewer" style="display:none;">
+        <input type="button" id="hideColorPallet" onclick="$('#colorPalletViewer').hide(); $('#showColorPallet').show();"  class="smallButton"  value="Hide Thread Color Pallet" />
+        @{ Html.RenderPartial("~/Views/Bulk/ThreadColorChart.cshtml"); }
+    </div>
+    
+
+    @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns.Where(d => d.InternallyApproved))
+    {
+        <div class="orderDigitizingPreview clear">
+            <h2>@design.Name</h2>
+            <a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" width="300" /></a>
         </div>
+        if (!design.CustomerApproved)
+        {
+            <div class="designApprovalGroup clear">
+                <div class="clear approveDigitizing"><input type="button" onclick="approveDigitizing(@design.Id, @Model.Id)" class="smallButton" value="Approve Digitizing" /></div>
+                <div class="clear requestRevision">
+                    <div class="revisionStartButton"><input type="button" onclick="startRevisionClick(this);" class="smallButton" value="Request Revision" /></div>
+                    <div class="hidden revisionText">
+                        <textarea class="revisionTextInput" placeholder="Enter Revision Comments Here..."></textarea>
+                        <input type="button" onclick="requestDigitizingRevision(@design.Id, $(this).closest('.designApprovalGroup').find('.revisionTextInput').val(), @Model.Id, true);" class="smallButton" value="Submit Revision" />
+                        <input type="button" onclick="revisionCancelClick(this);" class="smallButton" value="Cancel" />
+                    </div>
+                </div>
+                @if (design.lstRevisionNotes.Count > 0)
+                {
+                    <h2>Revisions Requested:</h2>
+                    <ul>
+                        @foreach (LidLaunchWebsite.Models.Note note in design.lstRevisionNotes)
+                        {
+                            <li>@note.Text</li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+        else
+        {
+            <div id="approveDigitizing" class="clear digitizingApproved">Digitizing Approved</div>
+        }
+    }
+</div>
 
     }
 

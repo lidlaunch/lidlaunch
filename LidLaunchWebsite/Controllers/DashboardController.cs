@@ -924,18 +924,37 @@ namespace LidLaunchWebsite.Controllers
         public string SendArtworkEmail(string bulkOrderId, string customerEmail)
         {
             BulkData bulkData = new BulkData();
+            EmailFunctions email = new EmailFunctions();
 
-            var success = bulkData.UpdateArtworkEmailSent(Convert.ToInt32(bulkOrderId));
+            var success = email.sendEmail(customerEmail, "Lid Launch Customer", email.requestArtworkEmail(bulkOrderId), "Order #" + bulkOrderId + " Artwork Request", ""); 
             if (success)
             {
-                EmailFunctions email = new EmailFunctions();
-                email.sendEmail(customerEmail, "Lid Launch Customer", email.requestArtworkEmail(bulkOrderId), "Order #" + bulkOrderId + " Artwork Request", "");
+                bulkData.UpdateArtworkEmailSent(Convert.ToInt32(bulkOrderId));
+                bulkData.CreateNote(Convert.ToInt32(bulkOrderId), 0, 0, Convert.ToInt32(bulkOrderId), "Missing Artwork Email Sent", "", 0, false);
             }
 
             var json = new JavaScriptSerializer().Serialize(success);
 
             return json;
         }
+
+        public string SendColorConfirmationEmail(string bulkOrderId, string customerEmail, string noteText)
+        {
+            BulkData bulkData = new BulkData();
+            EmailFunctions email = new EmailFunctions();
+
+            var success = email.sendEmail(customerEmail, "Lid Launch Customer", email.colorConfirmationEmail(bulkOrderId, noteText), "Order #" + bulkOrderId + " Color Confirmation Request", "");
+            if (success)
+            {
+                bulkData.UpdateColorConfirmationEmailSent(Convert.ToInt32(bulkOrderId));
+                bulkData.CreateNote(Convert.ToInt32(bulkOrderId), 0, 0, Convert.ToInt32(bulkOrderId), "Color Confirmation Email Sent: " + noteText, "", 0, false);
+            }
+
+            var json = new JavaScriptSerializer().Serialize(success);
+
+            return json;
+        }
+
 
         public string UpdateTracking(string orderProductId, string trackingNumber, string customerEmail)
         {
@@ -1395,7 +1414,7 @@ namespace LidLaunchWebsite.Controllers
             return success.ToString();
         }
 
-        public ActionResult UploadBulkDesign(string designId, string showEmailCheckbox)
+        public ActionResult UploadBulkDesign(string designId, string fromDigitizing)
         {
             DesignData data = new DesignData();
             Design design = new Design();
@@ -1408,12 +1427,14 @@ namespace LidLaunchWebsite.Controllers
                 design.Id = 0;
             }
 
-            if(!Convert.ToBoolean(showEmailCheckbox))
-            {
-                design.InternallyApproved = false;
-            }
-            
-            return PartialView(design);
+            dynamic model = new ExpandoObject();
+
+            model.Design = design;
+            model.FromDigitizing = Convert.ToBoolean(fromDigitizing);
+
+
+
+            return PartialView(model);
         }
 
         public ActionResult SetBulkDesign()

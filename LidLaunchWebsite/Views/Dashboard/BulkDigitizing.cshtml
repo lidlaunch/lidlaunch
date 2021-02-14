@@ -1,61 +1,68 @@
 ﻿@model List<LidLaunchWebsite.Models.BulkOrder>
-    <table>
+    <table style="width:1200px">
         @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model)
         {
-            <tr><td colspan="8"><b>Bulk Order ID: @bulkOrder.Id</b></td></tr>
-            <tr><td colspan="8">Customer Notes: @bulkOrder.OrderNotes</td></tr>
-            <tr><td colspan="8">Placement: @bulkOrder.ArtworkPosition</td></tr>
+            <tr><td colspan="6"><b>Bulk Order ID: @bulkOrder.Id</b></td></tr>
+            <tr><td colspan="6">Customer Notes:<br/><pre>@bulkOrder.OrderNotes</pre></td></tr>
+            <tr><td colspan="6">Placement: @bulkOrder.ArtworkPosition</td></tr>
             foreach (LidLaunchWebsite.Models.Note note in bulkOrder.lstNotes)
             {
-                <tr><td colspan="8">@note.CreatedDate : @note.Text</td></tr>
+                <tr><td colspan="6">@note.CreatedDate : @note.Text</td></tr>
             }
             <tr style="font-weight:bold;">
                 <td></td>
-                <td>Design ID</td>
                 <td>Name</td>
                 <td>Art Source</td>
-                <td>Height</td>
-                <td>Width</td>
-                <td>Embroidery File</td>
-                <td>Digitized Preview</td>
-                <td>Production Info Sheet</td>
-                <td>EMB File</td>
+                <td>Stitch Count</td>                
+                <td>Files</td>
+                <td>Digitized Preview</td>                
             </tr>
             foreach (LidLaunchWebsite.Models.Design design in bulkOrder.lstDesigns)
             {
-    <tr>
-        <td><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, showEmailCheckbox: false });"><input type="button" class="smallButton" value="Edit Design" /></a></td>
-        <td><span class="designId">@design.Id</span><span class="bulkOrderId hidden">@bulkOrder.Id</span></td>
-        <td>@design.Name</td>
-        <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Download</a></td>
-        <td>@design.EmbroideredHeight</td>
-        <td>@design.EmbroideredWidth</td>
-        <td><a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName" target="_blank">@design.DigitizedFile</a></td>
-        <td><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" /></a></td>
-        <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
-        <td><a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">@design.EMBFile</a></td>
-    </tr>
+                <tr>
+                    <td style="width:100px;"><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, fromDigitizing: true });"><input type="button" class="smallButton" value="Edit Design" /></a></td>                    
+                    <td style="width:100px;">@design.Name</td>
+                    <td style="width:100px;"><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Download</a></td>
+                    <td style="width:100px;">0</td>
+                    <td style="width:300px;">
+                        <table>
+                            <tr>
+                                <td>DST:</td>
+                                <td><a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName" target="_blank">@design.DigitizedFile</a></td>
+                            </tr>
+                            <tr>
+                                <td>EMB:</td>
+                                <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
+                            </tr>
+                            <tr>
+                                <td>PDF:</td>
+                                <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
+                            </tr>
+                        </table>            
+                    </td>
+                    <td><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" width="200" /></a></td>
+                </tr>
                 if (design.lstNotes.Count > 0)
                 {
                     foreach (LidLaunchWebsite.Models.Note note in design.lstNotes)
                     {
                         <tr>                            
-                            <td colspan="8"><i class="noteDate">INTERNAL NOTES: @note.CreatedDate</i> : @note.Text</td>                            
+                            <td colspan="6"><i class="noteDate">INTERNAL NOTES: @note.CreatedDate</i> : @note.Text</td>                            
                         </tr>
                     }
                 }
                 if (design.lstRevisionNotes.Count > 0)
                 {
-                    foreach (LidLaunchWebsite.Models.Note note in design.lstRevisionNotes)
+                    foreach (LidLaunchWebsite.Models.Note note in design.lstRevisionNotes.Where(rn => !rn.CustomerAdded).ToList())
                     {
                         <tr>
-                            <td colspan="8"><i class="noteDate">CUSTOMER NOTES: @note.CreatedDate</i> : @note.Text</td>
+                            <td colspan="6"><i class="noteDate">REVISION NOTES: @note.CreatedDate</i> : @note.Text</td>
                         </tr>
                     }
                 }
-                <tr style="height:1px; background:#000;"><td colspan="8"></td></tr>
+                <tr style="height:1px; background:#000;"><td colspan="6"></td></tr>
             }
-            <tr style="height:10px; background:#39b91c;"><td colspan="8"></td></tr>
+            <tr style="height:10px; background:#39b91c;"><td colspan="6"></td></tr>
         }
     </table>
 

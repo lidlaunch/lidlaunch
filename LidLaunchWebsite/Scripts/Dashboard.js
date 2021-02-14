@@ -48,7 +48,6 @@ function sendArtworkEmail(bulkOrderId, customerEmail) {
                 displayPopupNotification('Error Sending Artwork Email.', 'error', false);
             } else {
                 //set the url for the file link and show the link 
-                hideLoading();
                 showBulkOrderDetailsPopup(bulkOrderId);
                 
             }
@@ -58,6 +57,30 @@ function sendArtworkEmail(bulkOrderId, customerEmail) {
         }
     });
 }
+
+function sendColorConfirmationEmail(bulkOrderId, customerEmail, noteText) {
+    showLoading();
+    $.ajax({
+        type: "POST",
+        url: '/Dashboard/SendColorConfirmationEmail?bulkOrderId=' + bulkOrderId + '&customerEmail=' + customerEmail + '&noteText=' + noteText,
+        contentType: false,
+        processData: false,
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('Error Sending Color Confirmation Email.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                showBulkOrderDetailsPopup(bulkOrderId);
+
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error Sending Color Confirmation Email, please try again.', 'error', false);
+        }
+    });
+}
+
 
 function releaseToDigitizer(bulkOrderId) {
     showLoading();

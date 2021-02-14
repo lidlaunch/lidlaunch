@@ -2216,7 +2216,7 @@ input[type=text], input[type=password], select, input[type=number] {
 }
 #uploadBulkDesignPopupInner {
     width: 450px;
-    height: 200px;
+    height: 230px;
     background: #fff;
     margin-top: 50px;
     display: block;
@@ -2464,6 +2464,25 @@ input[type=text], input[type=password], select, input[type=number] {
 #addBulkReworkPopupInner {
     width: 450px;
     height: 200px;
+    background: #fff;
+    margin-top: 50px;
+    display: block;
+    padding: 10px;
+    margin: 100px auto;
+}
+#colorConfirmationPopup {
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: block;
+    top: 0;
+    right: 0;
+}
+
+#colorConfirmationPopupInner {
+    width: 450px;
+    height: 240px;
     background: #fff;
     margin-top: 50px;
     display: block;

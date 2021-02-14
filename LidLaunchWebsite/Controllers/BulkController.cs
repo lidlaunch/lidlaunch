@@ -45,6 +45,10 @@ namespace LidLaunchWebsite.Controllers
 
             return PartialView("HatSelectStep", model);
         }
+        public ActionResult ThreadColorChart()
+        {
+            return PartialView("ThreadColorChart");
+        }
         public ActionResult ArtworkStep()
         {
             dynamic model = new ExpandoObject();

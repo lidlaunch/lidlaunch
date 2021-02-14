@@ -1220,7 +1220,7 @@ function goToNextStep(currentStep) {
     }
 }
 function validateHats() {
-    if (currentBulkProductList.length > 0) {
+    if (totalHats > 0) {
         return true;
     } else {
         displayPopupNotification('You need to select some hats from the expandable regions before continuing to the next step.', 'error', false);

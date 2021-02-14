@@ -843,6 +843,7 @@
     <Content Include="Views\Bulk\ArtworkStep.cshtml" />
     <Content Include="Views\Bulk\HatSelectStep.cshtml" />
     <Content Include="Views\Bulk\IntroStep.cshtml" />
+    <Content Include="Views\Bulk\ThreadColorChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

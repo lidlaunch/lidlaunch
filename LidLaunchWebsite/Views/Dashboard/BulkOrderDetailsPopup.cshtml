@@ -25,6 +25,7 @@
         vertical-align:middle;
         margin:0 20px;
     }
+    
 </style>
 <div id="bulkOrderDetailsPopup">
     <div id="bulkOrderDetailsPopupContent">
@@ -47,7 +48,7 @@
                 </tr>
                 <tr>
                     <td>Customer Notes:</td>
-                    <td>@Model.OrderNotes</td>
+                    <td><pre>@Model.OrderNotes</pre></td>
                 </tr>
                 <tr>
                     <td>Artwork Position:</td>
@@ -255,7 +256,7 @@
         <div id="bulkOrderDesigns">
             <h3>Designs</h3>
             <a href="javascript:void(0);" onclick="$('#bulkDesignSelectHolder').load(selectBulkDesignUrl);"><input type="button" class="smallButton" value="SELECT PRE-EXISTING DESIGN" /></a>
-            <a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: 0, showEmailCheckbox: true });"><input type="button" class="smallButton" value="Add Design" /></a>
+            <a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: 0, fromDigitizing: false });"><input type="button" class="smallButton" value="Add Design" /></a>
             <table>
                 <thead>
                     <tr>
@@ -298,7 +299,7 @@
                             <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">@design.EMBFile</a></td>
                             <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
-                            <td><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, showEmailCheckbox: true });"><input type="button" class="smallButton" value="Edit Design" /></a></td>
+                            <td><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, fromDigitizing: false });"><input type="button" class="smallButton" value="Edit Design" /></a></td>
                         </tr>
                         if (design.lstNotes.Count > 0)
                         {
@@ -337,6 +338,16 @@
         <div id="adminReviewHolder"></div>
 
 
+        <div id="colorConfirmationPopup" style="display:none;">
+            <div id="colorConfirmationPopupInner">
+                There is a limit of only sending this email once per order<br />
+                <textarea id="colorNotes" type="text" placeholder="Color question here..." style="width:90%; height:100px;"></textarea><br/>
+                <input type="button" class="smallButton" value="Send Color Confirmation Email" onclick="sendColorConfirmationEmail('@Model.Id', '@Model.CustomerEmail', $('#colorNotes').val());" />
+                <input type="button" class="smallButton" value="Cancel" onclick="$('#colorConfirmationPopup').hide()" />
+            </div>            
+        </div>
+
+
         <div id="bulkBottomBar">
             <div class="bottomBarLink">
                 @if (Model.ReadyForProduction)
@@ -351,14 +362,20 @@
             <div class="bottomBarLink">
                 <img src="~/Images/AdminReview.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="$('#adminReviewHolder').load(adminReviewUrl, { bulkOrderId: @Model.Id, fromBulkEdit: true });" />
             </div>
-            @if (!Model.ArtworkEmailSent && Model.lstDesigns.Any(d => d.ArtSource == ""))
+            @if (!Model.ArtworkEmailSent && Model.ArtworkImage == "")
             {
                 <div class="bottomBarLink">
                     <input type="button" class="smallButton" value="Send Artwork Email" onclick="sendArtworkEmail('@Model.Id','@Model.CustomerEmail');" />
                 </div>
             }
+            @if (!Model.ColorConfirmationEmailSent)
+            {
+                <div class="bottomBarLink">
+                    <input type="button" class="smallButton" value="Send Color Email" onclick="$('#colorConfirmationPopup').show();" />
+                </div>
+            }
             <div class="bottomBarLink">
-                <input type="button" class="smallButton" value="Edit Bulk Order" onclick="$('#bulkOrderEditHolder').load(bulkOrderEditUrl, { bulkOrderId: @Model.Id });" />
+                <input type="button" class="smallButton" value="Edit Bulk Order" onclick="showLoading(); $('#bulkOrderEditHolder').load(bulkOrderEditUrl, { bulkOrderId: @Model.Id });" />
             </div>
         </div>
     </div><!--bulkOrderDetailsPopupContent-->
