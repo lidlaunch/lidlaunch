@@ -12,9 +12,13 @@
         float: left;
     }
 </style>
+
+<script type="text/javascript">
+    hideLoading();
+</script>
 <div id="bulkOrderDetailsPopup">
     <div id="bulkOrderDetailsPopupContent">
-        <div id="TopInfoBar">            
+        <div id="TopInfoBar">
             <div class="clear">
                 <div id="BulkOrderId">@Model.Id</div>
                 <div id="BulkOrderDate">Shipping Date: @Model.ProjectedShipDateShort - @Model.ProjectedShipDateLong <span onclick="$('#bulkOrderDetailsPopup').hide();" class="closeButton">X</span></div>
@@ -121,7 +125,7 @@
                         }
                     }
                 </tbody>
-            </table>            
+            </table>
         </div><!--/bulkOrderItems-->
         <div class="clear">
             <div id="shipDetailsLeft">

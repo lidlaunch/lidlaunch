@@ -648,8 +648,6 @@ function updateBulkTotals() {
 
     currentBulkProductList = JSON.parse(productList);
 
-    console.log(currentBulkProductList);
-
 
     $('#bottomTotal').text('$' + currentTotalCost);
     $('#totalHatCount').text(totalHats);
@@ -659,8 +657,6 @@ function updateBulkTotals() {
 
     $('#lblTotal').text(currentGrandTotalCost);
     $('#lblMobileTotal').text('$' + currentGrandTotalCost);
-
-    console.log(currentGrandTotalCost);
 
 }
 
