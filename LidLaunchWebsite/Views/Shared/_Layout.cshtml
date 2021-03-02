@@ -35,7 +35,7 @@
     @Scripts.Render("~/Scripts/Designer.js")
     @Scripts.Render("~/Scripts/Product.js")
     @Scripts.Render("~/Scripts/Cart.js?v2")
-    @Scripts.Render("~/Scripts/Bulk.js?v2")
+    @Scripts.Render("~/Scripts/Bulk.js?v3")
     @Scripts.Render("~/Scripts/Dashboard.js?v2")
     @Scripts.Render("~/Scripts/Checkout.js?v2")
     <!-- Google Tag Manager -->
@@ -97,7 +97,7 @@
                 <div id="header">
                     <div class="centerInner">
                         <div id="logo">
-                            <a href="@Url.Action("Index","Home")"><img src="@Url.Content("~/Images/logo.png")" /></a>
+                            <a href="@Url.Action("Index","Home")"><img src="@Url.Content("~/Images/LogoSmall.png")" /></a>
                         </div><!--/logo-->
                         <div id="topSearch">
                             <input type="text" id="searchTop" placeholder="search..." />
@@ -166,7 +166,7 @@
                     <ul>
                         <li><a href="~/Bulk">Order</a></li>
                         <li><a href="~/Shop">Shop</a></li>
-                        <li><a href="~/Create/GetStarted">Sell Your Designs</a></li>
+                        <li class="hidden"><a href="~/Create/GetStarted">Sell Your Designs</a></li>
                         <li><a href="~/Terms/TermsAndConditions">Terms & Conditions</a></li>
                         <li><a href="~/Terms/Returns">Returns</a></li>
                         <li><a href="~/Terms/Privacy">Privacy</a></li>

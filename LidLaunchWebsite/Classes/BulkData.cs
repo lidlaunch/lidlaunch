@@ -144,7 +144,7 @@ namespace LidLaunchWebsite.Classes
                     }
                     else if (filter == "noart")
                     {
-                        lstBulkOrders = lstBulkOrders.Where(b => b.lstDesigns.Any(d => d.ArtSource == "")).ToList();
+                        lstBulkOrders = lstBulkOrders.Where(b => b.ArtworkImage == "").ToList();
                     }
                     else if (filter == "review")
                     {
@@ -153,6 +153,10 @@ namespace LidLaunchWebsite.Classes
                     else if (filter == "designerReview")
                     {
                         lstBulkOrders = lstBulkOrders.Where(b => b.DesignerReview).ToList();
+                    }
+                    else if (filter == "notReady")
+                    {
+                        lstBulkOrders = lstBulkOrders.Where(b => !b.ReadyForProduction).ToList();
                     }
                     else
                     {
@@ -420,6 +424,7 @@ namespace LidLaunchWebsite.Classes
             bulkOrder.OrderCanceled = Convert.ToBoolean(dr["OrderCanceled"].ToString());
             bulkOrder.ArtworkPosition = Convert.ToString(dr["ArtworkPosition"].ToString());
             bulkOrder.OrderPaid = Convert.ToBoolean(dr["OrderPaid"].ToString());
+            bulkOrder.OrderRefunded = Convert.ToBoolean(dr["OrderRefunded"].ToString());
             bulkOrder.PaymentCompleteGuid = Convert.ToString(dr["PaymentCompleteGuid"].ToString());
             bulkOrder.PaymentGuid = Convert.ToString(dr["PaymentGuid"].ToString());
             bulkOrder.ProjectedShipDateShort = AddBusinessDays(bulkOrder.PaymentDate, 10).ToString("MM/dd/yyyy");
@@ -824,6 +829,38 @@ namespace LidLaunchWebsite.Classes
                     SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderPaid", data.conn);
                     sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
                     sqlComm.Parameters.AddWithValue("@hasPaid", hasPaid);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool UpdateBulkOrderRefunded(int bulkOrderId)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderRefunded", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();
@@ -1651,6 +1688,49 @@ namespace LidLaunchWebsite.Classes
             catch (Exception ex)
             {
                 return lstBulkRework;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public Int32 GetTotalHatsCompleted()
+        {
+            var data = new SQLData();
+            try
+            {
+                var total = 0;
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetTotalHatsProduced", data.conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            total = Convert.ToInt32(ds.Tables[0].Rows[0]["TOTAL"].ToString());
+                        }
+
+                    }
+
+
+                }
+                return total;
+            }
+            catch (Exception ex)
+            {
+                return 0;
             }
             finally
             {

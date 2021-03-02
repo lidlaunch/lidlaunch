@@ -12,6 +12,9 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using ZXing;
 using ZXing.Common;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
+using System.Text;
 
 namespace LidLaunchWebsite.Controllers
 {
@@ -248,7 +251,7 @@ namespace LidLaunchWebsite.Controllers
                         //var extension = Path.GetExtension(fileContent.FileName);
 
                         var fileName = Request.Files[0].FileName;
-                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/HatAssets/", fileName);
+                        var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/HatAssets/", fileName);
 
                         fileContent.SaveAs(path);
                         returnValue = fileName;                        
@@ -283,7 +286,7 @@ namespace LidLaunchWebsite.Controllers
                         //var extension = Path.GetExtension(fileContent.FileName);
 
                         var fileName = Request.Files[0].FileName;
-                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/HatAssets/", fileName);
+                        var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/HatAssets/", fileName);
 
                         fileContent.SaveAs(path);
                         returnValue = fileName;
@@ -460,11 +463,11 @@ namespace LidLaunchWebsite.Controllers
                     // get a stream
                     var stream = artSource.InputStream;
                     // and optionally write the file to disk
-                    var extension = Path.GetExtension(artSource.FileName);
+                    var extension = System.IO.Path.GetExtension(artSource.FileName);
 
                     artworkFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
-                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork/", artworkFileName);
+                    var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork/", artworkFileName);
 
                     artSource.SaveAs(path);
                 }
@@ -474,11 +477,11 @@ namespace LidLaunchWebsite.Controllers
                     // get a stream
                     var stream = dst.InputStream;
                     // and optionally write the file to disk
-                    var extension = Path.GetExtension(dst.FileName);
+                    var extension = System.IO.Path.GetExtension(dst.FileName);
 
                     dstFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
-                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", dstFileName);
+                    var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", dstFileName);
 
                     dst.SaveAs(path);
                 }
@@ -487,12 +490,12 @@ namespace LidLaunchWebsite.Controllers
                 {
                     // get a stream
                     var stream = pdf.InputStream;
-                    // and optionally write the file to disk
-                    var extension = Path.GetExtension(pdf.FileName);
+                    // and optionally System.IO.Path the file to disk
+                    var extension = System.IO.Path.GetExtension(pdf.FileName);
 
                     pdfFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
-                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Info", pdfFileName);
+                    var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Info", pdfFileName);
 
                     pdf.SaveAs(path);
                 }
@@ -502,11 +505,11 @@ namespace LidLaunchWebsite.Controllers
                     // get a stream
                     var stream = pngPreviewew.InputStream;
                     // and optionally write the file to disk
-                    var extension = Path.GetExtension(pngPreviewew.FileName);
+                    var extension = System.IO.Path.GetExtension(pngPreviewew.FileName);
 
                     previewFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
-                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Preview", previewFileName);
+                    var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Preview", previewFileName);
 
                     pngPreviewew.SaveAs(path);
                 }
@@ -516,11 +519,11 @@ namespace LidLaunchWebsite.Controllers
                     // get a stream
                     var stream = emb.InputStream;
                     // and optionally write the file to disk
-                    var extension = Path.GetExtension(emb.FileName);
+                    var extension = System.IO.Path.GetExtension(emb.FileName);
 
                     embFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
-                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/EMB", embFileName);
+                    var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/EMB", embFileName);
 
                     emb.SaveAs(path);
                 }
@@ -564,11 +567,11 @@ namespace LidLaunchWebsite.Controllers
                     // get a stream
                     var stream = artSource.InputStream;
                     // and optionally write the file to disk
-                    var extension = Path.GetExtension(artSource.FileName);
+                    var extension = System.IO.Path.GetExtension(artSource.FileName);
 
                     artworkFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
-                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork/", artworkFileName);
+                    var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork/", artworkFileName);
 
                     artSource.SaveAs(path);
                 }
@@ -578,39 +581,60 @@ namespace LidLaunchWebsite.Controllers
                     // get a stream
                     var stream = dst.InputStream;
                     // and optionally write the file to disk
-                    var extension = Path.GetExtension(dst.FileName);
+                    var extension = System.IO.Path.GetExtension(dst.FileName);
 
                     dstFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
-                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", dstFileName);
+                    var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", dstFileName);
 
                     dst.SaveAs(path);
                 }
                 var pdf = Request.Files["pdf"];
+                //int stitchCount = 0;
                 if (pdf != null && pdf.ContentLength > 0)
                 {
                     // get a stream
                     var stream = pdf.InputStream;
                     // and optionally write the file to disk
-                    var extension = Path.GetExtension(pdf.FileName);
+                    var extension = System.IO.Path.GetExtension(pdf.FileName);
 
                     pdfFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
-                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Info", pdfFileName);
+                    var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Info", pdfFileName);
 
                     pdf.SaveAs(path);
+
+                    ////parse pdf here
+                    //using (PdfReader reader = new PdfReader(path))
+                    //{
+                    //    StringBuilder text = new StringBuilder();
+
+                    //    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    //    {
+                    //        text.Append(PdfTextExtractor.GetTextFromPage(reader, i));
+                    //    }
+
+                    //    stitchCount =  newText.Sub
+
+                    //    var newText = text.ToString();
+                    //    Console.WriteLine(newText);
+                    //}
+
                 }
+
+
+
                 var pngPreviewew = Request.Files["pngPreview"];
                 if (pngPreviewew != null && pngPreviewew.ContentLength > 0)
                 {
                     // get a stream
                     var stream = pngPreviewew.InputStream;
                     // and optionally write the file to disk
-                    var extension = Path.GetExtension(pngPreviewew.FileName);
+                    var extension = System.IO.Path.GetExtension(pngPreviewew.FileName);
 
                     previewFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
-                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Preview", previewFileName);
+                    var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Preview", previewFileName);
 
                     pngPreviewew.SaveAs(path);
                 }
@@ -620,11 +644,11 @@ namespace LidLaunchWebsite.Controllers
                     // get a stream
                     var stream = emb.InputStream;
                     // and optionally write the file to disk
-                    var extension = Path.GetExtension(emb.FileName);
+                    var extension = System.IO.Path.GetExtension(emb.FileName);
 
                     embFileName = "W" + bulkOrderId + "-" + designName + "-" + Guid.NewGuid().ToString() + extension;
 
-                    var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/EMB", embFileName);
+                    var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/EMB", embFileName);
 
                     emb.SaveAs(path);
                 }
@@ -753,14 +777,14 @@ namespace LidLaunchWebsite.Controllers
                         // get a stream
                         var stream = fileContent.InputStream;
                         // and optionally write the file to disk
-                        var extension = Path.GetExtension(fileContent.FileName);
+                        var extension = System.IO.Path.GetExtension(fileContent.FileName);
                         
                         var fileName = Guid.NewGuid().ToString() + extension;
                         if(bulkOrderId != "")
                         {
                             fileName = "W" + bulkOrderId + extension;
                         }
-                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", fileName);
+                        var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/DST", fileName);
 
                         fileContent.SaveAs(path);                                
                         returnValue = fileName;
@@ -796,14 +820,14 @@ namespace LidLaunchWebsite.Controllers
                         // get a stream
                         var stream = fileContent.InputStream;
                         // and optionally write the file to disk
-                        var extension = Path.GetExtension(fileContent.FileName);
+                        var extension = System.IO.Path.GetExtension(fileContent.FileName);
 
                         var fileName = Guid.NewGuid().ToString() + extension;
                         if (bulkOrderId != "")
                         {
                             fileName = "W" + bulkOrderId + extension;
                         }
-                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Preview", fileName);
+                        var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Preview", fileName);
 
                         fileContent.SaveAs(path);
                         returnValue = fileName;
@@ -851,14 +875,14 @@ namespace LidLaunchWebsite.Controllers
                         // get a stream
                         var stream = fileContent.InputStream;
                         // and optionally write the file to disk
-                        var extension = Path.GetExtension(fileContent.FileName);
+                        var extension = System.IO.Path.GetExtension(fileContent.FileName);
 
                         var fileName = Guid.NewGuid().ToString() + extension;
                         if (bulkOrderId != "")
                         {
                             fileName = "W" + bulkOrderId + extension;
                         }
-                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/EMB", fileName);
+                        var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/EMB", fileName);
 
                         fileContent.SaveAs(path);
                         returnValue = fileName;
@@ -894,14 +918,14 @@ namespace LidLaunchWebsite.Controllers
                         // get a stream
                         var stream = fileContent.InputStream;
                         // and optionally write the file to disk
-                        var extension = Path.GetExtension(fileContent.FileName);
+                        var extension = System.IO.Path.GetExtension(fileContent.FileName);
 
                         var fileName = Guid.NewGuid().ToString() + extension;
                         if (bulkOrderId != "")
                         {
                             fileName = "W" + bulkOrderId + extension;
                         }
-                        var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Info", fileName);
+                        var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/DesignImages/Digitizing/Info", fileName);
 
                         fileContent.SaveAs(path);
                         returnValue = fileName;
@@ -1101,6 +1125,26 @@ namespace LidLaunchWebsite.Controllers
 
         }
 
+        public string UpdateBulkOrderRefunded(string bulkOrderId)
+        {
+
+            if (Convert.ToInt32(Session["UserID"]) != 1)
+            {
+                return "false";
+            }
+            else
+            {
+                BulkData data = new BulkData();
+                var success = data.UpdateBulkOrderRefunded(Convert.ToInt32(bulkOrderId));
+                if (success)
+                {
+                    data.CreateNote(Convert.ToInt32(bulkOrderId), 0, 0, Convert.ToInt32(bulkOrderId), "ORDER HAS BEEN REFUNDED.", "", 0, false);
+                }
+                return success.ToString();
+            }
+
+        }
+
         public string UpdateBulkOrderBatchId(string bulkOrderId, string batchId)
         {
             BulkData data = new BulkData();
@@ -1276,11 +1320,11 @@ namespace LidLaunchWebsite.Controllers
                 // get a stream
                 var stream = fileContent.InputStream;
                 // and optionally write the file to disk
-                var extension = Path.GetExtension(fileContent.FileName);
+                var extension = System.IO.Path.GetExtension(fileContent.FileName);
 
                 var fileName = Guid.NewGuid() + extension;
                 var artworkPath = fileName;
-                var path = Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork", fileName);
+                var path = System.IO.Path.Combine(HttpRuntime.AppDomainAppPath + "/Images/BulkOrderArtwork", fileName);
 
                 fileContent.SaveAs(path);
 

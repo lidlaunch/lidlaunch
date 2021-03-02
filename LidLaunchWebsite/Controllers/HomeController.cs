@@ -13,11 +13,10 @@ namespace LidLaunchWebsite.Controllers
         public ActionResult Index()
         {
             ProductData productData = new ProductData();
-            List<WebsiteProduct> lstWebProds = new List<WebsiteProduct>();
-
-            lstWebProds = productData.GetWebsiteProductsRecent();
-
-            return View(lstWebProds);
+            BulkData bulkData = new BulkData();
+            var totalHats = bulkData.GetTotalHatsCompleted();
+            
+            return View(totalHats);
         }
         public PartialViewResult Menu()
         {            

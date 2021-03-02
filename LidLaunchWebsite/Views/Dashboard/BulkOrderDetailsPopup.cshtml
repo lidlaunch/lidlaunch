@@ -126,7 +126,7 @@
                     <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@Model.PaymentGuid" target="_blank">Pay Link</a></td>
                 </tr>
                 <tr>
-                    <td>Shipped:</td>                    
+                    <td>Shipped:</td>
                     <td>
                         @if (Model.OrderComplete)
                         {
@@ -136,10 +136,16 @@
                         {
                             <span>NOT SHIPPED</span>
                         }
-                                    
+
                     </td>
                 </tr>
-            </table>
+                @if (Model.OrderRefunded)
+                {
+                    <tr>
+                        <td colspan="2" style="color:red; font-size:22px; font-weight:bold;">REFUNDED</td>
+                    </tr>
+                }
+                </table>
         </div><!--/bulkOrderDetails-->
         <div id="bulkOrderItems">
             <h3>Order Items</h3>
@@ -377,7 +383,13 @@
             <div class="bottomBarLink">
                 <input type="button" class="smallButton" value="Edit Bulk Order" onclick="showLoading(); $('#bulkOrderEditHolder').load(bulkOrderEditUrl, { bulkOrderId: @Model.Id });" />
             </div>
-        </div>
+            @if (!Model.OrderRefunded)
+            {
+                <div class="bottomBarLink">
+                    <input type="button" class="smallButton" value="Mark Order Refunded" onclick="updateOrderRefunded('@Model.Id');" />
+                </div>
+            }
+            </div>
     </div><!--bulkOrderDetailsPopupContent-->
 </div><!--/bulkOrderDetailsPopup-->
 <script type="text/javascript">

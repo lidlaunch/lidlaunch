@@ -50,6 +50,9 @@
 <div id="examples">
 
 </div>
+<div id="videoOnly" style="width: auto; background: url('/Images/rocketsbg.jpg') repeat #39b91c; padding: 5px 0; text-align: center;">
+    <iframe style="max-width:600px; width:100%; margin:0 auto;" height="315" src="https://www.youtube.com/embed/MdmznVGnQEU?rel=0&modestbranding=1&autohide=1&showinfo=0&controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 <div id="videoSection">
     <div class="centerInner">
         <div id="asideVideo">
@@ -63,12 +66,11 @@
                     </td>
                 </tr>
             </table>
-
         </div><!--asideVideo-->
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/HdW6zOLnqHs?&controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/HdW6zOLnqHs?rel=0&modestbranding=1&autohide=1&showinfo=0&controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
 </div>
-<div class="clear"></div>
+<div class="clear" style="height:8px; display:block; width:100%; background:#39b91c;"></div>
 <div id="RecentWork">
     <div id="pastWorkHolder">
         <img src="~/Images/PastWorkNeon.png" />
@@ -120,6 +122,11 @@
         </div>
     </div>
 </div>
+<div id="howItWorks" style="background:url('Images/HowItWorksBg.jpg') no-repeat; background-size:cover; text-align:center; padding:20px 0;">
+    <div id="howItWorksImage">
+        <img src="~/Images/HowItWorks.png" style="width:600px; max-width:80%;" />
+    </div>
+</div>
 <script type="text/javascript">
     var slideIndex = 0;
     showSlides();
@@ -146,6 +153,12 @@
         </div>
     </div>
 </div><!--/searchBox-->
+@if (Model > 0)
+{
+    <div id="videoOnly" style="width: auto; background: url('/Images/rocketsbg.jpg') repeat #39b91c; padding: 5px 0; text-align: center; font-size:26px; color:#fff; padding:10px 0;">
+        We have produced and shipped over @Model.ToString("N0") hats to date.
+    </div>
+}
 <div class="clear"></div>
 <div>
     <div id="ProductListSection">
@@ -158,23 +171,6 @@
                 <div id="searchButton"><img src="@Url.Content("~/Images/search.jpg")" width="40" height="40" /></div>
             </div>
         </div>
-        <div class="clear"></div>
-        @foreach (LidLaunchWebsite.Models.WebsiteProduct prod in Model)
-        {
-            <div class="productListed" onclick="window.location='/Product?id=@prod.ProductId'">
-                <img src="~/Images/DesignImages/InUse/@prod.Image" width="250" class="productImage" /><br />
-                <span class="prodName">@prod.Name</span><br />
-                <span class="prodPrice">
-                    $@prod.Price
-                </span>
-                @if (prod.ParentCount > 0)
-                {
-                    <div class="multiOptionsIcon">
-                        <img src="~/Images/MoreColors.png" height="20" /><br />More color options available
-                    </div>
-                }
-            </div>
-        }
     </div>
 </div><!--/twoThirds-->
 
@@ -182,5 +178,11 @@
 <style type="text/css">
     #content {
         padding-top: 0;
+    }
+
+    #header {
+        position: sticky;
+        top: 0;
+        z-index: 999;
     }
 </style>

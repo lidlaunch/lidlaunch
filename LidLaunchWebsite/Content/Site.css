@@ -14,6 +14,15 @@ a {
     text-decoration: none;
 }
 
+pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}
+
 input[type=button] {
     background: #39b91c;
     display: block;
@@ -1659,7 +1668,7 @@ input[type=text], input[type=password], select, input[type=number] {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1000;
+    z-index: 99999999;
     background: url('../Images/loading.gif') 50% 50% no-repeat rgba(0,0,0,0.4);
 }
 
@@ -3099,6 +3108,7 @@ input[type=text], input[type=password], select, input[type=number] {
         background-size: 260% 300px;
         background-position: -99px;
         height: 223px;
+        overflow:hidden;
     }
     #searchBox.earn {
         background-position-y: -70px;
@@ -3414,7 +3424,7 @@ input[type=text], input[type=password], select, input[type=number] {
         height: 178px;
     }
     #searchBox img {
-        width: 480px;
+        width: 535px;
     }
     #searchBox.earn img {
         width: 422px;

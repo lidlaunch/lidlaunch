@@ -28,5 +28,6 @@ namespace LidLaunchWebsite.Models
         public string StitchoutImage { get; set; }
         public bool StitchoutApproved { get; set; }
         public bool PredigitizingApproved { get; set; }
+        public int StichCount { get; set; }
     }
 }

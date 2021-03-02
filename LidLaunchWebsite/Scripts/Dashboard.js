@@ -492,6 +492,25 @@ function updateBulkOrderPaid(bulkOrderId, orderPaid, that) {
     });
 }
 
+function updateOrderRefunded(bulkOrderId) {
+    showLoading();
+    $.ajax({
+        type: "POST",
+        url: '/Dashboard/UpdateBulkOrderRefunded',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            "bulkOrderId": bulkOrderId
+        }),
+        dataType: "json",
+        success: function (data) {
+            showBulkOrderDetailsPopup(bulkOrderId);
+        },
+        error: function (err) {
+            displayPopupNotification('Error updating order refunded.', 'error', false);
+        }
+    });
+}
+
 
 function addBulkOrderItemEdit() {
     var clonedTemplate = $('#bulkOrderItemEditTemplate').clone();
@@ -547,7 +566,6 @@ function saveBulkOrderEdit(bulkOrderId) {
                 displayPopupNotification('Sorry there was an error updating the bulk order.', 'error', false);
             } else {
                 //set the url for the file link and show the link 
-                hideLoading();
                 showBulkOrderDetailsPopup(bulkOrderId);
             }
         },

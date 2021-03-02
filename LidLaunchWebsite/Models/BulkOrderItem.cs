@@ -12,5 +12,6 @@ namespace LidLaunchWebsite.Models
         public List<Note> lstNotes { get; set; }
         public int DesignId { get; set; }
         public BulkRework BulkRework { get; set; }
+        public Design Design { get; set; }
     }
 }

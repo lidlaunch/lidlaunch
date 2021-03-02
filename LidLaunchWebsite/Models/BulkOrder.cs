@@ -26,6 +26,7 @@ namespace LidLaunchWebsite.Models
         public bool OrderCanceled { get; set; }
         public string ArtworkPosition { get; set; }
         public bool OrderPaid { get; set; }
+        public bool OrderRefunded { get; set; }
         public string PaymentGuid { get; set; }
         public string PaymentCompleteGuid { get; set; }
         public List<Design> lstDesigns { get; set; }

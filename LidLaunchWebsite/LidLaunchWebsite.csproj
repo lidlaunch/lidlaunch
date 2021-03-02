@@ -45,8 +45,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.6.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="CuttingEdge.Conditions, Version=1.2.0.11174, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
       <HintPath>..\packages\CuttingEdge.Conditions.1.2.0.0\lib\NET35\CuttingEdge.Conditions.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.2, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.2\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -235,10 +241,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Classes\BulkData.cs" />
+    <Compile Include="Models\Thread.cs" />
     <Compile Include="Classes\DigitizingOrderData.cs" />
     <Compile Include="Classes\EmailFunctions.cs" />
     <Compile Include="Classes\HatData.cs" />
     <Compile Include="Classes\OrderData.cs" />
+    <Compile Include="Models\PdfParser.cs" />
     <Compile Include="Classes\ProductData.cs" />
     <Compile Include="Classes\DesignData.cs" />
     <Compile Include="Classes\SQLData.cs" />
@@ -453,6 +461,8 @@
     <Content Include="Images\HatStyleSelectTemp.png" />
     <Content Include="Images\hiStepIcon.png" />
     <Content Include="Images\HomeHero.png" />
+    <Content Include="Images\HowItWorks.png" />
+    <Content Include="Images\HowItWorksBg.jpg" />
     <Content Include="Images\Icons\android-icon-144x144.png" />
     <Content Include="Images\Icons\android-icon-192x192.png" />
     <Content Include="Images\Icons\android-icon-36x36.png" />
@@ -486,6 +496,7 @@
     <Content Include="Images\logo.jpg" />
     <Content Include="Images\Logo.png" />
     <Content Include="Images\LogoBG.jpg" />
+    <Content Include="Images\LogoSmall.png" />
     <Content Include="Images\min.png" />
     <Content Include="Images\MoreColors.png" />
     <Content Include="Images\NotInternallyApproved.png" />
@@ -567,6 +578,7 @@
     <Content Include="Images\RichardsonSectionBG.jpg" />
     <Content Include="Images\RightOpPlacement.jpg" />
     <Content Include="Images\RightPlacement.jpg" />
+    <Content Include="Images\rocketsbg.jpg" />
     <Content Include="Images\search.jpg" />
     <Content Include="Images\SearchBack.jpg" />
     <Content Include="Images\SearchBack2.png" />

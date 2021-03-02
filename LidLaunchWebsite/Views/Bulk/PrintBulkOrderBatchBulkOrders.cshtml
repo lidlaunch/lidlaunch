@@ -2,11 +2,11 @@
 @{
     ViewBag.Title = "PrintBulkOrderBatchBulkOrders";
 }
-<style type="text/css">
+    <style type="text/css">
     #bulkOrderDetailsPopup {
         display: inline;
         background: unset;
-        height: auto;        
+        height: auto;
         position:relative;
     }
     #bulkOrderDetailsPopupContent {
@@ -21,7 +21,7 @@
         page-break-after: always;
         clear: both;
     }
-</style>
+    </style>
 
 @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model.lstBulkOrders)
 {
@@ -30,7 +30,7 @@
         <div id="bulkOrderDetailsPopupContent">
             <div id="TopInfoBar">
                 <div id="barcode">
-                    <div class="left"><img src="~/Images/Barcodes/@bulkOrder.BarcodeImage" /></div>                    
+                    <div class="left"><img src="~/Images/Barcodes/@bulkOrder.BarcodeImage" /></div>
                 </div>
                 <div class="clear">
                     @if (@bulkOrder.HasRework)
@@ -43,9 +43,9 @@
                     }
                     <div id="BulkOrderDate">Payment Date: @bulkOrder.PaymentDate<br />Shipping Date: @bulkOrder.ProjectedShipDateShort - @bulkOrder.ProjectedShipDateLong <span onclick="$('#bulkOrderDetailsPopup').hide();" class="closeButton">X</span></div>
                 </div>
-            </div>            
+            </div>
             <div id="bulkOrderItems">
-                <h3>Order Items</h3>                
+                <h3>Order Items</h3>
                 <table id="printingTable">
                     <thead>
                         <tr>
@@ -60,21 +60,21 @@
                         {
                             if (item.ItemName != "Shipping" && item.ItemName != "Back Stitching" && item.ItemName != "Left Side Stitching" && item.ItemName != "Right Side Stitching" && item.ItemName != "Artwork Setup/Digitizing")
                             {
-                        <tr>
-                            <td>@item.ItemName</td>
-                            <td style="font-size:24px; font-weight:bold;">@item.ItemQuantity</td>
-                            <td style="font-size:24px;">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</td>
-                            <td style="font-size:24px;">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</td>
-                            @if (item.BulkRework != null && item.BulkRework.Id > 0)
-                            {
-                                <td style="font-size:24px;">@item.BulkRework.Note</td>
-                            }
-                            else
-                            {
-                                <td style="font-size:24px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            }
+                                <tr>
+                                    <td>@item.ItemName</td>
+                                    <td style="font-size:24px; font-weight:bold;">@item.ItemQuantity</td>
+                                    <td style="font-size:24px;">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</td>
+                                    <td style="font-size:24px;">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</td>
+                                    @if (item.BulkRework != null && item.BulkRework.Id > 0)
+                                    {
+                                        <td style="font-size:24px;">@item.BulkRework.Note</td>
+                                    }
+                                    else
+                                    {
+                                        <td style="font-size:24px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    }
 
-                        </tr>
+                                </tr>
                             }
 
                         }
@@ -89,7 +89,8 @@
                 </table>
             </div><!--/bulkOrderItems-->
         </div><!--bulkOrderDetailsPopupContent-->
-    </div><!--/bulkOrderDetailsPopup-->
-</div>    
+    </div><!--/bulkOrderDetailsPopup-->    
+</div>   
+<div style="break-after:page"></div> 
 }
 

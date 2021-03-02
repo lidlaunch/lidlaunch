@@ -76,6 +76,16 @@ function updateBulkTotals() {
         currentShippingTotal = 10;
     }
 
+    if (totalHats <= 5) {
+        $('#chkBackStitching').prop("checked", false);
+        $('#txtBackStitching').val('');
+        $('#artworkStep4Header').text('Back Stitching - Available for orders 6 or more');
+        $('#artworkStep4').hide();
+    } else {
+        $('#artworkStep4Header').text('Back Stitching');
+        $('#artworkStep4').show();
+    }
+
     
 
 
