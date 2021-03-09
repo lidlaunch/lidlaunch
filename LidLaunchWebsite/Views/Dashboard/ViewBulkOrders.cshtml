@@ -132,7 +132,15 @@
         <td>
             @if (bulkOrder.ArtworkImage == "" && !bulkOrder.OrderNotes.Contains("ARTWORK PRE-EXISTING"))
             {
-                <span>NO<br />ART</span>
+                if (bulkOrder.ArtworkEmailSent)
+                {
+                    <span>ART<br/>EMAIL<br/>SENT</span>
+                }
+                else
+                {
+                    <span>NO<br />ART</span>
+                }
+
             }
             else
             {
@@ -141,11 +149,11 @@
         </td>
         @if (bulkOrder.OrderPaid)
         {
-            <td style="background: #39b91c; text-align:center;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','true',this)">$@bulkOrder.OrderTotal</a></td>
+    <td style="background: #39b91c; text-align:center;">$@bulkOrder.OrderTotal<a class="hidden" style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','true',this)">$@bulkOrder.OrderTotal</a></td>
         }
         else
         {
-            <td style="background:red; text-align:center;"><a style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','false',this)">$@bulkOrder.OrderTotal</a></td>
+    <td style="background:red; text-align:center;">$@bulkOrder.OrderTotal<a class="hidden" style="color:#fff;" href="#" onclick="updateBulkOrderPaid('@bulkOrder.Id','false',this)">$@bulkOrder.OrderTotal</a></td>
         }
         <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@bulkOrder.PaymentGuid" target="_blank" class="ViewBulkLink"><input type="button" value="CSTLINK" class="smallButton" /></a></td>
         <td><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);"><input type="button" value="VIEW" class="smallButton" /></span></td>
