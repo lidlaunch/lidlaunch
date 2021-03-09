@@ -78,18 +78,11 @@ namespace LidLaunchWebsite.Controllers
 
         public ActionResult Orders()
         {
-            if (Convert.ToInt32(Session["UserID"]) > 0)
+            if (checkAdminLoggedIn())
             {
-                if (Convert.ToInt32(Session["UserID"]) == 1)
-                {
-                    DashboardData data = new DashboardData();
-                    AdminDashboard dashboard = data.GetAdminDashboard();
-                    return View(dashboard);
-                }
-                else
-                {
-                    return RedirectToAction("Login", "User", null);
-                }
+                DashboardData data = new DashboardData();
+                AdminDashboard dashboard = data.GetAdminDashboard();
+                return View(dashboard);
             }
             else
             {
@@ -99,136 +92,88 @@ namespace LidLaunchWebsite.Controllers
         }
         public ActionResult BatchOrder(string batchId)
         {
-            if (Convert.ToInt32(Session["UserID"]) > 0)
+            if (checkAdminLoggedIn())
             {
-                if (Convert.ToInt32(Session["UserID"]) == 1)
-                {
-                    DashboardData data = new DashboardData();
-                    BatchDashboard dashboard = data.GetBatch(Convert.ToInt32(batchId));
-                    return View(dashboard);
-                }
-                else
-                {
-                    return RedirectToAction("Login", "User", null);
-                }
-            }
-            else
+                DashboardData data = new DashboardData();
+                BatchDashboard dashboard = data.GetBatch(Convert.ToInt32(batchId));
+                return View(dashboard);
+            } else
             {
                 return RedirectToAction("Login", "User", null);
             }
-
         }
         public ActionResult CreateBatch()
         {
-            if (Convert.ToInt32(Session["UserID"]) > 0)
+            if (checkAdminLoggedIn())
             {
-                if (Convert.ToInt32(Session["UserID"]) == 1)
-                {
-                    DashboardData data = new DashboardData();
-                    BatchDashboard dashboard = data.GetBatches();
-                    return View(dashboard);
-                }
-                else
-                {
-                    return RedirectToAction("Login", "User", null);
-                }
+                DashboardData data = new DashboardData();
+                BatchDashboard dashboard = data.GetBatches();
+                return View(dashboard);
             }
             else
             {
                 return RedirectToAction("Login", "User", null);
             }
-
         }
         public ActionResult PendingProducts()
         {
-            if (Convert.ToInt32(Session["UserID"]) > 0)
+            if (checkAdminLoggedIn())
             {
-                if (Convert.ToInt32(Session["UserID"]) == 1)
-                {
-                    List<Product> lstProducts = new List<Product>();
-                    ProductData data = new ProductData();
-                    lstProducts = data.GetProductsToApprove();
-                    return View(lstProducts);
-                }
-                else
-                {
-                    return RedirectToAction("Login", "User", null);
-                }
+                List<Product> lstProducts = new List<Product>();
+                ProductData data = new ProductData();
+                lstProducts = data.GetProductsToApprove();
+                return View(lstProducts);
             }
             else
             {
                 return RedirectToAction("Login", "User", null);
             }
-
         }
 
         public ActionResult NeedsDigitizing()
         {
-            if (Convert.ToInt32(Session["UserID"]) > 0)
+            if (checkAdminLoggedIn())
             {
-                if (Convert.ToInt32(Session["UserID"]) == 1)
-                {
-                    List<Product> lstProducts = new List<Product>();
-                    ProductData data = new ProductData();
-                    lstProducts = data.GetArtworkForDigitizing();
-                    return View(lstProducts);
-                }
-                else
-                {
-                    return RedirectToAction("Login", "User", null);
-                }
+                List<Product> lstProducts = new List<Product>();
+                ProductData data = new ProductData();
+                lstProducts = data.GetArtworkForDigitizing();
+                return View(lstProducts);
             }
             else
             {
                 return RedirectToAction("Login", "User", null);
             }
-
         }
         public ActionResult HatManager()
         {
-            if (Convert.ToInt32(Session["UserID"]) > 0)
+            if (checkAdminLoggedIn())
             {
-                if (Convert.ToInt32(Session["UserID"]) == 1)
-                {
-                    HatData data = new HatData();
-                    HatManager hatManager = new HatManager();
-                    hatManager.lstHatTypes = data.GetHatTypes();
-                    return View(hatManager);
-                }
-                else
-                {
-                    return RedirectToAction("Login", "User", null);
-                }
+                HatData data = new HatData();
+                HatManager hatManager = new HatManager();
+                hatManager.lstHatTypes = data.GetHatTypes();
+                return View(hatManager);
             }
             else
             {
                 return RedirectToAction("Login", "User", null);
             }
-
         }
         public ActionResult HatTypeEdit(int hatTypeId = 0)
         {
-            if (Convert.ToInt32(Session["UserID"]) > 0)
+            if (checkAdminLoggedIn())
             {
-                if (Convert.ToInt32(Session["UserID"]) == 1)
+                HatData data = new HatData();
+                HatType hatType = new HatType();
+                if (hatTypeId > 0)
                 {
-                    HatData data = new HatData();
-                    HatType hatType = new HatType();
-                    if (hatTypeId > 0)
-                    {
-                        hatType = data.GetHatType(hatTypeId);
-                    }                    
-                    return View(hatType);
-                }
-                else
-                {
-                    return RedirectToAction("Login", "User", null);
-                }
+                    hatType = data.GetHatType(hatTypeId);
+                }                    
+                return View(hatType);
             }
             else
             {
                 return RedirectToAction("Login", "User", null);
-            }
+            }          
             
         }
         public string UploadHatCreationImage()
@@ -335,7 +280,7 @@ namespace LidLaunchWebsite.Controllers
         }
         public ActionResult EditProduct(string id)
         {
-            if (Convert.ToInt32(id) > 0)
+            if (checkAdminLoggedIn())
             {
                 UpdateProduct updateProd = new UpdateProduct();
                 List<Category> lstCategories = new List<Category>();
