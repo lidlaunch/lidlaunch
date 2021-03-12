@@ -389,6 +389,11 @@
                     <input type="button" class="smallButton" value="Mark Order Refunded" onclick="updateOrderRefunded('@Model.Id');" />
                 </div>
             }
+            @if (Model.lstDesigns.Any(d => d.InternallyApproved)) {
+                <div class="bottomBarLink">
+                    <input type="button" class="smallButton" value="Send Design Reminder Email: @Model.ReminderApprovalEmailSent" onclick="sendDesignApprovalEmail('@Model.Id');" />
+                </div>
+            }
             </div>
     </div><!--bulkOrderDetailsPopupContent-->
 </div><!--/bulkOrderDetailsPopup-->

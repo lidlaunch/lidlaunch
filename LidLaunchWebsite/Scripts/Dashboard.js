@@ -502,14 +502,47 @@ function updateOrderRefunded(bulkOrderId) {
             "bulkOrderId": bulkOrderId
         }),
         dataType: "json",
-        success: function (data) {
-            showBulkOrderDetailsPopup(bulkOrderId);
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('Error marking order as refunded.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                showBulkOrderDetailsPopup(bulkOrderId);
+            }           
         },
         error: function (err) {
-            displayPopupNotification('Error updating order refunded.', 'error', false);
+            displayPopupNotification('Error updating order as refunded.', 'error', false);
         }
     });
 }
+
+
+function sendDesignApprovalEmail(bulkOrderId) {
+    showLoading();
+    $.ajax({
+        type: "POST",
+        url: '/Dashboard/SendDesignApprovalEmail',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            "bulkOrderId": bulkOrderId
+        }),
+        dataType: "json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('Error sending design approval email.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                showBulkOrderDetailsPopup(bulkOrderId);
+            }  
+        },
+        error: function (err) {
+            displayPopupNotification('Error sending design approval email.', 'error', false);
+        }
+    });
+}
+
 
 
 function addBulkOrderItemEdit() {

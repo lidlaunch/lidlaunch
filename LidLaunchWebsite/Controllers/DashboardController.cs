@@ -1097,6 +1097,31 @@ namespace LidLaunchWebsite.Controllers
 
         }
 
+        public string SendDesignApprovalEmail(string bulkOrderId)
+        {
+
+            if (!checkLoggedIn())
+            {
+                return "false";
+            }
+            else
+            {
+                BulkData data = new BulkData();
+
+                BulkOrder bulkOrder = data.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
+                EmailFunctions email = new EmailFunctions();
+                var success = email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
+
+                if (success)
+                {
+                    data.UpdateBulkOrderReminderApprovalSent(Convert.ToInt32(bulkOrderId));
+                    data.CreateNote(Convert.ToInt32(bulkOrderId), 0, 0, Convert.ToInt32(bulkOrderId), "Design Approval Reminder Email Sent Number " + (bulkOrder.ReminderApprovalEmailSent + 1).ToString() +  ".", "", 0, false);
+                }
+                return success.ToString();
+            }
+
+        }
+
         public string UpdateBulkOrderBatchId(string bulkOrderId, string batchId)
         {
             BulkData data = new BulkData();
