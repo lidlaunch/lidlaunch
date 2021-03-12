@@ -622,17 +622,21 @@ namespace LidLaunchWebsite.Controllers
                     BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
                     EmailFunctions email = new EmailFunctions();
                     //send email to customer about their order, revision request
-                    //email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
-                    return "true";
+                    //var success = email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
+                    var success = true;
+
+                    var json = new JavaScriptSerializer().Serialize(success);
+
+                    return json;
                 }
                 else
                 {
-                    return "";
+                    return new JavaScriptSerializer().Serialize(false);
                 }                
             }
             catch (Exception ex)
             {
-                return "";
+                return new JavaScriptSerializer().Serialize(false);
             }            
         }
 
@@ -1085,7 +1089,10 @@ namespace LidLaunchWebsite.Controllers
                 {
                     data.CreateNote(Convert.ToInt32(bulkOrderId), 0, 0, Convert.ToInt32(bulkOrderId), "ORDER HAS BEEN REFUNDED.", "", 0, false);
                 }
-                return success.ToString();
+
+                var json = new JavaScriptSerializer().Serialize(success);
+
+                return json;
             }
 
         }
