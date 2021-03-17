@@ -75,7 +75,6 @@ namespace LidLaunchWebsite.Controllers
             }
 
         }
-
         public ActionResult Orders()
         {
             if (checkAdminLoggedIn())
@@ -1102,7 +1101,7 @@ namespace LidLaunchWebsite.Controllers
 
             if (!checkLoggedIn())
             {
-                return "false";
+                return new JavaScriptSerializer().Serialize(false);
             }
             else
             {
@@ -1117,7 +1116,10 @@ namespace LidLaunchWebsite.Controllers
                     data.UpdateBulkOrderReminderApprovalSent(Convert.ToInt32(bulkOrderId));
                     data.CreateNote(Convert.ToInt32(bulkOrderId), 0, 0, Convert.ToInt32(bulkOrderId), "Design Approval Reminder Email Sent Number " + (bulkOrder.ReminderApprovalEmailSent + 1).ToString() +  ".", "", 0, false);
                 }
-                return success.ToString();
+
+                var json = new JavaScriptSerializer().Serialize(success);
+
+                return json;
             }
 
         }

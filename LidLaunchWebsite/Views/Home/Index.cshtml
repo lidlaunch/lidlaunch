@@ -47,6 +47,14 @@
             </div>/centerInner
         </div>/searchBoxBottom*@
 </div><!--/searchBox-->
+<div class="clear"></div>
+@if (Model > 0)
+{
+    <div style="width: auto; background: url('/Images/rocketsbg.jpg') repeat #39b91c; padding: 5px 0; text-align: center; font-size:26px; color:#fff; padding:10px 0;">
+        We have produced and shipped over @Model.ToString("N0") hats to date.
+    </div>
+}
+<div class="clear"></div>
 <div id="examples">
 
 </div>
@@ -146,21 +154,15 @@
     }
 </script>
 <div class="clear"></div>
-<div id="searchBox" class="earn" style="display:none;">
+<!--<div id="searchBox" class="earn" style="display:none;">
     <div class="centerInner">
         <div id="searchBoxTop">
             <a href="/Create"><img src="~/Images/StartEarningHero.png" /></a>
         </div>
     </div>
-</div><!--/searchBox-->
-@if (Model > 0)
-{
-    <div id="videoOnly" style="width: auto; background: url('/Images/rocketsbg.jpg') repeat #39b91c; padding: 5px 0; text-align: center; font-size:26px; color:#fff; padding:10px 0;">
-        We have produced and shipped over @Model.ToString("N0") hats to date.
-    </div>
-}
-<div class="clear"></div>
-<div>
+</div>-->
+<!--/searchBox-->
+<!--<div>
     <div id="ProductListSection">
         <div id="searchHome">
             <span class="SearchTag">
@@ -172,7 +174,8 @@
             </div>
         </div>
     </div>
-</div><!--/twoThirds-->
+</div>-->
+<!--/twoThirds-->
 
 
 <style type="text/css">

@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewBag.Title = "OrderLookup";
+}
+
+<div class="centerInner" style="padding:20px;">
+    <h3>Loook up  your current and past orders..</h3>
+    <table>
+        <tr>
+            <td>Email</td>
+            <td><input type="text" id="email" /></td>
+        </tr>
+        <tr>
+            <td>First Name</td>
+            <td><input type="text" id="firstName" /></td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td><input type="text" id="lastName" /></td>
+        </tr>
+        <tr>
+            <td>Zip Code</td>
+            <td><input type="text" id="zipCode" /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="button" class="smallButton" value="Lookup Order" id="btnSearch" onclick="searchOrders()" />
+            </td>
+        </tr>
+    </table>
+
+    <table id="Orders">
+        <thead style="font-weight:bold;">
+            <tr>
+                <td>ID</td>
+                <td>Order Date</td>
+                <td>Order Status</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                
+            </tr>
+        </tbody>
+        
+    </table>
+
+</div>
+
+
+<script type="text/javascript">
+    function searchOrders(){
+        var email = $('#email').val();
+        var zip = $('#zipCode').val();
+        var firstName = $('#firstName').val();
+        var lastName = $('#lastName').val();
+        $('#Orders tbody').empty();
+
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: '/Bulk/OrderSearch',
+            contentType: false,
+            processData: false,
+            data: JSON.stringify({
+                email: email,
+                zipCode: zip,
+                firstName: firstName,
+                lastName: lastName
+            }),
+            contentType: "application/json",
+            success: function (result) {
+                if (result != "") {
+                    //do nothing
+                    $('#Orders tbody').append(result);
+                    hideLoading();
+                } else {
+                    displayPopupNotification('No Results Found.', 'error', false);
+                }
+            },
+            error: function (xhr, status, p3, p4) {
+                displayPopupNotification('Error.', 'error', false);
+            }
+        });
+
+    }
+</script>

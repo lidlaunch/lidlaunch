@@ -856,6 +856,7 @@
     <Content Include="Views\Bulk\HatSelectStep.cshtml" />
     <Content Include="Views\Bulk\IntroStep.cshtml" />
     <Content Include="Views\Bulk\ThreadColorChart.cshtml" />
+    <Content Include="Views\Bulk\OrderLookup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

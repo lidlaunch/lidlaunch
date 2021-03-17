@@ -58,7 +58,10 @@ namespace LidLaunchWebsite.Controllers
 
             return PartialView("ArtworkStep", model);
         }
-
+        public ActionResult OrderLookup()
+        {
+            return View();
+        }
         public ActionResult Payment(string id)
         {
             BulkData data = new BulkData();
@@ -122,6 +125,38 @@ namespace LidLaunchWebsite.Controllers
             lstDesigns = data.GetBulkDesigns(email);
 
             return Newtonsoft.Json.JsonConvert.SerializeObject(lstDesigns);  
+        }
+
+        public string OrderSearch(string email, string firstName, string lastName, string zipCode)
+        {
+            BulkData data = new BulkData();
+            List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
+            var orderString = "";
+
+            lstBulkOrders = data.SearchBulkOrders(email, firstName, lastName, zipCode);
+
+            lstBulkOrders = lstBulkOrders.OrderByDescending(bo => bo.Id).ToList();
+
+            foreach(BulkOrder bo in lstBulkOrders)
+            {
+                var status = "";
+
+                if(bo.OrderPaid)
+                {
+                    status = bo.OrderComplete ? "COMPLETE" : "IN PROCESS";
+                }
+                else if(bo.OrderRefunded)
+                {
+                    status = "REFUNDED";
+                }
+                else
+                {
+                    status = "UNPAID";
+                }
+                orderString += "<tr><td>" + bo.Id.ToString() + "</td><td>" + bo.OrderDate + "</td><td>" + status + "</td><td><a href='/bulk/orderstatus?id=" + bo.PaymentGuid + "' target='_blank'><input type='button' value='VIEW DETAILS' class='smallButton' /></a></td></tr>";
+            }
+
+            return orderString;
         }
 
         public string RequestDigitizingRevision(string id, string text, string bulkOrderId, bool customerAdded)

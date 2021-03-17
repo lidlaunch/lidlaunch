@@ -1234,7 +1234,63 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
+        public List<BulkOrder> SearchBulkOrders(string email, string firstName, string lastName, string zipCode)
+        {
+            var data = new SQLData();
+            List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("SearchBulkOrders", data.conn);
+                    sqlComm.Parameters.AddWithValue("@email", email);
+                    sqlComm.Parameters.AddWithValue("@firstName", firstName);
+                    sqlComm.Parameters.AddWithValue("@lastName", lastName);
+                    sqlComm.Parameters.AddWithValue("@zipCode", zipCode);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
 
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+
+                            foreach (DataRow dr in ds.Tables[0].Rows)
+                            {
+                                BulkOrder bulkOrder = new BulkOrder();
+                                bulkOrder.Id = Convert.ToInt32(dr["Id"].ToString());
+                                bulkOrder.OrderDate = Convert.ToDateTime(dr["OrderDate"].ToString());
+                                bulkOrder.OrderComplete = Convert.ToBoolean(dr["OrderComplete"].ToString());
+                                bulkOrder.PaymentGuid = Convert.ToString(dr["PaymentGuid"].ToString());
+                                bulkOrder.OrderPaid = Convert.ToBoolean(dr["OrderPaid"].ToString());
+                                bulkOrder.OrderRefunded = Convert.ToBoolean(dr["OrderRefunded"].ToString());
+                                lstBulkOrders.Add(bulkOrder);
+                            }                            
+                        }
+                    }
+
+                }
+
+                return lstBulkOrders;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("Error Building Bulk Order List: " + ex.Message.ToString());
+                return lstBulkOrders;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
         public List<Design> GetBulkDesigns(string email)
         {
             var data = new SQLData();

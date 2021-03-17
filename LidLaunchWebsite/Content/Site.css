@@ -557,6 +557,7 @@ input[type=text], input[type=password], select, input[type=number] {
     margin-top: 20px;
     background: #eee;
     color: #7f7f7f;
+    padding-bottom: 100px;
 }
 
 #footerContent {

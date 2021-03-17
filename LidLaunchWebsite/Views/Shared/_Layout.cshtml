@@ -104,10 +104,11 @@
                         </div>
                         <div id="navigation">
                             <ul>
-                                <li>@Html.ActionLink("Order", "Index", "Bulk")</li>
-                                <li>@Html.ActionLink("Shop", "Index", "Shop")</li>
+                                <li>@Html.ActionLink("Order Now", "Index", "Bulk")</li>
+                                @*<li>@Html.ActionLink("Shop", "Index", "Shop")</li>*@
+                                <li style="border-right:none;">@Html.ActionLink("Order Status", "OrderLookup", "Bulk")</li>
                                 @*<li id="desktopCreate">@Html.ActionLink("Create", "GetStarted", "Create")</li>
-                                    <li id="mobileCreate" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);"><a href="#">Create</a></li>*@
+        <li id="mobileCreate" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);"><a href="#">Create</a></li>*@
 
                                 @if (Convert.ToInt32(Session["UserID"]) > 0)
                                 {
@@ -129,16 +130,12 @@
                                     </li>
 
                                 }
-                                else
-                                {
-                                    <li>@Html.ActionLink("Login", "Login", "User")</li>
-                                }
-                                <li class="last">
+                                @*<li class="last">
                                     <div onclick="window.location = '/Cart/Cart'">
                                         <img src="~/Images/shopping-cart (1).png" style="width:35px; height:35px" class="cartIcon" />
                                         <div><span id="cartTotal">@Convert.ToInt32(@Session["TotalCartQuantity"])</span> Items</div>
                                     </div>
-                                </li>
+                                </li>*@
                             </ul>
                         </div><!--/navigation-->
                     </div><!--/centerInner-->
@@ -165,13 +162,14 @@
                 <div class="left50">
                     <ul>
                         <li><a href="~/Bulk">Order</a></li>
-                        <li><a href="~/Shop">Shop</a></li>
+                        <li class="hidden"><a href="~/Shop">Shop</a></li>
                         <li class="hidden"><a href="~/Create/GetStarted">Sell Your Designs</a></li>
                         <li><a href="~/Terms/TermsAndConditions">Terms & Conditions</a></li>
                         <li><a href="~/Terms/Returns">Returns</a></li>
                         <li><a href="~/Terms/Privacy">Privacy</a></li>
                         <li><a href="~/Terms/TermsOfSalesAndDelivery">Terms of Sales and Delivery</a></li>
                         <li><a href="~/Terms/DesignerPayouts">Designer Payouts</a></li>
+                        <li>@Html.ActionLink("Login", "Login", "User")</li>
                     </ul>
                 </div>
                 <div class="left50">
