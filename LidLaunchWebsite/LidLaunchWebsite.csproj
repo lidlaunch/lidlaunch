@@ -505,6 +505,7 @@
     <Content Include="Images\PastWorkNeon.png" />
     <Content Include="Images\paypal.png" />
     <Content Include="Images\PayWithDebit-CreditCard.png" />
+    <Content Include="Images\ProfileLink.png" />
     <Content Include="Images\richardson.gif" />
     <Content Include="Images\Richardson112.jpg" />
     <Content Include="Images\RichardsonHats\hat_01.jpg" />

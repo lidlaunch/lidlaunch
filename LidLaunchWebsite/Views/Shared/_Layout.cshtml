@@ -112,8 +112,8 @@
 
                                 @if (Convert.ToInt32(Session["UserID"]) > 0)
                                 {
-                                    <li>
-                                        <a href="#" onclick="showProfileLinks();">Profile</a>
+                                    <li  style="border:0;">
+                                        <a href="#" onclick="showProfileLinks();"><img src="~/Images/ProfileLink.png" alt="Profile" width="40" /></a>
                                         <ul id="profileMenu" style="display:none;">
                                             <li>@Html.ActionLink("Dashboard", "Designer", "Dashboard")</li>
                                             <li>@Html.ActionLink("Logout", "Logout", "User")</li>

@@ -977,6 +977,118 @@ namespace LidLaunchWebsite.Controllers
                 model.lstBulkOrders = data.GetBulkOrderData(filter);
                 model.lstBulkOrders = model.lstBulkOrders.OrderByDescending(bo => bo.OrderPaid).ToList();
                 model.lstBulkOrderBatches = data.GetBulkOrderBatches();
+
+                BulkOrderListSectionModel allSection = new BulkOrderListSectionModel();
+                allSection.Name = "All Orders";
+                allSection.SortOrder = 0;
+                allSection.lstBulkOrders = new List<BulkOrder>();
+                allSection.lstBulkOrders = model.lstBulkOrders;
+                allSection.textColor = "#000";
+                allSection.backgroundColor = "#fff";
+
+                BulkOrderListSectionModel adminReviewSection = new BulkOrderListSectionModel();
+                adminReviewSection.Name = "Admin Review";
+                adminReviewSection.SortOrder = 1;
+                adminReviewSection.lstBulkOrders = new List<BulkOrder>();
+                adminReviewSection.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => bo.AdminReview && !bo.DesignerReview));
+                adminReviewSection.lstBulkOrders = adminReviewSection.lstBulkOrders.OrderBy(bo => bo.PaymentDate).ToList();
+                adminReviewSection.textColor = "#fff";
+                adminReviewSection.backgroundColor = "#000";
+
+                BulkOrderListSectionModel designerReviewSection = new BulkOrderListSectionModel();
+                designerReviewSection.Name = "Designer Review";
+                designerReviewSection.SortOrder = 2;
+                designerReviewSection.lstBulkOrders = new List<BulkOrder>();
+                designerReviewSection.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => bo.DesignerReview));
+                designerReviewSection.lstBulkOrders = designerReviewSection.lstBulkOrders.OrderBy(bo => bo.PaymentDate).ToList();
+                designerReviewSection.textColor = "#fff";
+                designerReviewSection.backgroundColor = "#000";
+
+                BulkOrderListSectionModel noArtworkSection = new BulkOrderListSectionModel();
+                noArtworkSection.Name = "No Artwork";                
+                noArtworkSection.SortOrder = 3;
+                noArtworkSection.lstBulkOrders = new List<BulkOrder>();
+                noArtworkSection.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.OrderComplete && !bo.ReadyForProduction && (bo.ArtworkImage == "" || (!bo.lstDesigns.Any(d => d.DigitizedPreview != "") && bo.OrderNotes.Contains("ARTWORK PRE-EXISTING")))));
+                noArtworkSection.lstBulkOrders = noArtworkSection.lstBulkOrders.OrderBy(bo => bo.PaymentDate).ToList();
+                noArtworkSection.textColor = "#000";
+                noArtworkSection.backgroundColor = "#ccc";
+
+                BulkOrderListSectionModel inRevisionSection = new BulkOrderListSectionModel();
+                inRevisionSection.Name = "In Revision";
+                inRevisionSection.SortOrder = 4;
+                inRevisionSection.lstBulkOrders = new List<BulkOrder>();
+                inRevisionSection.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.OrderComplete && !bo.ReadyForProduction && bo.lstDesigns.Any(d => d.CustomerApproved == false) && bo.lstDesigns.Any(d => d.Revision)));
+                inRevisionSection.lstBulkOrders = inRevisionSection.lstBulkOrders.OrderBy(bo => bo.PaymentDate).ToList();
+                inRevisionSection.textColor = "#fff";
+                inRevisionSection.backgroundColor = "#8c4b00";
+
+                BulkOrderListSectionModel awaitingInternalApproval = new BulkOrderListSectionModel();
+                awaitingInternalApproval.Name = "Awaiting Internal Approval";
+                awaitingInternalApproval.SortOrder = 5;
+                awaitingInternalApproval.lstBulkOrders = new List<BulkOrder>();
+                awaitingInternalApproval.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.OrderComplete && !bo.ReadyForProduction && bo.lstDesigns.Any(d => d.InternallyApproved == false) && bo.lstDesigns.Any(d => d.DigitizedPreview != "")));
+                awaitingInternalApproval.lstBulkOrders = awaitingInternalApproval.lstBulkOrders.OrderBy(bo => bo.PaymentDate).ToList();
+                awaitingInternalApproval.textColor = "#000";
+                awaitingInternalApproval.backgroundColor = "#f9fc04";
+
+
+                BulkOrderListSectionModel awaitingCustomerApproval = new BulkOrderListSectionModel();
+                awaitingCustomerApproval.Name = "Awaiting Customer Approval";
+                awaitingCustomerApproval.SortOrder = 6;
+                awaitingCustomerApproval.lstBulkOrders = new List<BulkOrder>();
+                awaitingCustomerApproval.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.OrderComplete && !bo.ReadyForProduction && bo.lstDesigns.Any(d => d.CustomerApproved == false) && bo.lstDesigns.Any(d => d.InternallyApproved) && !bo.lstDesigns.Any(d => d.Revision) && bo.lstDesigns.Any(d => d.DigitizedPreview != "")));
+                awaitingCustomerApproval.lstBulkOrders = awaitingCustomerApproval.lstBulkOrders.OrderBy(bo => bo.PaymentDate).ToList();
+                awaitingCustomerApproval.textColor = "#fff";
+                awaitingCustomerApproval.backgroundColor = "#fc8a04";
+
+                BulkOrderListSectionModel awaitingProductionReview = new BulkOrderListSectionModel();
+                awaitingProductionReview.Name = "Awaiting Production Review";
+                awaitingProductionReview.SortOrder = 7;
+                awaitingProductionReview.lstBulkOrders = new List<BulkOrder>();
+                awaitingProductionReview.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.OrderComplete && !bo.ReadyForProduction && bo.lstDesigns.Any(d => d.CustomerApproved == true))); adminReviewSection.lstBulkOrders.OrderByDescending(bo => bo.PaymentDate);
+                awaitingProductionReview.lstBulkOrders = awaitingProductionReview.lstBulkOrders.OrderBy(bo => bo.PaymentDate).ToList();
+                awaitingProductionReview.textColor = "#fff";
+                awaitingProductionReview.backgroundColor = "#c504fc";
+
+                BulkOrderListSectionModel readyForProduction = new BulkOrderListSectionModel();
+                readyForProduction.Name = "Ready For Production";
+                readyForProduction.SortOrder = 8;
+                readyForProduction.lstBulkOrders = new List<BulkOrder>();
+                readyForProduction.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.OrderComplete && bo.ReadyForProduction));
+                readyForProduction.lstBulkOrders = readyForProduction.lstBulkOrders.OrderBy(bo => bo.PaymentDate).ToList();
+                readyForProduction.textColor = "#fff";
+                readyForProduction.backgroundColor = "#1372d3";
+
+                BulkOrderListSectionModel reworkSection = new BulkOrderListSectionModel();
+                reworkSection.Name = "Rework";
+                reworkSection.SortOrder = 9;
+                reworkSection.lstBulkOrders = new List<BulkOrder>();
+                reworkSection.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => bo.lstItems.Any(i => i.BulkRework.Status == "In Progress")));
+                reworkSection.lstBulkOrders = reworkSection.lstBulkOrders.OrderBy(bo => bo.PaymentDate).ToList();
+                reworkSection.textColor = "#fff";
+                reworkSection.backgroundColor = "#e92121";
+
+                BulkOrderListSectionModel completeSection = new BulkOrderListSectionModel();
+                completeSection.Name = "Completed";
+                completeSection.SortOrder = 10;
+                completeSection.lstBulkOrders = new List<BulkOrder>();
+                completeSection.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.lstItems.Any(i => i.BulkRework.Status == "In Progress") && bo.OrderComplete));
+                completeSection.textColor = "#fff";
+                completeSection.backgroundColor = "#39b91c";
+
+                model.lstSections = new List<BulkOrderListSectionModel>();
+                model.lstSections.Add(allSection);
+                model.lstSections.Add(adminReviewSection);
+                model.lstSections.Add(designerReviewSection);
+                model.lstSections.Add(noArtworkSection);
+                model.lstSections.Add(inRevisionSection);
+                model.lstSections.Add(awaitingInternalApproval);
+                model.lstSections.Add(awaitingCustomerApproval);
+                model.lstSections.Add(awaitingProductionReview);
+                model.lstSections.Add(readyForProduction);
+                model.lstSections.Add(reworkSection);
+                model.lstSections.Add(completeSection);
+
                 return View(model);
             }
         }
@@ -993,6 +1105,7 @@ namespace LidLaunchWebsite.Controllers
                 ViewBulkOrdersModel model = new ViewBulkOrdersModel();
                 model.lstBulkOrders = data.GetBulkOrderData(filter);
                 model.lstBulkOrders = model.lstBulkOrders.OrderBy(bo => Convert.ToDateTime(bo.ProjectedShipDateLong)).ToList().OrderBy(bo => bo.OrderComplete).ToList();
+
                 return View(model);
             }
         }
