@@ -1,16 +1,18 @@
 ﻿<style type="text/css">
     .sizeTable {
-        border:1px solid #000;
-        font-size:14px;
-        text-align:center;
-        min-width:400px;
-        margin:5px;
+        border: 1px solid #000;
+        font-size: 14px;
+        text-align: center;
+        min-width: 400px;
+        margin: 5px;
     }
+
     .sizeTableHeader {
         background: #39b91c;
-        color:#fff;
-        font-weight:bold;
+        color: #fff;
+        font-weight: bold;
     }
+
     .priceTable {
         border: 1px solid #000;
         font-size: 14px;
@@ -24,18 +26,20 @@
         color: #fff;
         font-weight: bold;
     }
+
     .hatStyleSetQty thead {
-        font-weight:bold;
+        font-weight: bold;
     }
+
     @@media only screen and (max-width: 750px) {
         .sizeTable {
             margin: 5px auto;
         }
+
         .priceTable {
             margin: 5px auto;
         }
     }
-
 </style>
 
 <div id="bulkHatTypeSelect" class="centerInner" style="display:none;">
@@ -62,7 +66,7 @@
                                     <td>S/M</td>
                                     <td>L/XL</td>
                                     <td>XL/2XL</td>
-                                </tr>   
+                                </tr>
                                 <tr>
                                     <td>6 3/4"-7 1/4"</td>
                                     <td>7 1/8"-7 5/8"</td>
@@ -594,7 +598,7 @@
                                         <td class="hatPreviewImage"><img src="~/Images/FlexFit210/hat_03.jpg" /></td>
                                         <td class="colorOption">BLACK</td>
                                         <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
-                                        <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                        <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
                                     </tr>
                                     <tr class="hidden">
                                         <td class="hatPreviewImage"><img src="~/Images/FlexFit210/hat_04.jpg" /></td>
@@ -658,7 +662,7 @@
                         <div class="hatSizePriceChart">
                             <table class="sizeTable">
                                 <tr class="sizeTableHeader">
-                                    <td>ONE SIZE</td>                                   
+                                    <td>ONE SIZE</td>
                                 </tr>
                                 <tr>
                                     <td>6 5/8"-7 5/8"</td>
