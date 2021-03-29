@@ -880,7 +880,7 @@ function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, p
         contentType: false,
         processData: false,
         data: JSON.stringify({
-            bulkOrderBatchId: bulkOrderBatchId, bulkOrderItemId: bulkOrderItemId, bulkOrderBlankName: bulkOrderBlankName, quantity: $('#bulkReworkQuantity').val(), note: $('#bulkReworkNote').val(), status: $('#selReworkStatus').children("option:selected").val(), reworkId: reworkId
+            bulkOrderBatchId: bulkOrderBatchId, bulkOrderItemId: bulkOrderItemId, bulkOrderBlankName: bulkOrderBlankName, quantity: $('#bulkReworkQuantity').val(), note: $('#bulkReworkNote').val(), status: $('#selReworkStatus').children("option:selected").val(), reworkId: reworkId, bulkOrderId: parentBulkOrderId
         }),
         contentType: "application/json",
         success: function (result) {
@@ -898,6 +898,31 @@ function saveBulkRework(bulkOrderBatchId, bulkOrderItemId, bulkOrderBlankName, p
                     }
                     
                 }
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error.', 'error', false);
+        }
+    });
+}
+
+function addLog(bulkOrderId) {
+    showLoading();
+    $.ajax({
+        type: "POST",
+        url: '/Dashboard/AddOrderLogEntry',
+        contentType: false,
+        processData: false,
+        data: JSON.stringify({
+            bulkOrderId: bulkOrderId, logText: $('#logText').val()
+        }),
+        contentType: "application/json",
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('error.', 'error', false);
+            } else {
+                showBulkOrderDetailsPopup(bulkOrderId);
             }
         },
         error: function (xhr, status, p3, p4) {

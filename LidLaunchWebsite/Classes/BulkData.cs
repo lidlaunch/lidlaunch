@@ -585,6 +585,23 @@ namespace LidLaunchWebsite.Classes
                 }
             }
 
+            bulkOrder.lstBulkOrderLog = new List<BulkOrderLog>();
+            if(ds.Tables[6].Rows.Count > 0)
+            {               
+                foreach (DataRow dr7 in ds.Tables[6].Rows)
+                {
+                    BulkOrderLog log = new BulkOrderLog();
+                    log.Id = Convert.ToInt32(dr7["Id"].ToString());
+                    log.BulkOrderId = Convert.ToInt32(dr7["BulkOrderId"].ToString());
+                    log.UserId = Convert.ToInt32(dr7["UserId"].ToString());
+                    log.LogEntry = Convert.ToString(dr7["LogEntry"].ToString());
+                    log.Date = Convert.ToDateTime(dr7["Date"].ToString());
+
+                    bulkOrder.lstBulkOrderLog.Add(log);
+                }
+            }
+            bulkOrder.lstBulkOrderLog = bulkOrder.lstBulkOrderLog.OrderByDescending(bl => bl.Date).ToList();
+
             return bulkOrder;
         }
 
@@ -1916,6 +1933,44 @@ namespace LidLaunchWebsite.Classes
                     sqlComm.ExecuteNonQuery();
                 }
 
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool AddBulkOrderLog(int bulkOrderId, int userId, string logEntry)
+        {
+            var data = new SQLData();
+            var bulkOrderLogEntryId = 0;
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("AddBulkOrderLog", data.conn);
+                    SqlParameter returnParameter = sqlComm.Parameters.Add("bulkOrderLogEntryId", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@userId", userId);
+                    sqlComm.Parameters.AddWithValue("@logEntry", logEntry);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                    bulkOrderLogEntryId = (int)returnParameter.Value;
+                }
+                
                 return true;
             }
             catch (Exception ex)

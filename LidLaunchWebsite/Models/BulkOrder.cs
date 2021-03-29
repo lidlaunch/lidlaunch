@@ -63,6 +63,7 @@ namespace LidLaunchWebsite.Models
         public bool HasRework { get; set; }
         public bool DesignerReview { get; set; }
         public int ReminderApprovalEmailSent { get; set; }
+        public List<BulkOrderLog> lstBulkOrderLog { get; set; }
     }
 
     public class BulkBatchOrder

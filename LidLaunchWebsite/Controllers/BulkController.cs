@@ -85,6 +85,7 @@ namespace LidLaunchWebsite.Controllers
                 var dateFrom = data.AddBusinessDays(DateTime.Now, 10).ToString("MM/dd/yyyy");
                 var dateTo = data.AddBusinessDays(DateTime.Now, 14).ToString("MM/dd/yyyy");
                 var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderPaymentEmail(items, bulkOrder.OrderTotal.ToString(), bulkOrder.Id.ToString(), bulkOrder.PaymentGuid, dateFrom + " - " + dateTo), "Lid Launch Payment Confirmation", "");
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(bulkOrder.Id, 0, "Payment Received");
             }
             
             return View(bulkOrder);
@@ -100,6 +101,7 @@ namespace LidLaunchWebsite.Controllers
             if (bulkOrder != null && !bulkOrder.OrderComplete)
             {
                 var success = data.UpdateBulkOrderSetOrderAsShipped(Convert.ToInt32(bulkOrderId), trackingNumber);
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(bulkOrder.Id, Convert.ToInt32(Session["UserID"]), "Order Marked As Shipped");
                 EmailFunctions emailFunc = new EmailFunctions();
 
                 if (Convert.ToBoolean(noEmail))
@@ -168,7 +170,8 @@ namespace LidLaunchWebsite.Controllers
                 BulkData bulkData = new BulkData();
                 BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
                 EmailFunctions email = new EmailFunctions();
-                email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.revisionRequestedEmail(text), "Order " + bulkOrderId + " : Artwork Revision Request", "digitizing@lidlaunch.com");                
+                email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.revisionRequestedEmail(text), "Order " + bulkOrderId + " : Artwork Revision Request", "digitizing@lidlaunch.com");
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(bulkOrder.Id, Convert.ToInt32(Session["UserID"]), "Digitizing Revision: " + (customerAdded ? "Customer Requested" : "Internally Requested") + " :: " + text);
             }
             return success.ToString();
         }
@@ -185,6 +188,7 @@ namespace LidLaunchWebsite.Controllers
                 if (!bulkOrder.lstDesigns.Any(d => !d.InternallyApproved))
                 {
                     email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
+                    var addBulkOrderLogSuccess = data.AddBulkOrderLog(bulkOrder.Id, Convert.ToInt32(Session["UserID"]), "Digitzing Approved Interally : DesignId = " + id.ToString());
                 }
             }
             return success.ToString();
@@ -194,6 +198,8 @@ namespace LidLaunchWebsite.Controllers
         {
             BulkData data = new BulkData();
             var success = data.InternallyApproveBulkOrder(Convert.ToInt32(id), Convert.ToBoolean(approve));
+
+            var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(id), Convert.ToInt32(Session["UserID"]), "Bulk Order Marked " + (Convert.ToBoolean(approve) ? "Ready for Production" : "NOT Ready for Production"));
             //if (success)
             //{
             //    BulkData bulkData = new BulkData();
@@ -217,6 +223,7 @@ namespace LidLaunchWebsite.Controllers
                 BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
                 EmailFunctions email = new EmailFunctions();
                 email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingApproved(), "You Have Approved Your Artwork Previews", "");
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(id), 0, "Customer Approved Digitzing For Design Id: " + id);
             }
             return success.ToString();
         }
@@ -317,6 +324,8 @@ namespace LidLaunchWebsite.Controllers
                         Logger.Log("Error Sending Bulk Order Email Confirmation: Bulk Order ID: " + orderId.ToString() + " EmailTo: " + email + " - Exception: " + ex.Message.ToString());
                     }
 
+                    var addBulkOrderLogSuccess = bulkData.AddBulkOrderLog(Convert.ToInt32(orderId), 0, "Bulk Order Created");
+
                     if (!developmentMode)
                     {
                         try
@@ -415,6 +424,8 @@ namespace LidLaunchWebsite.Controllers
 
             bulkOrder = data.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
 
+            var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), 0, "Packing Slip Printed");
+
             return View(bulkOrder);
         }
 
@@ -504,7 +515,7 @@ namespace LidLaunchWebsite.Controllers
         {
             BulkData data = new BulkData();
             var success = data.SaveAdminReview(Convert.ToInt32(bulkOrderId), comment, Convert.ToBoolean(designerReview));
-            
+            var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Order Set As " + (Convert.ToBoolean(designerReview) ? "Designer Review" : "Admin Review") + " : " + comment);
             return success.ToString();
         }
 

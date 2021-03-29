@@ -145,7 +145,7 @@
                         <td colspan="2" style="color:red; font-size:22px; font-weight:bold;">REFUNDED</td>
                     </tr>
                 }
-                </table>
+            </table>
         </div><!--/bulkOrderDetails-->
         <div id="bulkOrderItems">
             <h3>Order Items</h3>
@@ -218,7 +218,7 @@
                         <td>Qty</td>
                         <td>Missing</td>
                         <td>Ready</td>
-                        <td>Misc</td>                        
+                        <td>Misc</td>
                     </tr>
                 <tbody>
                     @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.lstItems)
@@ -235,13 +235,13 @@
                         }
 
                     }
-                <tr>
-                    <td style="font-size:24px; font-weight:bold;">Total Items: @Model.lstItems.Where(item => item.ItemName != "Shipping" && item.ItemName != "Back Stitching" && item.ItemName != "Left Side Stitching" && item.ItemName != "Right Side Stitching" && item.ItemName != "Artwork Setup/Digitizing").Sum(i => i.ItemQuantity)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                    <tr>
+                        <td style="font-size:24px; font-weight:bold;">Total Items: @Model.lstItems.Where(item => item.ItemName != "Shipping" && item.ItemName != "Back Stitching" && item.ItemName != "Left Side Stitching" && item.ItemName != "Right Side Stitching" && item.ItemName != "Artwork Setup/Digitizing").Sum(i => i.ItemQuantity)</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                 </tbody>
             </table>
         </div><!--/bulkOrderItems-->
@@ -259,6 +259,18 @@
             </table>
             <a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: @Model.Id, bulkOrderItemId: 0 , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a>
         </div>
+        <div id="bulkOrderNotes">
+            <h3>Order Log</h3>
+            <table style="height:200px; overflow-y:scroll; display:block;">
+                @foreach (LidLaunchWebsite.Models.BulkOrderLog log in Model.lstBulkOrderLog)
+                {
+                    <tr>
+                        <td colspan="3"><i class="noteDate">@log.Date</i> : @log.LogEntry</td>
+                    </tr>
+                }
+            </table>
+            <a href="javascript:void(0);" onclick="$('#noteHolder').load(addLogUrl, { bulkOrderId: @Model.Id });"><input type="button" value="Add Log" class="smallButton" /></a>
+        </div>
         <div id="bulkOrderDesigns">
             <h3>Designs</h3>
             <a href="javascript:void(0);" onclick="$('#bulkDesignSelectHolder').load(selectBulkDesignUrl);"><input type="button" class="smallButton" value="SELECT PRE-EXISTING DESIGN" /></a>
@@ -269,7 +281,7 @@
                         <td></td>
                         <td></td>
                         <td>Name</td>
-                        <td>Art Source</td>                        
+                        <td>Art Source</td>
                         <td>Embroidery File</td>
                         <td>Transparent Preview</td>
                         <td>Production File</td>
@@ -299,7 +311,7 @@
                             }
                             <td><input type="button" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: true, customerAdded: false, shipping: false });" class="smallButton" value="Revision" /></td>
                             <td>@design.Name</td>
-                            <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>                                                     
+                            <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName" target="_blank">@design.DigitizedFile</a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" /></a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
@@ -334,8 +346,8 @@
                     }
                 </tbody>
             </table>
-        </div>        
-        
+        </div>
+
         <div id="noteHolder"></div>
         <div id="bulkDesignSelectHolder"></div>
         <div id="bulkReworkHolder"></div>
@@ -347,10 +359,10 @@
         <div id="colorConfirmationPopup" style="display:none;">
             <div id="colorConfirmationPopupInner">
                 There is a limit of only sending this email once per order<br />
-                <textarea id="colorNotes" type="text" placeholder="Color question here..." style="width:90%; height:100px;"></textarea><br/>
+                <textarea id="colorNotes" type="text" placeholder="Color question here..." style="width:90%; height:100px;"></textarea><br />
                 <input type="button" class="smallButton" value="Send Color Confirmation Email" onclick="sendColorConfirmationEmail('@Model.Id', '@Model.CustomerEmail', $('#colorNotes').val());" />
                 <input type="button" class="smallButton" value="Cancel" onclick="$('#colorConfirmationPopup').hide()" />
-            </div>            
+            </div>
         </div>
 
 
@@ -389,7 +401,8 @@
                     <input type="button" class="smallButton" value="Mark Order Refunded" onclick="updateOrderRefunded('@Model.Id');" />
                 </div>
             }
-            @if (Model.lstDesigns.Any(d => d.InternallyApproved)) {
+            @if (Model.lstDesigns.Any(d => d.InternallyApproved))
+            {
                 <div class="bottomBarLink">
                     <input type="button" class="smallButton" value="Send Design Reminder Email: @Model.ReminderApprovalEmailSent" onclick="sendDesignApprovalEmail('@Model.Id');" />
                 </div>
@@ -402,6 +415,7 @@
 </div><!--/bulkOrderDetailsPopup-->
 <script type="text/javascript">
     var addNoteUrl = '@Url.Action("AddNote", "Dashboard")';
+    var addLogUrl = '@Url.Action("AddLog", "Dashboard")';
     var selectBulkDesignUrl = '@Url.Action("SetBulkDesign", "Dashboard")';
     var addBulkReworkUrl = '@Url.Action("AddBulkRework", "Dashboard")';
     var bulkOrderEditUrl = '@Url.Action("EditBulkOrderPopup", "Dashboard")';

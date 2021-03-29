@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "AddLog";
+}
+<div id="notePopUp">
+    <div id="notePopupInner">
+        <span onclick="$('#notePopUp').hide();" class="closeButton" style="display:block; top:5px;right:5px; float:right;">X</span>
+        <textarea id="logText" type="text" placeholder="add log..." style="width:90%; height:135px;"></textarea>
+        <div id="saveNote"><input type="button" value="Save Log" class="smallButton" onclick="addLog('@Model');" /></div>
+    </div>
+</div>
+
+

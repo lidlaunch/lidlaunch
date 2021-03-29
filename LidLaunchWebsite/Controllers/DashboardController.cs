@@ -476,6 +476,8 @@ namespace LidLaunchWebsite.Controllers
 
                 success = bulkData.CreateBulkOrderDesign(Convert.ToInt32(bulkOrderId), designId);
 
+                var addBulkOrderLogSuccess = bulkData.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Design added to bulk order, Design Id: " + designId.ToString());
+
                 if (success && Convert.ToBoolean(notifyCustomer))
                 {
                     BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
@@ -598,7 +600,9 @@ namespace LidLaunchWebsite.Controllers
                 }
 
                 success = designData.UpdateDesign(artworkFileName, "", 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, 0.0M, designName, dstFileName, pdfFileName, embFileName, previewFileName, Convert.ToInt32(designId));
-                
+
+                var addBulkOrderLogSuccess = bulkData.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Design has been Updated, Design Id: " + designId.ToString());
+
                 if (success && Convert.ToBoolean(notifyCustomer))
                 {
                     BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
@@ -611,7 +615,7 @@ namespace LidLaunchWebsite.Controllers
             return json;
         }
 
-        public string ContactBulkCustomer(string bulkOrderId, string emailType)
+        public string ContactBulkCustomer(string bulkOrderId, string emailType, string emailText)
         {
             try
             {
@@ -623,6 +627,8 @@ namespace LidLaunchWebsite.Controllers
                     //send email to customer about their order, revision request
                     //var success = email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
                     var success = true;
+
+                    var addBulkOrderLogSuccess = bulkData.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Email Sent to Customer Website: " + emailText);
 
                     var json = new JavaScriptSerializer().Serialize(success);
 
@@ -902,8 +908,8 @@ namespace LidLaunchWebsite.Controllers
             if (success)
             {
                 bulkData.UpdateArtworkEmailSent(Convert.ToInt32(bulkOrderId));
-                bulkData.CreateNote(Convert.ToInt32(bulkOrderId), 0, 0, Convert.ToInt32(bulkOrderId), "Missing Artwork Email Sent", "", 0, false);
-            }
+                var addBulkOrderLogSuccess = bulkData.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Missing Artwork Email Sent");
+            }            
 
             var json = new JavaScriptSerializer().Serialize(success);
 
@@ -919,7 +925,7 @@ namespace LidLaunchWebsite.Controllers
             if (success)
             {
                 bulkData.UpdateColorConfirmationEmailSent(Convert.ToInt32(bulkOrderId));
-                bulkData.CreateNote(Convert.ToInt32(bulkOrderId), 0, 0, Convert.ToInt32(bulkOrderId), "Color Confirmation Email Sent: " + noteText, "", 0, false);
+                var addBulkOrderLogSuccess = bulkData.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Color Confirmation Email Sent: " + noteText);
             }
 
             var json = new JavaScriptSerializer().Serialize(success);
@@ -1017,16 +1023,17 @@ namespace LidLaunchWebsite.Controllers
                 inRevisionSection.Name = "In Revision";
                 inRevisionSection.SortOrder = 4;
                 inRevisionSection.lstBulkOrders = new List<BulkOrder>();
-                inRevisionSection.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.OrderComplete && !bo.ReadyForProduction && bo.lstDesigns.Any(d => d.CustomerApproved == false) && bo.lstDesigns.Any(d => d.Revision)));
+                inRevisionSection.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.OrderComplete && !bo.ReadyForProduction && bo.lstDesigns.Any(d => d.CustomerApproved == false && d.InternallyApproved) && bo.lstDesigns.Any(d => d.Revision && d.lstRevisionNotes.Any(rn => rn.CustomerAdded))));
                 inRevisionSection.lstBulkOrders = inRevisionSection.lstBulkOrders.OrderBy(bo => bo.PaymentDate).ToList();
                 inRevisionSection.textColor = "#fff";
                 inRevisionSection.backgroundColor = "#8c4b00";
+
 
                 BulkOrderListSectionModel awaitingInternalApproval = new BulkOrderListSectionModel();
                 awaitingInternalApproval.Name = "Awaiting Internal Approval";
                 awaitingInternalApproval.SortOrder = 5;
                 awaitingInternalApproval.lstBulkOrders = new List<BulkOrder>();
-                awaitingInternalApproval.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.OrderComplete && !bo.ReadyForProduction && bo.lstDesigns.Any(d => d.InternallyApproved == false) && bo.lstDesigns.Any(d => d.DigitizedPreview != "")));
+                awaitingInternalApproval.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.OrderComplete && !bo.ReadyForProduction && !bo.lstDesigns.Any(d => d.InternallyApproved == false) && bo.lstDesigns.Any(d => d.DigitizedPreview != "")));
                 awaitingInternalApproval.lstBulkOrders = awaitingInternalApproval.lstBulkOrders.OrderBy(bo => bo.PaymentDate).ToList();
                 awaitingInternalApproval.textColor = "#000";
                 awaitingInternalApproval.backgroundColor = "#f9fc04";
@@ -1175,11 +1182,13 @@ namespace LidLaunchWebsite.Controllers
                 if (orderHasBeenPaid)
                 {
                     data.UpdateBulkOrderPaid(Convert.ToInt32(bulkOrderId), false);
+                    var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Bulk Order Marked UNPAID");
                     return "true";
                 }
                 else
                 {
                     data.UpdateBulkOrderPaid(Convert.ToInt32(bulkOrderId), true);
+                    var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Bulk Order Marked PAID");
                     return "true";
                 }
             }            
@@ -1199,7 +1208,7 @@ namespace LidLaunchWebsite.Controllers
                 var success = data.UpdateBulkOrderRefunded(Convert.ToInt32(bulkOrderId));
                 if (success)
                 {
-                    data.CreateNote(Convert.ToInt32(bulkOrderId), 0, 0, Convert.ToInt32(bulkOrderId), "ORDER HAS BEEN REFUNDED.", "", 0, false);
+                    var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "BULK ORDER REFUNDED");
                 }
 
                 var json = new JavaScriptSerializer().Serialize(success);
@@ -1227,7 +1236,7 @@ namespace LidLaunchWebsite.Controllers
                 if (success)
                 {
                     data.UpdateBulkOrderReminderApprovalSent(Convert.ToInt32(bulkOrderId));
-                    data.CreateNote(Convert.ToInt32(bulkOrderId), 0, 0, Convert.ToInt32(bulkOrderId), "Design Approval Reminder Email Sent Number " + (bulkOrder.ReminderApprovalEmailSent + 1).ToString() +  ".", "", 0, false);
+                    var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Design Approval Reminder Email Sent Number " + (bulkOrder.ReminderApprovalEmailSent + 1).ToString() + ".");                    
                 }
 
                 var json = new JavaScriptSerializer().Serialize(success);
@@ -1241,6 +1250,7 @@ namespace LidLaunchWebsite.Controllers
         {
             BulkData data = new BulkData();
             data.UpdateBulkOrderBatchId(Convert.ToInt32(bulkOrderId), Convert.ToInt32(batchId));
+            var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Bulk Order Added to Batch ID " + batchId);
             return "true";
         }
 
@@ -1250,6 +1260,7 @@ namespace LidLaunchWebsite.Controllers
             {
                 BulkData data = new BulkData();
                 data.ReleaseToDigitizer(Convert.ToInt32(bulkOrderId));
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Customer Supplied Design Released to Digitizer");
                 return "true";
             }
             else
@@ -1388,15 +1399,35 @@ namespace LidLaunchWebsite.Controllers
             List<BulkOrderItem> lstItems = new List<BulkOrderItem>();
             lstItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<BulkOrderItem>>(items);
             BulkData data = new BulkData();
+            BulkOrder bulkOrder = data.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
             foreach(BulkOrderItem item in lstItems)
             {
                 if(item.Id == 0)
                 {
                     data.AddBulkOrderItem(Convert.ToInt32(bulkOrderId), item.ItemName, Convert.ToInt32(item.ItemQuantity), Convert.ToDecimal(item.ItemCost));
+                    var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Order Item has added: NEW VALUES: ItemName:" + item.ItemName + " : ItemQuantity:" + item.ItemQuantity + " : ItemCost:" + item.ItemCost);
                 } else
                 {
-                    data.UpdateBulkOrderItem(Convert.ToInt32(bulkOrderId), Convert.ToInt32(item.Id), item.ItemName, Convert.ToInt32(item.ItemQuantity), Convert.ToDecimal(item.ItemCost));
+                    var bulkOrderItem = bulkOrder.lstItems.Find(i => i.Id == item.Id);
+                    if(bulkOrderItem != null)
+                    {
+                        if(bulkOrderItem.ItemName == item.ItemName && bulkOrderItem.ItemQuantity == Convert.ToInt32(item.ItemQuantity) && bulkOrderItem.ItemCost == Convert.ToDecimal(item.ItemCost))
+                        {
+                            //nothing updated dont call database
+                        } else
+                        {
+                            //an item has been updated..
+                            data.UpdateBulkOrderItem(Convert.ToInt32(bulkOrderId), Convert.ToInt32(item.Id), item.ItemName, Convert.ToInt32(item.ItemQuantity), Convert.ToDecimal(item.ItemCost));
+                            var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Order Item has been upadated: PREVIOUS VALUES: ItemName:" + bulkOrderItem.ItemName + " : ItemQuantity:" + bulkOrderItem.ItemQuantity + " : ItemCost:" + bulkOrderItem.ItemCost + " ::::: NEW VALUES: ItemName:" + item.ItemName + " : ItemQuantity:" + item.ItemQuantity + " : ItemCost:" + item.ItemCost);
+                        }
+                    }
+                    
                  }
+            }
+
+            if(bulkOrder.ArtworkPosition != artworkPosition)
+            {
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Artwork Position Changed FROM >> " + bulkOrder.ArtworkPosition + " TO >> " + artworkPosition);
             }
 
             data.UpdateBulkOrder(Convert.ToInt32(bulkOrderId), customerEmail, artworkPosition, Convert.ToDecimal(orderTotal));
@@ -1424,6 +1455,8 @@ namespace LidLaunchWebsite.Controllers
 
                 EmailFunctions email = new EmailFunctions();
                 email.sendEmail("ronnie.dcd@gmail.com", "Dope Custom Designs", "The artwork is now available for order #" + bulkOrderId, "Order #" + bulkOrderId + " Artwork", "digitizing@lidlaunch.com");
+
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Artwork source has been Added/Updated to the order");
             }
 
             return "true";
@@ -1441,12 +1474,12 @@ namespace LidLaunchWebsite.Controllers
             model.quantity = quantity;
             model.bulkReworkId = bulkReworkId;
             model.note = note;
-            model.shipping = shipping;
+            model.shipping = shipping;            
 
             return PartialView("AddBulkRework", model);
         }
 
-        public string CreateBulkRework(string bulkOrderBatchId, string bulkOrderItemId, string bulkOrderBlankName, string quantity, string note, string status, string reworkId)
+        public string CreateBulkRework(string bulkOrderBatchId, string bulkOrderItemId, string bulkOrderBlankName, string quantity, string note, string status, string reworkId, string bulkOrderId)
         {
             BulkData data = new BulkData();
             int intBulkReworkId = Convert.ToInt32(reworkId);
@@ -1461,10 +1494,12 @@ namespace LidLaunchWebsite.Controllers
             if(intBulkReworkId > 0)
             {
                 data.UpdateBulkRework(Convert.ToInt32(quantity), Convert.ToString(note), Convert.ToString(status), intBulkReworkId);
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Bulk Rework Updated ID(" + reworkId + ") : ItemName:" + bulkOrderBlankName + " : Note:" + note + " : Quantity:" + quantity + " : Status:" + status);
             } 
             else
             {
                 intBulkReworkId = data.CreateBulkRework(Convert.ToInt32(bulkOrderItemId), Convert.ToInt32(bulkOrderBatchId), Convert.ToInt32(quantity), Convert.ToString(note), Convert.ToBoolean(missingBlank), Convert.ToString(bulkOrderBlankName));
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Bulk Rework Added ID(" + intBulkReworkId.ToString() + ") : ItemName:" + bulkOrderBlankName + " : Note:" + note + " : Quantity:" + quantity + " : Status:" + status);
             }            
 
             var success = intBulkReworkId > 0;
@@ -1487,7 +1522,7 @@ namespace LidLaunchWebsite.Controllers
                 model.idVal = bulkOrderId;
                 model.parentBulkOrderId = parentBulkOrderId;
                 model.customerAdded = customerAdded;
-                model.shipping = shipping;
+                model.shipping = shipping;                
             }
             if(bulkOrderItemId > 0)
             {
@@ -1516,6 +1551,19 @@ namespace LidLaunchWebsite.Controllers
             return PartialView("AddNote", model);
         }
 
+        public ActionResult AddLog(int bulkOrderId)
+        {        
+            return PartialView("AddLog", bulkOrderId);
+        }
+
+        public string AddOrderLogEntry(string bulkOrderId, string logText)
+        {
+            BulkData data = new BulkData();
+            var success = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Manual Log Entry: " + logText);
+           
+            return new JavaScriptSerializer().Serialize(success);
+        }
+
         public string CreateNote(string noteType, string idVal, string parentBulkOrderId, string text, string attachment, bool customerAdded)
         {            
             BulkData data = new BulkData();
@@ -1524,10 +1572,12 @@ namespace LidLaunchWebsite.Controllers
             if(noteType == "bulkOrder")
             {
                 noteId = data.CreateNote(Convert.ToInt32(idVal), 0, 0, Convert.ToInt32(parentBulkOrderId), text, attachment, 0, customerAdded);
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(parentBulkOrderId), Convert.ToInt32(Session["UserId"]), "Bulk Order Note Added : " + text);
             }
             else if (noteType == "bulkOrderItem")
             {
                 noteId = data.CreateNote(0, Convert.ToInt32(idVal), 0, Convert.ToInt32(parentBulkOrderId), text, attachment, 0, customerAdded);
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(parentBulkOrderId), Convert.ToInt32(Session["UserId"]), "Bulk Order Item Note Added : " + text);
             }
             else if (noteType == "design")
             {
@@ -1536,6 +1586,7 @@ namespace LidLaunchWebsite.Controllers
             else if(noteType == "designRevision")
             {
                 data.AddDigitizingRevision(Convert.ToInt32(idVal), text, customerAdded);
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(parentBulkOrderId), Convert.ToInt32(Session["UserId"]), "Digitizing Revision + " + (Convert.ToBoolean(customerAdded) ? "Customer Requested" : "Internally Requested") + " : " + text);
                 //BulkData bulkData = new BulkData();
                 //BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(parentBulkOrderId), "", "");
                 EmailFunctions email = new EmailFunctions();      
@@ -1588,8 +1639,8 @@ namespace LidLaunchWebsite.Controllers
             {
                 BulkData data = new BulkData();
                 data.UpdateBulkOrderDesign(Convert.ToInt32(bulkOrderId), Convert.ToInt32(designId));
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Bulk Order Design Set To ID: " + designId);
                 return "true";
-
             }
 
         }
