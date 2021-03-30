@@ -20,7 +20,7 @@
             foreach (LidLaunchWebsite.Models.Design design in bulkOrder.lstDesigns)
             {
                 <tr>
-                    <td style="width:100px;"><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, fromDigitizing: true });"><input type="button" class="smallButton" value="Edit Design" /></a></td>                    
+                    <td style="width:100px;"><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, fromDigitizing: true, bulkOrderId: @bulkOrder.Id });"><input type="button" class="smallButton" value="Edit Design" /></a></td>                    
                     <td style="width:100px;">@design.Name</td>
                     <td style="width:100px;"><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Download</a></td>
                     <td style="width:100px;">0</td>
@@ -32,7 +32,7 @@
                             </tr>
                             <tr>
                                 <td>EMB:</td>
-                                <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
+                                <td><a href="~/Images/DesignImages/Digitizing/Info/@design.EMBFile" class="EMBFile" target="_blank">@design.EMBFile</a></td>
                             </tr>
                             <tr>
                                 <td>PDF:</td>

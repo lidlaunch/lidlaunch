@@ -274,7 +274,7 @@
         <div id="bulkOrderDesigns">
             <h3>Designs</h3>
             <a href="javascript:void(0);" onclick="$('#bulkDesignSelectHolder').load(selectBulkDesignUrl);"><input type="button" class="smallButton" value="SELECT PRE-EXISTING DESIGN" /></a>
-            <a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: 0, fromDigitizing: false });"><input type="button" class="smallButton" value="Add Design" /></a>
+            <a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: 0, fromDigitizing: false, bulkOrderId: @Model.Id });"><input type="button" class="smallButton" value="Add Design" /></a>
             <table>
                 <thead>
                     <tr>
@@ -317,7 +317,7 @@
                             <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">@design.EMBFile</a></td>
                             <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
-                            <td><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, fromDigitizing: false });"><input type="button" class="smallButton" value="Edit Design" /></a></td>
+                            <td><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, fromDigitizing: false, bulkOrderId: @Model.Id });"><input type="button" class="smallButton" value="Edit Design" /></a></td>
                         </tr>
                         if (design.lstNotes.Count > 0)
                         {

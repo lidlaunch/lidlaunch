@@ -1033,7 +1033,7 @@ namespace LidLaunchWebsite.Controllers
                 awaitingInternalApproval.Name = "Awaiting Internal Approval";
                 awaitingInternalApproval.SortOrder = 5;
                 awaitingInternalApproval.lstBulkOrders = new List<BulkOrder>();
-                awaitingInternalApproval.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.OrderComplete && !bo.ReadyForProduction && !bo.lstDesigns.Any(d => d.InternallyApproved == false) && bo.lstDesigns.Any(d => d.DigitizedPreview != "")));
+                awaitingInternalApproval.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.OrderComplete && !bo.ReadyForProduction && bo.lstDesigns.Any(d => d.DigitizedPreview != "") && bo.lstDesigns.Where(d => d.InternallyApproved).ToList().Count == 0));
                 awaitingInternalApproval.lstBulkOrders = awaitingInternalApproval.lstBulkOrders.OrderBy(bo => bo.PaymentDate).ToList();
                 awaitingInternalApproval.textColor = "#000";
                 awaitingInternalApproval.backgroundColor = "#f9fc04";
@@ -1601,7 +1601,7 @@ namespace LidLaunchWebsite.Controllers
             return success.ToString();
         }
 
-        public ActionResult UploadBulkDesign(string designId, string fromDigitizing)
+        public ActionResult UploadBulkDesign(string designId, string fromDigitizing, string bulkOrderId)
         {
             DesignData data = new DesignData();
             Design design = new Design();
@@ -1618,6 +1618,7 @@ namespace LidLaunchWebsite.Controllers
 
             model.Design = design;
             model.FromDigitizing = Convert.ToBoolean(fromDigitizing);
+            model.BulkOrderId = Convert.ToInt32(bulkOrderId);
 
 
 

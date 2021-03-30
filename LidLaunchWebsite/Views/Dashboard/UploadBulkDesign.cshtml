@@ -7,6 +7,7 @@
 <div id="uploadBulkDesignPopup">
     <div id="uploadBulkDesignPopupInner">        
         <div id="uploadDesignInner">
+            <span id="designBulkOrderId" class="hidden">@Model.BulkOrderId</span>
             <table>
                 <tr>
                     <td>PLACEMENT:</td>
@@ -123,7 +124,7 @@
 
 <script type="text/javascript">
     function saveBulkDesign(digitizingPage) {
-        var bulkOrderId = $('#BulkOrderId').text();
+        var bulkOrderId = $('#designBulkOrderId').text();
         var designName = $('#bulkDesignName').val();
         var artSource = $('#fileArtSource')[0].files;
         var pngPreview = $('#filePngPreview')[0].files;
@@ -131,6 +132,9 @@
         var pdf = $('#filePdf')[0].files;
         var emb = $('#fileEmb')[0].files;
         var notifyCustomer = $('#chkEmailCustomer').prop("checked");
+        if (digitizingPage) {
+            notifyCustomer = false;
+        }
 
         if (pngPreview.length > 0 && dst.length > 0 && pdf.length > 0 && emb.length > 0) {
             var data = new FormData();
@@ -173,7 +177,7 @@
     }
 
     function updateBulkDesign(designId, digitizingPage) {
-        var bulkOrderId = $('#BulkOrderId').text();
+        var bulkOrderId = $('#designBulkOrderId').text();
         var designName = $('#bulkDesignName').val();
         var artSource = $('#fileArtSource')[0].files;
         var pngPreview = $('#filePngPreview')[0].files;
@@ -181,6 +185,9 @@
         var pdf = $('#filePdf')[0].files;
         var emb = $('#fileEmb')[0].files;
         var notifyCustomer = $('#chkEmailCustomer').prop("checked");
+        if (digitizingPage) {
+            notifyCustomer = false;
+        }
 
         if (pngPreview.length > 0 && dst.length > 0 && pdf.length > 0 && emb.length > 0) {
             var data = new FormData();

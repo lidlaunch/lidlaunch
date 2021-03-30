@@ -223,7 +223,7 @@ namespace LidLaunchWebsite.Controllers
                 BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
                 EmailFunctions email = new EmailFunctions();
                 email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingApproved(), "You Have Approved Your Artwork Previews", "");
-                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(id), 0, "Customer Approved Digitzing For Design Id: " + id);
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), 0, "Customer Approved Digitzing For Design Id: " + id);
             }
             return success.ToString();
         }
