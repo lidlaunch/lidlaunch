@@ -3,26 +3,25 @@
         @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model)
         {
             <tr><td colspan="6"><b>Bulk Order ID: @bulkOrder.Id</b></td></tr>
-            <tr><td colspan="6">Customer Notes:<br/><pre>@bulkOrder.OrderNotes</pre></td></tr>
-            <tr><td colspan="6">Placement: @bulkOrder.ArtworkPosition</td></tr>
+            <tr><td colspan="6"><b>Customer Notes:</b><br /><pre>@bulkOrder.OrderNotes</pre></td></tr>
+            <tr><td colspan="6"><b>Placement:</b> @bulkOrder.ArtworkPosition</td></tr>
             foreach (LidLaunchWebsite.Models.Note note in bulkOrder.lstNotes)
             {
                 <tr><td colspan="6">@note.CreatedDate : @note.Text</td></tr>
             }
+            <tr><td colspan="6"><b>Art Source: </b><a href="~/Images/BulkOrderArtwork/@bulkOrder.ArtworkImage" target="_blank">@bulkOrder.ArtworkImage</a></td></tr>
             <tr style="font-weight:bold;">
                 <td></td>
                 <td>Name</td>
-                <td>Art Source</td>
-                <td>Stitch Count</td>                
+                <td>Stitch Count</td>
                 <td>Files</td>
-                <td>Digitized Preview</td>                
+                <td>Digitized Preview</td>
             </tr>
             foreach (LidLaunchWebsite.Models.Design design in bulkOrder.lstDesigns)
             {
                 <tr>
-                    <td style="width:100px;"><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, fromDigitizing: true, bulkOrderId: @bulkOrder.Id });"><input type="button" class="smallButton" value="Edit Design" /></a></td>                    
+                    <td style="width:100px;"><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, fromDigitizing: true, bulkOrderId: @bulkOrder.Id });"><input type="button" class="smallButton" value="Edit Design" /></a></td>
                     <td style="width:100px;">@design.Name</td>
-                    <td style="width:100px;"><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Download</a></td>
                     <td style="width:100px;">0</td>
                     <td style="width:300px;">
                         <table>
@@ -38,7 +37,7 @@
                                 <td>PDF:</td>
                                 <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
                             </tr>
-                        </table>            
+                        </table>
                     </td>
                     <td><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" width="200" /></a></td>
                 </tr>
@@ -46,8 +45,8 @@
                 {
                     foreach (LidLaunchWebsite.Models.Note note in design.lstNotes)
                     {
-                        <tr>                            
-                            <td colspan="6"><i class="noteDate">INTERNAL NOTES: @note.CreatedDate</i> : @note.Text</td>                            
+                        <tr>
+                            <td colspan="6"><i class="noteDate">INTERNAL NOTES: @note.CreatedDate</i> : @note.Text</td>
                         </tr>
                     }
                 }

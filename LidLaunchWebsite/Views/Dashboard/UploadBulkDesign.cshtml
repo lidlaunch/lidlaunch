@@ -132,7 +132,7 @@
         var pdf = $('#filePdf')[0].files;
         var emb = $('#fileEmb')[0].files;
         var notifyCustomer = $('#chkEmailCustomer').prop("checked");
-        if (digitizingPage) {
+        if (digitizingPage || notifyCustomer == null) {
             notifyCustomer = false;
         }
 
@@ -185,7 +185,7 @@
         var pdf = $('#filePdf')[0].files;
         var emb = $('#fileEmb')[0].files;
         var notifyCustomer = $('#chkEmailCustomer').prop("checked");
-        if (digitizingPage) {
+        if (digitizingPage || notifyCustomer == null) {
             notifyCustomer = false;
         }
 

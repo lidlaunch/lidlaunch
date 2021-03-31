@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using ZendeskApi_v2.Models.Tickets;
 
 namespace LidLaunchWebsite.Models
 {
@@ -64,6 +65,7 @@ namespace LidLaunchWebsite.Models
         public bool DesignerReview { get; set; }
         public int ReminderApprovalEmailSent { get; set; }
         public List<BulkOrderLog> lstBulkOrderLog { get; set; }
+        public List<Ticket> lstTickets { get; set; }
     }
 
     public class BulkBatchOrder
