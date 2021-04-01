@@ -193,6 +193,16 @@ function processPayment() {
     var rightSideStitchingComment = $('#txtRightSideStitching').val();
     var leftSideStitchingComment = $('#txtLeftSideStitching').val();
 
+    if (backStitchingComment == null) {
+        backStitchingComment == "";
+    }
+    if (rightSideStitchingComment == null) {
+        rightSideStitchingComment == "";
+    }
+    if (leftSideStitchingComment == null) {
+        leftSideStitchingComment == "";
+    }
+
     var shippingAddressJson = '{ "ShipToState" : "' + shipState + '", "ShipToStreet" : "' + shipAddress + '", "ShipToZip" : "' + shipZip + '", "ShipToCity" : "' + shipCity + '", "ShipToPhone" : "' + shipPhone + '", "ShipToFirstName" : "' + shipFirstName + '", "ShipToLastName" : "' + shipLastName + '" }';
     var billingAddressJson = "";
     if ($('#rdUseSameAsShipping').prop('checked') == true) {
@@ -291,7 +301,8 @@ function processPayment() {
                 }
             }
         },
-        error: function () {
+        error: function (error) {
+            console.log('error ' + error.getResponseHeader + '\n' + error.responseText );
             //log error through web service
             displayPopupNotification('Please Contact Us. There was an issue processing your order.', 'error', false);
         }

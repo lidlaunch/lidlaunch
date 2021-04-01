@@ -1408,7 +1408,7 @@ namespace LidLaunchWebsite.Controllers
 
         }
 
-        public string UpdateBulkOrder(string items, string customerEmail, string artworkPosition, string bulkOrderId, string orderTotal)
+        public string UpdateBulkOrder(string items, string customerEmail, string artworkPosition, string bulkOrderId, string orderTotal, string shipToAddress, string shipToCity, string shipToState, string shipToZip)
         {
             List<BulkOrderItem> lstItems = new List<BulkOrderItem>();
             lstItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<BulkOrderItem>>(items);
@@ -1445,6 +1445,18 @@ namespace LidLaunchWebsite.Controllers
             }
 
             data.UpdateBulkOrder(Convert.ToInt32(bulkOrderId), customerEmail, artworkPosition, Convert.ToDecimal(orderTotal));
+
+            if(bulkOrder.ShipToAddress == shipToAddress && bulkOrder.ShipToCity == shipToCity && bulkOrder.ShipToState == bulkOrder.ShipToState && bulkOrder.ShipToZip == shipToZip) {
+                //do nothing
+            } 
+            else
+            {
+                var updateAddressSuccess = data.UpdateBulkOrderShipTo(Convert.ToInt32(bulkOrderId), shipToAddress, shipToCity, shipToState, shipToZip);
+                if (updateAddressSuccess)
+                {
+                    var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Ship To Address Changed FROM >> " + bulkOrder.ShipToAddress + " " + bulkOrder.ShipToCity + "," + bulkOrder.ShipToState + " " + bulkOrder.ShipToZip + " TO >> " + shipToAddress + " " + shipToCity + "," + shipToState + " " + shipToZip);
+                }
+            }
 
             HttpPostedFileBase fileContent = null;
             if (Request.Files.Count > 0)

@@ -22,64 +22,83 @@
                 </tr>
                 <tr>
                     <td>Email:</td>
-                    <td><input type="text" value="@Model.CustomerEmail" id="txtEditCustomerEmail"/></td>
+                    <td><input type="text" value="@Model.CustomerEmail" id="txtEditCustomerEmail" /></td>
                 </tr>
                 <tr>
                     <td>Shipping Address:</td>
-                    <td>@Model.ShipToName : @Model.ShipToAddress @Model.ShipToCity , @Model.ShipToState @Model.ShipToZip</td>
+                    <td>@Model.ShipToName : @Model.ShipToAddress @Model.ShipToCity , @Model.ShipToState @Model.ShipToZip <a href="#" onclick="$('.shipFields').each(function () { $(this).show() });">edit</a></td>
+                </tr>
+                <tr class="hidden shipFields">
+                    <td colspan="2"><span style="color:red">ADDRESS MUST BE MANUALLY UPDATED IN SHIP STATION ALSO!!!!!!</span></td>
+                </tr>
+                <tr class="hidden shipFields">
+                    <td>Ship Address:</td>
+                    <td><input type="text" value="@Model.ShipToAddress" id="txtShipToAddress" /></td>
+                </tr>
+                <tr class="hidden shipFields">
+                    <td>Ship City:</td>
+                    <td><input type="text" value="@Model.ShipToCity" id="txtShipToAddress" /></td>
+                </tr>
+                <tr class="hidden shipFields">
+                    <td>Ship State:</td>
+                    <td><input type="text" value="@Model.ShipToState" id="txtShipToState" /></td>
+                </tr>
+                <tr class="hidden shipFields">
+                    <td>Ship Zip:</td>
+                    <td><input type="text" value="@Model.ShipToZip" id="txtShipToZip" /></td>
                 </tr>
                 <tr>
                     <td>Artwork Position:</td>
                     <td>
                         @if (Model.ArtworkPosition == "left")
                         {
-                            <img src="~/Images/LeftPlacement.jpg" id="left" class="editPlacementSelected placementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);"/>
-                            <img src="~/Images/CenterPlacement.jpg" id="center" class="editPlacementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);"/>
-                            <img src="~/Images/RightPlacement.jpg" id="right" class="editPlacementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);"/>
+                            <img src="~/Images/LeftPlacement.jpg" id="left" class="editPlacementSelected placementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);" />
+                            <img src="~/Images/CenterPlacement.jpg" id="center" class="editPlacementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);" />
+                            <img src="~/Images/RightPlacement.jpg" id="right" class="editPlacementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);" />
                         }
                         @if (Model.ArtworkPosition == "right")
                         {
-                            <img src="~/Images/LeftPlacement.jpg" id="left" class="editPlacementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);"/>
-                            <img src="~/Images/CenterPlacement.jpg" id="center" class="editPlacementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);"/>
-                            <img src="~/Images/RightPlacement.jpg" id="right" class="editPlacementSelected placementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);"/>
+                            <img src="~/Images/LeftPlacement.jpg" id="left" class="editPlacementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);" />
+                            <img src="~/Images/CenterPlacement.jpg" id="center" class="editPlacementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);" />
+                            <img src="~/Images/RightPlacement.jpg" id="right" class="editPlacementSelected placementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);" />
                         }
                         @if (Model.ArtworkPosition == "center")
                         {
-                            <img src="~/Images/LeftPlacement.jpg" id="left" class="editPlacementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);"/>
-                            <img src="~/Images/CenterPlacement.jpg" id="center" class="editPlacementSelected placementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);"/>
-                            <img src="~/Images/RightPlacement.jpg" id="right" class="editPlacementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);"/>
+                            <img src="~/Images/LeftPlacement.jpg" id="left" class="editPlacementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);" />
+                            <img src="~/Images/CenterPlacement.jpg" id="center" class="editPlacementSelected placementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);" />
+                            <img src="~/Images/RightPlacement.jpg" id="right" class="editPlacementSelected" style="max-height:100px;max-width:100px;" onclick="changePlacement(this);" />
                         }
                     </td>
                 </tr>
                 <tr>
                     <td>Art Source:</td>
-                    <td><img src="~/Images/BulkOrderArtwork/@Model.ArtworkImage" style="max-height:200px; max-width:200px;" /><input type="file" id="editArtworkUpload" value="upload art"/></td>
+                    <td><img src="~/Images/BulkOrderArtwork/@Model.ArtworkImage" style="max-height:200px; max-width:200px;" /><input type="file" id="editArtworkUpload" value="upload art" /></td>
                 </tr>
                 @*@if (Model.BackStitching)
-                {
-                    <tr>
-                        <td>Back Stitching:</td>
-                        <td><input type="text" value="@Model.BackStitchingComment" id="txtBackStitchingComment"/></td>
-                    </tr>
-                }
-                @if (Model.LeftStitching)
-                {
-                    <tr>
-                        <td>Left Stitching:</td>
-                        <td><input type="text" value="@Model.LeftStitchingComment" id="txtLeftStitchingComment" /></td>
-                    </tr>
-                }
-                @if (Model.RightStitching)
-                {
-                    <tr>
-                        <td>Right Stitching:</td>
-                        <td><input type="text" value="@Model.RightStitchingComment" id="txtRightStitchingComment" /></td>
-                    </tr>
-                }*@
+        {
+            <tr>
+                <td>Back Stitching:</td>
+                <td><input type="text" value="@Model.BackStitchingComment" id="txtBackStitchingComment"/></td>
+            </tr>
+        }
+        @if (Model.LeftStitching)
+        {
+            <tr>
+                <td>Left Stitching:</td>
+                <td><input type="text" value="@Model.LeftStitchingComment" id="txtLeftStitchingComment" /></td>
+            </tr>
+        }
+        @if (Model.RightStitching)
+        {
+            <tr>
+                <td>Right Stitching:</td>
+                <td><input type="text" value="@Model.RightStitchingComment" id="txtRightStitchingComment" /></td>
+            </tr>
+        }*@
 
                 <tr>
                     <td>Order Total:</td>
-                    <td><input type="text" id="txtOrderTotal" value="@Model.OrderTotal"/></td>
+                    <td><input type="text" id="txtOrderTotal" value="@Model.OrderTotal" /></td>
                 </tr>
                 <tr>
                     <td>Shipped:</td>

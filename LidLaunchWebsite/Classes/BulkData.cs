@@ -769,6 +769,41 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
+        public bool UpdateBulkOrderShipTo(int bulkOrderId, string shipToAddress, string shipToCity, string shipToState, string shipToZip)
+        {
+            var data = new SQLData();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderShipTo", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@shiptoAddress", shipToAddress);
+                    sqlComm.Parameters.AddWithValue("@shipToCity", shipToCity);
+                    sqlComm.Parameters.AddWithValue("@shipToState", shipToState);
+                    sqlComm.Parameters.AddWithValue("@shipToZip", shipToZip);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
         public bool UpdateBulkOrder(int bulkOrderId, string customerEmail, string artworkPosition, decimal orderTotal)
         {
             var data = new SQLData();

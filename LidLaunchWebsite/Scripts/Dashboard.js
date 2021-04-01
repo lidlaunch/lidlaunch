@@ -563,6 +563,10 @@ function saveBulkOrderEdit(bulkOrderId) {
     var orderTotal = $('#txtOrderTotal').val();
     var bulkOrderItems = '[';
     var itemLength = $('#bulkOrderItemsEdit').find('.bulkOrderItemRow').length;
+    var shipToAddress = $('#txtShipToAddress').val();
+    var shipToCity = $('#txtShipToCity').val();
+    var shipToState = $('#txtShipToState').val();
+    var shipToZip = $('#txtShipToZip').val();
     for (var i = 0; i < itemLength; i++) {
         var tableRow = $('#bulkOrderItemsEdit').find('.bulkOrderItemRow')[i];
         var id = $(tableRow).find('.bulkOrderItemId').text();
@@ -585,6 +589,10 @@ function saveBulkOrderEdit(bulkOrderId) {
     data.append("artworkPosition", artworkPosition);
     data.append("bulkOrderId", bulkOrderId);
     data.append("orderTotal", orderTotal);
+    data.append("shipToAddress", shipToAddress);
+    data.append("shipToCity", shipToCity);
+    data.append("shipToState", shipToState);
+    data.append("shipToZip", shipToZip);
 
 
     $.ajax({
