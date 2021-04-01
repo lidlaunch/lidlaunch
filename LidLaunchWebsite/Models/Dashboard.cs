@@ -142,4 +142,14 @@ namespace LidLaunchWebsite.Models
         public List<BulkOrder> lstBulkOrders { get; set; }
         public List<OrderBatch> lstBulkOrderBatches { get; set; }
     }
+
+    public class LaMetricObject
+    {
+        public List<LaMetricFrame> frames { get; set; }
+    }
+    public class LaMetricFrame
+    {
+        public string text { get; set; }
+        public int icon { get; set; }
+    }
 }

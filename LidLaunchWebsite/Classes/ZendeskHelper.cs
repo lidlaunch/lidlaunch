@@ -9,7 +9,7 @@ namespace LidLaunchWebsite.Classes
 {
     public class ZendeskHelper
     {
-        private readonly IZendeskApi _api;
+        private readonly ZendeskApi_v2.IZendeskApi _api;
         private readonly int _pageSize;
         public ZendeskHelper(ZendeskApi_v2.IZendeskApi api, int pageSize = 100)
         {

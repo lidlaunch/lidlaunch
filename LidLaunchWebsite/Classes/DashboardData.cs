@@ -768,5 +768,95 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
+
+
+        public LaMetricObject GetSalesData()
+        {
+
+            LaMetricObject model = new LaMetricObject();
+            model.frames = new List<LaMetricFrame>();
+            List<Sale> lstSales = new List<Sale>();
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetSalesData", data.conn);
+                    //sqlComm.Parameters.AddWithValue("@id", designerId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+                }
+
+                if (ds.Tables.Count > 0)
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        //todays sales
+                        LaMetricFrame frame = new LaMetricFrame();
+                        frame.icon = 34;
+                        frame.text = "D:" + FormatKNumber(Convert.ToInt32(ds.Tables[0].Rows[0][0].ToString()));
+                        model.frames.Add(frame);
+                    }
+                    if (ds.Tables[1].Rows.Count > 0)
+                    {
+                        //weeks sales
+                        LaMetricFrame frame = new LaMetricFrame();
+                        frame.icon = 34;
+                        frame.text = "W:" + FormatKNumber(Convert.ToInt32(ds.Tables[1].Rows[0][0].ToString()));
+                        model.frames.Add(frame);
+                    }
+                    if (ds.Tables[2].Rows.Count > 0)
+                    {
+                        //Month sales
+                        LaMetricFrame frame = new LaMetricFrame();
+                        frame.icon = 34;
+                        frame.text = "M:" + FormatKNumber(Convert.ToInt32(ds.Tables[2].Rows[0][0].ToString()));
+                        model.frames.Add(frame);
+                    }
+                    if (ds.Tables[3].Rows.Count > 0)
+                    {
+                        //Year sales
+                        LaMetricFrame frame = new LaMetricFrame();
+                        frame.icon = 34;
+                        frame.text = "Y:" + FormatKNumber(Convert.ToInt32(ds.Tables[3].Rows[0][0].ToString()));
+                        model.frames.Add(frame);
+                    }
+
+                    return model;
+                }
+                else
+                {
+                    return model;
+                }
+            }
+            catch (Exception ex)
+            {
+                return model;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+        static string FormatKNumber(int num)
+        {
+            if (num >= 100000)
+                return FormatKNumber(num / 1000) + "K";
+            if (num >= 10000)
+            {
+                return (num / 1000D).ToString("0.#") + "K";
+            }
+            return num.ToString("#,0");
+        }
     }
 }

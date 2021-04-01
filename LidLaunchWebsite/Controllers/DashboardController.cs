@@ -18,6 +18,7 @@ using System.Text;
 using ZendeskApi_v2.Models.Tickets;
 using ZendeskApi_v2.Models.Users;
 using ZendeskApi_v2;
+using User = LidLaunchWebsite.Models.User;
 
 namespace LidLaunchWebsite.Controllers
 {
@@ -1327,7 +1328,7 @@ namespace LidLaunchWebsite.Controllers
 
         }
 
-        public async ActionResult BulkOrderDetailsPopup(int bulkOrderId)
+        public ActionResult BulkOrderDetailsPopup(int bulkOrderId)
         {
              
             if (Convert.ToInt32(Session["UserID"]) > 0)
@@ -1358,15 +1359,15 @@ namespace LidLaunchWebsite.Controllers
                         //do nothing
                     }
 
-                    //get zen desk tickets
-                    var userName = "robert@lidlaunch.com"; // the user that will be logging in the API aka the call center staff
-                    var userPassword = "Z06Corvette90!";
-                    var companySubDomain = "lidlaunch"; // sub-domain for the account with Zendesk
-                    var api = new ZendeskApi(companySubDomain, userName, userPassword);
-                    var helper = new ZendeskHelper(api);
+                    ////get zen desk tickets
+                    //var userName = "robert@lidlaunch.com"; // the user that will be logging in the API aka the call center staff
+                    //var userPassword = "Z06Corvette90!";
+                    //var companySubDomain = "lidlaunch"; // sub-domain for the account with Zendesk
+                    //var api = new ZendeskApi(companySubDomain, userName, userPassword);
+                    //var helper = new ZendeskHelper(api);
 
-                    bulkOrder.lstTickets = new List<Ticket>();
-                    bulkOrder.lstTickets = await helper.GetTickets(bulkOrder.CustomerEmail);
+                    //bulkOrder.lstTickets = new List<Ticket>();
+                    //bulkOrder.lstTickets = await helper.GetTickets(bulkOrder.CustomerEmail);
 
                     return PartialView("BulkOrderDetailsPopup", bulkOrder);
                 }
@@ -1698,6 +1699,19 @@ namespace LidLaunchWebsite.Controllers
             {
                 return RedirectToAction("Login", "User", null);
             }
+        }
+        [HttpGet]
+        public string GetSalesData(string goon)
+        {
+            if(goon != null)
+            {
+                if(goon == "12jiqnfiwqo901nifo1nr1r819hr1nrjkb12ri1lbr129rWIAFJIAF")
+                {
+                    DashboardData data = new DashboardData();
+                    return new JavaScriptSerializer().Serialize(data.GetSalesData());
+                }
+            }
+            return "";
         }
 
     }
