@@ -102,8 +102,8 @@
     <Reference Include="Netco, Version=1.5.1.0, Culture=neutral, PublicKeyToken=9d732c15ac2ec2c9, processorArchitecture=MSIL">
       <HintPath>..\packages\Netco.1.5.1\lib\net45\Netco.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Payflow_dotNET">
       <HintPath>.\Payflow_dotNET.dll</HintPath>
@@ -182,9 +182,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="ZendeskApi_v2, Version=3.10.11.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZendeskApi_v2.3.10.11\lib\net452\ZendeskApi_v2.dll</HintPath>
-    </Reference>
     <Reference Include="zxing, Version=0.16.5.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
       <HintPath>..\packages\ZXing.Net.0.16.5\lib\net45\zxing.dll</HintPath>
     </Reference>
@@ -244,7 +241,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Classes\BulkData.cs" />
-    <Compile Include="Classes\ZendeskHelper.cs" />
     <Compile Include="Models\BulkOrderLog.cs" />
     <Compile Include="Models\Thread.cs" />
     <Compile Include="Classes\DigitizingOrderData.cs" />
