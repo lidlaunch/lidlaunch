@@ -1447,6 +1447,11 @@ namespace LidLaunchWebsite.Controllers
                 }
             }
 
+            if(bulkOrder.OrderTotal != Convert.ToDecimal(orderTotal))
+            {
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Order Total Changed FROM >> $" + bulkOrder.OrderTotal + " TO >> $" + orderTotal);
+            }
+
             HttpPostedFileBase fileContent = null;
             if (Request.Files.Count > 0)
             {
