@@ -366,7 +366,7 @@ namespace LidLaunchWebsite.Controllers
                         if(info != null)
                         {
                             EmailFunctions email = new EmailFunctions();
-                            email.sendEmail(info.UserEmail, "LidLaunch Designer", email.productDenyEmail(info.ProductName, denyReason, info.ArtSource), "Your Lid Launch Design Was Denied", "");
+                            email.sendEmail(info.UserEmail, "LidLaunch Designer", email.productDenyEmail(info.ProductName, denyReason, info.ArtSource), "Your LidLaunch Design Was Denied", "");
                         }
                     }
                 }
@@ -664,7 +664,7 @@ namespace LidLaunchWebsite.Controllers
                         if (info != null)
                         {
                             EmailFunctions email = new EmailFunctions();
-                            email.sendEmail(info.UserEmail, "LidLaunch Designer", email.productApprovedEmail(info.ProductName, "https://lidlaunch.com/Product?id=" + id), "Your Lid Launch Design Was Approved", "");
+                            email.sendEmail(info.UserEmail, "LidLaunch Designer", email.productApprovedEmail(info.ProductName, "https://lidlaunch.com/Product?id=" + id), "Your LidLaunch Design Was Approved", "");
                         }
                     }
                 }
@@ -905,7 +905,7 @@ namespace LidLaunchWebsite.Controllers
             BulkData bulkData = new BulkData();
             EmailFunctions email = new EmailFunctions();
 
-            var success = email.sendEmail(customerEmail, "Lid Launch Customer", email.requestArtworkEmail(bulkOrderId), "Order #" + bulkOrderId + " Artwork Request", ""); 
+            var success = email.sendEmail(customerEmail, "LidLaunch Customer", email.requestArtworkEmail(bulkOrderId), "Order #" + bulkOrderId + " Artwork Request", ""); 
             if (success)
             {
                 bulkData.UpdateArtworkEmailSent(Convert.ToInt32(bulkOrderId));
@@ -922,11 +922,27 @@ namespace LidLaunchWebsite.Controllers
             BulkData bulkData = new BulkData();
             EmailFunctions email = new EmailFunctions();
 
-            var success = email.sendEmail(customerEmail, "Lid Launch Customer", email.colorConfirmationEmail(bulkOrderId, noteText), "Order #" + bulkOrderId + " Color Confirmation Request", "");
+            var success = email.sendEmail(customerEmail, "LidLaunch Customer", email.colorConfirmationEmail(bulkOrderId, noteText), "Order #" + bulkOrderId + " Color Confirmation Request", "");
             if (success)
             {
                 bulkData.UpdateColorConfirmationEmailSent(Convert.ToInt32(bulkOrderId));
                 var addBulkOrderLogSuccess = bulkData.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Color Confirmation Email Sent: " + noteText);
+            }
+
+            var json = new JavaScriptSerializer().Serialize(success);
+
+            return json;
+        }
+
+        public string SendGeneralEmail(string bulkOrderId, string customerEmail, string emailText, string paymentGuid)
+        {
+            BulkData bulkData = new BulkData();
+            EmailFunctions email = new EmailFunctions();
+
+            var success = email.sendEmail(customerEmail, "LidLaunch Customer", email.generalBulkOrderEmail(emailText, paymentGuid), "Your Order #" + bulkOrderId, "");
+            if (success)
+            {
+                var addBulkOrderLogSuccess = bulkData.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Email Sent To Customer From Website: " + emailText);
             }
 
             var json = new JavaScriptSerializer().Serialize(success);
@@ -944,7 +960,7 @@ namespace LidLaunchWebsite.Controllers
             if (success)
             {
                 EmailFunctions email = new EmailFunctions();
-                email.sendEmail(customerEmail, "Lid Launch Customer", email.orderShippedEmail(trackingNumber), "Your Order Is On It's Way!", "");
+                email.sendEmail(customerEmail, "LidLaunch Customer", email.orderShippedEmail(trackingNumber), "Your Order Is On It's Way!", "");
             }
 
             var json = new JavaScriptSerializer().Serialize(success);
@@ -1612,7 +1628,7 @@ namespace LidLaunchWebsite.Controllers
                 EmailFunctions email = new EmailFunctions();      
                 if(!customerAdded)
                 {
-                    email.sendEmail("digitizing@lidlaunch.com", "Lid Launch", text, parentBulkOrderId + " : Revision Request", "ronnie.dcd@gmail.com");
+                    email.sendEmail("digitizing@lidlaunch.com", "LidLaunch", text, parentBulkOrderId + " : Revision Request", "ronnie.dcd@gmail.com");
                 }                
             }
 

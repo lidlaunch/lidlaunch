@@ -498,6 +498,8 @@
     <Content Include="Images\Logo.png" />
     <Content Include="Images\LogoBG.jpg" />
     <Content Include="Images\LogoSmall.png" />
+    <Content Include="Images\LogoSmallBlack.jpg" />
+    <Content Include="Images\LogoSmallBlack.png" />
     <Content Include="Images\min.png" />
     <Content Include="Images\MoreColors.png" />
     <Content Include="Images\NotInternallyApproved.png" />
@@ -580,6 +582,7 @@
     <Content Include="Images\RichardsonSectionBG.jpg" />
     <Content Include="Images\RightOpPlacement.jpg" />
     <Content Include="Images\RightPlacement.jpg" />
+    <Content Include="Images\RocketOnly.jpg" />
     <Content Include="Images\rocketsbg.jpg" />
     <Content Include="Images\search.jpg" />
     <Content Include="Images\SearchBack.jpg" />

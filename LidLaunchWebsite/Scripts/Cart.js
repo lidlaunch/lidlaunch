@@ -173,7 +173,7 @@ function renderPaypalButtons(price, items, shippingCost, subtotal) {
                     transactions: [
                         {
                             "amount": { "total": price, "currency": "USD", "details": { "shipping": shippingCost, "tax": 0, "subtotal": subtotal } },
-                            "description": "Lid Launch Order",
+                            "description": "LidLaunch Order",
                             "item_list": {
                                 "items": JSON.parse(items)
                             }

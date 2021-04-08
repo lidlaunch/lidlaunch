@@ -81,6 +81,32 @@ function sendColorConfirmationEmail(bulkOrderId, customerEmail, noteText) {
     });
 }
 
+function sendGeneralEmail(bulkOrderId, customerEmail, emailText, paymentGuid) {
+    showLoading();
+    $.ajax({
+        type: "POST",
+        url: '/Dashboard/SendGeneralEmail',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            "bulkOrderId": bulkOrderId, "customerEmail": customerEmail, "emailText": emailText, "paymentGuid": paymentGuid
+        }),
+        success: function (result) {
+            if (result == "") {
+                //do nothing
+                displayPopupNotification('Error Sending Email.', 'error', false);
+            } else {
+                //set the url for the file link and show the link 
+                showBulkOrderDetailsPopup(bulkOrderId);
+            }
+        },
+        error: function (xhr, status, p3, p4) {
+            displayPopupNotification('Error Sending Email, please try again.', 'error', false);
+        }
+    });
+}
+
+
+
 
 function releaseToDigitizer(bulkOrderId) {
     showLoading();

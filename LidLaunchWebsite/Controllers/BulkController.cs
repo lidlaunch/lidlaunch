@@ -84,7 +84,7 @@ namespace LidLaunchWebsite.Controllers
                 }
                 var dateFrom = data.AddBusinessDays(DateTime.Now, 10).ToString("MM/dd/yyyy");
                 var dateTo = data.AddBusinessDays(DateTime.Now, 14).ToString("MM/dd/yyyy");
-                var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderPaymentEmail(items, bulkOrder.OrderTotal.ToString(), bulkOrder.Id.ToString(), bulkOrder.PaymentGuid, dateFrom + " - " + dateTo), "Lid Launch Payment Confirmation", "");
+                var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderPaymentEmail(items, bulkOrder.OrderTotal.ToString(), bulkOrder.Id.ToString(), bulkOrder.PaymentGuid, dateFrom + " - " + dateTo), "LidLaunch Payment Confirmation", "");
                 var addBulkOrderLogSuccess = data.AddBulkOrderLog(bulkOrder.Id, 0, "Payment Received");
             }
             
@@ -110,7 +110,7 @@ namespace LidLaunchWebsite.Controllers
                 }
                 else
                 {
-                    var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderShippedEmail(trackingNumber), "Lid Launch Order Shipped", "");
+                    var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderShippedEmail(trackingNumber), "LidLaunch Order Shipped", "");
                     return emailSuccess.ToString();
                 }
                 
@@ -317,7 +317,7 @@ namespace LidLaunchWebsite.Controllers
                     try
                     {
                         EmailFunctions emailFunc = new EmailFunctions();
-                        var emailSuccess = emailFunc.sendEmail(email, shipToName, emailFunc.bulkOrderEmail(cartItems, orderTotal, orderId.ToString(), paymentGuid), "Lid Launch Order Confirmation", "");
+                        var emailSuccess = emailFunc.sendEmail(email, shipToName, emailFunc.bulkOrderEmail(cartItems, orderTotal, orderId.ToString(), paymentGuid), "LidLaunch Order Confirmation", "");
                     }
                     catch (Exception ex)
                     {
@@ -429,12 +429,13 @@ namespace LidLaunchWebsite.Controllers
             return View(bulkOrder);
         }
 
-        public ActionResult PrintBulkOrderBatchBulkOrders(string bulkBatchId, string rework)
+        public ActionResult PrintBulkOrderBatchBulkOrders(string bulkBatchId, string bulkOrderId, string rework)
         {
             BulkData data = new BulkData();
             BulkBatchOrder bulkBatchOrder = new BulkBatchOrder();
             List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
             bool isRework = Convert.ToBoolean(rework);
+            int id = Convert.ToInt32(bulkOrderId);
 
             if(isRework)
             {
@@ -446,6 +447,11 @@ namespace LidLaunchWebsite.Controllers
             lstBulkOrders = lstBulkOrders.Where(b => b.OrderPaid && (!b.OrderComplete || b.lstItems.Any(li => li.BulkRework.Id > 0))).ToList();
 
             bulkBatchOrder.lstBulkOrders = lstBulkOrders;
+
+            if(id > 0)
+            {
+                bulkBatchOrder.lstBulkOrders = lstBulkOrders.Where(b => b.Id == id).ToList();
+            }
 
             return View(bulkBatchOrder);
         }

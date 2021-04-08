@@ -23,7 +23,7 @@
         height:100px;
         line-height:100px;
         vertical-align:middle;
-        margin:0 20px;
+        margin:0 10px;
     }
     
 </style>
@@ -365,6 +365,15 @@
             </div>
         </div>
 
+        <div id="generalEmailPopup" style="display:none;">
+            <div id="generalEmailPopupInner">
+                This is a general order email that also includes a link for the customer to view their order. (use this for responded to order questions and revision requests)<br />
+                <textarea id="emailText" type="text" placeholder="Email details here..." style="width:90%; height:100px;"></textarea><br />
+                <input type="button" class="smallButton" value="Send General Order Email" onclick="sendGeneralEmail('@Model.Id', '@Model.CustomerEmail', $('#emailText').val(), '@Model.PaymentGuid');" />
+                <input type="button" class="smallButton" value="Cancel" onclick="$('#generalEmailPopup').hide()" />
+            </div>
+        </div>       
+
 
         <div id="bulkBottomBar">
             <div class="bottomBarLink">
@@ -379,6 +388,9 @@
             </div>
             <div class="bottomBarLink">
                 <img src="~/Images/AdminReview.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="$('#adminReviewHolder').load(adminReviewUrl, { bulkOrderId: @Model.Id, fromBulkEdit: true });" />
+            </div>
+            <div class="bottomBarLink">
+                <input type="button" class="smallButton" value="Send Email" onclick="$('#generalEmailPopup').show();" />
             </div>
             @if (!Model.ArtworkEmailSent && Model.ArtworkImage == "")
             {
@@ -410,7 +422,14 @@
             <div class="bottomBarLink">
                 <a href="https://ship11.shipstation.com/orders/all-orders-search-result/store/c4087619-371e-43bf-956d-81fde8694d8e?quickSearch=Bo-@Model.Id" target="_blank"><input type="button" value="Open ShipStation" class="smallButton" /></a>
             </div>
-        </div>
+            @if (Model.BulkOrderBatchId > 0)
+            {
+                <div class="bottomBarLink">
+                    <a href="~/Bulk/PrintBulkOrderBatchBulkOrders?bulkBatchId=@Model.BulkOrderBatchId&bulkOrderId=@Model.Id" target="_blank"><input type="button" value="Reprint Order" class="smallButton" /></a>
+                </div>
+            }
+
+        </div><!--/bulkbottombar-->
     </div><!--bulkOrderDetailsPopupContent-->
 </div><!--/bulkOrderDetailsPopup-->
 <script type="text/javascript">

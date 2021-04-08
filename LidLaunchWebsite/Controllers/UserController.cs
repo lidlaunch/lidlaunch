@@ -64,7 +64,7 @@ namespace LidLaunchWebsite.Controllers
             if(userId > 0)
             {
                 EmailFunctions emailFunc = new EmailFunctions();
-                bool emailSuccess = emailFunc.sendEmail(email, firstName + " "  + lastName, emailFunc.welcomeEmail, "Welcome to Lid Launch, " + firstName + "!", "");
+                bool emailSuccess = emailFunc.sendEmail(email, firstName + " "  + lastName, emailFunc.welcomeEmail, "Welcome to LidLaunch, " + firstName + "!", "");
             }
             var json = new JavaScriptSerializer().Serialize(userId);
             Session["UserID"] = userId;
@@ -124,7 +124,7 @@ namespace LidLaunchWebsite.Controllers
             if (success)
             {
                 EmailFunctions emailFunc = new EmailFunctions();
-                success = emailFunc.sendEmail(email, "Lid Launch User", emailFunc.passwordReset(resetCode), "Reset Your Lid Launch Password", "");
+                success = emailFunc.sendEmail(email, "LidLaunch User", emailFunc.passwordReset(resetCode), "Reset Your LidLaunch Password", "");
             }
             var json = new JavaScriptSerializer().Serialize(success);
             return json;
