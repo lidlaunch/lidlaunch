@@ -30,7 +30,7 @@
         </div>
     </div>
     @{ Html.RenderPartial("~/Views/Bulk/IntroStep.cshtml"); }
-    @{ Html.RenderPartial("~/Views/Bulk/HatSelectStep.cshtml"); }
+    @{ Html.RenderAction("HatSelectStep", "Bulk"); }
     @{ Html.RenderPartial("~/Views/Bulk/ArtworkStep.cshtml"); }
     <div id="bulkReadyToBuy" class="centerInner" style="display:none;">
         <a href="javascript:void(0);" onclick="showBulkCart();"><div id="bulkPaymentButton">Ready To Buy</div></a>

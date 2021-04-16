@@ -1736,5 +1736,80 @@ namespace LidLaunchWebsite.Controllers
             return "";
         }
 
+        public ActionResult BulkOrderItemAvailabilty()
+        {
+            if (Convert.ToInt32(Session["UserID"]) > 0)
+            {
+                if (checkLoggedIn())
+                {
+                    BulkData data = new BulkData();
+                    BulkOrderHatSelectModel hatSelectModel = new BulkOrderHatSelectModel();
+                    List<MasterBulkOrderItem> masterItemList = data.GetMasterBulkOrderItems(false);
+
+                    hatSelectModel.FlexFit6277Items = masterItemList.Where(i => i.Manufacturer == "FlexFit" && i.ItemStyle == "6277").ToList();
+                    hatSelectModel.FlexFit6277Items = hatSelectModel.FlexFit6277Items.OrderBy(i => i.DisplayOrder).ToList();
+
+                    hatSelectModel.FlexFit6511Items = masterItemList.Where(i => i.Manufacturer == "FlexFit" && (i.ItemStyle == "6511 Trucker Fitted" || i.ItemStyle == "6311 Trucker Fitted")).ToList();
+                    hatSelectModel.FlexFit6511Items = hatSelectModel.FlexFit6511Items.OrderBy(i => i.DisplayOrder).ToList();
+
+                    hatSelectModel.FlexFit110Items = masterItemList.Where(i => i.Manufacturer == "FlexFit" && i.ItemStyle == "110M Trucker Snapback").ToList();
+                    hatSelectModel.FlexFit110Items = hatSelectModel.FlexFit110Items.OrderBy(i => i.DisplayOrder).ToList();
+
+                    hatSelectModel.FlexFit6297Items = masterItemList.Where(i => i.Manufacturer == "FlexFit" && i.ItemStyle == "6297F Flat Bill Fitted").ToList();
+                    hatSelectModel.FlexFit6297Items = hatSelectModel.FlexFit6297Items.OrderBy(i => i.DisplayOrder).ToList();
+
+                    hatSelectModel.Yupoong6089Items = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6089M Flat Bill Snapback").ToList();
+                    hatSelectModel.Yupoong6089Items = hatSelectModel.Yupoong6089Items.OrderBy(i => i.DisplayOrder).ToList();
+
+                    hatSelectModel.YupoongDadCapItems = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6024CM Dad Cap").ToList();
+                    hatSelectModel.YupoongDadCapItems = hatSelectModel.YupoongDadCapItems.OrderBy(i => i.DisplayOrder).ToList();
+
+                    hatSelectModel.Yupoong6606Items = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6606 Trucker Snapback").ToList();
+                    hatSelectModel.Yupoong6606Items = hatSelectModel.Yupoong6606Items.OrderBy(i => i.DisplayOrder).ToList();
+
+                    hatSelectModel.Yupoong6006Items = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6006 Flat Bill Trucker Snapback").ToList();
+                    hatSelectModel.Yupoong6006Items = hatSelectModel.Yupoong6006Items.OrderBy(i => i.DisplayOrder).ToList();
+
+                    hatSelectModel.YupoongShortBeanieItems = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "Short Beanie").ToList();
+                    hatSelectModel.YupoongShortBeanieItems = hatSelectModel.YupoongShortBeanieItems.OrderBy(i => i.DisplayOrder).ToList();
+
+                    hatSelectModel.YupoongCuffedBeanieItems = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "Cuffed Beanie").ToList();
+                    hatSelectModel.YupoongCuffedBeanieItems = hatSelectModel.YupoongCuffedBeanieItems.OrderBy(i => i.DisplayOrder).ToList();
+
+                    hatSelectModel.Richardson112Items = masterItemList.Where(i => i.Manufacturer == "Richardson" && i.ItemStyle == "112 Trucker Snapback").ToList();
+                    hatSelectModel.Richardson112Items = hatSelectModel.Richardson112Items.OrderBy(i => i.DisplayOrder).ToList();
+
+                    return View(hatSelectModel);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User", null);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User", null);
+            }            
+        }
+
+        public string UpdateMasterBulkOrderItem(string id, string sm, string lxl, string xlxxl, string osfa, string available)
+        {
+            bool success = false;
+            BulkData data = new BulkData();
+            MasterBulkOrderItem item = new MasterBulkOrderItem();
+
+            item.Id = Convert.ToInt32(id);
+            item.SMStock = Convert.ToBoolean(sm);
+            item.LXLStock = Convert.ToBoolean(lxl);
+            item.XLXXLStock = Convert.ToBoolean(xlxxl);
+            item.OSFAStock = Convert.ToBoolean(osfa);
+            item.Available = Convert.ToBoolean(available);
+
+            success = data.UpdateMasterBulkOrderItem(item);
+
+
+            return new JavaScriptSerializer().Serialize(success);
+        }
+
     }
 }

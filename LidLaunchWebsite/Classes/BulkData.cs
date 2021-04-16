@@ -2021,6 +2021,112 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
+        public List<MasterBulkOrderItem> GetMasterBulkOrderItems(bool inStockOnly)
+        {
+            var data = new SQLData();
+            List<MasterBulkOrderItem> lstItems = new List<MasterBulkOrderItem>();
+            try
+            {                
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetMasterBulkOrderItems", data.conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in ds.Tables[0].Rows)
+                            {
+                                MasterBulkOrderItem item = new MasterBulkOrderItem();
+                                item.Id = Convert.ToInt32(dr["Id"].ToString());
+                                item.ItemName = Convert.ToString(dr["ItemName"].ToString());
+                                item.ItemStyle = Convert.ToString(dr["ItemStyle"].ToString());
+                                item.OSFA = Convert.ToBoolean(dr["OSFA"].ToString());
+                                item.OSFAStock = Convert.ToBoolean(dr["OSFAStock"].ToString());
+                                item.LXL = Convert.ToBoolean(dr["LXL"].ToString());
+                                item.LXLStock = Convert.ToBoolean(dr["LXLStock"].ToString());
+                                item.SM = Convert.ToBoolean(dr["SM"].ToString());
+                                item.SMStock = Convert.ToBoolean(dr["SMStock"].ToString());
+                                item.XLXXL = Convert.ToBoolean(dr["XLXXL"].ToString());
+                                item.XLXXLStock = Convert.ToBoolean(dr["XLXXLStock"].ToString());
+                                item.ItemColor = Convert.ToString(dr["ItemColor"].ToString());
+                                item.Manufacturer = Convert.ToString(dr["Manufacturer"].ToString());
+                                item.Available = Convert.ToBoolean(dr["Available"].ToString());
+                                item.BasePrice = Convert.ToDecimal(dr["BasePrice"].ToString());
+                                item.Cost = Convert.ToDecimal(dr["Cost"].ToString());
+                                item.SKU = Convert.ToString(dr["SKU"].ToString());
+                                item.ThumbnailpreviewImagePath = Convert.ToString(dr["ThumbnailpreviewImagePath"].ToString());
+                                item.PreviewImagePath = Convert.ToString(dr["PreviewImagePath"].ToString());
+                                item.DistributorLink = Convert.ToString(dr["DistributorLink"].ToString());
+                                item.DisplayOrder = Convert.ToInt32(dr["DisplayOrder"].ToString());
+                                lstItems.Add(item);
+
+                            }
+                            
+                        }
+
+                    }
+
+                }
+                return lstItems;
+            }
+            catch (Exception ex)
+            {
+                return lstItems;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool UpdateMasterBulkOrderItem(MasterBulkOrderItem item)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateMasterBulkOrderItem", data.conn);
+                    sqlComm.Parameters.AddWithValue("@id", item.Id);
+                    sqlComm.Parameters.AddWithValue("@smstock", item.SMStock);
+                    sqlComm.Parameters.AddWithValue("@lxlstock", item.LXLStock);
+                    sqlComm.Parameters.AddWithValue("@xlxxlstock", item.XLXXLStock);
+                    sqlComm.Parameters.AddWithValue("@osfastock", item.OSFAStock);
+                    sqlComm.Parameters.AddWithValue("@available", item.Available);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
 
 
     }

@@ -38,12 +38,47 @@ namespace LidLaunchWebsite.Controllers
         }
         public ActionResult HatSelectStep()
         {
-            dynamic model = new ExpandoObject();
-
             //model.idVal = bulkOrderId;
             //model.fromBulkEdit = fromBulkEdit;
+            BulkData data = new BulkData();
+            BulkOrderHatSelectModel hatSelectModel = new BulkOrderHatSelectModel();
+            List<MasterBulkOrderItem> masterItemList = data.GetMasterBulkOrderItems(false);
 
-            return PartialView("HatSelectStep", model);
+            hatSelectModel.FlexFit6277Items = masterItemList.Where(i => i.Manufacturer == "FlexFit" && i.ItemStyle == "6277" && i.Available).ToList();
+            hatSelectModel.FlexFit6277Items = hatSelectModel.FlexFit6277Items.OrderBy(i => i.DisplayOrder).ToList();
+
+            hatSelectModel.FlexFit6511Items = masterItemList.Where(i => i.Manufacturer == "FlexFit" && (i.ItemStyle == "6511 Trucker Fitted" || i.ItemStyle == "6311 Trucker Fitted") && i.Available).ToList();
+            hatSelectModel.FlexFit6511Items = hatSelectModel.FlexFit6511Items.OrderBy(i => i.DisplayOrder).ToList();
+
+            hatSelectModel.FlexFit110Items = masterItemList.Where(i => i.Manufacturer == "FlexFit" && i.ItemStyle == "110M Trucker Snapback" && i.Available).ToList();
+            hatSelectModel.FlexFit110Items = hatSelectModel.FlexFit110Items.OrderBy(i => i.DisplayOrder).ToList();
+
+            hatSelectModel.FlexFit6297Items = masterItemList.Where(i => i.Manufacturer == "FlexFit" && i.ItemStyle == "6297F Flat Bill Fitted" && i.Available).ToList();
+            hatSelectModel.FlexFit6297Items = hatSelectModel.FlexFit6297Items.OrderBy(i => i.DisplayOrder).ToList();
+
+            hatSelectModel.Yupoong6089Items = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6089M Flat Bill Snapback" && i.Available).ToList();
+            hatSelectModel.Yupoong6089Items = hatSelectModel.Yupoong6089Items.OrderBy(i => i.DisplayOrder).ToList();
+
+            hatSelectModel.YupoongDadCapItems = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6024CM Dad Cap" && i.Available).ToList();
+            hatSelectModel.YupoongDadCapItems = hatSelectModel.YupoongDadCapItems.OrderBy(i => i.DisplayOrder).ToList();
+
+            hatSelectModel.Yupoong6606Items = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6606 Trucker Snapback" && i.Available).ToList();
+            hatSelectModel.Yupoong6606Items = hatSelectModel.Yupoong6606Items.OrderBy(i => i.DisplayOrder).ToList();
+
+            hatSelectModel.Yupoong6006Items = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6006 Flat Bill Trucker Snapback" && i.Available).ToList();
+            hatSelectModel.Yupoong6006Items = hatSelectModel.Yupoong6006Items.OrderBy(i => i.DisplayOrder).ToList();
+
+            hatSelectModel.YupoongShortBeanieItems = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "Short Beanie" && i.Available).ToList();
+            hatSelectModel.YupoongShortBeanieItems = hatSelectModel.YupoongShortBeanieItems.OrderBy(i => i.DisplayOrder).ToList();
+
+            hatSelectModel.YupoongCuffedBeanieItems = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "Cuffed Beanie" && i.Available).ToList();
+            hatSelectModel.YupoongCuffedBeanieItems = hatSelectModel.YupoongCuffedBeanieItems.OrderBy(i => i.DisplayOrder).ToList();
+
+            hatSelectModel.Richardson112Items = masterItemList.Where(i => i.Manufacturer == "Richardson" && i.ItemStyle == "112 Trucker Snapback" && i.Available).ToList();
+            hatSelectModel.Richardson112Items = hatSelectModel.Richardson112Items.OrderBy(i => i.DisplayOrder).ToList();
+
+
+            return PartialView("HatSelectStep", hatSelectModel);
         }
         public ActionResult ThreadColorChart()
         {

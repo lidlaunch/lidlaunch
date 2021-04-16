@@ -241,6 +241,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Classes\BulkData.cs" />
+    <Compile Include="Models\MasterBulkOrderItem.cs" />
     <Compile Include="Models\BulkOrderLog.cs" />
     <Compile Include="Models\Thread.cs" />
     <Compile Include="Classes\DigitizingOrderData.cs" />
@@ -863,6 +864,7 @@
     <Content Include="Views\Bulk\ThreadColorChart.cshtml" />
     <Content Include="Views\Bulk\OrderLookup.cshtml" />
     <Content Include="Views\Dashboard\AddLog.cshtml" />
+    <Content Include="Views\Dashboard\BulkOrderItemAvailabilty.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
