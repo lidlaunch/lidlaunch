@@ -1,4 +1,4 @@
-﻿@model LidLaunchWebsite.Models.BulkOrder
+﻿@model LidLaunchWebsite.Models.BulkOrderDetailsPopupModel
 @{
     ViewBag.Title = "BulkOrderDetailsPopup";
 }
@@ -31,8 +31,8 @@
     <div id="bulkOrderDetailsPopupContent">
         <div id="TopInfoBar">
             <div class="clear">
-                <div id="BulkOrderId">@Model.Id</div>
-                <div id="BulkOrderDate">Payment Date: @Model.PaymentDate<br />Shipping Date: @Model.ProjectedShipDateShort - @Model.ProjectedShipDateLong <span onclick="$('#bulkOrderDetailsPopup').hide();" class="closeButton">X</span></div>
+                <div id="BulkOrderId">@Model.BulkOrder.Id</div>
+                <div id="BulkOrderDate">Payment Date: @Model.BulkOrder.PaymentDate<br />Shipping Date: @Model.BulkOrder.ProjectedShipDateShort - @Model.BulkOrder.ProjectedShipDateLong <span onclick="$('#bulkOrderDetailsPopup').hide();" class="closeButton">X</span></div>
             </div>
         </div>
         <div id="bulkOrderDetails">
@@ -40,28 +40,28 @@
             <table>
                 <tr>
                     <td>Customer:</td>
-                    <td>@Model.CustomerName - @Model.CustomerEmail</td>
+                    <td>@Model.BulkOrder.CustomerName - @Model.BulkOrder.CustomerEmail</td>
                 </tr>
                 <tr>
                     <td>Shipping Address:</td>
-                    <td>@Model.ShipToName : @Model.ShipToAddress @Model.ShipToCity , @Model.ShipToState @Model.ShipToZip</td>
+                    <td>@Model.BulkOrder.ShipToName : @Model.BulkOrder.ShipToAddress @Model.BulkOrder.ShipToCity , @Model.BulkOrder.ShipToState @Model.BulkOrder.ShipToZip</td>
                 </tr>
                 <tr>
                     <td>Customer Notes:</td>
-                    <td><pre>@Model.OrderNotes</pre></td>
+                    <td><pre>@Model.BulkOrder.OrderNotes</pre></td>
                 </tr>
                 <tr>
                     <td>Artwork Position:</td>
                     <td>
-                        @if (Model.ArtworkPosition == "left")
+                        @if (Model.BulkOrder.ArtworkPosition == "left")
                         {
                             <img src="~/Images/LeftPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
                         }
-                        @if (Model.ArtworkPosition == "right")
+                        @if (Model.BulkOrder.ArtworkPosition == "right")
                         {
                             <img src="~/Images/RightPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
                         }
-                        @if (Model.ArtworkPosition == "center")
+                        @if (Model.BulkOrder.ArtworkPosition == "center")
                         {
                             <img src="~/Images/CenterPlacement.jpg" class="placementImage" style="max-height:100px;max-width:100px;" />
                         }
@@ -69,66 +69,66 @@
                 </tr>
                 <tr>
                     <td>Art Source:</td>
-                    <td><img src="~/Images/BulkOrderArtwork/@Model.ArtworkImage" style="max-height:200px; max-width:200px;" /></td>
+                    <td><img src="~/Images/BulkOrderArtwork/@Model.BulkOrder.ArtworkImage" style="max-height:200px; max-width:200px;" /><br /><a href="~/Images/BulkOrderArtwork/@Model.BulkOrder.ArtworkImage" target="_blank">@Model.BulkOrder.ArtworkImage</a></td>
                 </tr>
-                @if (Model.AdminReview)
+                @if (Model.BulkOrder.AdminReview)
                 {
                     <tr style="background-color:red; color:#fff;">
                         <td>Admin Review:</td>
-                        <td>@Model.AdminReviewComment</td>
+                        <td>@Model.BulkOrder.AdminReviewComment</td>
                     </tr>
                 }
                 <tr class="hidden">
                     <td>Released To Digitizer:</td>
                     <td>
-                        @if (Model.ReleaseToDigitizer)
+                        @if (Model.BulkOrder.ReleaseToDigitizer)
                         {
                             <span>released</span>
                         }
                         else
                         {
-                            <input type="button" class="smallButton" onclick="releaseToDigitizer(@Model.Id);" value="Release" />
+                            <input type="button" class="smallButton" onclick="releaseToDigitizer(@Model.BulkOrder.Id);" value="Release" />
                         }
                     </td>
                 </tr>
-                @if (Model.BackStitching)
+                @if (Model.BulkOrder.BackStitching)
                 {
                     <tr>
                         <td>Back Stitching:</td>
-                        <td>@Model.BackStitchingComment</td>
+                        <td>@Model.BulkOrder.BackStitchingComment</td>
                     </tr>
                 }
-                @if (Model.LeftStitching)
+                @if (Model.BulkOrder.LeftStitching)
                 {
                     <tr>
                         <td>Left Stitching:</td>
-                        <td>@Model.LeftStitchingComment</td>
+                        <td>@Model.BulkOrder.LeftStitchingComment</td>
                     </tr>
                 }
-                @if (Model.RightStitching)
+                @if (Model.BulkOrder.RightStitching)
                 {
                     <tr>
                         <td>Right Stitching:</td>
-                        <td>@Model.RightStitchingComment</td>
+                        <td>@Model.BulkOrder.RightStitchingComment</td>
                     </tr>
                 }
 
                 <tr>
                     <td>Order Total:</td>
-                    <td>@Model.OrderTotal</td>
+                    <td>@Model.BulkOrder.OrderTotal</td>
                 </tr>
                 <tr>
                     <td>Order Paid:</td>
-                    <td>@Model.OrderPaid</td>
+                    <td>@Model.BulkOrder.OrderPaid</td>
                 </tr>
                 <tr>
                     <td>Payment Link:</td>
-                    <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@Model.PaymentGuid" target="_blank">Pay Link</a></td>
+                    <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@Model.BulkOrder.PaymentGuid" target="_blank">Pay Link</a></td>
                 </tr>
                 <tr>
                     <td>Shipped:</td>
                     <td>
-                        @if (Model.OrderComplete)
+                        @if (Model.BulkOrder.OrderComplete)
                         {
                             <span>SHIPPED</span>
                         }
@@ -139,12 +139,32 @@
 
                     </td>
                 </tr>
-                @if (Model.OrderRefunded)
+                @if (Model.BulkOrder.OrderRefunded)
                 {
                     <tr>
                         <td colspan="2" style="color:red; font-size:22px; font-weight:bold;">REFUNDED</td>
                     </tr>
                 }
+                <tr>
+                    <td>Batch:</td>
+                    <td>
+                        <select class="batchSelect">
+                            <option id="0" selected value="0">N/A</option>
+                            @foreach (LidLaunchWebsite.Models.OrderBatch batch in Model.lstBulkOrderBatches)
+                            {
+                                if (batch.BatchId == Model.BulkOrder.BulkOrderBatchId)
+                                {
+                                    <option id="@batch.BatchId" selected value="@batch.BatchId">@batch.BatchId : @batch.DateBatched.ToString("MM/dd")</option>
+                                }
+                                else
+                                {
+                                    <option id="@batch.BatchId" value="@batch.BatchId">@batch.BatchId : @batch.DateBatched.ToString("MM/dd")</option>
+                                }
+                            }
+                        </select>
+
+                    </td>
+                </tr>
             </table>
         </div><!--/bulkOrderDetails-->
         <div id="bulkOrderItems">
@@ -160,7 +180,7 @@
                         <td>Rework</td>
                     </tr>
                 <tbody>
-                    @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.lstItems)
+                    @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.BulkOrder.lstItems)
                     {
                         if (item.BulkRework != null && item.BulkRework.Id > 0)
                         {
@@ -171,8 +191,8 @@
                                     <td>@item.ItemQuantity</td>
                                     <td>@item.ItemCost</td>
                                     <td>@item.DesignId</td>
-                                    <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
-                                    <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.BulkRework.Quantity, note: '@item.BulkRework.Note', bulkReworkId: @item.BulkRework.Id, shipping: false  });">@item.BulkRework.Quantity : @item.BulkRework.Note</a></td>
+                                    <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.BulkOrder.Id, revision: false, customerAdded: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                                    <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.BulkOrder.Id, parentBulkOrderBatchId: 0, quantity: @item.BulkRework.Quantity, note: '@item.BulkRework.Note', bulkReworkId: @item.BulkRework.Id, shipping: false  });">@item.BulkRework.Quantity : @item.BulkRework.Note</a></td>
                                 </tr>
                             }
                             else
@@ -182,8 +202,8 @@
                                     <td>@item.ItemQuantity</td>
                                     <td>@item.ItemCost</td>
                                     <td>@item.DesignId</td>
-                                    <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
-                                    <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.BulkRework.Quantity, note: '@item.BulkRework.Note', bulkReworkId: @item.BulkRework.Id, shipping: false  });">@item.BulkRework.Quantity : @item.BulkRework.Note</a></td>
+                                    <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.BulkOrder.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                                    <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.BulkOrder.Id, parentBulkOrderBatchId: 0, quantity: @item.BulkRework.Quantity, note: '@item.BulkRework.Note', bulkReworkId: @item.BulkRework.Id, shipping: false  });">@item.BulkRework.Quantity : @item.BulkRework.Note</a></td>
                                 </tr>
                             }
                         }
@@ -194,8 +214,8 @@
                                 <td>@item.ItemQuantity</td>
                                 <td>@item.ItemCost</td>
                                 <td>@item.DesignId</td>
-                                <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
-                                <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.ItemQuantity, note: '', bulkReworkid: 0, shipping: false  });"><input type="button" value="Rework" class="smallButton" /></a></td>
+                                <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.BulkOrder.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                                <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.BulkOrder.Id, parentBulkOrderBatchId: 0, quantity: @item.ItemQuantity, note: '', bulkReworkid: 0, shipping: false  });"><input type="button" value="Rework" class="smallButton" /></a></td>
                             </tr>
                         }
 
@@ -221,7 +241,7 @@
                         <td>Misc</td>
                     </tr>
                 <tbody>
-                    @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.lstItems)
+                    @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.BulkOrder.lstItems)
                     {
                         if (item.ItemName != "Shipping" && item.ItemName != "Back Stitching" && item.ItemName != "Left Side Stitching" && item.ItemName != "Right Side Stitching" && item.ItemName != "Artwork Setup/Digitizing")
                         {
@@ -236,7 +256,7 @@
 
                     }
                     <tr>
-                        <td style="font-size:24px; font-weight:bold;">Total Items: @Model.lstItems.Where(item => item.ItemName != "Shipping" && item.ItemName != "Back Stitching" && item.ItemName != "Left Side Stitching" && item.ItemName != "Right Side Stitching" && item.ItemName != "Artwork Setup/Digitizing").Sum(i => i.ItemQuantity)</td>
+                        <td style="font-size:24px; font-weight:bold;">Total Items: @Model.BulkOrder.lstItems.Where(item => item.ItemName != "Shipping" && item.ItemName != "Back Stitching" && item.ItemName != "Left Side Stitching" && item.ItemName != "Right Side Stitching" && item.ItemName != "Artwork Setup/Digitizing").Sum(i => i.ItemQuantity)</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -248,7 +268,7 @@
         <div id="bulkOrderNotes">
             <h3>Order Notes</h3>
             <table>
-                @foreach (LidLaunchWebsite.Models.Note note in Model.lstNotes)
+                @foreach (LidLaunchWebsite.Models.Note note in Model.BulkOrder.lstNotes)
                 {
                     <tr>
                         <td></td>
@@ -257,24 +277,24 @@
                     </tr>
                 }
             </table>
-            <a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: @Model.Id, bulkOrderItemId: 0 , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a>
+            <a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: @Model.BulkOrder.Id, bulkOrderItemId: 0 , designId: 0, parentBulkOrderId: @Model.BulkOrder.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a>
         </div>
         <div id="bulkOrderNotes">
             <h3>Order Log</h3>
             <table style="height:200px; overflow-y:scroll; display:block;">
-                @foreach (LidLaunchWebsite.Models.BulkOrderLog log in Model.lstBulkOrderLog)
+                @foreach (LidLaunchWebsite.Models.BulkOrderLog log in Model.BulkOrder.lstBulkOrderLog)
                 {
                     <tr>
                         <td colspan="3"><i class="noteDate">@log.Date</i> : @log.LogEntry</td>
                     </tr>
                 }
             </table>
-            <a href="javascript:void(0);" onclick="$('#noteHolder').load(addLogUrl, { bulkOrderId: @Model.Id });"><input type="button" value="Add Log" class="smallButton" /></a>
+            <a href="javascript:void(0);" onclick="$('#noteHolder').load(addLogUrl, { bulkOrderId: @Model.BulkOrder.Id });"><input type="button" value="Add Log" class="smallButton" /></a>
         </div>
         <div id="bulkOrderDesigns">
             <h3>Designs</h3>
             <a href="javascript:void(0);" onclick="$('#bulkDesignSelectHolder').load(selectBulkDesignUrl);"><input type="button" class="smallButton" value="SELECT PRE-EXISTING DESIGN" /></a>
-            <a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: 0, fromDigitizing: false, bulkOrderId: @Model.Id });"><input type="button" class="smallButton" value="Add Design" /></a>
+            <a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: 0, fromDigitizing: false, bulkOrderId: @Model.BulkOrder.Id });"><input type="button" class="smallButton" value="Add Design" /></a>
             <table>
                 <thead>
                     <tr>
@@ -291,12 +311,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns)
+                    @foreach (LidLaunchWebsite.Models.Design design in Model.BulkOrder.lstDesigns)
                     {
                         <tr>
                             @if (!design.InternallyApproved)
                             {
-                                <td><input type="button" onclick="internallyApproveDigitizing(@design.Id, @Model.Id)" value="Approve" class="smallButton" /></td>
+                                <td><input type="button" onclick="internallyApproveDigitizing(@design.Id, @Model.BulkOrder.Id)" value="Approve" class="smallButton" /></td>
                             }
                             else
                             {
@@ -309,38 +329,38 @@
                                     <td>Internally Approved / Customer Approved</td>
                                 }
                             }
-                            <td><input type="button" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: true, customerAdded: false, shipping: false });" class="smallButton" value="Revision" /></td>
+                            <td><input type="button" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.BulkOrder.Id, revision: true, customerAdded: false, shipping: false });" class="smallButton" value="Revision" /></td>
                             <td>@design.Name</td>
                             <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName" target="_blank">@design.DigitizedFile</a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" /></a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">@design.EMBFile</a></td>
-                            <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
-                            <td><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, fromDigitizing: false, bulkOrderId: @Model.Id });"><input type="button" class="smallButton" value="Edit Design" /></a></td>
+                            <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.BulkOrder.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                            <td><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, fromDigitizing: false, bulkOrderId: @Model.BulkOrder.Id });"><input type="button" class="smallButton" value="Edit Design" /></a></td>
                         </tr>
-                        if (design.lstNotes.Count > 0)
+                        if (design.lstCombinedNotes.Count > 0)
                         {
-                            foreach (LidLaunchWebsite.Models.Note note in design.lstNotes)
+                            foreach (LidLaunchWebsite.Models.Note note in design.lstCombinedNotes)
                             {
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td colspan="3"><i class="noteDate">INTERNAL NOTES: @note.CreatedDate</i> : @note.Text</td>
-                                    <td>@note.Attachment</td>
-                                </tr>
-                            }
-                        }
-                        if (design.lstRevisionNotes.Count > 0)
-                        {
-                            foreach (LidLaunchWebsite.Models.Note note in design.lstRevisionNotes)
-                            {
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td colspan="3"><i class="noteDate">CUSTOMER NOTES: @note.CreatedDate</i> : @note.Text</td>
-                                    <td>@note.Attachment</td>
-                                </tr>
+                                if (note.CustomerAdded)
+                                {
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="3"><i class="noteDate">CUSTOMER NOTES: @note.CreatedDate</i> : @note.Text</td>
+                                        <td>@note.Attachment</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="3"><i class="noteDate">INTERNAL NOTES: @note.CreatedDate</i> : @note.Text</td>
+                                        <td>@note.Attachment</td>
+                                    </tr>
+                                }
                             }
                         }
                     }
@@ -360,7 +380,7 @@
             <div id="colorConfirmationPopupInner">
                 There is a limit of only sending this email once per order<br />
                 <textarea id="colorNotes" type="text" placeholder="Color question here..." style="width:90%; height:100px;"></textarea><br />
-                <input type="button" class="smallButton" value="Send Color Confirmation Email" onclick="sendColorConfirmationEmail('@Model.Id', '@Model.CustomerEmail', $('#colorNotes').val());" />
+                <input type="button" class="smallButton" value="Send Color Confirmation Email" onclick="sendColorConfirmationEmail('@Model.BulkOrder.Id', '@Model.BulkOrder.CustomerEmail', $('#colorNotes').val());" />
                 <input type="button" class="smallButton" value="Cancel" onclick="$('#colorConfirmationPopup').hide()" />
             </div>
         </div>
@@ -369,7 +389,7 @@
             <div id="generalEmailPopupInner">
                 This is a general order email that also includes a link for the customer to view their order. (use this for responded to order questions and revision requests)<br />
                 <textarea id="emailText" type="text" placeholder="Email details here..." style="width:90%; height:100px;"></textarea><br />
-                <input type="button" class="smallButton" value="Send General Order Email" onclick="sendGeneralEmail('@Model.Id', '@Model.CustomerEmail', $('#emailText').val(), '@Model.PaymentGuid');" />
+                <input type="button" class="smallButton" value="Send General Order Email" onclick="sendGeneralEmail('@Model.BulkOrder.Id', '@Model.BulkOrder.CustomerEmail', $('#emailText').val(), '@Model.BulkOrder.PaymentGuid');" />
                 <input type="button" class="smallButton" value="Cancel" onclick="$('#generalEmailPopup').hide()" />
             </div>
         </div>       
@@ -377,55 +397,55 @@
 
         <div id="bulkBottomBar">
             <div class="bottomBarLink">
-                @if (Model.ReadyForProduction)
+                @if (Model.BulkOrder.ReadyForProduction)
                 {
-                    <img src="~/Images/InternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.Id, false);" />
+                    <img src="~/Images/InternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.BulkOrder.Id, false);" />
                 }
                 else
                 {
-                    <img src="~/Images/NotInternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.Id, true);" />
+                    <img src="~/Images/NotInternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.BulkOrder.Id, true);" />
                 }
             </div>
             <div class="bottomBarLink">
-                <img src="~/Images/AdminReview.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="$('#adminReviewHolder').load(adminReviewUrl, { bulkOrderId: @Model.Id, fromBulkEdit: true });" />
+                <img src="~/Images/AdminReview.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="$('#adminReviewHolder').load(adminReviewUrl, { bulkOrderId: @Model.BulkOrder.Id, fromBulkEdit: true });" />
             </div>
             <div class="bottomBarLink">
                 <input type="button" class="smallButton" value="Send Email" onclick="$('#generalEmailPopup').show();" />
             </div>
-            @if (!Model.ArtworkEmailSent && Model.ArtworkImage == "")
+            @if (!Model.BulkOrder.ArtworkEmailSent && Model.BulkOrder.ArtworkImage == "")
             {
                 <div class="bottomBarLink">
-                    <input type="button" class="smallButton" value="Send Artwork Email" onclick="sendArtworkEmail('@Model.Id','@Model.CustomerEmail');" />
+                    <input type="button" class="smallButton" value="Send Artwork Email" onclick="sendArtworkEmail('@Model.BulkOrder.Id','@Model.BulkOrder.CustomerEmail');" />
                 </div>
             }
-            @if (!Model.ColorConfirmationEmailSent)
+            @if (!Model.BulkOrder.ColorConfirmationEmailSent)
             {
                 <div class="bottomBarLink">
                     <input type="button" class="smallButton" value="Send Color Email" onclick="$('#colorConfirmationPopup').show();" />
                 </div>
             }
             <div class="bottomBarLink">
-                <input type="button" class="smallButton" value="Edit Bulk Order" onclick="showLoading(); $('#bulkOrderEditHolder').load(bulkOrderEditUrl, { bulkOrderId: @Model.Id });" />
+                <input type="button" class="smallButton" value="Edit Bulk Order" onclick="showLoading(); $('#bulkOrderEditHolder').load(bulkOrderEditUrl, { bulkOrderId: @Model.BulkOrder.Id });" />
             </div>
-            @if (!Model.OrderRefunded)
+            @if (!Model.BulkOrder.OrderRefunded)
             {
                 <div class="bottomBarLink">
-                    <input type="button" class="smallButton" value="Mark Order Refunded" onclick="updateOrderRefunded('@Model.Id');" />
+                    <input type="button" class="smallButton" value="Mark Order Refunded" onclick="updateOrderRefunded('@Model.BulkOrder.Id');" />
                 </div>
             }
-            @if (Model.lstDesigns.Any(d => d.InternallyApproved))
+            @if (Model.BulkOrder.lstDesigns.Any(d => d.InternallyApproved))
             {
                 <div class="bottomBarLink">
-                    <input type="button" class="smallButton" value="Send Design Reminder Email: @Model.ReminderApprovalEmailSent" onclick="sendDesignApprovalEmail('@Model.Id');" />
+                    <input type="button" class="smallButton" value="Send Design Reminder Email: @Model.BulkOrder.ReminderApprovalEmailSent" onclick="sendDesignApprovalEmail('@Model.BulkOrder.Id');" />
                 </div>
             }
             <div class="bottomBarLink">
-                <a href="https://ship11.shipstation.com/orders/all-orders-search-result/store/c4087619-371e-43bf-956d-81fde8694d8e?quickSearch=Bo-@Model.Id" target="_blank"><input type="button" value="Open ShipStation" class="smallButton" /></a>
+                <a href="https://ship11.shipstation.com/orders/all-orders-search-result/store/c4087619-371e-43bf-956d-81fde8694d8e?quickSearch=Bo-@Model.BulkOrder.Id" target="_blank"><input type="button" value="Open ShipStation" class="smallButton" /></a>
             </div>
-            @if (Model.BulkOrderBatchId > 0)
+            @if (Model.BulkOrder.BulkOrderBatchId > 0)
             {
                 <div class="bottomBarLink">
-                    <a href="~/Bulk/PrintBulkOrderBatchBulkOrders?bulkBatchId=@Model.BulkOrderBatchId&bulkOrderId=@Model.Id" target="_blank"><input type="button" value="Reprint Order" class="smallButton" /></a>
+                    <a href="~/Bulk/PrintBulkOrderBatchBulkOrders?bulkBatchId=@Model.BulkOrder.BulkOrderBatchId&bulkOrderId=@Model.BulkOrder.Id" target="_blank"><input type="button" value="Reprint Order" class="smallButton" /></a>
                 </div>
             }
 
@@ -441,4 +461,33 @@
     var uploadBulkDesignUrl = '@Url.Action("UploadBulkDesign", "Dashboard")';
     var adminReviewUrl = '@Url.Action("AdminReview", "Bulk")';
 </script>
+<script type="text/javascript">
+    $('.batchSelect').on('change', function (e) {
+        var bulkOrderId = $(this).closest('#bulkOrderDetailsPopupContent').find("#BulkOrderId").text();
+        var batchId = $(this).children("option:selected").val();
+        if (batchId === 0) {
+            //do nothing
+        } else {
+            showLoading();
+            $.ajax({
+                type: "POST",
+                url: '/Dashboard/UpdateBulkOrderBatchId?bulkOrderId=' + bulkOrderId + '&batchId=' + batchId,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result == "") {
+                        //do nothing
+                        displayPopupNotification('Error setting batch Id, please try again.', 'error', false);
+                    } else {
+                        //set the url for the file link and show the link 
+                        hideLoading();
+                    }
+                },
+                error: function (xhr, status, p3, p4) {
+                    displayPopupNotification('Error setting batch Id, please try again.', 'error', false);
+                }
+            });
+        }
 
+    });
+</script>

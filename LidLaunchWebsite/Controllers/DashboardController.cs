@@ -999,7 +999,7 @@ namespace LidLaunchWebsite.Controllers
                 ViewBulkOrdersModel model = new ViewBulkOrdersModel();
                 model.lstBulkOrders = data.GetBulkOrderData(filter);
                 model.lstBulkOrders = model.lstBulkOrders.OrderByDescending(bo => bo.OrderPaid).ToList();
-                model.lstBulkOrderBatches = data.GetBulkOrderBatches();
+                //model.lstBulkOrderBatches = data.GetBulkOrderBatches();
 
                 BulkOrderListSectionModel allSection = new BulkOrderListSectionModel();
                 allSection.Name = "All Orders";
@@ -1092,13 +1092,13 @@ namespace LidLaunchWebsite.Controllers
                 reworkSection.textColor = "#fff";
                 reworkSection.backgroundColor = "#e92121";
 
-                BulkOrderListSectionModel completeSection = new BulkOrderListSectionModel();
-                completeSection.Name = "Completed";
-                completeSection.SortOrder = 10;
-                completeSection.lstBulkOrders = new List<BulkOrder>();
-                completeSection.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.lstItems.Any(i => i.BulkRework.Status == "In Progress") && bo.OrderComplete));
-                completeSection.textColor = "#fff";
-                completeSection.backgroundColor = "#39b91c";
+                //BulkOrderListSectionModel completeSection = new BulkOrderListSectionModel();
+                //completeSection.Name = "Completed";
+                //completeSection.SortOrder = 10;
+                //completeSection.lstBulkOrders = new List<BulkOrder>();
+                //completeSection.lstBulkOrders.AddRange(model.lstBulkOrders.Where(bo => !bo.lstItems.Any(i => i.BulkRework.Status == "In Progress") && bo.OrderComplete));
+                //completeSection.textColor = "#fff";
+                //completeSection.backgroundColor = "#39b91c";
 
                 model.lstSections = new List<BulkOrderListSectionModel>();
                 model.lstSections.Add(allSection);
@@ -1111,7 +1111,7 @@ namespace LidLaunchWebsite.Controllers
                 model.lstSections.Add(awaitingProductionReview);
                 model.lstSections.Add(readyForProduction);
                 model.lstSections.Add(reworkSection);
-                model.lstSections.Add(completeSection);
+                //model.lstSections.Add(completeSection);
 
                 return View(model);
             }
@@ -1348,6 +1348,7 @@ namespace LidLaunchWebsite.Controllers
             {
                 if (checkLoggedIn())
                 {
+                    BulkOrderDetailsPopupModel model = new BulkOrderDetailsPopupModel();
                     BulkOrder bulkOrder = new BulkOrder();
                     BulkData data = new BulkData();
                     bulkOrder = data.GetBulkOrder(bulkOrderId, "", "");
@@ -1372,9 +1373,11 @@ namespace LidLaunchWebsite.Controllers
                         //do nothing
                     }
 
-                    
+                    model.BulkOrder = bulkOrder;
+                    model.lstBulkOrderBatches = data.GetBulkOrderBatches();
 
-                    return PartialView("BulkOrderDetailsPopup", bulkOrder);
+
+                    return PartialView("BulkOrderDetailsPopup", model);
                 }
                 else
                 {

@@ -537,7 +537,7 @@ namespace LidLaunchWebsite.Classes
                     design.Name = Convert.ToString(dr3["Name"].ToString());
 
                     design.lstNotes = new List<Note>();
-                    design.lstRevisionNotes = new List<Note>();
+                    design.lstRevisionNotes = new List<Note>();                    
                     if (ds.Tables[5].Rows.Count > 0)
                     {
                         DataRow[] drsDesignNotes = ds.Tables[5].Select("DesignId = " + design.Id.ToString());
@@ -562,6 +562,10 @@ namespace LidLaunchWebsite.Classes
                             }
                         }
                     }
+                    design.lstCombinedNotes = new List<Note>();
+                    design.lstCombinedNotes.AddRange(design.lstNotes);
+                    design.lstCombinedNotes.AddRange(design.lstRevisionNotes);
+                    design.lstCombinedNotes = design.lstCombinedNotes.OrderByDescending(dn => dn.CreatedDate).ToList();
 
                     bulkOrder.lstDesigns.Add(design);
                 }
