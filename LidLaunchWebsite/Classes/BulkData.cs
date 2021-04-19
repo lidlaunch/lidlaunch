@@ -534,6 +534,14 @@ namespace LidLaunchWebsite.Classes
                     design.CustomerApproved = Convert.ToBoolean(dr3["CustomerApproved"].ToString());
                     design.InternallyApproved = Convert.ToBoolean(dr3["InternallyApproved"].ToString());
                     design.Revision = Convert.ToBoolean(dr3["Revision"].ToString());
+                    design.RevisionStatus = Convert.ToString(dr3["RevisionStatus"].ToString());
+                    if(design.Revision)
+                    {
+                        if (design.RevisionStatus == "")
+                        {
+                            design.RevisionStatus = "1:Pending";
+                        }
+                    }
                     design.Name = Convert.ToString(dr3["Name"].ToString());
 
                     design.lstNotes = new List<Note>();
@@ -1202,7 +1210,7 @@ namespace LidLaunchWebsite.Classes
         }
         
 
-        public bool AddDigitizingRevision(int designId, string revisionComment, bool customerAdded)
+        public bool AddDigitizingRevision(int designId, string revisionComment, bool customerAdded, string revisionStatus)
         {
             var data = new SQLData();
             try
@@ -1215,6 +1223,7 @@ namespace LidLaunchWebsite.Classes
                     sqlComm.Parameters.AddWithValue("@designId", designId);
                     sqlComm.Parameters.AddWithValue("@revisionComment", revisionComment);
                     sqlComm.Parameters.AddWithValue("@customerAdded", customerAdded);
+                    sqlComm.Parameters.AddWithValue("@revisionStatus", revisionStatus);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();

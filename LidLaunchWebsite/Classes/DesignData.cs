@@ -51,6 +51,14 @@ namespace LidLaunchWebsite.Classes
                         design.CustomerApproved = Convert.ToBoolean(dr["CustomerApproved"].ToString());
                         design.InternallyApproved = Convert.ToBoolean(dr["InternallyApproved"].ToString());
                         design.Revision = Convert.ToBoolean(dr["Revision"].ToString());
+                        design.RevisionStatus = Convert.ToString(dr["RevisionStatus"].ToString());
+                        if (design.Revision)
+                        {
+                            if (design.RevisionStatus == "")
+                            {
+                                design.RevisionStatus = "1:Pending";
+                            }
+                        }
                         design.Name = Convert.ToString(dr["Name"].ToString());
                     }
 
@@ -332,7 +340,41 @@ namespace LidLaunchWebsite.Classes
                     data.conn.Close();
                 }
             }
-        }        
+        }
+
+        public bool UpdateDesignRevisionStatus(int designId, string revisionStatus)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateDesignRevisionStatus", data.conn);
+                    sqlComm.Parameters.AddWithValue("@designId", designId);
+                    sqlComm.Parameters.AddWithValue("@revisionStatus", revisionStatus);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
 
     }
 }

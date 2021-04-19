@@ -199,7 +199,8 @@ namespace LidLaunchWebsite.Controllers
         public string RequestDigitizingRevision(string id, string text, string bulkOrderId, bool customerAdded)
         {
             BulkData data = new BulkData();
-            var success = data.AddDigitizingRevision(Convert.ToInt32(id), text, customerAdded);
+            var revisionStatus = customerAdded ? "1:Pending" : "5:OutsourcedChangesPending";
+            var success = data.AddDigitizingRevision(Convert.ToInt32(id), text, customerAdded, revisionStatus);
             if(success)
             {
                 BulkData bulkData = new BulkData();
@@ -556,6 +557,15 @@ namespace LidLaunchWebsite.Controllers
         {
             BulkData data = new BulkData();
             var success = data.SaveAdminReview(Convert.ToInt32(bulkOrderId), comment, Convert.ToBoolean(designerReview));
+            if (Convert.ToBoolean(designerReview))
+            {
+                BulkOrder bulkOrder = new BulkOrder();
+                bulkOrder = data.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
+                if(bulkOrder.lstDesigns.Any(d => d.Revision))
+                {
+                    data.AddDigitizingRevision(bulkOrder.lstDesigns.First(d => d.Revision).Id, "REVISION INTERANALLY REQUESTED: " + comment, false, "4:InternalChangesPending");
+                }
+            }
             var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Order Set As " + (Convert.ToBoolean(designerReview) ? "Designer Review" : "Admin Review") + " : " + comment);
             return success.ToString();
         }
