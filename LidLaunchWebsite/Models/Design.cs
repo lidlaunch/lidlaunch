@@ -24,7 +24,8 @@ namespace LidLaunchWebsite.Models
         public List<Note> lstCombinedNotes { get; set; }
         public bool CustomerApproved { get; set; }
         public bool InternallyApproved { get; set; }
-        public bool Revision { get; set; }        
+        public bool Revision { get; set; }
+        public string RevisionStatus { get; set; } //4:InternalChangesPending //5:OutsourcedChangesPending //2:RevisionChangesDone //3:AwaitingCustomerApproval //1:Pending
         public string Name { get; set; }
         public string StitchoutImage { get; set; }
         public bool StitchoutApproved { get; set; }

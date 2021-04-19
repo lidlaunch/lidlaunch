@@ -57,170 +57,295 @@
             @if (orderSection.Name == "In Revision")
             {
                 <div class="revisionProcessExplainer">
-                    <img src="~/Images/RevisionInfo.jpg"/>
+                    <img src="~/Images/RevisionInfo.jpg" />
                 </div><!--/revisionProcessExplainer-->
-            }
-            <table class="bulkOrderList clear">
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td><b>Id</b></td>
-                        <td><b>Order Date</b></td>
-                        <td><b>10 Days Date</b></td>
-                        <td><b>14 Days Date</b></td>
-                        <td><b>Customer Info</b></td>
-                        <td><b>Pre- Existing</b></td>
-                        <td><b>Has Extras</b></td>
-                        <td><b>Art</b></td>
-                        <td><b>Order Total</b></td>
-                        <td><b>Batch</b></td>
-                        <td><b>CST Link</b></td>
-                        <td><b>View</b></td>
-                    </tr>
-                    @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in orderSection.lstBulkOrders)
-                    {
-                        <tr style="background:#ccc;">
-                            @if (bulkOrder.lstItems.Any(i => i.BulkRework.Status == "In Progress"))
+
+                <table class="bulkOrderList clear">
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td><b>Id</b></td>
+                            <td><b>Order Date</b></td>
+                            <td><b>10 Days Date</b></td>
+                            <td><b>14 Days Date</b></td>
+                            <td><b>Customer Info</b></td>
+                            <td><b>Pre- Existing</b></td>
+                            <td><b>Has Extras</b></td>
+                            <td><b>Art</b></td>
+                            <td><b>Order Total</b></td>
+                            <td><b>Batch</b></td>
+                            <td><b>CST Link</b></td>
+                            <td><b>View</b></td>
+                        </tr>
+                        @{
+                            var currentHeader = "";
+                            foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in orderSection.lstBulkOrders)
                             {
-                                <td style="width:30px; background:#e92121;"></td>
-                            }
-                            else
-                            {
-                                if (bulkOrder.OrderComplete)
+                                if (currentHeader != bulkOrder.lstDesigns.First(d => d.Revision).RevisionStatus)
                                 {
-                                    <td style="width:30px; background:#39b91c;"></td>
+                                    currentHeader = bulkOrder.lstDesigns.First(d => d.Revision).RevisionStatus;
+                                    var subHeaderText = "";
+                                    if (currentHeader == "1:Pending")
+                                    {
+                                        subHeaderText = " - Needs Processed (use graphic above for a guide)";
+                                    }
+                                    if (currentHeader == "2:RevisionChangesDone")
+                                    {
+                                        subHeaderText = " - Press 'Send Design Reminder Email' button to send the customer a link to view the updated design";
+                                    }
+                                    if (currentHeader == "3:AwaitingCustomerApproval")
+                                    {
+                                        subHeaderText = " - Customer has been emailed link to view new version";
+                                    }
+                                    if (currentHeader == "4:InternalChangesPending")
+                                    {
+                                        subHeaderText = " - We are waiting on internally changing the design. FOLLOW UP WITH OUR IN HOUSE DESIGNER IF THIS IS TAKING LONGER THAN A DAY";
+                                    }
+                                    if (currentHeader == "5:OutsourcedChangesPending")
+                                    {
+                                        subHeaderText = " - We are waiting on the outsourced digitizer changing the design. FOLLOW UP WITH DESIGNER IF THIS IS TAKING LONGER THAN A DAY";
+                                    }
+                                    <tr>
+                                        <td colspan="13" style="background:#39b91c; color:#fff; height:80px; line-height:80px;"><b>@currentHeader</b> @subHeaderText</td>
+                                    </tr>
+                                }
+                            <tr style="background:#ccc;">
+                                <td style="width:30px; background:#8c4b00;"></td>
+
+                                @if (bulkOrder.AdminReview)
+                                                        {
+                                    <td style="background-color:#000; color:#fff;"><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);" class="bulkOrderId"> @bulkOrder.Id </span></td>
                                 }
                                 else
                                 {
-                                    if (bulkOrder.ReadyForProduction)
+                                    <td><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);" class="bulkOrderId"> @bulkOrder.Id </span></td>
+                                }
+
+                                <td>@bulkOrder.OrderDate.ToString("MM/dd/yyyy")</td>
+                                @if (Convert.ToDateTime(bulkOrder.ProjectedShipDateShort) < DateTime.Now && !bulkOrder.OrderComplete)
+                                {
+                                    <td><b>@bulkOrder.ProjectedShipDateShort</b></td>
+                                }
+                                else
+                            {
+                                    <td>@bulkOrder.ProjectedShipDateShort</td>
+                                }
+                            @if (Convert.ToDateTime(bulkOrder.ProjectedShipDateLong) < DateTime.Now && !bulkOrder.OrderComplete)
+                                {
+                                    <td><b style="color:#e92121;">@bulkOrder.ProjectedShipDateLong</b></td>
+                                }
+                                else
+                            {
+                                    <td>@bulkOrder.ProjectedShipDateLong</td>
+                                }
+                                <td>@bulkOrder.CustomerName<br />@bulkOrder.CustomerEmail<br />@bulkOrder.CustomerPhone</td>
+                                <td>
+                                    @if (bulkOrder.OrderNotes.Contains("ARTWORK PRE-EXISTING"))
                                     {
-                                        <td style="width:30px; background:#1372d3;"></td>
+                                        <span>PRE-<br />EXISTING</span>
                                     }
                                     else
+                            {
+
+                            }
+
+                                </td>
+                                <td>
+                                    @if (bulkOrder.lstItems.Any((li => li.ItemName.Contains("Side") || li.ItemName.Contains("Back") || li.ItemName.Contains("Beanie"))))
                                     {
-                                        if (bulkOrder.lstDesigns.Any(d => d.InternallyApproved == false))
+                                        <span>Extras</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (bulkOrder.ArtworkImage == "" && !bulkOrder.OrderNotes.Contains("ARTWORK PRE-EXISTING"))
+                                    {
+                                        if (bulkOrder.ArtworkEmailSent)
                                         {
-                                            if (bulkOrder.lstDesigns.Any(d => d.DigitizedPreview != ""))
-                                            {
-                                                <td style="width:30px; background:#f9fc04;"></td>
-                                            }
-                                            else
-                                            {
-                                                <td style="width:30px;"></td>
-                                            }
+                                            <span>ART<br />EMAIL<br />SENT</span>
                                         }
                                         else
                                         {
-                                            if (bulkOrder.lstDesigns.Any(d => d.CustomerApproved == false))
+                                            <span>NO<br />ART</span>
+                                        }
+
+                                    }
+                                </td>
+                                <td style="text-align:center;">$@bulkOrder.OrderTotal</td>
+                                <td style="text-align:center;">
+                                    @bulkOrder.BulkOrderBatchId
+                                </td>
+                                <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@bulkOrder.PaymentGuid" target="_blank" class="ViewBulkLink"><input type="button" value="CSTLINK" class="smallButton" /></a></td>
+                                <td><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);"><input type="button" value="VIEW" class="smallButton" /></span></td>
+                            </tr>
+                                if (!bulkOrder.lstDesigns.Any(d => d.CustomerApproved) && !bulkOrder.ReadyForProduction)
+                            {
+                                if (bulkOrder.lstDesigns.Any(d => d.Revision))
+                                {
+                                    foreach (LidLaunchWebsite.Models.Design design in bulkOrder.lstDesigns)
+                                    {
+                                        foreach (LidLaunchWebsite.Models.Note note in design.lstCombinedNotes)
+                                        {
+                                            if (!note.CustomerAdded)
                                             {
-                                                if (bulkOrder.lstDesigns.Any(d => d.Revision))
+                                                <tr><td></td><td colspan="10" style="background:#88008cba; color:#fff; width:600px;"><i>@note.CreatedDate</i>: SENT TO OUTSOURCE DIGITIZER : @note.Text</td></tr>
+                                                }
+                                            else
+                                            {
+                                                <tr><td></td><td colspan="10" style="background:#00448cba; color:#fff; width:600px;"><i>@note.CreatedDate</i>: REQUESTED BY CUSTOMER : @note.Text</td></tr>
+                                                }
+                                        }
+                                    }
+                                    <tr><td style="height:30px;"></td></tr>
+                                        }
+                            }
+
+                                }
+                            }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <table class="bulkOrderList clear">
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td><b>Id</b></td>
+                            <td><b>Order Date</b></td>
+                            <td><b>10 Days Date</b></td>
+                            <td><b>14 Days Date</b></td>
+                            <td><b>Customer Info</b></td>
+                            <td><b>Pre- Existing</b></td>
+                            <td><b>Has Extras</b></td>
+                            <td><b>Art</b></td>
+                            <td><b>Order Total</b></td>
+                            <td><b>Batch</b></td>
+                            <td><b>CST Link</b></td>
+                            <td><b>View</b></td>
+                        </tr>
+                        @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in orderSection.lstBulkOrders)
+                        {
+                            <tr style="background:#ccc;">
+                                @if (bulkOrder.lstItems.Any(i => i.BulkRework.Status == "In Progress"))
+                                {
+                                    <td style="width:30px; background:#e92121;"></td>
+                                }
+                                else
+                                {
+                                    if (bulkOrder.OrderComplete)
+                                    {
+                                        <td style="width:30px; background:#39b91c;"></td>
+                                    }
+                                    else
+                                    {
+                                        if (bulkOrder.ReadyForProduction)
+                                        {
+                                            <td style="width:30px; background:#1372d3;"></td>
+                                        }
+                                        else
+                                        {
+                                            if (bulkOrder.lstDesigns.Any(d => d.InternallyApproved == false))
+                                            {
+                                                if (bulkOrder.lstDesigns.Any(d => d.DigitizedPreview != ""))
                                                 {
-                                                    <td style="width:30px; background:#8c4b00;"></td>
+                                                    <td style="width:30px; background:#f9fc04;"></td>
                                                 }
                                                 else
                                                 {
-                                                    <td style="width:30px; background:#fc8a04;"></td>
+                                                    <td style="width:30px;"></td>
                                                 }
                                             }
                                             else
                                             {
-                                                <td style="width:30px; background:#c504fc;"></td>
+                                                if (bulkOrder.lstDesigns.Any(d => d.CustomerApproved == false))
+                                                {
+                                                    if (bulkOrder.lstDesigns.Any(d => d.Revision))
+                                                    {
+                                                        <td style="width:30px; background:#8c4b00;"></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td style="width:30px; background:#fc8a04;"></td>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <td style="width:30px; background:#c504fc;"></td>
+                                                }
                                             }
                                         }
                                     }
                                 }
-                            }
 
-                            @if (bulkOrder.AdminReview)
-                            {
-                                <td style="background-color:#000; color:#fff;"><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);" class="bulkOrderId"> @bulkOrder.Id </span></td>
-                            }
-                            else
-                            {
-                                <td><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);" class="bulkOrderId"> @bulkOrder.Id </span></td>
-                            }
-
-                            <td>@bulkOrder.OrderDate.ToString("MM/dd/yyyy")</td>
-                            @if (Convert.ToDateTime(bulkOrder.ProjectedShipDateShort) < DateTime.Now && !bulkOrder.OrderComplete)
-                            {
-                                <td><b>@bulkOrder.ProjectedShipDateShort</b></td>
-                            }
-                            else
-                            {
-                                <td>@bulkOrder.ProjectedShipDateShort</td>
-                            }
-                            @if (Convert.ToDateTime(bulkOrder.ProjectedShipDateLong) < DateTime.Now && !bulkOrder.OrderComplete)
-                            {
-                                <td><b style="color:#e92121;">@bulkOrder.ProjectedShipDateLong</b></td>
-                            }
-                            else
-                            {
-                                <td>@bulkOrder.ProjectedShipDateLong</td>
-                            }
-                            <td>@bulkOrder.CustomerName<br />@bulkOrder.CustomerEmail<br />@bulkOrder.CustomerPhone</td>
-                            <td>
-                                @if (bulkOrder.OrderNotes.Contains("ARTWORK PRE-EXISTING"))
+                                @if (bulkOrder.AdminReview)
                                 {
-                                    <span>PRE-<br />EXISTING</span>
+                                    <td style="background-color:#000; color:#fff;"><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);" class="bulkOrderId"> @bulkOrder.Id </span></td>
                                 }
                                 else
                                 {
-
+                                    <td><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);" class="bulkOrderId"> @bulkOrder.Id </span></td>
                                 }
 
-                            </td>
-                            <td>
-                                @if (bulkOrder.lstItems.Any((li => li.ItemName.Contains("Side") || li.ItemName.Contains("Back") || li.ItemName.Contains("Beanie"))))
+                                <td>@bulkOrder.OrderDate.ToString("MM/dd/yyyy")</td>
+                                @if (Convert.ToDateTime(bulkOrder.ProjectedShipDateShort) < DateTime.Now && !bulkOrder.OrderComplete)
                                 {
-                                    <span>Extras</span>
+                                    <td><b>@bulkOrder.ProjectedShipDateShort</b></td>
                                 }
-                            </td>
-                            <td>
-                                @if (bulkOrder.ArtworkImage == "" && !bulkOrder.OrderNotes.Contains("ARTWORK PRE-EXISTING"))
+                                else
                                 {
-                                    if (bulkOrder.ArtworkEmailSent)
+                                    <td>@bulkOrder.ProjectedShipDateShort</td>
+                                }
+                                @if (Convert.ToDateTime(bulkOrder.ProjectedShipDateLong) < DateTime.Now && !bulkOrder.OrderComplete)
+                                {
+                                    <td><b style="color:#e92121;">@bulkOrder.ProjectedShipDateLong</b></td>
+                                }
+                                else
+                                {
+                                    <td>@bulkOrder.ProjectedShipDateLong</td>
+                                }
+                                <td>@bulkOrder.CustomerName<br />@bulkOrder.CustomerEmail<br />@bulkOrder.CustomerPhone</td>
+                                <td>
+                                    @if (bulkOrder.OrderNotes.Contains("ARTWORK PRE-EXISTING"))
                                     {
-                                        <span>ART<br />EMAIL<br />SENT</span>
+                                        <span>PRE-<br />EXISTING</span>
                                     }
                                     else
                                     {
-                                        <span>NO<br />ART</span>
+
                                     }
 
-                                }
-                            </td>
-                            <td style="text-align:center;">$@bulkOrder.OrderTotal</td>
-                            <td style="text-align:center;">
-                                @bulkOrder.BulkOrderBatchId
-                            </td>
-                            <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@bulkOrder.PaymentGuid" target="_blank" class="ViewBulkLink"><input type="button" value="CSTLINK" class="smallButton" /></a></td>
-                            <td><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);"><input type="button" value="VIEW" class="smallButton" /></span></td>
-                        </tr>
-                        if (!bulkOrder.lstDesigns.Any(d => d.CustomerApproved) && !bulkOrder.ReadyForProduction)
-                        {
-                            if (bulkOrder.lstDesigns.Any(d => d.Revision))
-                            {
-                                foreach (LidLaunchWebsite.Models.Design design in bulkOrder.lstDesigns)
-                                {
-                                    foreach (LidLaunchWebsite.Models.Note note in design.lstCombinedNotes)
+                                </td>
+                                <td>
+                                    @if (bulkOrder.lstItems.Any((li => li.ItemName.Contains("Side") || li.ItemName.Contains("Back") || li.ItemName.Contains("Beanie"))))
                                     {
-                                        if (!note.CustomerAdded)
+                                        <span>Extras</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (bulkOrder.ArtworkImage == "" && !bulkOrder.OrderNotes.Contains("ARTWORK PRE-EXISTING"))
+                                    {
+                                        if (bulkOrder.ArtworkEmailSent)
                                         {
-                                            <tr><td></td><td colspan="10" style="background:#c56f0c; color:#fff; width:600px;">@note.CreatedDate SENT TO OUTSOURCE DIGITIZER : @note.Text</td></tr>
+                                            <span>ART<br />EMAIL<br />SENT</span>
                                         }
                                         else
                                         {
-                                            <tr><td></td><td colspan="10" style="background:#8c4b00; color:#fff; width:600px;">@note.CreatedDate REQUESTED BY CUSTOMER : @note.Text</td></tr>
+                                            <span>NO<br />ART</span>
                                         }
-                                    }
-                                }
-                                <tr><td style="height:30px;"></td></tr>
-                            }
-                        }
 
-                    }
-                </tbody>
-            </table>
+                                    }
+                                </td>
+                                <td style="text-align:center;">$@bulkOrder.OrderTotal</td>
+                                <td style="text-align:center;">
+                                    @bulkOrder.BulkOrderBatchId
+                                </td>
+                                <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@bulkOrder.PaymentGuid" target="_blank" class="ViewBulkLink"><input type="button" value="CSTLINK" class="smallButton" /></a></td>
+                                <td><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);"><input type="button" value="VIEW" class="smallButton" /></span></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
         </div>
     </div>
 

@@ -329,7 +329,7 @@
                                     <td>Internally Approved / Customer Approved</td>
                                 }
                             }
-                            <td><input type="button" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.BulkOrder.Id, revision: true, customerAdded: false, shipping: false });" class="smallButton" value="Revision" /></td>
+                            <td><input type="button" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.BulkOrder.Id, revision: true, customerAdded: false, shipping: false });" class="smallButton" value="Request External Revision" /></td>
                             <td>@design.Name</td>
                             <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>
                             <td><a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName" target="_blank">@design.DigitizedFile</a></td>
@@ -348,7 +348,7 @@
                                     <tr>
                                         <td></td>
                                         <td></td>
-                                        <td colspan="3"><i class="noteDate">CUSTOMER NOTES: @note.CreatedDate</i> : @note.Text</td>
+                                        <td colspan="3"><i class="noteDate">CUSTOMER REVISION REQUESTED @note.CreatedDate</i> : @note.Text</td>
                                         <td>@note.Attachment</td>
                                     </tr>
                                 }
@@ -357,7 +357,7 @@
                                     <tr>
                                         <td></td>
                                         <td></td>
-                                        <td colspan="3"><i class="noteDate">INTERNAL NOTES: @note.CreatedDate</i> : @note.Text</td>
+                                        <td colspan="3"><i class="noteDate">SENT TO OUTSOURCED DIGITIZER @note.CreatedDate</i> : @note.Text</td>
                                         <td>@note.Attachment</td>
                                     </tr>
                                 }
