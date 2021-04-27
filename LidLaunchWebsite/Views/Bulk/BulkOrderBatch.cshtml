@@ -9,29 +9,193 @@
 
 <table>
     @foreach (LidLaunchWebsite.Models.BulkOrderItem itemToOrder in Model.lstItemsToOrder)
-    {
-
-        <tr>
+    {    
+        <tr @if (Model.lstMissingItems.Where(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId).ToList().Count > 0 && Model.lstMissingItems.First(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId).MissingQuantity > 0) { @: style="background: red"
+            }>
+            <td style="padding:10px;">
+                <img src='~/Images/@itemToOrder.ItemThumbnail' />
+            </td>
             <td style="padding:10px;">
                 @itemToOrder.ItemName
             </td>
             <td style="padding:10px;">
                 @itemToOrder.ItemQuantity
             </td>
+            <td>
+                @if (Model.lstMissingItems.Where(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId).ToList().Count > 0)
+                {
+                    <div class="missingItemSection">
+                        <span class="missingItemId hidden">@Model.lstMissingItems.First(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId).Id</span>
+                        <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementMissingTotal(this, @itemToOrder.MasterItemId)" /></span>
+                        <span class="missingTotalHolder"><input type="text" class="txtMissingTotal" value="@Model.lstMissingItems.First(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId).MissingQuantity" /></span>
+                        <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementMissingTotal(this, @itemToOrder.MasterItemId)" /></span>
+                    </div>
+                }
+                else
+                {
+                    <input type="button" class="smallButton btnCreateMissingBlank" value="Missing Blanks" onclick="createBulkOrderBatchMissingItem(this, '@itemToOrder.ItemName', @itemToOrder.MasterItemId, @Model.batchInfo.BatchId)" />
+                    <div class="missingItemSection hidden">
+                        <span class="missingItemId hidden"></span>
+                        <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementMissingTotal(this, @itemToOrder.MasterItemId)" /></span>
+                        <span class="missingTotalHolder"><input type="text" class="txtMissingTotal" /></span>
+                        <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementMissingTotal(this, @itemToOrder.MasterItemId)" /></span>
+                    </div>
+                }
+            </td>
             <td style="padding:10px;">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </td>
         </tr>
         <tr>
-            <td colspan="3" style="border-bottom:2px solid;"></td>
+            <td colspan="4" style="border-bottom:2px solid;"></td>
         </tr>
 
-    }
-</table>
+        }
+    </table>
 
 @foreach (LidLaunchWebsite.Models.BulkOrder bulkOrder in Model.lstBulkOrders)
 {
     <div><a href="~/Dashboard/BulkOrderDetailsPopup?bulkOrderId=@bulkOrder.Id" target="_blank">@bulkOrder.Id</a></div>
 }
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.txtMissingTotal').blur(function () {
+            updateMissingTotal(this);
+        });
+    });
+    function createBulkOrderBatchMissingItem(that, itemName, masterItemId, batchId) {
+        $(that).hide();
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: '/Dashboard/CreateBulkOrderBatchMissingItem',
+            contentType: false,
+            processData: false,
+            data: JSON.stringify({
+                itemName: itemName, masterItemId: masterItemId, batchId: batchId
+            }),
+            contentType: "application/json",
+            success: function (result) {
+                if (result == "0") {
+                    //do nothing
+                    displayPopupNotification('error.', 'error', false);
+                } else {
+                    hideLoading();
+                    displayPopupNotification('MISSING ITEM RECORD CREATED', 'error', false);
+                    $(that).closest('tr').find('.missingItemSection').show();
+                    $(that).closest('tr').find('.missingItemId').text(result);
+                }
+            },
+            error: function (xhr, status, p3, p4) {
+                displayPopupNotification('Error.', 'error', false);
+            }
+        });
+        
+    }
+    function decrementMissingTotal(that) {
+        var currentTotal = $(that).closest('tr').find('.txtMissingTotal').val();
+        var missingItemId = $(that).closest('tr').find('.missingItemId').text();
+        if (currentTotal == '0' || currentTotal == '') {
+            //do nothing
+        } else {
+            currentTotal--;
 
+            showLoading();
+            $.ajax({
+                type: "POST",
+                url: '/Dashboard/UpdateBulkOrderBatchMissingItemsQuantity',
+                contentType: false,
+                processData: false,
+                data: JSON.stringify({
+                    id: missingItemId, missingQuantity: currentTotal
+                }),
+                contentType: "application/json",
+                success: function (result) {
+                    if (result == "") {
+                        //do nothing
+                        displayPopupNotification('error.', 'error', false);
+                    } else {
+                        hideLoading();
+                        $(that).closest('tr').find('.txtMissingTotal').val(currentTotal);
+                    }
+                },
+                error: function (xhr, status, p3, p4) {
+                    displayPopupNotification('Error.', 'error', false);
+                }
+            });
+        }
+    }
+    function incrementMissingTotal(that, masterItemId) {
+        var currentTotal = $(that).closest('tr').find('.txtMissingTotal').val();
+        var missingItemId = $(that).closest('tr').find('.missingItemId').text();
+        currentTotal++;
+
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: '/Dashboard/UpdateBulkOrderBatchMissingItemsQuantity',
+            contentType: false,
+            processData: false,
+            data: JSON.stringify({
+                id: missingItemId, missingQuantity: currentTotal
+            }),
+            contentType: "application/json",
+            success: function (result) {
+                if (result == "") {
+                    //do nothing
+                    displayPopupNotification('error.', 'error', false);
+                } else {
+                    hideLoading();
+                    $(that).closest('tr').find('.txtMissingTotal').val(currentTotal);
+                }
+            },
+            error: function (xhr, status, p3, p4) {
+                displayPopupNotification('Error.', 'error', false);
+            }
+        });
+        
+    }    
+    function updateMissingTotal(that) {
+        var currentTotal = $(that).closest('tr').find('.txtMissingTotal').val();
+        var missingItemId = $(that).closest('tr').find('.missingItemId').text();
+
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: '/Dashboard/UpdateBulkOrderBatchMissingItemsQuantity',
+            contentType: false,
+            processData: false,
+            data: JSON.stringify({
+                id: missingItemId, missingQuantity: currentTotal
+            }),
+            contentType: "application/json",
+            success: function (result) {
+                if (result == "") {
+                    //do nothing
+                    displayPopupNotification('error.', 'error', false);
+                } else {
+                    hideLoading();
+                    $(that).closest('tr').find('.txtMissingTotal').val(currentTotal);
+                }
+            },
+            error: function (xhr, status, p3, p4) {
+                displayPopupNotification('Error.', 'error', false);
+            }
+        });
+    }
+</script>
+<style type="text/css">
+    .decrementButton {
+        display: inline-block;
+    }
+    .missingTotalHolder {
+        display: inline-block;
+    }
+    .missingTotalHolder input {
+        width:80px;
+    }
+    .incrementButton {
+        display: inline-block;
+    }
+</style>

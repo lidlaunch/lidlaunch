@@ -168,14 +168,16 @@
         <table>
             <tbody>
                 <tr>
+                    <th></th>
                     <th>Item</th>
                     <th>Quantity</th>
                     <th>Cost</th>
                 </tr>
                 @foreach (LidLaunchWebsite.Models.BulkOrderItem item in Model.lstItems)
                 {
-                    <tr>
-                        <td>@item.ItemName</td>
+                    <tr style="text-align:center;">
+                        <td><img src='~/Images/@item.ItemThumbnail' /></td>
+                        <td style="text-align:left;">@item.ItemName</td>
                         <td>@item.ItemQuantity</td>
                         <td>$@item.ItemCost</td>
                     </tr>

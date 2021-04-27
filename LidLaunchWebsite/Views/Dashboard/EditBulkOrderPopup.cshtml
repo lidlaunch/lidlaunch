@@ -121,7 +121,11 @@
                     {
                         <tr class="bulkOrderItemRow">
                             <td><span class="bulkOrderItemId">@item.Id</span></td>
-                            <td><input type="text" value="@item.ItemName" class="txtBulkOrderItemName"/></td>
+                            <td style="position:relative;">
+                                <input type="text" value="@item.ItemName" class="txtBulkOrderItemName" onclick="loadAndShowAvailableItemsList(this)" onkeypress="handleKeyPress(event, this)"/>
+                                <ul class="itemsList" style="display:none;">
+                                </ul>
+                            </td>
                             <td><input type="text" value="@item.ItemQuantity" class="txtBulkOrderItemQuantity" /></td>
                             <td><input type="text" value="@item.ItemCost" class="txtBulkOrderItemCost" /></td>                                    
                         </tr>                        
@@ -144,10 +148,94 @@
     <tbody>
         <tr id="bulkOrderItemEditTemplate" class="bulkOrderItemRow">
             <td><span class="bulkOrderItemId">0</span></td>
-            <td><input type="text" value="" class="txtBulkOrderItemName" /></td>
+            <td style="position:relative;">
+                <input type="text" value="" class="txtBulkOrderItemName" onclick="loadAndShowAvailableItemsList(this)" onkeypress="handleKeyPress(event, this)"/>
+                <ul class="itemsList" style="display:none;">
+                </ul>
+            </td>
             <td><input type="text" value="0" class="txtBulkOrderItemQuantity" /></td>
             <td><input type="text" value="0" class="txtBulkOrderItemCost" /></td>
         </tr>
     </tbody>
 </table>
 
+<script type="text/javascript">
+    var itemSelectOpen = false;
+    function loadAndShowAvailableItemsList(that) {        
+        loadAvailableItemsList('', that);
+        $(that).closest('td').find('.itemsList').show();
+    }
+    function handleKeyPress(e, that) {
+        var key = e.keyCode || e.which;
+        if (key == 13) {
+            loadAvailableItemsList($(that).val(), that);
+        }
+    }
+    function loadAvailableItemsList(filter, that) {   
+        $(that).closest('td').find('.itemsList').empty();
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: '/Dashboard/GetAvailableMasterBulkOrderItems',
+            contentType: false,
+            processData: false,
+            data: JSON.stringify({
+                filter: filter
+            }),
+            contentType: "application/json",
+            success: function (result) {
+                if (result == "") {
+                    //do nothing
+                    displayPopupNotification('error.', 'error', false);
+                } else {
+                    hideLoading();
+                    $(that).closest('td').find('.itemsList').append(result);
+                }
+            },
+            error: function (xhr, status, p3, p4) {
+                displayPopupNotification('Error.', 'error', false);
+            }
+        });        
+    }
+    function hideItemsLists() {
+        $('.itemsList').each(function () {
+            $(this).empty();
+            $(this).hide();
+        });
+    }
+</script>
+<style type="text/css">
+    .itemsList {
+        position: absolute;
+        top: 20px;
+        left: 0;
+        width: 600px;
+        height: 300px;
+        overflow-y: scroll;
+        background: #fff;
+        border: 1px solid #000;
+        list-style-type: none;
+        padding: 0px;
+        margin-left: 5px;
+        z-index: 900;
+    }
+    .itemsList li {
+        margin:5px;
+        padding:0;
+    }
+    .selectItemName {
+        line-height:40px;
+    }
+    .itemsList li img {
+        height:40px;
+    }
+    .txtBulkOrderItemName {
+        width:400px;
+    }
+    .txtBulkOrderItemQuantity {
+        width:80px;
+    }
+    .txtBulkOrderItemCost {
+        width:80px;
+    }
+</style>

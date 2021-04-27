@@ -71,6 +71,7 @@ namespace LidLaunchWebsite.Models
         public List<BulkOrder> lstBulkOrders { get; set; }
         public List<BulkOrderItem> lstItemsToOrder { get; set; }
         public OrderBatch batchInfo { get; set; }
+        public List<BulkOrderBatchMissingItems> lstMissingItems { get; set; }
     }
     
 }

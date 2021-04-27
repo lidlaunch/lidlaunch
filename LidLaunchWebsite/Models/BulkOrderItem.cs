@@ -13,5 +13,7 @@ namespace LidLaunchWebsite.Models
         public int DesignId { get; set; }
         public BulkRework BulkRework { get; set; }
         public Design Design { get; set; }
+        public int MasterItemId { get; set; }
+        public string ItemThumbnail { get; set; }
     }
 }

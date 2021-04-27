@@ -168,6 +168,7 @@ namespace LidLaunchWebsite.Classes
             }
             catch (Exception ex)
             {
+                Logger.Log("Error Building Bulk Order Data For View Bulk Order Screen: " + ex.Message.ToString());
                 return lstBulkOrders;
             }
             finally
@@ -379,18 +380,26 @@ namespace LidLaunchWebsite.Classes
         private List<BulkOrder> BuildBulkOrdersList(DataSet ds)
         {
             List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
-            if (ds.Tables.Count > 0)
-            {
-                if (ds.Tables[0].Rows.Count > 0)
+            try
+            {                
+                if (ds.Tables.Count > 0)
                 {
-                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    if (ds.Tables[0].Rows.Count > 0)
                     {
-                        BulkOrder bulkOrder = new BulkOrder();
-                        bulkOrder = BuildBulkOrder(dr, ds);
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            BulkOrder bulkOrder = new BulkOrder();
+                            bulkOrder = BuildBulkOrder(dr, ds);
 
-                        lstBulkOrders.Add(bulkOrder);
+                            lstBulkOrders.Add(bulkOrder);
+                        }
                     }
                 }
+                return lstBulkOrders;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("ERROR BUILDING BULK ORDER LIST: " + ex.InnerException.Message);
             }
 
             return lstBulkOrders;
@@ -470,6 +479,15 @@ namespace LidLaunchWebsite.Classes
                     item.ItemName = Convert.ToString(dr2["ItemName"].ToString());
                     item.ItemQuantity = Convert.ToInt32(dr2["ItemQuantity"].ToString());
                     item.ItemCost = Convert.ToDecimal(dr2["ItemCost"].ToString());
+                    item.MasterItemId = Convert.ToInt32(dr2["MasterItemId"].ToString());
+                    if (item.MasterItemId > 0)
+                    {
+                        item.ItemThumbnail = Convert.ToString(dr2["ItemThumbnail"].ToString());
+                    }
+                    else
+                    {
+                        item.ItemThumbnail = "miscIcon.png";
+                    }
 
                     BulkRework bulkRework = new BulkRework();
                     if (Convert.ToInt32(dr2["BulkReworkId"]) > 0)
@@ -2078,11 +2096,82 @@ namespace LidLaunchWebsite.Classes
                                 item.ThumbnailpreviewImagePath = Convert.ToString(dr["ThumbnailpreviewImagePath"].ToString());
                                 item.PreviewImagePath = Convert.ToString(dr["PreviewImagePath"].ToString());
                                 item.DistributorLink = Convert.ToString(dr["DistributorLink"].ToString());
+                                item.FrontEndName = Convert.ToString(dr["FrontEndName"].ToString());                                
                                 item.DisplayOrder = Convert.ToInt32(dr["DisplayOrder"].ToString());
                                 lstItems.Add(item);
 
                             }
                             
+                        }
+
+                    }
+
+                }
+                return lstItems;
+            }
+            catch (Exception ex)
+            {
+                return lstItems;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public List<MasterBulkOrderItem> GetMasterBulkOrderItemsForDropDown(bool inStockOnly)
+        {
+            var data = new SQLData();
+            List<MasterBulkOrderItem> lstItems = new List<MasterBulkOrderItem>();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetMasterBulkOrderItemsForDropDown", data.conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in ds.Tables[0].Rows)
+                            {
+                                MasterBulkOrderItem item = new MasterBulkOrderItem();
+                                item.Id = Convert.ToInt32(dr["Id"].ToString());
+                                item.ItemName = Convert.ToString(dr["ItemName"].ToString());
+                                item.ItemStyle = Convert.ToString(dr["ItemStyle"].ToString());
+                                item.OSFA = Convert.ToBoolean(dr["OSFA"].ToString());
+                                item.OSFAStock = Convert.ToBoolean(dr["OSFAStock"].ToString());
+                                item.LXL = Convert.ToBoolean(dr["LXL"].ToString());
+                                item.LXLStock = Convert.ToBoolean(dr["LXLStock"].ToString());
+                                item.SM = Convert.ToBoolean(dr["SM"].ToString());
+                                item.SMStock = Convert.ToBoolean(dr["SMStock"].ToString());
+                                item.XLXXL = Convert.ToBoolean(dr["XLXXL"].ToString());
+                                item.XLXXLStock = Convert.ToBoolean(dr["XLXXLStock"].ToString());
+                                item.ItemColor = Convert.ToString(dr["ItemColor"].ToString());
+                                item.Manufacturer = Convert.ToString(dr["Manufacturer"].ToString());
+                                item.Available = Convert.ToBoolean(dr["Available"].ToString());
+                                item.BasePrice = Convert.ToDecimal(dr["BasePrice"].ToString());
+                                item.Cost = Convert.ToDecimal(dr["Cost"].ToString());
+                                item.SKU = Convert.ToString(dr["SKU"].ToString());
+                                item.ThumbnailpreviewImagePath = Convert.ToString(dr["ThumbnailpreviewImagePath"].ToString());
+                                item.PreviewImagePath = Convert.ToString(dr["PreviewImagePath"].ToString());
+                                item.DistributorLink = Convert.ToString(dr["DistributorLink"].ToString());
+                                item.FrontEndName = Convert.ToString(dr["FrontEndName"].ToString());
+                                item.DisplayOrder = Convert.ToInt32(dr["DisplayOrder"].ToString());
+                                lstItems.Add(item);
+
+                            }
+
                         }
 
                     }
@@ -2140,6 +2229,180 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
+
+
+
+        public int AddBulkOrderBatchMissingItems(int bulkOrdeBatchId, int masterBulkOrderItemId, string itemName, int missingQuantity, string orderedFromSource, bool ordered, bool outOfStock, string trackingNumber)
+        {
+            var data = new SQLData();
+            var returnId = 0;
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("AddBulkOrderBatchMissingItems", data.conn);
+                    SqlParameter returnParameter = sqlComm.Parameters.Add("bulkOrderBatchMissingItemsId", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+                    sqlComm.Parameters.AddWithValue("@bulkOrderBatchId", bulkOrdeBatchId);
+                    sqlComm.Parameters.AddWithValue("@masterBulkOrderItemId", masterBulkOrderItemId);
+                    sqlComm.Parameters.AddWithValue("@itemName", itemName);
+                    sqlComm.Parameters.AddWithValue("@missingQuantity", missingQuantity);
+                    sqlComm.Parameters.AddWithValue("@orderedFromSource", orderedFromSource);
+                    sqlComm.Parameters.AddWithValue("@ordered", ordered);
+                    sqlComm.Parameters.AddWithValue("@outOfStock", outOfStock);
+                    sqlComm.Parameters.AddWithValue("@trackingNumber", trackingNumber);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                    returnId = (int)returnParameter.Value;
+
+
+                }
+
+                return returnId;
+            }
+            catch (Exception ex)
+            {
+                return returnId;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool UpdateBulkOrderBatchMissingItems(int id, string orderedFromSource, bool ordered, bool outOfStock, string trackingNumber)
+        {
+            var data = new SQLData();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderBatchMissingItems", data.conn);
+                    sqlComm.Parameters.AddWithValue("@id", id);
+                    sqlComm.Parameters.AddWithValue("@orderedFromSource", orderedFromSource);
+                    sqlComm.Parameters.AddWithValue("@ordered", ordered);
+                    sqlComm.Parameters.AddWithValue("@outOfStock", outOfStock);
+                    sqlComm.Parameters.AddWithValue("@trackingNumber", trackingNumber);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+
+
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool UpdateBulkOrderBatchMissingItemsQuantity(int id, int missingQuantity)
+        {
+            var data = new SQLData();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderBatchMissingItemsQuantity", data.conn);
+                    sqlComm.Parameters.AddWithValue("@id", id);
+                    sqlComm.Parameters.AddWithValue("@missingQuantity", missingQuantity);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public List<BulkOrderBatchMissingItems> GetBulkOrderBatchMissingItems(int bulkOrderBatchId)
+        {
+            var data = new SQLData();
+            List<BulkOrderBatchMissingItems> lstItems = new List<BulkOrderBatchMissingItems>();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetBulkOrderBatchMissingItems", data.conn);
+                    sqlComm.Parameters.AddWithValue("@id", bulkOrderBatchId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in ds.Tables[0].Rows)
+                            {
+                                BulkOrderBatchMissingItems item = new BulkOrderBatchMissingItems();
+                                item.Id = Convert.ToInt32(dr["Id"].ToString());
+                                item.BulkOrderBatchId = Convert.ToInt32(dr["BulkOrderBatchId"].ToString());
+                                item.MasterBulkOrderItemId = Convert.ToInt32(dr["MasterBulkOrderItemId"].ToString());
+                                item.MissingQuantity = Convert.ToInt32(dr["MissingQuantity"].ToString());
+                                item.OrderedFromSource = Convert.ToString(dr["OrderedFromSource"].ToString());
+                                item.Ordered = Convert.ToBoolean(dr["Ordered"].ToString());
+                                item.OutOfStock = Convert.ToBoolean(dr["OutOfStock"].ToString());
+                                item.TrackingNumber = Convert.ToString(dr["TrackingNumber"].ToString());
+                                item.ItemName = Convert.ToString(dr["ItemName"].ToString());
+                                lstItems.Add(item);
+
+                            }
+
+                        }
+
+                    }
+
+                }
+                return lstItems;
+            }
+            catch (Exception ex)
+            {
+                return lstItems;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
 
 
     }

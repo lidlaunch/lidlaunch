@@ -497,6 +497,7 @@ namespace LidLaunchWebsite.Controllers
             BulkData data = new BulkData();
             BulkBatchOrder bulkBatchOrder = new BulkBatchOrder();
             List<BulkOrder> lstBulkOrders = new List<BulkOrder>();
+            List<BulkOrderBatchMissingItems> lstMissingItems = new List<BulkOrderBatchMissingItems>();
 
             lstBulkOrders = data.GetBulkOrdersByBatchId(Convert.ToInt32(bulkBatchId));
 
@@ -535,8 +536,8 @@ namespace LidLaunchWebsite.Controllers
             bulkBatchOrder.lstItemsToOrder.Add(new BulkOrderItem { ItemName = "TOTAL HATS", ItemQuantity = products.Sum(p => p.ItemQuantity) });
             bulkBatchOrder.lstItemsToOrder.Add(new BulkOrderItem { ItemName = "ESTIMATED TOTAL COST", ItemQuantity = Convert.ToInt32(data.GetBlankCost(Convert.ToInt32(bulkBatchId))) });
 
-            
 
+            bulkBatchOrder.lstMissingItems = data.GetBulkOrderBatchMissingItems(Convert.ToInt32(bulkBatchId));
 
 
             return View(bulkBatchOrder);

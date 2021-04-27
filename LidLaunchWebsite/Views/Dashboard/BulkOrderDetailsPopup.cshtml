@@ -172,6 +172,7 @@
             <table id="viewingTable">
                 <thead>
                     <tr>
+                        <td></td>
                         <td>Item</td>
                         <td>Qty</td>
                         <td>Price</td>
@@ -187,6 +188,7 @@
                             if (item.BulkRework.Status == "Complete")
                             {
                                 <tr class="reworkItem complete">
+                                    <td style="text-align:center;"><img src='~/Images/@item.ItemThumbnail' /></td>
                                     <td>@item.ItemName</td>
                                     <td>@item.ItemQuantity</td>
                                     <td>@item.ItemCost</td>
@@ -198,6 +200,7 @@
                             else
                             {
                                 <tr class="reworkItem">
+                                    <td style="text-align:center;"><img src='~/Images/@item.ItemThumbnail' /></td>
                                     <td>@item.ItemName</td>
                                     <td>@item.ItemQuantity</td>
                                     <td>@item.ItemCost</td>
@@ -210,6 +213,7 @@
                         else
                         {
                             <tr>
+                                <td style="text-align:center;"><img src='~/Images/@item.ItemThumbnail' /></td>
                                 <td>@item.ItemName</td>
                                 <td>@item.ItemQuantity</td>
                                 <td>@item.ItemCost</td>

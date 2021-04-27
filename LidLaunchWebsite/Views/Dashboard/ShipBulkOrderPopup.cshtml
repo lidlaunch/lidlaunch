@@ -71,6 +71,7 @@
             <table id="viewingTable">
                 <thead>
                     <tr>
+                        <td></td>
                         <td>Item</td>
                         <td>Qty</td>
                         <td>Price</td>
@@ -85,6 +86,7 @@
                             if (item.BulkRework.Status == "Complete")
                             {
                                 <tr class="reworkItem complete">
+                                    <td style="text-align:center;"><img src='~/Images/@item.ItemThumbnail' /></td>
                                     <td>@item.ItemName</td>
                                     <td>@item.ItemQuantity</td>
                                     <td>@item.ItemCost</td>
@@ -95,6 +97,7 @@
                             else
                             {
                                 <tr class="reworkItem">
+                                    <td style="text-align:center;"><img src='~/Images/@item.ItemThumbnail' /></td>
                                     <td>@item.ItemName</td>
                                     <td>@item.ItemQuantity</td>
                                     <td>@item.ItemCost</td>
@@ -105,13 +108,14 @@
                         }
                         else
                         {
-                            <tr>
-                                <td>@item.ItemName</td>
-                                <td>@item.ItemQuantity</td>
-                                <td>@item.ItemCost</td>
-                                <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false, shipping: true });"><input type="button" value="Add Note" class="smallButton" /></a></td>
-                                <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.ItemQuantity, note: '', bulkReworkid: 0, shipping: true });"><input type="button" value="Rework" class="smallButton" /></a></td>
-                            </tr>
+                                <tr>
+                                    <td style="text-align:center;"><img src='~/Images/@item.ItemThumbnail' /></td>
+                                    <td>@item.ItemName</td>
+                                    <td>@item.ItemQuantity</td>
+                                    <td>@item.ItemCost</td>
+                                    <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: @item.Id , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false, shipping: true });"><input type="button" value="Add Note" class="smallButton" /></a></td>
+                                    <td><a href="javascript:void(0);" onclick="$('#bulkReworkHolder').load(addBulkReworkUrl, { 'bulkOrderBatchId': 0, bulkOrderItemId: @item.Id , bulkOrderBlankName: '@item.ItemName', parentBulkOrderId: @Model.Id, parentBulkOrderBatchId: 0, quantity: @item.ItemQuantity, note: '', bulkReworkid: 0, shipping: true });"><input type="button" value="Rework" class="smallButton" /></a></td>
+                                </tr>
                         }
 
 
@@ -198,6 +202,18 @@
                         }
                     </table>
                     <a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: @Model.Id, bulkOrderItemId: 0 , designId: 0, parentBulkOrderId: @Model.Id, revision: false, customerAdded: false, shipping: true });"><input type="button" value="Add Note" class="smallButton" /></a>
+                </div>
+                <div id="bulkOrderNotes">
+                    <h3>Order Log</h3>
+                    <table style="height:200px; overflow-y:scroll; display:block;">
+                        @foreach (LidLaunchWebsite.Models.BulkOrderLog log in Model.lstBulkOrderLog)
+                        {
+                            <tr>
+                                <td colspan="3"><i class="noteDate">@log.Date</i> : @log.LogEntry</td>
+                            </tr>
+                        }
+                    </table>
+                    <a href="javascript:void(0);" onclick="$('#noteHolder').load(addLogUrl, { bulkOrderId: @Model.Id });"><input type="button" value="Add Log" class="smallButton" /></a>
                 </div>
             </div>
 

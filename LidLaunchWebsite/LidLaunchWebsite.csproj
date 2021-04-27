@@ -241,6 +241,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Classes\BulkData.cs" />
+    <Compile Include="Models\BulkOrderBatchMissingItems.cs" />
     <Compile Include="Models\MasterBulkOrderItem.cs" />
     <Compile Include="Models\BulkOrderLog.cs" />
     <Compile Include="Models\Thread.cs" />
@@ -300,10 +301,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\3dPuffIcon.png" />
     <Content Include="Images\5stars.png" />
     <Content Include="Images\AdminReview.png" />
     <Content Include="Images\America.png" />
     <Content Include="Images\artStepIcon.png" />
+    <Content Include="Images\artworkIcon.png" />
+    <Content Include="Images\artworkSetupIcon.png" />
+    <Content Include="Images\backStitchingIcon.png" />
     <Content Include="Images\BannerImages.jpg" />
     <Content Include="Images\BG.jpg" />
     <Content Include="Images\BG2.jpg" />
@@ -333,6 +338,7 @@
     <Content Include="Images\Examples\Example7.jpg" />
     <Content Include="Images\Examples\Example8.jpg" />
     <Content Include="Images\Examples\Example9.jpg" />
+    <Content Include="Images\expeditingFeeIcon.png" />
     <Content Include="Images\fam.jpg" />
     <Content Include="Images\Fam2.jpg" />
     <Content Include="Images\FlexFit110\hat_01.jpg" />
@@ -494,6 +500,7 @@
     <Content Include="Images\InternallyApproved.png" />
     <Content Include="Images\LeftOpPlacement.jpg" />
     <Content Include="Images\LeftPlacement.jpg" />
+    <Content Include="Images\leftSideStitchingIcon.png" />
     <Content Include="Images\loading.gif" />
     <Content Include="Images\logo.jpg" />
     <Content Include="Images\Logo.png" />
@@ -502,6 +509,7 @@
     <Content Include="Images\LogoSmallBlack.jpg" />
     <Content Include="Images\LogoSmallBlack.png" />
     <Content Include="Images\min.png" />
+    <Content Include="Images\miscIcon.png" />
     <Content Include="Images\MoreColors.png" />
     <Content Include="Images\NotInternallyApproved.png" />
     <Content Include="Images\OurPastWorkBg.jpg" />
@@ -584,11 +592,13 @@
     <Content Include="Images\RichardsonSectionBG.jpg" />
     <Content Include="Images\RightOpPlacement.jpg" />
     <Content Include="Images\RightPlacement.jpg" />
+    <Content Include="Images\rightSideStitchingIcon.png" />
     <Content Include="Images\RocketOnly.jpg" />
     <Content Include="Images\rocketsbg.jpg" />
     <Content Include="Images\search.jpg" />
     <Content Include="Images\SearchBack.jpg" />
     <Content Include="Images\SearchBack2.png" />
+    <Content Include="Images\shippingIcon.png" />
     <Content Include="Images\shopping-cart %281%29.png" />
     <Content Include="Images\SliderOverTV.png" />
     <Content Include="Images\StartEarningHero.png" />

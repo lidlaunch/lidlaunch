@@ -1856,5 +1856,73 @@ namespace LidLaunchWebsite.Controllers
             return new JavaScriptSerializer().Serialize(success);
         }
 
+        public string CreateBulkOrderBatchMissingItem(string itemName, string masterItemId, string batchId)
+        {
+            int missingItemId = 0;
+            BulkData data = new BulkData();
+
+            missingItemId = data.AddBulkOrderBatchMissingItems(Convert.ToInt32(batchId), Convert.ToInt32(masterItemId), itemName, 0, "", false, false, "");
+
+
+            return new JavaScriptSerializer().Serialize(missingItemId);
+        }
+
+        public string UpdateBulkOrderBatchMissingItemsQuantity(string id, string missingQuantity)
+        {
+            bool success = false;
+            BulkData data = new BulkData();
+
+            success = data.UpdateBulkOrderBatchMissingItemsQuantity(Convert.ToInt32(id), Convert.ToInt32(missingQuantity));
+
+            return new JavaScriptSerializer().Serialize(success);
+        }
+
+        public string UpdateBulkOrderBatchMissingItems(string id, string orderedFromSource, string ordered, string outOfStock, string trackingNumber)
+        {
+            bool success = false;
+            BulkData data = new BulkData();
+
+            success = data.UpdateBulkOrderBatchMissingItems(Convert.ToInt32(id), orderedFromSource, Convert.ToBoolean(ordered), Convert.ToBoolean(outOfStock), trackingNumber);
+
+            return new JavaScriptSerializer().Serialize(success);
+        }
+
+        public string GetAvailableMasterBulkOrderItems(string filter)
+        {
+            List<MasterBulkOrderItem> lstItems = new List<MasterBulkOrderItem>();
+            BulkData data = new BulkData();
+            lstItems = data.GetMasterBulkOrderItemsForDropDown(false);
+            var returnLiList = "";
+            if(filter != "")
+            {
+                lstItems = lstItems.Where(i => i.FrontEndName.ToLower().Contains(filter) || i.SKU.ToLower().Contains(filter)).ToList();
+            }            
+            foreach(MasterBulkOrderItem item in lstItems)
+            {
+                if (item.OSFA)
+                {
+                    returnLiList += "<li onclick='$(this).closest(\"tr\").find(\".txtBulkOrderItemName\").val(\"" + item.FrontEndName + " - " + item.ItemColor + " - OSFA\"); hideItemsLists();'><img src='../Images/" + item.ThumbnailpreviewImagePath + "'/> <span class='selectItemName'>" + item.FrontEndName + " - " + item.ItemColor + " - OSFA</span></li>";
+                }
+                if (item.LXL)
+                {
+                    returnLiList += "<li onclick='$(this).closest(\"tr\").find(\".txtBulkOrderItemName\").val(\"" + item.FrontEndName + " - " + item.ItemColor + " - L/XL\"); hideItemsLists();'><img src='../Images/" + item.ThumbnailpreviewImagePath + "'/> <span class='selectItemName'>" + item.FrontEndName + " - " + item.ItemColor + " - L/XL</span></li>";
+                }
+                if (item.SM)
+                {
+                    returnLiList += "<li onclick='$(this).closest(\"tr\").find(\".txtBulkOrderItemName\").val(\"" + item.FrontEndName + " - " + item.ItemColor + " - S/M\"); hideItemsLists();'><img src='../Images/" + item.ThumbnailpreviewImagePath + "'/> <span class='selectItemName'>" + item.FrontEndName + " - " + item.ItemColor + " - S/M</span></li>";
+                }
+                if (item.XLXXL)
+                {
+                    returnLiList += "<li onclick='$(this).closest(\"tr\").find(\".txtBulkOrderItemName\").val(\"" + item.FrontEndName + " - " + item.ItemColor + " - XL/XXL\"); hideItemsLists();'><img src='../Images/" + item.ThumbnailpreviewImagePath + "'/> <span class='selectItemName'>" + item.FrontEndName + " - " + item.ItemColor + " - XL/XXL</span></li>";
+                }
+                if (item.Manufacturer == "LidLaunch")
+                {
+                    returnLiList += "<li onclick='$(this).closest(\"tr\").find(\".txtBulkOrderItemName\").val(\"" + item.FrontEndName + "\"); hideItemsLists();'><img src='../Images/" + item.ThumbnailpreviewImagePath + "'/> <span class='selectItemName'>" + item.FrontEndName + "</span></li>";
+                }
+            }
+
+            return returnLiList;
+        }
+
     }
 }

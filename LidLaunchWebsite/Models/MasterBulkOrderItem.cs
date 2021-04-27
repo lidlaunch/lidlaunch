@@ -26,6 +26,7 @@ namespace LidLaunchWebsite.Models
         public string PreviewImagePath { get; set; }
         public string DistributorLink { get; set; }
         public int DisplayOrder { get; set; }
+        public string FrontEndName { get; set; }
     }
 
     public class BulkOrderHatSelectModel
