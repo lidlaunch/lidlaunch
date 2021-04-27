@@ -113,7 +113,7 @@
     <div class="importantSection"><b>Order Notes:</b><br/><pre>@Model.OrderNotes</pre></div>
     @if (Model.lstDesigns.Any(d => d.InternallyApproved && d.DigitizedPreview != ""))
     {
-<div id="orderDigizing">
+    <div id="orderDigizing">
     <h2>Digitized Designs:</h2>
     <p><i>Please note colors in these previews are computer rendered and not a 100% exact representation of the color(s) of the thread used. Different screens also render colors differently. Rest assured our 100% polyester thread is very vibrant and looks great in person. We will match your logo colors and color requests as closely as possible using our color pallet.</i></p>
     
@@ -124,43 +124,57 @@
     </div>
     
 
-    @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns.Where(d => d.InternallyApproved))
-    {
-        <div class="orderDigitizingPreview clear">
-            <h2>@design.Name</h2>
-            <a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" width="300" /></a>
-        </div>
-        if (!design.CustomerApproved)
+        @foreach (LidLaunchWebsite.Models.Design design in Model.lstDesigns.Where(d => d.InternallyApproved))
         {
-            <div class="designApprovalGroup clear">
-                <div class="clear approveDigitizing"><input type="button" onclick="approveDigitizing(@design.Id, @Model.Id)" class="smallButton" value="Approve Digitizing" /></div>
-                <div class="clear requestRevision">
-                    <div class="revisionStartButton"><input type="button" onclick="startRevisionClick(this);" class="smallButton" value="Request Revision" /></div>
-                    <div class="hidden revisionText">
-                        <textarea class="revisionTextInput" placeholder="Enter Revision Comments Here..."></textarea>
-                        <input type="button" onclick="requestDigitizingRevision(@design.Id, $(this).closest('.designApprovalGroup').find('.revisionTextInput').val(), @Model.Id, true);" class="smallButton" value="Submit Revision" />
-                        <input type="button" onclick="revisionCancelClick(this);" class="smallButton" value="Cancel" />
-                    </div>
-                </div>
-                @if (design.lstRevisionNotes.Count > 0)
-                {
-                    <h2>Revisions Requested:</h2>
-                    <ul>
-                        @foreach (LidLaunchWebsite.Models.Note note in design.lstRevisionNotes)
-                        {
-                            <li>@note.Text</li>
-                        }
-                    </ul>
-                }
+            <div class="orderDigitizingPreview clear">
+                <h2>@design.Name</h2>
+                <a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" width="300" /></a>
             </div>
+            if (!design.CustomerApproved)
+            {
+                <div class="designApprovalGroup clear">
+                    <div class="clear approveDigitizing"><input type="button" onclick="approveDigitizing(@design.Id, @Model.Id)" class="smallButton" value="Approve Digitizing" /></div>
+                    <div class="clear requestRevision">
+                        <div class="revisionStartButton"><input type="button" onclick="startRevisionClick(this);" class="smallButton" value="Request Revision" /></div>
+                        <div class="hidden revisionText">
+                            <textarea class="revisionTextInput" placeholder="Enter Revision Comments Here..."></textarea>
+                            <input type="button" onclick="requestDigitizingRevision(@design.Id, $(this).closest('.designApprovalGroup').find('.revisionTextInput').val(), @Model.Id, true);" class="smallButton" value="Submit Revision" />
+                            <input type="button" onclick="revisionCancelClick(this);" class="smallButton" value="Cancel" />
+                        </div>
+                    </div>
+                    @if (design.lstRevisionNotes.Count > 0)
+                    {
+                        <h2>Revisions Requested:</h2>
+                        <ul>
+                            @foreach (LidLaunchWebsite.Models.Note note in design.lstRevisionNotes)
+                            {
+                                <li>@note.Text</li>
+                            }
+                        </ul>
+                    }
+                </div>
+            }
+            else
+            {
+                <div id="approveDigitizing" class="clear digitizingApproved">Digitizing Approved</div>
+            }
         }
-        else
-        {
-            <div id="approveDigitizing" class="clear digitizingApproved">Digitizing Approved</div>
-        }
+    </div>
     }
-</div>
+    else
+    {
+        if (Model.OrderNotes.Contains("ARTWORK PRE-EXISTING :"))
+        {
+            <div id="preExistingArtSelection">
+                <h1>Assign Your Previous Orders Artwork:</h1>
+                <div>Please look up your previous design using the search box. You can search by Email Address OR the Order ID used on your previous order.</div>
+                <div>If you are unsure - no worries, we can assign the artwork for you. If you can't find your design be sure your email is correct. Customers often use multiple different emails when ordering.</div>
+                <div><input type="text" id="txtPreExistingSearch" /><input type="button" class="smallButton" value="Search" onclick="searchPreExistingDesigns($('#txtPreExistingSearch').val())"/></div>
+                <div id="preExistingArtSearchResults">
 
+                </div>
+            </div>                
+        }
     }
 
     <div class="clear" id="orderItems">
@@ -238,3 +252,62 @@
     </div>
 </div>
 
+
+<script type="text/javascript">
+    function searchPreExistingDesigns(searchString) {
+        $('#preExistingArtSearchResults').empty();
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: '/Bulk/GetPreExistingDesign',
+            contentType: false,
+            processData: false,
+            data: JSON.stringify({
+                searchString: searchString, bulkOrderId: @Model.Id
+            }),
+            contentType: "application/json",
+            success: function (result) {
+                if (result == "") {
+                    //do nothing
+                    displayPopupNotification('error.', 'error', false);
+                } else {
+                    hideLoading();
+                    $('#preExistingArtSearchResults').append(result);
+                }
+            },
+            error: function (xhr, status, p3, p4) {
+                displayPopupNotification('Error.', 'error', false);
+            }
+        });    
+    }
+    function selectDesign(bulkOrderId, designId) {
+        //are you sure prompt
+        var proceed = confirm("Are you sure this is the design you would like to choose?");
+        if (proceed) {
+            $.ajax({
+                type: "POST",
+                url: '/Dashboard/SetBulkOrderDesign',
+                contentType: false,
+                processData: false,
+                data: JSON.stringify({
+                    bulkOrderId: bulkOrderId,
+                    designId: designId
+                }),
+                contentType: "application/json",
+                success: function (result) {
+                    if (result == "") {
+                        //do nothing
+                        displayPopupNotification('No results found, try another email or order id.', 'error', false);
+                    } else {
+                        //set the url for the file link and show the link 
+                        //reload bulk order window   
+                        location.reload();
+                    }
+                },
+                error: function (xhr, status, p3, p4) {
+                    displayPopupNotification('Error.', 'error', false);
+                }
+            });
+        }        
+    }
+</script>

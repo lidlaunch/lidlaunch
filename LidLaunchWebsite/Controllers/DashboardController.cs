@@ -1713,18 +1713,10 @@ namespace LidLaunchWebsite.Controllers
 
         public string SetBulkOrderDesign(string bulkOrderId, string designId)
         {
-            if (!checkLoggedIn())
-            {
-                return "false";
-            }
-            else
-            {
-                BulkData data = new BulkData();
-                data.UpdateBulkOrderDesign(Convert.ToInt32(bulkOrderId), Convert.ToInt32(designId));
-                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Bulk Order Design Set To ID: " + designId);
-                return "true";
-            }
-
+            BulkData data = new BulkData();
+            data.UpdateBulkOrderDesign(Convert.ToInt32(bulkOrderId), Convert.ToInt32(designId));
+            var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Bulk Order Design Set To ID: " + designId);
+            return "true";
         }
 
         public ActionResult BulkSalesReport()

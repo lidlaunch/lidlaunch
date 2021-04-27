@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LidLaunchWebsite", "LidLaunchWebsite\LidLaunchWebsite.csproj", "{34D216F0-298E-4F43-BFDA-39881DDED11B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyEmail", "DailyEmail\DailyEmail.csproj", "{227CCF72-020D-471C-BC7D-F3A8B5B8A48E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{34D216F0-298E-4F43-BFDA-39881DDED11B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34D216F0-298E-4F43-BFDA-39881DDED11B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34D216F0-298E-4F43-BFDA-39881DDED11B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{227CCF72-020D-471C-BC7D-F3A8B5B8A48E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{227CCF72-020D-471C-BC7D-F3A8B5B8A48E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{227CCF72-020D-471C-BC7D-F3A8B5B8A48E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{227CCF72-020D-471C-BC7D-F3A8B5B8A48E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2A50A7A2-C9ED-4BBA-8620-517E534DD5AA}
 	EndGlobalSection
 EndGlobal

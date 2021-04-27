@@ -98,8 +98,22 @@
         }
 
         <td>@bulkOrder.OrderDate.ToString("MM/dd/yyyy")</td>
-        <td>@bulkOrder.ProjectedShipDateShort</td>
-        <td>@bulkOrder.ProjectedShipDateLong</td>
+        @if (Convert.ToDateTime(bulkOrder.ProjectedShipDateShort) < DateTime.Now && !bulkOrder.OrderComplete)
+        {
+            <td><b>@bulkOrder.ProjectedShipDateShort</b></td>
+        }
+        else
+        {
+            <td>@bulkOrder.ProjectedShipDateShort</td>
+        }
+        @if (Convert.ToDateTime(bulkOrder.ProjectedShipDateLong) < DateTime.Now && !bulkOrder.OrderComplete)
+        {
+            <td><b style="color:#e92121;">@bulkOrder.ProjectedShipDateLong</b></td>
+        }
+        else
+        {
+            <td>@bulkOrder.ProjectedShipDateLong</td>
+        }
         <td>@bulkOrder.CustomerName<br />@bulkOrder.CustomerEmail<br />@bulkOrder.CustomerPhone</td>
         <td>@bulkOrder.ShipToName<br />@bulkOrder.ShipToAddress<br />@bulkOrder.ShipToCity, @bulkOrder.ShipToState @bulkOrder.ShipToZip</td>
         <td><span onclick="showBulkOrderShip(@bulkOrder.Id);"><input type="button" value="OPEN" class="smallButton" /></span></td>
