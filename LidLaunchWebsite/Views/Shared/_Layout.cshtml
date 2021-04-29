@@ -106,13 +106,14 @@
                             <ul>
                                 <li>@Html.ActionLink("Order Now", "Index", "Bulk")</li>
                                 @*<li>@Html.ActionLink("Shop", "Index", "Shop")</li>*@
-                                <li style="border-right:none;">@Html.ActionLink("Order Status", "OrderLookup", "Bulk")</li>
+                                <li>@Html.ActionLink("Order Status", "OrderLookup", "Bulk")</li>
+                                <li style="border-right:none;">@Html.ActionLink("FAQ", "Index", "FAQ")</li>
                                 @*<li id="desktopCreate">@Html.ActionLink("Create", "GetStarted", "Create")</li>
         <li id="mobileCreate" onclick="displayPopupNotification('Please use a computer to create your hat design. If you are already on a computer please increase the window size.', 'error', false);"><a href="#">Create</a></li>*@
 
                                 @if (Convert.ToInt32(Session["UserID"]) > 0)
                                 {
-                                    <li  style="border:0;">
+                                    <li style="border:0;">
                                         <a href="#" onclick="showProfileLinks();"><img src="~/Images/ProfileLink.png" alt="Profile" width="40" /></a>
                                         <ul id="profileMenu" style="display:none;">
                                             <li>@Html.ActionLink("Dashboard", "Designer", "Dashboard")</li>
@@ -131,11 +132,11 @@
 
                                 }
                                 @*<li class="last">
-                                    <div onclick="window.location = '/Cart/Cart'">
-                                        <img src="~/Images/shopping-cart (1).png" style="width:35px; height:35px" class="cartIcon" />
-                                        <div><span id="cartTotal">@Convert.ToInt32(@Session["TotalCartQuantity"])</span> Items</div>
-                                    </div>
-                                </li>*@
+            <div onclick="window.location = '/Cart/Cart'">
+                <img src="~/Images/shopping-cart (1).png" style="width:35px; height:35px" class="cartIcon" />
+                <div><span id="cartTotal">@Convert.ToInt32(@Session["TotalCartQuantity"])</span> Items</div>
+            </div>
+        </li>*@
                             </ul>
                         </div><!--/navigation-->
                     </div><!--/centerInner-->
@@ -168,7 +169,7 @@
                         <li><a href="~/Terms/Returns">Returns</a></li>
                         <li><a href="~/Terms/Privacy">Privacy</a></li>
                         <li><a href="~/Terms/TermsOfSalesAndDelivery">Terms of Sales and Delivery</a></li>
-                        <li><a href="~/Terms/DesignerPayouts">Designer Payouts</a></li>
+                        <li class="hidden"><a href="~/Terms/DesignerPayouts">Designer Payouts</a></li>
                         <li>@Html.ActionLink("Login", "Login", "User")</li>
                     </ul>
                 </div>

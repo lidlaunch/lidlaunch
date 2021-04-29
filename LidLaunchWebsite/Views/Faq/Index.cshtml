@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<style type="text/css">
+    .faqSection {
+        width:100%;
+    }
+    .faqHeader {
+        background: #39b91c;
+        color: #fff;
+        font-size: 26px;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        display: block;
+        cursor: pointer;
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+/Edge */
+        user-select: none; /* Standard */
+    }
+    .faqHeader h2 {
+        margin:10px;
+        font-size:26px;
+    }
+    .faqContent {
+        padding:20px;
+        display:none;
+        font-size:20px;
+    }
+    .faqIntro {
+        padding: 10px;
+        font-size: 22px;
+    }
+    .faqIntroLeft {
+        width:100%;
+        margin:0 auto;
+        max-width:800px;
+    }
+    .faqIntroLeft img {
+        max-width:100%;
+        height:200px
+    }
+
+
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.faqHeader').click(function () {
+            $(this).closest('.faqSection').find('.faqContent').slideToggle();
+        });
+    });
+</script>
+<div class="centerInner">
+    <div class="faqIntro">
+        <div class="faqIntroLeft">
+            LidLaunch is a family owned and operated business located near St.Louis. We have helped thousands of customers all across the United States get their own custom embroidered headwear.
+            <br /><br />
+            We launched in 2018 from our living room and have continued to grow. We do everything in house and take pride in every hat we ship out our door.
+            <br /><br />
+            Below is a list of questions we get asked frequently. We look forward to working with you on your next custom hat order!
+        </div>
+        <div class="faqIntroLeft">
+            <center><img src="~/Images/us.png" /></center>
+        </div>
+    </div>
+
+    <div class="faqSection">
+        <div class="faqHeader">
+            <h2>What is your contact info?</h2>
+        </div>
+        <div class="faqContent">
+            To contact us please send an email to support@lidlaunch.com.
+            <br /><br />
+            We prefer to keep all communications electronic. This keeps a record of what was discussed and any of our team members can look back on past communications that have happened regarding an order.
+            <br /><br />
+            We do not have a publicly listed phone number. We are a very small team and we process hundreds of designs, orders, customer requests per day. If you have an existing order and a phone call is necessary we will arrange one and reach out to you.
+            <br /><br />
+            We aren't robots - we are real people, too.
+        </div>
+    </div><!--/faqSection-->
+    <div class="faqSection">
+        <div class="faqHeader">
+            <h2>Turn around time?</h2>
+        </div>
+        <div class="faqContent">
+            Our current production time is an estimated 10-14 business days (Mon-Friday) after your order has been placed. Once an order finishes production it is shipped via UPS/USPS and typically takes a few business days to get to your door.
+            <br /><br />
+            Turnaround times are estimates. Most orders are completed and shipped out in the original estimated shipping window we provide. However, sometimes issues come up during production that may delay an order a few days (Logo not stitching well, human production errors, blanks on back-order).
+            <br /><br />
+            Our machines are running around the clock and we do everything we can to get your order done and out to you as quickly as possible.
+        </div>
+    </div><!--/faqSection-->
+    <div class="faqSection">
+        <div class="faqHeader">
+            <h2>Minimum order quantity?</h2>
+        </div>
+        <div class="faqContent">
+            We do not have a minimum order quantity. Orders less than 12 hats require a $30 artwork setup fee. This is a one-time fee that is not paid again on future orders with the same logo.
+            <br /><br />
+            Back stitching is only available for orders greater than 6 hats.
+        </div>
+    </div><!--/faqSection-->
+    <div class="faqSection">
+        <div class="faqHeader">
+            <h2>See it before ordering?</h2>
+        </div>
+        <div class="faqContent">
+            We do not start on an order until after it has been placed and paid for. You will receive digital renderings of the stitching for feedback and approval before stitching begins on your order.
+            <br /><br />
+            We test stitch every design for internal approval before we produce every order. We have a high-quality standard that every hat must meet before we let it go out the door.
+        </div>
+    </div><!--/faqSection-->
+    <div class="faqSection">
+        <div class="faqHeader">
+            <h2>Order hats that aren't listed?</h2>
+        </div>
+        <div class="faqContent">
+            The hats listed on our ordering page are the options we offer. If you have a large order 100+ hats and are looking for something that is not offered on our website we may be able to secure the blanks to do the order for you. Please reach out to support@lidlaunch.com.
+        </div>
+    </div><!--/faqSection-->
+    <div class="faqSection">
+        <div class="faqHeader">
+            <h2>How do I reorder?</h2>
+        </div>
+        <div class="faqContent">
+            On the artwork step while ordering there is a button to press "I have Ordered With This Logo Before" that will indicate your artwork is on file with us. You will receive an email to select your artwork after your order has been placed.
+        </div>
+    </div><!--/faqSection-->
+    <div class="faqSection">
+        <div class="faqHeader">
+            <h2>Where are your hats made?</h2>
+        </div>
+        <div class="faqContent">
+            Every hat is customized here in house at our facility in Collinsville, IL (10 minutes outside of St.Louis). The blank hats we source are manufactured all around the world. It is our dream to one day be able to manufacture our own blank hats here in house to be a 100% American made product. Your purchase makes this dream become closer to reality.
+        </div>
+    </div><!--/faqSection-->
+</div>

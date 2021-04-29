@@ -3461,7 +3461,7 @@ input[type=text], input[type=password], select, input[type=number] {
         font-size: 12px;
     }
     #videoSection {
-        height:130px;
+        height:155px;
     }
     #videoSection iframe {
         display:none;

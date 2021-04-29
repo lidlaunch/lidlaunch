@@ -241,6 +241,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Classes\BulkData.cs" />
+    <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Models\BulkOrderBatchMissingItems.cs" />
     <Compile Include="Models\MasterBulkOrderItem.cs" />
     <Compile Include="Models\BulkOrderLog.cs" />
@@ -341,6 +342,7 @@
     <Content Include="Images\expeditingFeeIcon.png" />
     <Content Include="Images\fam.jpg" />
     <Content Include="Images\Fam2.jpg" />
+    <Content Include="Images\Fam3.jpg" />
     <Content Include="Images\FlexFit110\hat_01.jpg" />
     <Content Include="Images\FlexFit110\hat_02.jpg" />
     <Content Include="Images\FlexFit110\hat_03.jpg" />
@@ -624,12 +626,14 @@
     <Content Include="Images\Threads\1934Blue.jpg" />
     <Content Include="Images\Threads\1965NeonOrange.jpg" />
     <Content Include="Images\Threads\1982DarkRed.jpg" />
+    <Content Include="Images\Timeline.jpg" />
     <Content Include="Images\TopImage.jpg" />
     <Content Include="Images\TopImage2.jpg" />
     <Content Include="Images\TopImage3.jpg" />
     <Content Include="Images\TopImage4.jpg" />
     <Content Include="Images\TypeSelectTop.jpg" />
     <Content Include="Images\upload.png" />
+    <Content Include="Images\us.png" />
     <Content Include="Images\UserDefaults\defaultBG.jpg" />
     <Content Include="Images\UserDefaults\defaultProfile.png" />
     <Content Include="ApplicationInsights.config">
@@ -876,6 +880,7 @@
     <Content Include="Views\Bulk\OrderLookup.cshtml" />
     <Content Include="Views\Dashboard\AddLog.cshtml" />
     <Content Include="Views\Dashboard\BulkOrderItemAvailabilty.cshtml" />
+    <Content Include="Views\Faq\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
