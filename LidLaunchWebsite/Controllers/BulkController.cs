@@ -492,7 +492,7 @@ namespace LidLaunchWebsite.Controllers
             return View(bulkBatchOrder);
         }
 
-        public ActionResult BulkOrderBatch(string bulkBatchId)
+        public ActionResult BulkOrderBatch(string bulkBatchId, string onlyOutOfStock)
         {
             BulkData data = new BulkData();
             BulkBatchOrder bulkBatchOrder = new BulkBatchOrder();
@@ -509,11 +509,11 @@ namespace LidLaunchWebsite.Controllers
 
             List<BulkOrderItem> products = new List<BulkOrderItem>();
 
-            foreach(BulkOrder bulkOrder in lstBulkOrders)
+            foreach (BulkOrder bulkOrder in lstBulkOrders)
             {
-                foreach(BulkOrderItem item in bulkOrder.lstItems)
+                foreach (BulkOrderItem item in bulkOrder.lstItems)
                 {
-                    if(products.Any(p => p.ItemName == item.ItemName))
+                    if (products.Any(p => p.ItemName == item.ItemName))
                     {
                         products.Find(p => p.ItemName == item.ItemName).ItemQuantity += item.ItemQuantity;
                     } else
@@ -528,6 +528,9 @@ namespace LidLaunchWebsite.Controllers
             products.RemoveAll(p => p.ItemName == "Back Stitching");
             products.RemoveAll(p => p.ItemName == "Left Side Stitching");
             products.RemoveAll(p => p.ItemName == "Right Side Stitching");
+            products.RemoveAll(p => p.ItemName == "3D Puff");
+            products.RemoveAll(p => p.ItemName == "Expediting Fee");
+            products.RemoveAll(p => p.ItemName == "Additional Artwork Setup");
 
             bulkBatchOrder.lstItemsToOrder = products;
 
@@ -538,6 +541,17 @@ namespace LidLaunchWebsite.Controllers
 
 
             bulkBatchOrder.lstMissingItems = data.GetBulkOrderBatchMissingItems(Convert.ToInt32(bulkBatchId));
+
+            var filterOnlyOutOfstock = false;
+            if(onlyOutOfStock != "" || onlyOutOfStock == null)
+            {
+                filterOnlyOutOfstock = Convert.ToBoolean(onlyOutOfStock);
+            }
+            if (filterOnlyOutOfstock)
+            {
+                HashSet<int> missingItemIds = new HashSet<int>(bulkBatchOrder.lstMissingItems.Where(mi => mi.MissingQuantity > 0).Select(mi => mi.MasterBulkOrderItemId));
+                bulkBatchOrder.lstItemsToOrder = bulkBatchOrder.lstItemsToOrder.Where(i => missingItemIds.Contains(i.MasterItemId)).ToList();
+            }
 
 
             return View(bulkBatchOrder);
