@@ -15,8 +15,7 @@
 <table>
     @foreach (LidLaunchWebsite.Models.BulkOrderItem itemToOrder in Model.lstItemsToOrder)
     {    
-        <tr @if (Model.lstMissingItems.Where(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId).ToList().Count > 0 && Model.lstMissingItems.First(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId).MissingQuantity > 0) { @: style="background: red"
-            }>
+        <tr>
             <td><span onclick="$(this).closest('tr').toggleClass('ordered')" class="smallButton" style="cursor:pointer;"><i class="fas fa-check"></i></span></td>
             <td style="padding:10px;">
                 <img src='~/Images/@itemToOrder.ItemThumbnail' />
@@ -28,14 +27,39 @@
                 @itemToOrder.ItemQuantity
             </td>
             <td>
+                @{var isMissing = false;}
                 @if (Model.lstMissingItems.Where(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId).ToList().Count > 0)
                 {
-                    <div class="missingItemSection">
-                        <span class="missingItemId hidden">@Model.lstMissingItems.First(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId).Id</span>
-                        <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementMissingTotal(this, @itemToOrder.MasterItemId)" /></span>
-                        <span class="missingTotalHolder"><input type="text" class="txtMissingTotal" value="@Model.lstMissingItems.First(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId).MissingQuantity" /></span>
-                        <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementMissingTotal(this, @itemToOrder.MasterItemId)" /></span>
-                    </div>
+                    if (itemToOrder.ItemName.Contains("OSFA"))
+                    {
+                        if (Model.lstMissingItems.Where(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId && lm.ItemName.Contains("OSFA")).ToList().Count > 0)
+                        {
+                            isMissing = true;
+                        }
+                    }
+                    if (itemToOrder.ItemName.Contains("L/XL"))
+                    {
+                        if (Model.lstMissingItems.Where(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId && lm.ItemName.Contains("L/XL")).ToList().Count > 0)
+                        {
+                            isMissing = true;
+                        }
+                    }
+                    if (itemToOrder.ItemName.Contains("S/M"))
+                    {
+                        if (Model.lstMissingItems.Where(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId && lm.ItemName.Contains("S/M")).ToList().Count > 0)
+                        {
+                            isMissing = true;
+                        }
+                    }
+                    if (isMissing)
+                    {
+                        <div class="missingItemSection" style="background: red; padding: 30px;">
+                            <span class="missingItemId hidden">@Model.lstMissingItems.First(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId).Id</span>
+                            <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementMissingTotal(this, @itemToOrder.MasterItemId)" /></span>
+                            <span class="missingTotalHolder"><input type="text" class="txtMissingTotal" value="@Model.lstMissingItems.First(lm => lm.MasterBulkOrderItemId == itemToOrder.MasterItemId).MissingQuantity" /></span>
+                            <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementMissingTotal(this, @itemToOrder.MasterItemId)" /></span>
+                        </div>
+                    }
                 }
                 else
                 {
