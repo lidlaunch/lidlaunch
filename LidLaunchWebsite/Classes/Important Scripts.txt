@@ -1,0 +1,74 @@
+﻿/////////////////SALES TAX DATA
+SELECT SUM(OrderTotal) AS Total, COUNT(*) AS OrderCount, ShipToState FROM BulkOrder 
+WHERE OrderPaid = 1 AND OrderDate >= '1/1/2021'
+GROUP BY ShipToState
+ORDER BY Total DESC
+
+/////HAT SALES METRICS BY STYLE AND COLOR IMPORTANT FOR MASS ORDERING INVENTORY
+SELECT SUM(ITEMQUANTITY) AS Total, ItemName FROM BULKORDERITEM 
+INNER JOIN BulkOrder
+ON BulkOrder.Id = BulkOrderItem.BulkOrderId
+WHERE OrderPaid = 1 AND ItemName NOT IN ('Back Stitching', 'Artwork Setup/Digitizing', 'Delete', '3D Puff', 'Shipping', 'Left Side Stitching', 'Right Side Stitching')
+GROUP BY ITEMNAME ORDER BY Total DESC
+
+
+SELECT SUM(ITEMQUANTITY) AS Total, 'Richardson 112' AS ItemName FROM BULKORDERITEM 
+INNER JOIN BulkOrder
+ON BulkOrder.Id = BulkOrderItem.BulkOrderId
+WHERE OrderPaid = 1 AND ItemName Like 'Richardson 112%'
+
+SELECT SUM(ITEMQUANTITY) AS Total, 'FlexFit 6277' AS ItemName FROM BULKORDERITEM 
+INNER JOIN BulkOrder
+ON BulkOrder.Id = BulkOrderItem.BulkOrderId
+WHERE OrderPaid = 1 AND ItemName Like 'FlexFit 6277%'
+
+SELECT SUM(ITEMQUANTITY) AS Total, 'FlexFit Trucker' AS ItemName FROM BULKORDERITEM 
+INNER JOIN BulkOrder
+ON BulkOrder.Id = BulkOrderItem.BulkOrderId
+WHERE OrderPaid = 1 AND ItemName Like 'FlexFit Trucker%'
+
+SELECT SUM(ITEMQUANTITY) AS Total, 'Yupoong 6089M' AS ItemName FROM BULKORDERITEM 
+INNER JOIN BulkOrder
+ON BulkOrder.Id = BulkOrderItem.BulkOrderId
+WHERE OrderPaid = 1 AND ItemName Like 'Yupoong Flat Bill Snapback%'
+
+SELECT SUM(ITEMQUANTITY) AS Total, 'FlexFit Flat Bill' AS ItemName FROM BULKORDERITEM 
+INNER JOIN BulkOrder
+ON BulkOrder.Id = BulkOrderItem.BulkOrderId
+WHERE OrderPaid = 1 AND ItemName Like 'FlexFit Flat Bill%'
+
+SELECT SUM(ITEMQUANTITY) AS Total, 'FlexFit 110' AS ItemName FROM BULKORDERITEM 
+INNER JOIN BulkOrder
+ON BulkOrder.Id = BulkOrderItem.BulkOrderId
+WHERE OrderPaid = 1 AND ItemName Like 'FlexFit 110%'
+
+SELECT SUM(ITEMQUANTITY) AS Total, 'Yupoong 6606' AS ItemName FROM BULKORDERITEM 
+INNER JOIN BulkOrder
+ON BulkOrder.Id = BulkOrderItem.BulkOrderId
+WHERE OrderPaid = 1 AND ItemName Like 'Yupoong 6606%'
+
+SELECT SUM(ITEMQUANTITY) AS Total, 'Yupoong Dad Cap' AS ItemName FROM BULKORDERITEM 
+INNER JOIN BulkOrder
+ON BulkOrder.Id = BulkOrderItem.BulkOrderId
+WHERE OrderPaid = 1 AND ItemName Like 'Yupoong Dad Cap%'
+
+SELECT SUM(ITEMQUANTITY) AS Total, 'Yupoong Cuffed Beanie' AS ItemName FROM BULKORDERITEM 
+INNER JOIN BulkOrder
+ON BulkOrder.Id = BulkOrderItem.BulkOrderId
+WHERE OrderPaid = 1 AND ItemName Like 'Yupoong Cuffed Beanie%'
+
+SELECT SUM(ITEMQUANTITY) AS Total, 'Yupoong Short Beanie' AS ItemName FROM BULKORDERITEM 
+INNER JOIN BulkOrder
+ON BulkOrder.Id = BulkOrderItem.BulkOrderId
+WHERE OrderPaid = 1 AND ItemName Like 'Yupoong Short Beanie%'
+
+
+
+SELECT SUM(ITEMQUANTITY) AS Total FROM BULKORDERITEM 
+INNER JOIN BulkOrder
+ON BulkOrder.Id = BulkOrderItem.BulkOrderId
+WHERE OrderPaid = 1 AND ItemName NOT IN ('Back Stitching', 'Artwork Setup/Digitizing', 'Delete', '3D Puff', 'Shipping', 'Left Side Stitching', 'Right Side Stitching')
+AND OrderCompleteDate >= '4/1/2021' AND OrderCompleteDate <= '4/30/2021'
+
+
+SELECT COUNT(*) FROM BULKORDER WHERE Orderdate >= '4/1/2021' AND OrderDate <= '4/30/2021' and OrderPaid = 1
