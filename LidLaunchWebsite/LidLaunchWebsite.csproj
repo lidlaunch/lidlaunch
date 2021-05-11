@@ -297,6 +297,7 @@
     <Compile Include="Controllers\OrderDigitizingController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Classes\Important Scripts.txt" />
     <Content Include="Content\Checkout.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -390,6 +391,9 @@
     <Content Include="Images\FlexFit6277\hat_24.jpg" />
     <Content Include="Images\FlexFit6277\hat_25.jpg" />
     <Content Include="Images\FlexFit6277\hat_26.jpg" />
+    <Content Include="Images\FlexFit6277\hat_27.jpg" />
+    <Content Include="Images\FlexFit6277\hat_28.jpg" />
+    <Content Include="Images\FlexFit6277\hat_29.jpg" />
     <Content Include="Images\FlexFit6511\hat_01.jpg" />
     <Content Include="Images\FlexFit6511\hat_03.jpg" />
     <Content Include="Images\FlexFit6511\hat_04.jpg" />
