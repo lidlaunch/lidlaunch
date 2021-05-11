@@ -3,10 +3,12 @@
     ViewBag.Title = "PrintBulkOrderBatchBulkOrders";
 }
     <script type="text/javascript">
-        window.print();
-        window.onafterprint = function () {
-            window.close();
-        }
+        document.ready(function () {
+            window.print();
+            window.onafterprint = function () {
+                window.close();
+            }
+        });        
     </script>
     <style type="text/css">
     @@page {
