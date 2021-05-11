@@ -241,10 +241,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Classes\BulkData.cs" />
+    <Compile Include="Classes\BulkOrderAttachmentData.cs" />
+    <Compile Include="Controllers\BulkOrderAttachmentController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Models\BulkOrderBatchMissingItems.cs" />
     <Compile Include="Models\MasterBulkOrderItem.cs" />
     <Compile Include="Models\BulkOrderLog.cs" />
+    <Compile Include="Models\BulkOrderAttachment.cs" />
     <Compile Include="Models\Thread.cs" />
     <Compile Include="Classes\DigitizingOrderData.cs" />
     <Compile Include="Classes\EmailFunctions.cs" />
@@ -885,6 +888,9 @@
     <Content Include="Views\Dashboard\AddLog.cshtml" />
     <Content Include="Views\Dashboard\BulkOrderItemAvailabilty.cshtml" />
     <Content Include="Views\Faq\Index.cshtml" />
+    <Content Include="Views\Dashboard\BlankSources.cshtml" />
+    <Content Include="Views\BulkOrderAttachment\ViewAttachments.cshtml" />
+    <Content Include="Views\BulkOrderAttachment\AttachmentEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

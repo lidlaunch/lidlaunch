@@ -19,13 +19,45 @@
         padding: 10px;
     }
     .bottomBarLink {
-        float:left;
-        height:100px;
-        line-height:100px;
-        vertical-align:middle;
-        margin:0 10px;
+        float: left;
+        height: 100px;
+        line-height: 100px;
+        vertical-align: middle;
+        margin: 0 5px;
+        
     }
-    
+    .bottomBatLink .smallButton {
+        font-size: 10px;
+    }
+    #bulkSideBar {
+        width: auto;
+        height: 70px;
+        position: absolute;
+        left: 0;
+        top: 153px;
+        display: block;
+        -ms-transform: rotate(270deg);
+        transform: rotate(270deg);
+        left: -898px;
+        margin-left: 50%;
+    }
+    .sideBarItem {
+        width: 120px;
+        padding: 20px;
+        height: 30px;
+        color: #fff;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        background: #ddd;
+        color:#000;
+        border-radius:5px 5px 0 0;
+        cursor:pointer;
+    }
+    .sideBarItem.enabled {
+        background: #39b91c;
+        color:#fff;
+    }
 </style>
 <div id="bulkOrderDetailsPopup">
     <div id="bulkOrderDetailsPopupContent">
@@ -396,7 +428,7 @@
                 <input type="button" class="smallButton" value="Send General Order Email" onclick="sendGeneralEmail('@Model.BulkOrder.Id', '@Model.BulkOrder.CustomerEmail', $('#emailText').val(), '@Model.BulkOrder.PaymentGuid');" />
                 <input type="button" class="smallButton" value="Cancel" onclick="$('#generalEmailPopup').hide()" />
             </div>
-        </div>       
+        </div>
 
 
         <div id="bulkBottomBar">
@@ -454,7 +486,16 @@
             }
 
         </div><!--/bulkbottombar-->
+
     </div><!--bulkOrderDetailsPopupContent-->
+    <div id="bulkSideBar">
+        <div class="sideBarItem enabled">
+            Attachments
+        </div>
+        <div class="sideBarItem">
+            Previous Orders
+        </div>
+    </div><!--/bulkSideBar-->
 </div><!--/bulkOrderDetailsPopup-->
 <script type="text/javascript">
     var addNoteUrl = '@Url.Action("AddNote", "Dashboard")';
