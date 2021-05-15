@@ -78,7 +78,7 @@
                     <td>Shipping Address:</td>
                     <td>@Model.BulkOrder.ShipToName : @Model.BulkOrder.ShipToAddress @Model.BulkOrder.ShipToCity , @Model.BulkOrder.ShipToState @Model.BulkOrder.ShipToZip</td>
                 </tr>
-                <tr>
+                <tr style="background-color: #b6ffc5;">
                     <td>Customer Notes:</td>
                     <td><pre>@Model.BulkOrder.OrderNotes</pre></td>
                 </tr>
@@ -125,21 +125,21 @@
                 </tr>
                 @if (Model.BulkOrder.BackStitching)
                 {
-                    <tr>
+                    <tr style="background-color: #ffb6b6;">
                         <td>Back Stitching:</td>
                         <td>@Model.BulkOrder.BackStitchingComment</td>
                     </tr>
                 }
                 @if (Model.BulkOrder.LeftStitching)
                 {
-                    <tr>
+                    <tr style="background-color: #b6ffc5;">
                         <td>Left Stitching:</td>
                         <td>@Model.BulkOrder.LeftStitchingComment</td>
                     </tr>
                 }
                 @if (Model.BulkOrder.RightStitching)
                 {
-                    <tr>
+                    <tr style="background-color: #b6ffc5;">
                         <td>Right Stitching:</td>
                         <td>@Model.BulkOrder.RightStitchingComment</td>
                     </tr>
@@ -149,13 +149,13 @@
                     <td>Order Total:</td>
                     <td>@Model.BulkOrder.OrderTotal</td>
                 </tr>
-                <tr>
+                <tr class="hidden">
                     <td>Order Paid:</td>
                     <td>@Model.BulkOrder.OrderPaid</td>
                 </tr>
                 <tr>
-                    <td>Payment Link:</td>
-                    <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@Model.BulkOrder.PaymentGuid" target="_blank">Pay Link</a></td>
+                    <td>Customer's Link:</td>
+                    <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@Model.BulkOrder.PaymentGuid" target="_blank">Order Status Link</a></td>
                 </tr>
                 <tr>
                     <td>Shipped:</td>
@@ -410,6 +410,7 @@
         <div id="bulkOrderEditHolder"></div>
         <div id="uploadDesignHolder"></div>
         <div id="adminReviewHolder"></div>
+        <div id="attachmentsWindowHolder"></div>
 
 
         <div id="colorConfirmationPopup" style="display:none;">
@@ -439,7 +440,25 @@
                 }
                 else
                 {
-                    <img src="~/Images/NotInternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.BulkOrder.Id, true);" />
+                    if (Convert.ToInt32(Session["UserID"]) == 1)
+                    {
+                        <img src="~/Images/NotInternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.BulkOrder.Id, true);" />
+                    }
+                    else if (!Model.BulkOrder.lstDesigns.Where(d => d.Name.ToUpper() != "BEANIE" && d.Name.ToUpper() != "ALTFRONT").Any(d => !d.CustomerApproved))
+                    {
+                        if (Model.BulkOrder.BackStitching)
+                        {
+                            if (Model.BulkOrder.lstDesigns.Any(d => d.Name.ToUpper() == "BACK"))
+                            {
+                                <img src="~/Images/NotInternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.BulkOrder.Id, true);" />
+                            }
+                        }
+                        else
+                        {
+                            <img src="~/Images/NotInternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.BulkOrder.Id, true);" />
+                        }
+
+                    }
                 }
             </div>
             <div class="bottomBarLink">
@@ -489,9 +508,18 @@
 
     </div><!--bulkOrderDetailsPopupContent-->
     <div id="bulkSideBar">
-        <div class="sideBarItem enabled">
-            Attachments
+        @if (Model.BulkOrder.lstAttachments.Count > 0)
+        {
+        <div class="sideBarItem enabled" onclick="showLoading(); $('#attachmentsWindowHolder').load(attachmentsUrl, { bulkOrderId: @Model.BulkOrder.Id });">
+            Attachments: <b>@Model.BulkOrder.lstAttachments.Count.ToString()</b>
         </div>
+        }
+        else
+        {
+            <div class="sideBarItem" onclick="showLoading(); $('#attachmentsWindowHolder').load(attachmentsUrl, { bulkOrderId: @Model.BulkOrder.Id });">
+                Attachments: 0
+            </div>
+        }
         <div class="sideBarItem">
             Previous Orders
         </div>
@@ -505,6 +533,7 @@
     var bulkOrderEditUrl = '@Url.Action("EditBulkOrderPopup", "Dashboard")';
     var uploadBulkDesignUrl = '@Url.Action("UploadBulkDesign", "Dashboard")';
     var adminReviewUrl = '@Url.Action("AdminReview", "Bulk")';
+    var attachmentsUrl = '@Url.Action("ViewAttachments", "BulkOrderAttachment")';
 </script>
 <script type="text/javascript">
     $('.batchSelect').on('change', function (e) {

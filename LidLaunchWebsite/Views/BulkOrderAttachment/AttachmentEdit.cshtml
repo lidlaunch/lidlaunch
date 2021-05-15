@@ -2,6 +2,137 @@
 @{
     ViewBag.Title = "AttachmentEdit";
 }
+<style type="text/css">
+    #attachmentEditPopup {
+        background: rgba(0,0,0,0.5);
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        display: block;
+        top: 0;
+        right: 0;
+    }
 
-<h2>AttachmentEdit</h2>
+    #attachmentEditPopupInner {
+        width: 450px;
+        height: 300px;
+        background: #fff;
+        margin-top: 50px;
+        display: block;
+        padding: 10px;
+        margin: 100px auto;
+    }
 
+    #attachmentEditInner {
+        width: 400px;
+        margin: 0 auto;
+    }
+</style>
+<div id="attachmentEditPopup">
+    <div id="attachmentEditPopupInner">
+        <div id="attachmentEditInner">
+            <span onclick="$('#attachmentEditPopup').hide();" class="closeButton" style="display:block; top:5px;right:5px; float:right;">X</span>
+            <span id="attachmentBulkOrderId" class="hidden">@Model.BulkOrderId</span>
+            <table style="width:100%">
+                <tr>
+                    <td><span id="attachmentId">@Model.Id</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="file" id="attachmentFile" value="@Model.AttachmentName" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><textarea id="txtAttachmentComment" type="text" placeholder="Attachment Comments..." style="width:90%; height:100px;" value="@Model.AttachmentComment"></textarea></td>
+                </tr>
+                <tr>
+                    <td>
+                        <select id="attachmentType">
+                            @if (Model.AttachmentType == "DesignImage")
+                            {
+                                <option value="DesignImage" selected>DesignImage</option>
+                            }
+                            else
+                            {
+                                <option value="DesignImage">DesignImage</option>
+                            }
+                            @if (Model.AttachmentType == "StitchedPhoto")
+                            {
+                                <option value="StitchedPhoto" selected>StitchedPhoto</option>
+                            }
+                            else
+                            {
+                                <option value="StitchedPhoto">StitchedPhoto</option>
+                            }
+                            @if (Model.AttachmentType == "Informational")
+                            {
+                                <option value="Informational" selected>Informational</option>
+                            }
+                            else
+                            {
+                                <option value="Informational">Informational</option>
+                            }
+                            @if (Model.AttachmentType == "TaxForm")
+                            {
+                                <option value="TaxForm" selected>TaxForm</option>
+                            }
+                            else
+                            {
+                                <option value="TaxForm">TaxForm</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" value="Save Attachment" class="smallButton" onclick="saveAttachment()" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function saveAttachment() {
+        var attachmentId = $('#attachmentId').text();
+        var bulkOrderId = $('#attachmentBulkOrderId').text();
+        //var attachmentName = $('attachmentFile').val();
+        var attachment = $('#attachmentFile')[0].files;
+        var attachmentComment = $('#txtAttachmentComment').val();
+        var attachmentType = $('#attachmentType').val();
+
+        if (attachment.length > 0) {
+            var data = new FormData();
+            data.append("attachmentId", attachmentId);
+            data.append("attachment", attachment[0]);
+            //data.append("attachmentName", attachmentName);
+            data.append("bulkOrderId", bulkOrderId);
+            data.append("attachmentComment", attachmentComment);
+            data.append("attachmentType", attachmentType);
+            showLoading();
+            $.ajax({
+                type: "POST",
+                url: '/BulkOrderAttachment/EditBulkDesignAttachment',
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (result) {
+                    if (result == "") {
+                        //do nothing
+                        displayPopupNotification('Sorry there was an error saving the attachment.', 'error', false);
+                    } else {
+                        //reload the attachment panel
+                        $('#attachmentsWindowHolder').load(attachmentsUrl, { bulkOrderId: bulkOrderId });
+                    }
+                },
+                error: function (xhr, status, p3, p4) {
+                    displayPopupNotification('Sorry there was an error saving the attachment.', 'error', false);
+                }
+            });
+
+        } else {
+            displayPopupNotification('Please select the attachment before saving.', 'error', false);
+        }
+    }
+</script>

@@ -21,6 +21,7 @@ pre {
     white-space: -pre-wrap;
     white-space: -o-pre-wrap;
     word-wrap: break-word;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 input[type=button] {
@@ -1974,6 +1975,12 @@ input[type=text], input[type=password], select, input[type=number] {
     color: #39b91c;
     font-weight: bold;
     font-size: 30px;
+}
+
+#ClassicCaps.hatBrand {
+    background: url(/Images/ClassicCapsSectionBG.jpg) no-repeat;
+    background-position: right;
+    background-color: #efefef;
 }
 
 #FlexFit.hatBrand {

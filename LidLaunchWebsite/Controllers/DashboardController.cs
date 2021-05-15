@@ -1372,6 +1372,7 @@ namespace LidLaunchWebsite.Controllers
                     BulkOrderDetailsPopupModel model = new BulkOrderDetailsPopupModel();
                     BulkOrder bulkOrder = new BulkOrder();
                     BulkData data = new BulkData();
+                    BulkOrderAttachmentData attachmentData = new BulkOrderAttachmentData();
                     bulkOrder = data.GetBulkOrder(bulkOrderId, "", "");
 
                     bulkOrder.BarcodeImage = "BO-" + bulkOrderId.ToString() + ".jpg";
@@ -1395,7 +1396,8 @@ namespace LidLaunchWebsite.Controllers
                     }
 
                     model.BulkOrder = bulkOrder;
-                    model.lstBulkOrderBatches = data.GetBulkOrderBatches();
+                    model.lstBulkOrderBatches = data.GetBulkOrderBatches();                    
+                    model.BulkOrder.lstAttachments = attachmentData.GetBulkOrderAttachments(bulkOrderId);
 
                     //model.lstPreviousBulkOrders = data.GetPreviousBulkOrders(bulkOrderId);
 
@@ -1816,6 +1818,9 @@ namespace LidLaunchWebsite.Controllers
                     hatSelectModel.Richardson112Items = masterItemList.Where(i => i.Manufacturer == "Richardson" && i.ItemStyle == "112 Trucker Snapback").ToList();
                     hatSelectModel.Richardson112Items = hatSelectModel.Richardson112Items.OrderBy(i => i.DisplayOrder).ToList();
 
+                    hatSelectModel.ClassicCapsItems = masterItemList.Where(i => i.Manufacturer == "Classic Caps" && i.ItemStyle == "USA100 Trucker Snapback").ToList();
+                    hatSelectModel.ClassicCapsItems = hatSelectModel.ClassicCapsItems.OrderBy(i => i.DisplayOrder).ToList();
+
                     return View(hatSelectModel);
                 }
                 else
@@ -1914,6 +1919,22 @@ namespace LidLaunchWebsite.Controllers
             }
 
             return returnLiList;
+        }
+
+        public string GetBulkOrdersContainingMissingBlank(string masterItemId, string isOSFA, string isSM, string isLXL, string isXLXXL, string missingQuantity, string itemName, string batchId)
+        {
+            BulkData data = new BulkData();
+
+
+            List<string> lstBulkOrderIds = data.GetBulkOrdersContainingMissingBlank(Convert.ToInt32(masterItemId), Convert.ToBoolean(isOSFA), Convert.ToBoolean(isSM), Convert.ToBoolean(isLXL), Convert.ToBoolean(isXLXXL), Convert.ToInt32(batchId));
+
+            var returnString = "";
+            foreach(String row in lstBulkOrderIds)
+            {
+                returnString += row + "<br/>";
+            }
+
+            return returnString;
         }
 
     }

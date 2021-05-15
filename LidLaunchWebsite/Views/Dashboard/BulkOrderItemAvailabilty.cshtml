@@ -299,7 +299,7 @@
                         {
                             <td><input class='available check' type='checkbox' /></td>
                         }
-                    <td><input type="button" class="smallButton" onclick="updateMasteItem(@item.Id, false, false, false, $(this).closest('tr').find('.osfaCheck').prop('checked'), $(this).closest('tr').find('.available').prop('checked'));" value="Save" /></td>
+                        <td><input type="button" class="smallButton" onclick="updateMasteItem(@item.Id, false, false, false, $(this).closest('tr').find('.osfaCheck').prop('checked'), $(this).closest('tr').find('.available').prop('checked'));" value="Save" /></td>
 
                     </tr>
                     if (count3 >= (Model.Yupoong6089Items.Count / 4))
@@ -356,7 +356,7 @@
                         {
                             <td><input class='available check' type='checkbox' /></td>
                         }
-                    <td><input type="button" class="smallButton" onclick="updateMasteItem(@item.Id, false, false, false, $(this).closest('tr').find('.osfaCheck').prop('checked'), $(this).closest('tr').find('.available').prop('checked'));" value="Save" /></td>
+                        <td><input type="button" class="smallButton" onclick="updateMasteItem(@item.Id, false, false, false, $(this).closest('tr').find('.osfaCheck').prop('checked'), $(this).closest('tr').find('.available').prop('checked'));" value="Save" /></td>
 
                     </tr>
                     if (count4 >= (Model.YupoongDadCapItems.Count / 4))
@@ -413,7 +413,7 @@
                         {
                             <td><input class='available check' type='checkbox' /></td>
                         }
-                    <td><input type="button" class="smallButton" onclick="updateMasteItem(@item.Id, false, false, false, $(this).closest('tr').find('.osfaCheck').prop('checked'), $(this).closest('tr').find('.available').prop('checked'));" value="Save" /></td>
+                        <td><input type="button" class="smallButton" onclick="updateMasteItem(@item.Id, false, false, false, $(this).closest('tr').find('.osfaCheck').prop('checked'), $(this).closest('tr').find('.available').prop('checked'));" value="Save" /></td>
 
                     </tr>
                     if (count5 >= (Model.Yupoong6606Items.Count / 4))
@@ -470,7 +470,7 @@
                         {
                             <td><input class='available check' type='checkbox' /></td>
                         }
-                    <td><input type="button" class="smallButton" onclick="updateMasteItem(@item.Id, false, false, false, $(this).closest('tr').find('.osfaCheck').prop('checked'), $(this).closest('tr').find('.available').prop('checked'));" value="Save" /></td>
+                        <td><input type="button" class="smallButton" onclick="updateMasteItem(@item.Id, false, false, false, $(this).closest('tr').find('.osfaCheck').prop('checked'), $(this).closest('tr').find('.available').prop('checked'));" value="Save" /></td>
 
                     </tr>
                     if (count6 >= (Model.Yupoong6006Items.Count / 4))
@@ -507,29 +507,29 @@
                 var count7 = 0;
                 foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.YupoongShortBeanieItems)
                 {
-                        <tr>
-                            <td><span class="itemId">@item.Id</span></td>
-                            <td style="background:@item.ThumbnailpreviewImagePath; width:40px"></td>
-                            <td>@item.ItemColor</td>
-                            @if (item.OSFA)
-                            {
-                                <td>@(item.OSFAStock ? Html.Raw("<input class='osfaCheck check' type='checkbox' checked />") : Html.Raw("<input class='osfaCheck check' type='checkbox'/>"))</td>
-                            }
-                            else
-                            {
-                                <td></td>
-                            }
-                            @if (item.Available)
-                            {
-                                <td><input class='available check' type='checkbox' checked /></td>
-                            }
-                            else
-                            {
-                                <td><input class='available check' type='checkbox' /></td>
-                            }
+                    <tr>
+                        <td><span class="itemId">@item.Id</span></td>
+                        <td style="background:@item.ThumbnailpreviewImagePath; width:40px"></td>
+                        <td>@item.ItemColor</td>
+                        @if (item.OSFA)
+                        {
+                            <td>@(item.OSFAStock ? Html.Raw("<input class='osfaCheck check' type='checkbox' checked />") : Html.Raw("<input class='osfaCheck check' type='checkbox'/>"))</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (item.Available)
+                        {
+                            <td><input class='available check' type='checkbox' checked /></td>
+                        }
+                        else
+                        {
+                            <td><input class='available check' type='checkbox' /></td>
+                        }
                         <td><input type="button" class="smallButton" onclick="updateMasteItem(@item.Id, false, false, false, $(this).closest('tr').find('.osfaCheck').prop('checked'), $(this).closest('tr').find('.available').prop('checked'));" value="Save" /></td>
 
-                        </tr>
+                    </tr>
                     if (count7 >= (Model.YupoongShortBeanieItems.Count / 4))
                     {
                         count7 = 0;
@@ -583,7 +583,7 @@
                         {
                             <td><input class='available check' type='checkbox' /></td>
                         }
-                    <td><input type="button" class="smallButton" onclick="updateMasteItem(@item.Id, false, false, false, $(this).closest('tr').find('.osfaCheck').prop('checked'), $(this).closest('tr').find('.available').prop('checked'));" value="Save" /></td>
+                        <td><input type="button" class="smallButton" onclick="updateMasteItem(@item.Id, false, false, false, $(this).closest('tr').find('.osfaCheck').prop('checked'), $(this).closest('tr').find('.available').prop('checked'));" value="Save" /></td>
 
                     </tr>
                     if (count8 >= (Model.YupoongCuffedBeanieItems.Count / 4))
@@ -639,7 +639,7 @@
                         {
                             <td><input class='available check' type='checkbox' /></td>
                         }
-                    <td><input type="button" class="smallButton" onclick="updateMasteItem(@item.Id, false, false, false, $(this).closest('tr').find('.osfaCheck').prop('checked'), $(this).closest('tr').find('.available').prop('checked'));" value="Save" /></td>
+                        <td><input type="button" class="smallButton" onclick="updateMasteItem(@item.Id, false, false, false, $(this).closest('tr').find('.osfaCheck').prop('checked'), $(this).closest('tr').find('.available').prop('checked'));" value="Save" /></td>
 
                     </tr>
                     if (count9 >= (Model.Richardson112Items.Count / 4))
@@ -651,6 +651,53 @@
                     {
                         count9++;
                     }
+                }
+            }
+        </table>
+    </div>
+</div>
+
+
+<div id="ClassicCapsRegion">
+    <div class="regionHeader" onclick="$('#ClassicCapsInner').toggle();">
+        <h2>Classic Caps USA100 Trucker Snapback</h2>
+        <img src="~/Images/ClassicCaps/hat_01.jpg" />
+    </div>
+    <div id="ClassicCapsInner" class="regionInner">
+        <table class="availableTable">
+            <tr style="font-weight:bold;">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>OSFA</td>
+                <td>Available</td>
+            </tr>
+            @{
+                foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.ClassicCapsItems)
+                {
+                    <tr>
+                        <td><span class="itemId">@item.Id</span></td>
+                        <td><img src='~/Images/@item.ThumbnailpreviewImagePath' /></td>
+                        <td>@item.ItemColor</td>
+                        @if (item.OSFA)
+                        {
+                            <td>@(item.OSFAStock ? Html.Raw("<input class='osfaCheck check' type='checkbox' checked />") : Html.Raw("<input class='osfaCheck check' type='checkbox'/>"))</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (item.Available)
+                        {
+                            <td><input class='available check' type='checkbox' checked /></td>
+                        }
+                        else
+                        {
+                            <td><input class='available check' type='checkbox' /></td>
+                        }
+                        <td><input type="button" class="smallButton" onclick="updateMasteItem(@item.Id, false, false, false, $(this).closest('tr').find('.osfaCheck').prop('checked'), $(this).closest('tr').find('.available').prop('checked'));" value="Save" /></td>
+
+                    </tr>
                 }
             }
         </table>

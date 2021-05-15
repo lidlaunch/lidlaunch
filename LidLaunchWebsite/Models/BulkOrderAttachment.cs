@@ -10,6 +10,7 @@ namespace LidLaunchWebsite.Models
         public string AttachmentType { get; set; }
         public string AttachmentName{ get; set; }
         public string AttachmentPath { get; set; }
+        public string AttachmentComment { get; set; }
         public DateTime UploadDate { get; set; }        
         public bool Deleted { get; set; }
     }

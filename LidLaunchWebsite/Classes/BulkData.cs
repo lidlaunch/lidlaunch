@@ -2404,6 +2404,58 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
+        public List<string> GetBulkOrdersContainingMissingBlank(int masterItemId, bool isOSFA, bool isSM, bool isLXL, bool isXLXXL, int batchId)
+        {
+            var data = new SQLData();
+            List<string> lstBulkOrders = new List<string>();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetBulkOrdersContainingMissingBlank", data.conn);
+                    sqlComm.Parameters.AddWithValue("@masterItemId", masterItemId);
+                    sqlComm.Parameters.AddWithValue("@isOSFA", isOSFA);
+                    sqlComm.Parameters.AddWithValue("@isSM", isSM);
+                    sqlComm.Parameters.AddWithValue("@isLXL", isLXL);
+                    sqlComm.Parameters.AddWithValue("@isXLXXL", isXLXXL);
+                    sqlComm.Parameters.AddWithValue("@batchId", batchId);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in ds.Tables[0].Rows)
+                            {
+                                lstBulkOrders.Add(Convert.ToString(dr["MissingRow"]));
+                            }
+
+                        }
+
+                    }
+
+                }
+                return lstBulkOrders;
+            }
+            catch (Exception ex)
+            {
+                return lstBulkOrders;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
 
     }
 

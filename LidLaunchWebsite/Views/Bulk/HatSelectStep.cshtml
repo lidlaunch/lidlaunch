@@ -45,6 +45,81 @@
 <div id="bulkHatTypeSelect" class="centerInner" style="display:none;">
     <div id="bulkHatSelectContainer">
         <div class="hatTypeSelectRegion">
+            <div class="hatBrand" id="ClassicCaps">
+                <div class="hatBrandLogo left">
+                    <img src="~/Images/MadeUSALogo.png" height="60" />
+                </div>
+            </div>
+            <div class="hatBrandStyleOptions clear" id="classicCapStyles">
+                <div class="hatBrandStyleRegion clear">
+                    <div class="hatTitle" onclick="$('#USA100').toggle();">
+                        <div class="title left">USA100 Trucker Snapback</div>
+                        <div class="right">Expand/Collapse</div>
+                    </div>
+                    <div class="hatStyleSelectArea" id="USA100" style="display:none;">
+                        <div class="hatStyleImage">
+                            <img src="~/Images/ClassicCaps/hat_01.jpg" />
+                        </div>
+                        <div class="hatSizePriceChart">
+                            <table class="sizeTable">
+                                <tr class="sizeTableHeader">
+                                    <td>ONE SIZE</td>
+                                </tr>
+                                <tr>
+                                    <td>7"-7 3/4"</td>
+                                </tr>
+                            </table>
+                            <table class="priceTable">
+                                <tr class="priceTableHeader">
+                                    <td>1-143</td>
+                                    <td>144</td>
+                                    <td>288</td>
+                                    <td>432+</td>
+                                </tr>
+                                <tr>
+                                    <td>$20</td>
+                                    <td>$19</td>
+                                    <td>$18</td>
+                                    <td>$17</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="hatStyleSetQty">
+                            <table style="width:50%; float:left;">
+                                <thead>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>OSFA</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.ClassicCapsItems)
+                                        {
+                                            <tr>
+                                                <td class="hatPreviewImage"><img src='~/Images/@item.ThumbnailpreviewImagePath' /><span class="masterItemId hidden">@item.Id</span></td>
+                                                <td class="colorOption">@item.ItemColor</td>
+                                                @if (item.OSFAStock && item.OSFA)
+                                                {
+                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                }
+                                            </tr>                                           
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div><!--/hatStyleSetQty-->
+                    </div><!--/hatStyleSelectArea-->
+                </div><!--/hatBrandStyleRegion-->
+            </div><!--/hatBrandStyleOptions-->
+        </div><!--/hatTypeSelectRegion-->
+        <div class="hatTypeSelectRegion">
             <div class="hatBrand" id="FlexFit">
                 <div class="hatBrandLogo left">
                     <img src="~/Images/flexfit-logo.png" height="60" />
@@ -216,7 +291,7 @@
                                                 else
                                                 {
                                                     <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
-                                                }                                                
+                                                }
                                             </tr>
                                             if (count2 >= (Model.FlexFit6511Items.Count / 2))
                                             {
@@ -295,7 +370,8 @@
                                                 {
                                                     <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
-                                            </tr>                                            
+                                            </tr>
+
                                         }
                                     }
                                 </tbody>
@@ -431,6 +507,9 @@
                                 </tr>
                                 <tr>
                                     <td colspan="6"><i>Multicam +$2 More</i></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6"><i>These hats have a signature Yupoong green undervisor.<br/>The Multicam variants do not.</i></td>
                                 </tr>
                             </table>
                         </div>
@@ -772,7 +851,7 @@
                                         foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.YupoongShortBeanieItems)
                                         {
                                             <tr>
-                                                <td class="beanieColorCell" style="background:@item.ThumbnailpreviewImagePath;"><span class="masterItemId hidden">@item.Id</span></td>                                                                            
+                                                <td class="beanieColorCell" style="background:@item.ThumbnailpreviewImagePath;"><span class="masterItemId hidden">@item.Id</span></td>
                                                 <td class="colorOption">@item.ItemColor</td>
                                                 @if (item.OSFAStock && item.OSFA)
                                                 {

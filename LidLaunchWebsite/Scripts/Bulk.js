@@ -21,6 +21,7 @@ function updateBulkTotals() {
     var currentShortBeanieBasePrice = 15;
     var currentCuffedBeanieBasePrice = 15;
     var currentRichardson112BasePrice = 15;
+    var currentClassicCapsBasePrice = 20;
     
     currentShippingTotal = 5;
 
@@ -35,6 +36,7 @@ function updateBulkTotals() {
     var totalShortBeanies = 0;
     var totalCuffedBeanies = 0;
     var totalRichardson112Hats = 0;
+    var totalClassicCapsHats = 0;
 
     $('.hatStyleSetQty').find('.colorQty').each(function () {
         if (parseInt($(this).val()) > 0) {
@@ -615,6 +617,45 @@ function updateBulkTotals() {
                     var hatName = 'Richardson 112  - ' + hatColorText + ' - OSFA';
 
                     var hatPrice = currentRichardson112BasePrice;
+
+                    productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
+
+                    currentTotalCost += parseInt($(this).val()) * hatPrice;
+                }
+            });
+        });
+    });
+    
+
+$('#USA100 table').each(function () {
+        $(this).find('tr').each(function () {
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    totalClassicCapsHats += parseInt($(this).val());
+                }
+            });
+        });
+    });
+
+    if (totalClassicCapsHats >= 432) {
+        currentClassicCapsBasePrice = 17;
+    }
+    else if (totalClassicCapsHats >= 288) {
+        currentClassicCapsBasePrice = 18;
+    }
+    else if (totalClassicCapsHats >= 144) {
+        currentClassicCapsBasePrice = 19;
+    }
+
+    $('#USA100 table').each(function () {
+        $(this).find('tr').each(function () {
+            var hatColorText = $(this).find('.colorOption').text();
+            $(this).find('.colorQty').each(function () {
+                if (parseInt($(this).val()) > 0) {
+                    //totalHats += parseInt($(this).val());
+                    var hatName = 'USA100 Trucker Snapback  - ' + hatColorText + ' - OSFA';
+
+                    var hatPrice = currentClassicCapsBasePrice;
 
                     productList = productList + '{"name":"' + hatName + '","quantity":"' + $(this).val() + '","price":' + hatPrice + ',"currency":"USD"},';
 

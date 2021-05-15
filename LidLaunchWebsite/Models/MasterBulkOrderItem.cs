@@ -42,5 +42,6 @@ namespace LidLaunchWebsite.Models
         public List<MasterBulkOrderItem> YupoongShortBeanieItems { get; set; }
         public List<MasterBulkOrderItem> YupoongCuffedBeanieItems { get; set; }
         public List<MasterBulkOrderItem> Richardson112Items { get; set; }
+        public List<MasterBulkOrderItem> ClassicCapsItems { get; set; }
     }
 }

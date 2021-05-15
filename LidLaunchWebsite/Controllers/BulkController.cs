@@ -77,6 +77,9 @@ namespace LidLaunchWebsite.Controllers
             hatSelectModel.Richardson112Items = masterItemList.Where(i => i.Manufacturer == "Richardson" && i.ItemStyle == "112 Trucker Snapback" && i.Available).ToList();
             hatSelectModel.Richardson112Items = hatSelectModel.Richardson112Items.OrderBy(i => i.DisplayOrder).ToList();
 
+            hatSelectModel.ClassicCapsItems = masterItemList.Where(i => i.Manufacturer == "Classic Caps" && i.ItemStyle == "USA100 Trucker Snapback" && i.Available).ToList();
+            hatSelectModel.ClassicCapsItems = hatSelectModel.ClassicCapsItems.OrderBy(i => i.DisplayOrder).ToList();
+
 
             return PartialView("HatSelectStep", hatSelectModel);
         }
