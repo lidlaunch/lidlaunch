@@ -1800,7 +1800,7 @@ namespace LidLaunchWebsite.Controllers
                     hatSelectModel.Yupoong6089Items = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6089M Flat Bill Snapback").ToList();
                     hatSelectModel.Yupoong6089Items = hatSelectModel.Yupoong6089Items.OrderBy(i => i.DisplayOrder).ToList();
 
-                    hatSelectModel.YupoongDadCapItems = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6024CM Dad Cap").ToList();
+                    hatSelectModel.YupoongDadCapItems = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6245CM Dad Cap").ToList();
                     hatSelectModel.YupoongDadCapItems = hatSelectModel.YupoongDadCapItems.OrderBy(i => i.DisplayOrder).ToList();
 
                     hatSelectModel.Yupoong6606Items = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6606 Trucker Snapback").ToList();
@@ -1852,6 +1852,22 @@ namespace LidLaunchWebsite.Controllers
 
             return new JavaScriptSerializer().Serialize(success);
         }
+
+        public string UpdateAdminReviewFinished(string bulkOrderId)
+        {
+            bool success = false;
+            BulkData data = new BulkData();
+
+            success = data.UpdateAdminReviewFinished(Convert.ToInt32(bulkOrderId));
+
+            if (success)
+            {
+                data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserID"]), "Admin Review/Designer Review marked as complete.");
+            }
+
+            return new JavaScriptSerializer().Serialize(success);
+        }
+        
 
         public string CreateBulkOrderBatchMissingItem(string itemName, string masterItemId, string batchId)
         {

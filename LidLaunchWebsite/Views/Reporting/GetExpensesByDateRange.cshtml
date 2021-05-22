@@ -1,0 +1,131 @@
+﻿@model LidLaunchWebsite.Models.CostEsimate
+@{
+    ViewBag.Title = "GetExpensesByDateRange";
+}
+<div class="centerInner">
+    <table>
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td><b>From:</b> </td>
+                        <td><input type="date" id="dtFrom" /></td>
+                    </tr>
+                    <tr>
+                        <td><b>To:</b> </td>
+                        <td><input type="date" id="dtTo" /></td>
+                    </tr>
+                </table>                
+            </td>
+            <td>
+                <input type="button" class="smallButton" value="View" onclick="rundata()" />
+            </td>
+        </tr>
+    </table>
+    
+    
+    <table>
+        <tr>
+            <td colspan="2"><b>@Model.DateFrom</b> - <b>@Model.DateTo</b></td>
+        </tr>
+        <tr style="background:green; color: white;">
+            <td><b>Total Revenue</b></td>
+            <td><b>@Model.TotalOrderRevenue</b></td>
+        </tr>
+        <tr>
+            <td>Total Shipping Revenue</td>
+            <td>@Model.TotalShippingRevenueReceived</td>
+        </tr>
+        <tr>
+            <td>Total Orders</td>
+            <td>@Model.TotalOrders</td>
+        </tr>
+        <tr>
+            <td>Total Hats</td>
+            <td>@Model.TotalHats</td>
+        </tr>
+        <tr>
+            <td>Total Blank Hats Cost</td>
+            <td>@Model.TotalHatsCost</td>
+        </tr>
+
+        <tr>
+            <td>Estimated Shipping Cost</td>
+            <td>@Model.TotalShippingEstimatedCost</td>
+        </tr>
+        <tr>
+            <td>Estimated Digitizing Cost</td>
+            <td>@Model.TotalEstimatedDigitizingCost</td>
+        </tr>
+        <tr>
+            <td>Estimated Boxes Cost</td>
+            <td>@Model.TotalEstimatedBoxesCost</td>
+        </tr>
+        <tr>
+            <td>
+                Estimated Supplies Cost<br />
+                <span style="font-size:10px;">needles/backing/thread/tape/label/bag/postcard</span>
+            </td>
+            <td>@Model.TotalEstimatedSuppliesCost</td>
+        </tr>
+        <tr>
+            <td>
+                PayPal Fees
+            </td>
+            <td>@Model.PayPalTranscationFeesTotal</td>
+        </tr>
+        <tr>
+            <td><b>GRAND TOTAL ESTIMATED COSTS:</b></td>
+            <td><b>@Model.GrandEstimatedTotal</b></td>
+        </tr>
+        <tr>
+            <td><b>TOTAL REMAINING REVENUE AFTER COSTS:</b></td>
+            <td><b><span id="totalRemainingRevenue">@(@Model.TotalOrderRevenue - @Model.GrandEstimatedTotal)</span></b></td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td><b>-</b>Ad Spend</td>
+            <td><input type="text" id="txtAdSpend" /></td>
+            <td>Facebook/Google</td>
+        </tr>
+        <tr>
+            <td><b>-</b>Payroll</td>
+            <td><input type="text" id="txtPayroll" /></td>
+            <td>My Homies</td>
+        </tr>
+        <tr>
+            <td><b>-</b>Overhead</td>
+            <td><input type="text" id="txtOverhead" /></td>
+            <td>Rent, Embroidery Machines, Utilities, etc</td>
+        </tr>
+        <tr>
+            <td><b>-</b>Monthly Services</td>
+            <td><input type="text" id="txtMonthlyServices" /></td>
+            <td>Monser, So Social, GSuit, Zen Desk, etc</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <input type="button" class="smallButton" value="Calculate Profit" onclick="calculateProfit()"/>
+            </td>
+        </tr>
+    </table>
+    <div><h2><span id="profit"></span></h2></div>
+</div>
+
+
+
+<script type="text/javascript">
+    function rundata() {
+        window.location = 'GetExpensesByDateRange?dateFrom=' + $('#dtFrom').val() + '&dateTo=' + $('#dtTo').val();
+    }
+    function calculateProfit() {
+        var totalRemainingRevenue = $('#totalRemainingRevenue').text();
+        var adSpend = $('#txtAdSpend').val();
+        var payroll = $('#txtPayroll').val();
+        var overhead = $('#txtOverhead').val();
+        var monthlyServices = $('#txtMonthlyServices').val();
+        var profit = parseFloat(totalRemainingRevenue) - parseFloat(adSpend) - parseFloat(payroll) - parseFloat(overhead) - parseFloat(monthlyServices);
+        $('#profit').text('PROFIT: ' + profit);
+    }
+</script>

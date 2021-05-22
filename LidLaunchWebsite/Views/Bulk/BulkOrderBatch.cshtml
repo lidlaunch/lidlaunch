@@ -15,6 +15,18 @@
 
     <a href="~/Bulk/BulkOrderBatch?bulkBatchId=@Model.batchInfo.BatchId&onlyOutOfStock=false"><input type="button" value="SHOW ALL" class="smallButton left" style="margin-left:20px;" /></a>
 </div>
+@if (!Model.batchInfo.InternalStockUpdated)
+{
+    <div class="clear">
+        <h2 style="color:red;">ONLY DO THIS AFTER BLANK HAT ORDER HAS BEEN PLACED, THIS UPDATES OUR INTERNAL INVENTORY NUMBERS</h2>
+        <input type="button" value="UPDATE INTERNAL INVENTORY" onclick="updateInternalInvertory(@Model.batchInfo.BatchId)" />
+    </div>
+}
+else
+{
+    <div class="clear"><h1>Our internal stock has been updated to subtract this batch.</h1></div>
+}
+
 <div class="clear"></div>
 <table>
     @foreach (LidLaunchWebsite.Models.BulkOrderItem itemToOrder in Model.lstItemsToOrder)
@@ -29,6 +41,12 @@
             </td>
             <td style="padding:10px;">
                 @itemToOrder.ItemQuantity
+            </td>
+            <td>
+                <span style="color:green">(@itemToOrder.InternalStock)</span>
+            </td>
+            <td>
+                <b>@(itemToOrder.ItemQuantity > itemToOrder.InternalStock ? (itemToOrder.ItemQuantity - itemToOrder.InternalStock).ToString() : "0")</b>
             </td>
             <td>
                 @{var isMissing = false;
@@ -87,11 +105,11 @@
                         <div><a href="javascript:void();" onclick="showOutOfStockOrderPopup(@itemToOrder.MasterItemId,'@isOSFA.ToString()','@isSM.ToString()','@isLXL.ToString()','@isXLXXL.ToString()','@missingItem.MissingQuantity','@missingItem.ItemName');">View Orders</a></div>
                     }
                     else
-                    {                        
+                    {
                         <div class="missingItemSection">
                             <span class="missingItemId hidden"></span>
                             <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementMissingTotal(this, @itemToOrder.MasterItemId)" /></span>
-                            <span class="missingTotalHolder"><input type="text" class="txtMissingTotal" value="0"/></span>
+                            <span class="missingTotalHolder"><input type="text" class="txtMissingTotal" value="0" /></span>
                             <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementMissingTotal(this, @itemToOrder.MasterItemId)" /></span>
                         </div>
                     }
@@ -112,7 +130,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="4" style="border-bottom:2px solid;"></td>
+            <td colspan="6" style="border-bottom:2px solid;"></td>
         </tr>
 
     }
@@ -284,6 +302,35 @@
                 displayPopupNotification('Error.', 'error', false);
             }
         });
+
+    }
+    function updateInternalInvertory(batchId) {       
+
+        var proceed = confirm("Are you sure you are finished ordering blanks and want to update our internal stock quantities?");
+        if (proceed) {
+            showLoading();
+            $.ajax({
+                type: "POST",
+                url: '/Inventory/UpdateInternalQuantitiesByBatchId',
+                contentType: false,
+                processData: false,
+                data: JSON.stringify({
+                    batchId: batchId
+                }),
+                contentType: "application/json",
+                success: function (result) {
+                    if (result == "") {
+                        //do nothing
+                        displayPopupNotification('error.', 'error', false);
+                    } else {
+                        location.reload();
+                    }
+                },
+                error: function (xhr, status, p3, p4) {
+                    displayPopupNotification('Error.', 'error', false);
+                }
+            });
+        }
     }
 </script>
 <style type="text/css">
@@ -295,9 +342,9 @@
         display: inline-block;
     }
 
-    .missingTotalHolder input {
-        width: 80px;
-    }
+        .missingTotalHolder input {
+            width: 80px;
+        }
 
     .incrementButton {
         display: inline-block;
@@ -315,6 +362,7 @@
         top: 0;
         right: 0;
     }
+
     #missingBlankOrdersHolderInner {
         width: 700px;
         height: 800px;
@@ -323,9 +371,10 @@
         display: block;
         padding: 10px;
         margin: 100px auto;
-        overflow-y:scroll;
+        overflow-y: scroll;
     }
+
     #missingBlankHolderContent {
-        font-size:24px;
+        font-size: 24px;
     }
 </style>

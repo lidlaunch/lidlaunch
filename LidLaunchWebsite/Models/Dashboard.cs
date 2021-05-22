@@ -67,6 +67,7 @@ namespace LidLaunchWebsite.Models
         public int BatchId { get; set; }
         public DateTime DateBatched { get; set; }
         public string Status { get; set; }
+        public bool InternalStockUpdated { get; set; }
     }
     public class BatchSale {
         public List<Sale> lstSales { get; set; }

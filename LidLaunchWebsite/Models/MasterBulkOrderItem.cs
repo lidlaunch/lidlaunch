@@ -27,6 +27,18 @@ namespace LidLaunchWebsite.Models
         public string DistributorLink { get; set; }
         public int DisplayOrder { get; set; }
         public string FrontEndName { get; set; }
+        public int OSFAInternalStock { get; set; }
+        public int SMInternalStock { get; set; }
+        public int LXLInternalStock { get; set; }
+        public int XLXXLInternalStock { get; set; }
+        public int OSFAExternalStock { get; set; }
+        public int SMExternalStock { get; set; }
+        public int LXLExternalStock { get; set; }
+        public int XLXXLExternalStock { get; set; }
+        public string OSFASku { get; set; }
+        public string SMSku { get; set; }
+        public string LXLSku { get; set; }
+        public string XLXXLSku { get; set; }
     }
 
     public class BulkOrderHatSelectModel

@@ -59,7 +59,7 @@ namespace LidLaunchWebsite.Controllers
             hatSelectModel.Yupoong6089Items = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6089M Flat Bill Snapback" && i.Available).ToList();
             hatSelectModel.Yupoong6089Items = hatSelectModel.Yupoong6089Items.OrderBy(i => i.DisplayOrder).ToList();
 
-            hatSelectModel.YupoongDadCapItems = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6024CM Dad Cap" && i.Available).ToList();
+            hatSelectModel.YupoongDadCapItems = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6245CM Dad Cap" && i.Available).ToList();
             hatSelectModel.YupoongDadCapItems = hatSelectModel.YupoongDadCapItems.OrderBy(i => i.DisplayOrder).ToList();
 
             hatSelectModel.Yupoong6606Items = masterItemList.Where(i => i.Manufacturer == "Yupoong" && i.ItemStyle == "6606 Trucker Snapback" && i.Available).ToList();
@@ -437,6 +437,7 @@ namespace LidLaunchWebsite.Controllers
             {
                 BulkData data = new BulkData();
                 var batchId = data.CreateBulkOrderBatch();
+                
 
                 return batchId.ToString();
             }
@@ -492,6 +493,8 @@ namespace LidLaunchWebsite.Controllers
                 bulkBatchOrder.lstBulkOrders = lstBulkOrders.Where(b => b.Id == id).ToList();
             }
 
+            bulkBatchOrder.lstBulkOrders = bulkBatchOrder.lstBulkOrders.OrderByDescending(lb => lb.lstItems.Any(i => i.ItemName == "Expediting Fee") || lb.HasRework).ThenBy(b => b.ProjectedShipDateLong).ToList();
+
             return View(bulkBatchOrder);
         }
 
@@ -507,8 +510,7 @@ namespace LidLaunchWebsite.Controllers
             lstBulkOrders = lstBulkOrders.Where(b => b.OrderPaid).ToList();
 
             bulkBatchOrder.lstBulkOrders = lstBulkOrders;
-            bulkBatchOrder.batchInfo = new OrderBatch();
-            bulkBatchOrder.batchInfo.BatchId = Convert.ToInt32(bulkBatchId);
+            bulkBatchOrder.batchInfo = data.GetBulkOrderBatch(Convert.ToInt32(bulkBatchId));
 
             List<BulkOrderItem> products = new List<BulkOrderItem>();
 
@@ -537,10 +539,42 @@ namespace LidLaunchWebsite.Controllers
 
             bulkBatchOrder.lstItemsToOrder = products;
 
+            List<MasterBulkOrderItem> masterItems = data.GetMasterBulkOrderItems(false);
+            foreach (BulkOrderItem item in bulkBatchOrder.lstItemsToOrder)
+            {
+                if (item.MasterItemId > 0)
+                {
+                    if (item.ItemName.ToUpper().Contains("OSFA"))
+                    {
+                        item.InternalStock = masterItems.First(mI => mI.Id == item.MasterItemId).OSFAInternalStock;
+                        item.ExtrernalStock = masterItems.First(mI => mI.Id == item.MasterItemId).OSFAExternalStock;
+                    }
+                    if (item.ItemName.ToUpper().Contains("S/M"))
+                    {
+                        item.InternalStock = masterItems.First(mI => mI.Id == item.MasterItemId).SMInternalStock;
+                        item.ExtrernalStock = masterItems.First(mI => mI.Id == item.MasterItemId).SMExternalStock;
+                    }
+                    if (item.ItemName.ToUpper().Contains("L/XL"))
+                    {
+                        item.InternalStock = masterItems.First(mI => mI.Id == item.MasterItemId).LXLInternalStock;
+                        item.ExtrernalStock = masterItems.First(mI => mI.Id == item.MasterItemId).LXLExternalStock;
+                    }
+                    if (item.ItemName.ToUpper().Contains("XL/XXL"))
+                    {
+                        item.InternalStock = masterItems.First(mI => mI.Id == item.MasterItemId).XLXXLInternalStock;
+                        item.ExtrernalStock = masterItems.First(mI => mI.Id == item.MasterItemId).XLXXLExternalStock;
+                    }
+                }                
+            }
+
             bulkBatchOrder.lstItemsToOrder = bulkBatchOrder.lstItemsToOrder.OrderByDescending(bo => bo.ItemName).ToList();
 
             bulkBatchOrder.lstItemsToOrder.Add(new BulkOrderItem { ItemName = "TOTAL HATS", ItemQuantity = products.Sum(p => p.ItemQuantity) });
             bulkBatchOrder.lstItemsToOrder.Add(new BulkOrderItem { ItemName = "ESTIMATED TOTAL COST", ItemQuantity = Convert.ToInt32(data.GetBlankCost(Convert.ToInt32(bulkBatchId))) });
+
+            
+
+
 
 
             bulkBatchOrder.lstMissingItems = data.GetBulkOrderBatchMissingItems(Convert.ToInt32(bulkBatchId));

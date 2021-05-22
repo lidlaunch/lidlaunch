@@ -41,7 +41,15 @@
                     }
                     else
                     {
-                        <div id="BulkOrderId">@bulkOrder.Id</div>
+                        if (bulkOrder.lstItems.Any(i => i.ItemName == "Expediting Fee"))
+                        {
+                            <div id="BulkOrderId">NEEDS EXPEDITED: @bulkOrder.Id</div>
+                        }
+                        else
+                        {
+                            <div id="BulkOrderId">@bulkOrder.Id</div>
+                        }
+
                     }
                     <div id="BulkOrderDate">Payment Date: @bulkOrder.PaymentDate<br />Shipping Date: @bulkOrder.ProjectedShipDateShort - @bulkOrder.ProjectedShipDateLong <span onclick="$('#bulkOrderDetailsPopup').hide();" class="closeButton">X</span></div>
                 </div>

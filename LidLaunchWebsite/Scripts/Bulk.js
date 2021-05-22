@@ -794,9 +794,16 @@ function renderBulkCartPaypalButtons(price, items, paymentCompleteGuid, shipping
 
     }, '#paypal-button-container-bulk');
 }
+var attemptOrderWithoutArtwork = false;
+
 function verifyAndShowPaypal() {
 
     var files = $('#bulkArtwork')[0].files;
+    var file = null;
+
+    if (!attemptOrderWithoutArtwork) {
+        file = files[0];
+    }
 
     var orderNotes = $('#txtDetails').val();
     var shippingCost = $('#shippingCost').text();
@@ -847,7 +854,7 @@ function verifyAndShowPaypal() {
 
     if (window.FormData !== undefined) {
         var data = new FormData();
-        data.append("file" + 0, files[0]);
+        data.append("file" + 0, file);
         data.append("name", $('#txtShippingFirstName').val() + ' ' + $('#txtShippingLastName').val());
         data.append("email", $('#txtCustomerEmail').val());
         data.append("phone", $('#txtPhone').val());
@@ -897,7 +904,12 @@ function verifyAndShowPaypal() {
                 }
             },
             error: function (xhr, status, p3, p4) {
-                displayPopupNotification('Sorry there was an error creating your order.', 'error', false);
+                if (!attemptOrderWithoutArtwork) {
+                    attemptOrderWithoutArtwork = true;
+                    verifyAndShowPaypal();
+                } else {
+                    displayPopupNotification('Sorry there was an error creating your order.', 'error', false);
+                }                
             }
         });
     } else {

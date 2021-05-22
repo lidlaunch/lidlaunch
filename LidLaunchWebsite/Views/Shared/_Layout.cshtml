@@ -115,8 +115,8 @@
                                 {
                                     <li style="border:0;">
                                         <a href="#" onclick="showProfileLinks();"><img src="~/Images/ProfileLink.png" alt="Profile" width="40" /></a>
-                                        <ul id="profileMenu" style="display:none;">
-                                            <li>@Html.ActionLink("Dashboard", "Designer", "Dashboard")</li>
+                                        <ul id="profileMenu" style="display:none; width:200px">
+                                            @*<li>@Html.ActionLink("Dashboard", "Designer", "Dashboard")</li>*@
                                             <li>@Html.ActionLink("Logout", "Logout", "User")</li>
                                             @if (Convert.ToInt32(Session["UserID"]) == 1 || Convert.ToInt32(Session["UserID"]) == 643 || Convert.ToInt32(Session["UserID"]) == 1579)
                                             {

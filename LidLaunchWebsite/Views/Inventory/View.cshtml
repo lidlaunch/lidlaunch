@@ -1,0 +1,762 @@
+﻿
+@{
+    ViewBag.Title = "BulkOrderItemAvailabilty";
+}
+
+<style type="text/css">
+    .check {
+        width: 40px;
+        height: 40px;
+    }
+
+    .inventoryTable {
+        display: inline-table;
+        width: 380px;
+        border-right: 5px solid #eee;
+        border-collapse: collapse;
+    }
+
+    .regionInner {
+        max-width: 100%;
+        overflow: scroll;
+        width: 100%;
+    }
+    .regionHeader {
+        cursor:pointer;
+    }
+    .regionHeader img {
+        height: 30px;
+    }
+    .incrementButton input[type="button"] {
+        width: 60px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .decrementButton input[type="button"] {
+        width: 60px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .inventoryRow {
+        border-bottom: 5px solid #eee;
+    }
+    .decrementButton {
+        display: inline-block;
+    }
+
+    .valueHolder {
+        display: inline-block;
+    }
+
+    .txtValue {
+        width: 50px;
+    }
+
+    .incrementButton {
+        display: inline-block;
+    }
+    .inventoryRow img {
+        height: 60px;
+    }
+    .inventoryRow b {
+        max-width: 65px;
+        word-break: break-all;
+        display: block;
+        font-size: 14px;
+    }
+</style>
+
+<div class="centerInner" style="padding:20px">
+    <h1>Internal Inventory</h1>
+    <div id="flexFit6277Region" class="clear">
+        <div class="regionHeader" onclick="$('#6277Inner').toggle();">
+            <h2><img src="~/Images/FlexFit6277/hat_01.jpg" /> FlexFit 6277</h2>
+
+        </div>
+        <div id="6277Inner" class="regionInner hidden">
+            <table class="inventoryTable">
+                <tr style="font-weight:bold;">
+                    <td></td>
+                    <td></td>
+                    <td>S/M</td>
+                    <td>L/XL</td>
+                    <td>XL/XXL</td>
+                </tr>
+                @{
+                    var count = 0;
+                    foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.FlexFit6277Items)
+                    {
+                        <tr class="inventoryRow">
+                            <td><img src='~/Images/@item.ThumbnailpreviewImagePath' /></td>
+                            <td><span class="hidden itemId">@item.Id</span><b>@item.ItemColor</b></td>
+                            @if (item.SM)
+                            {
+
+                                <td>
+                                    <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                    <span class="valueHolder"><input type="number" class="txtValue" value="@item.SMInternalStock" /><span class="hidden sizeValue">SM</span></span><br />
+                                    <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            @if (item.LXL)
+                            {
+                                <td>
+                                    <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                    <span class="valueHolder"><input type="number" class="txtValue" value="@item.LXLInternalStock" /><span class="hidden sizeValue">LXL</span></span><br />
+                                    <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            @if (item.XLXXL)
+                            {
+                                <td>
+                                    <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                    <span class="valueHolder"><input type="number" class="txtValue" value="@item.XLXXLInternalStock" /><span class="hidden sizeValue">XLXXL</span></span><br />
+                                    <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                        if (count >= (Model.FlexFit6277Items.Count / 4))
+                        {
+                            count = 0;
+                            @Html.Raw("</table><table class='inventoryTable'><tr style='font-weight:bold;'><td></td><td></td><td>S/M</td><td>L/XL</td><td>XL/XXL</td>")
+                        }
+                        else
+                        {
+                            count++;
+                        }
+                    }
+                }
+            </table>
+        </div>
+    </div>
+    <div id="flexFit6511Region">
+        <div class="regionHeader" onclick="$('#6511Inner').toggle();">
+            <h2><img src="~/Images/FlexFit6511/hat_01.jpg" /> FlexFit 6511/6311</h2>
+        </div>
+        <div id="6511Inner" class="regionInner hidden">
+            <table class="inventoryTable">
+                <tr style="font-weight:bold;">
+                    <td></td>
+                    <td></td>
+                    <td>OSFA</td>
+                </tr>
+                @{
+                    var count1 = 0;
+                    foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.FlexFit6511Items)
+                    {
+                        <tr class="inventoryRow">
+                            <td><img src='~/Images/@item.ThumbnailpreviewImagePath' /></td>
+                            <td><span class="hidden itemId">@item.Id</span><b>@item.ItemColor</b></td>
+                            @if (item.OSFA)
+                            {
+
+                                <td>
+                                    <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                    <span class="valueHolder"><input type="number" class="txtValue" value="@item.OSFAInternalStock" /><span class="hidden sizeValue">OSFA</span></span><br />
+                                    <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                        if (count1 >= (Model.FlexFit6511Items.Count / 4))
+                        {
+                            count1 = 0;
+                            @Html.Raw("</table><table class='inventoryTable'><tr style='font-weight:bold;'><td></td><td></td><td>OSFA</td>")
+                        }
+                        else
+                        {
+                            count1++;
+                        }
+                    }
+                }
+            </table>
+        </div>
+    </div>
+    <div id="flexFit110Region">
+        <div class="regionHeader" onclick="$('#110Inner').toggle();">
+            <h2><img src="~/Images/FlexFit110/hat_01.jpg" /> FlexFit 110M</h2>
+        </div>
+        <div id="110Inner" class="regionInner hidden">
+            <table class="inventoryTable">
+                <tr style="font-weight:bold;">
+                    <td></td>
+                    <td></td>
+                    <td>OSFA</td>
+                </tr>
+                @{
+                    var count2 = 0;
+                    foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.FlexFit110Items)
+                    {
+                        <tr class="inventoryRow">
+                            <td><img src='~/Images/@item.ThumbnailpreviewImagePath' /></td>
+                            <td><span class="hidden itemId">@item.Id</span><b>@item.ItemColor</b></td>
+                            @if (item.OSFA)
+                            {
+
+                                <td>
+                                    <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                    <span class="valueHolder"><input type="number" class="txtValue" value="@item.OSFAInternalStock" /><span class="hidden sizeValue">OSFA</span></span><br />
+                                    <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                        if (count2 >= (Model.FlexFit110Items.Count / 4))
+                        {
+                            count2 = 0;
+                            @Html.Raw("</table><table class='inventoryTable'><tr style='font-weight:bold;'><td></td><td></td><td>OSFA</td>")
+                        }
+                        else
+                        {
+                            count2++;
+                        }
+                    }
+                }
+            </table>
+        </div>
+    </div>
+    <div id="fleFitFatBill">
+        <div class="regionHeader" onclick="$('#6297Inner').toggle();">
+            <h2><img src="~/Images/FlexFit210/hat_01.jpg" /> FlexFit 6297 Flat Bill Fitted</h2>
+        </div>
+        <div id="6297Inner" class="regionInner hidden">
+            <table class="inventoryTable">
+                <tr style="font-weight:bold;">
+                    <td></td>
+                    <td></td>
+                    <td>S/M</td>
+                    <td>L/XL</td>
+                </tr>
+                @foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.FlexFit6297Items)
+                {
+                    <tr class="inventoryRow">
+                        <td><img src='~/Images/@item.ThumbnailpreviewImagePath' /></td>
+                        <td><span class="hidden itemId">@item.Id</span><b>@item.ItemColor</b></td>
+                        @if (item.SM)
+                        {
+
+                            <td>
+                                <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                <span class="valueHolder"><input type="number" class="txtValue" value="@item.SMInternalStock" /><span class="hidden sizeValue">SM</span></span><br />
+                                <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (item.LXL)
+                        {
+                            <td>
+                                <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                <span class="valueHolder"><input type="number" class="txtValue" value="@item.LXLInternalStock" /><span class="hidden sizeValue">LXL</span></span><br />
+                                <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+    <div id="6089Region">
+        <div class="regionHeader" onclick="$('#6089Inner').toggle();">
+            <h2><img src="~/Images/Yupoong/6089/hat_01.jpg" /> Yupoong 6089M</h2>
+        </div>
+        <div id="6089Inner" class="regionInner hidden">
+            <table class="inventoryTable">
+                <tr style="font-weight:bold;">
+                    <td></td>
+                    <td></td>
+                    <td>OSFA</td>
+                </tr>
+                @{
+                    var count3 = 0;
+                    foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.Yupoong6089Items)
+                    {
+                        <tr class="inventoryRow">
+                            <td><img src='~/Images/@item.ThumbnailpreviewImagePath' /></td>
+                            <td><span class="hidden itemId">@item.Id</span><b>@item.ItemColor</b></td>
+                            @if (item.OSFA)
+                            {
+
+                                <td>
+                                    <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                    <span class="valueHolder"><input type="number" class="txtValue" value="@item.OSFAInternalStock" /><span class="hidden sizeValue">OSFA</span></span><br />
+                                    <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                        if (count3 >= (Model.Yupoong6089Items.Count / 4))
+                        {
+                            count3 = 0;
+                            @Html.Raw("</table><table class='inventoryTable'><tr style='font-weight:bold;'><td></td><td></td><td>OSFA</td>")
+                        }
+                        else
+                        {
+                            count3++;
+                        }
+                    }
+                }
+            </table>
+        </div>
+    </div>
+
+
+    <div id="DadCapRegion">
+        <div class="regionHeader" onclick="$('#DadCapInner').toggle();">
+            <h2><img src="~/Images/Yupoong/DadCap/hat_01.jpg" /> Yupoong Dad Cap</h2>
+        </div>
+        <div id="DadCapInner" class="regionInner hidden">
+            <table class="inventoryTable">
+                <tr style="font-weight:bold;">
+                    <td></td>
+                    <td></td>
+                    <td>OSFA</td>
+                </tr>
+                @{
+                    var count4 = 0;
+                    foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.YupoongDadCapItems)
+                    {
+                        <tr class="inventoryRow">
+                            <td><img src='~/Images/@item.ThumbnailpreviewImagePath' /></td>
+                            <td><span class="hidden itemId">@item.Id</span><b>@item.ItemColor</b></td>
+                            @if (item.OSFA)
+                            {
+
+                                <td>
+                                    <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                    <span class="valueHolder"><input type="number" class="txtValue" value="@item.OSFAInternalStock" /><span class="hidden sizeValue">OSFA</span></span><br />
+                                    <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                        if (count4 >= (Model.YupoongDadCapItems.Count / 4))
+                        {
+                            count4 = 0;
+                            @Html.Raw("</table><table class='inventoryTable'><tr style='font-weight:bold;'><td></td><td></td><td>OSFA</td>")
+                        }
+                        else
+                        {
+                            count4++;
+                        }
+                    }
+                }
+            </table>
+        </div>
+    </div>
+
+
+    <div id="6606Region">
+        <div class="regionHeader" onclick="$('#6606Inner').toggle();">
+            <h2><img src="~/Images/Yupoong/TruckerSnapback/hat_01.jpg" /> Yupoong 6606 Trucker Snapback</h2>
+        </div>
+        <div id="6606Inner" class="regionInner hidden">
+            <table class="inventoryTable">
+                <tr style="font-weight:bold;">
+                    <td></td>
+                    <td></td>
+                    <td>OSFA</td>
+                </tr>
+                @{
+                    var count5 = 0;
+                    foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.Yupoong6606Items)
+                    {
+                        <tr class="inventoryRow">
+                            <td><img src='~/Images/@item.ThumbnailpreviewImagePath' /></td>
+                            <td><span class="hidden itemId">@item.Id</span><b>@item.ItemColor</b></td>
+                            @if (item.OSFA)
+                            {
+
+                                <td>
+                                    <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                    <span class="valueHolder"><input type="number" class="txtValue" value="@item.OSFAInternalStock" /><span class="hidden sizeValue">OSFA</span></span><br />
+                                    <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                        if (count5 >= (Model.Yupoong6606Items.Count / 4))
+                        {
+                            count5 = 0;
+                            @Html.Raw("</table><table class='inventoryTable'><tr style='font-weight:bold;'><td></td><td></td><td>OSFA</td>")
+                        }
+                        else
+                        {
+                            count5++;
+                        }
+                    }
+                }
+            </table>
+        </div>
+    </div>
+
+
+    <div id="6006Region">
+        <div class="regionHeader" onclick="$('#6006Inner').toggle();">
+            <h2><img src="~/Images/Yupoong/6006/hat_01.jpg" /> Yupoong 6006 Flat Bill Trucker Snapback</h2>
+
+        </div>
+        <div id="6006Inner" class="regionInner hidden">
+            <table class="inventoryTable">
+                <tr style="font-weight:bold;">
+                    <td></td>
+                    <td></td>
+                    <td>OSFA</td>
+                </tr>
+                @{
+                    var count6 = 0;
+                    foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.Yupoong6006Items)
+                    {
+                        <tr class="inventoryRow">
+                            <td><img src='~/Images/@item.ThumbnailpreviewImagePath' /></td>
+                            <td><span class="hidden itemId">@item.Id</span><b>@item.ItemColor</b></td>
+                            @if (item.OSFA)
+                            {
+
+                                <td>
+                                    <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                    <span class="valueHolder"><input type="number" class="txtValue" value="@item.OSFAInternalStock" /><span class="hidden sizeValue">OSFA</span></span><br />
+                                    <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                        if (count6 >= (Model.Yupoong6006Items.Count / 4))
+                        {
+                            count6 = 0;
+                            @Html.Raw("</table><table class='inventoryTable'><tr style='font-weight:bold;'><td></td><td></td><td>OSFA</td>")
+                        }
+                        else
+                        {
+                            count6++;
+                        }
+                    }
+                }
+            </table>
+        </div>
+    </div>
+
+
+    <div id="shortBeanieRegion">
+        <div class="regionHeader" onclick="$('#shortBeanieInner').toggle();">
+            <h2><img src="~/Images/Yupoong/ShortBeanies.jpg" /> Yupoong Short Beanies</h2>
+        </div>
+        <div id="shortBeanieInner" class="regionInner hidden">
+            <table class="inventoryTable">
+                <tr style="font-weight:bold;">
+                    <td></td>
+                    <td></td>
+                    <td>OSFA</td>
+                </tr>
+                @{
+                    var count7 = 0;
+                    foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.YupoongShortBeanieItems)
+                    {
+                        <tr class="inventoryRow">
+                            <td><img src='~/Images/@item.ThumbnailpreviewImagePath' /></td>
+                            <td><span class="hidden itemId">@item.Id</span><b>@item.ItemColor</b></td>
+                            @if (item.OSFA)
+                            {
+
+                                <td>
+                                    <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                    <span class="valueHolder"><input type="number" class="txtValue" value="@item.OSFAInternalStock" /><span class="hidden sizeValue">OSFA</span></span><br />
+                                    <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                        if (count7 >= (Model.YupoongShortBeanieItems.Count / 4))
+                        {
+                            count7 = 0;
+                            @Html.Raw("</table><table class='inventoryTable'><tr style='font-weight:bold;'><td></td><td></td><td>OSFA</td>")
+                        }
+                        else
+                        {
+                            count7++;
+                        }
+                    }
+                }
+            </table>
+        </div>
+    </div>
+
+    <div id="cuffedBeanieRegion">
+        <div class="regionHeader" onclick="$('#cuffedBeanieInner').toggle();">
+            <h2><img src="~/Images/Yupoong/CuffedBeanies.jpg" /> Yupoong Cuffed Beanies</h2>
+        </div>
+        <div id="cuffedBeanieInner" class="regionInner hidden">
+            <table class="inventoryTable">
+                <tr style="font-weight:bold;">
+                    <td></td>
+                    <td></td>
+                    <td>OSFA</td>
+                </tr>
+                @{
+                    var count8 = 0;
+                    foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.YupoongCuffedBeanieItems)
+                    {
+                        <tr class="inventoryRow">
+                            <td><img src='~/Images/@item.ThumbnailpreviewImagePath' /></td>
+                            <td><span class="hidden itemId">@item.Id</span><b>@item.ItemColor</b></td>
+                            @if (item.OSFA)
+                            {
+
+                                <td>
+                                    <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                    <span class="valueHolder"><input type="number" class="txtValue" value="@item.OSFAInternalStock" /><span class="hidden sizeValue">OSFA</span></span><br />
+                                    <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                        if (count8 >= (Model.YupoongCuffedBeanieItems.Count / 4))
+                        {
+                            count8 = 0;
+                            @Html.Raw("</table><table class='inventoryTable'><tr style='font-weight:bold;'><td></td><td></td><td>OSFA</td>")
+                        }
+                        else
+                        {
+                            count8++;
+                        }
+                    }
+                }
+            </table>
+        </div>
+    </div>
+
+    <div id="112Region">
+        <div class="regionHeader" onclick="$('#112Inner').toggle();">
+            <h2><img src="~/Images/RichardsonHats/hat_01.jpg" /> Richardson 112 Trucker Snapback</h2>
+        </div>
+        <div id="112Inner" class="regionInner hidden">
+            <table class="inventoryTable">
+                <tr style="font-weight:bold;">
+                    <td></td>
+                    <td></td>
+                    <td>OSFA</td>
+                </tr>
+                @{
+                    var count9 = 0;
+                    foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.Richardson112Items)
+                    {
+                        <tr class="inventoryRow">
+                            <td><img src='~/Images/@item.ThumbnailpreviewImagePath' /></td>
+                            <td><span class="hidden itemId">@item.Id</span><b>@item.ItemColor</b></td>
+                            @if (item.OSFA)
+                            {
+
+                                <td>
+                                    <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                    <span class="valueHolder"><input type="number" class="txtValue" value="@item.OSFAInternalStock" /><span class="hidden sizeValue">OSFA</span></span><br />
+                                    <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                        if (count9 >= (Model.Richardson112Items.Count / 4))
+                        {
+                            count9 = 0;
+                            @Html.Raw("</table><table class='inventoryTable'><tr style='font-weight:bold;'><td></td><td></td><td>OSFA</td>")
+                        }
+                        else
+                        {
+                            count9++;
+                        }
+                    }
+                }
+            </table>
+        </div>
+    </div>
+
+
+    <div id="ClassicCapsRegion">
+        <div class="regionHeader" onclick="$('#ClassicCapsInner').toggle();">
+            <h2><img src="~/Images/ClassicCaps/hat_01.jpg" /> Classic Caps USA100 Trucker Snapback</h2>
+        </div>
+        <div id="ClassicCapsInner" class="regionInner hidden">
+            <table class="inventoryTable">
+                <tr style="font-weight:bold;">
+                    <td></td>
+                    <td></td>
+                    <td>OSFA</td>
+                </tr>
+                @{
+                    foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.ClassicCapsItems)
+                    {
+                        <tr class="inventoryRow">
+                            <td><img src='~/Images/@item.ThumbnailpreviewImagePath' /></td>
+                            <td><span class="hidden itemId">@item.Id</span><b>@item.ItemColor</b></td>
+                            @if (item.OSFA)
+                            {
+
+                                <td>
+                                    <span class="incrementButton"><input type="button" class="smallButton" value="+" onclick="incrementTotal(this)" /></span><br />
+                                    <span class="valueHolder"><input type="number" class="txtValue" value="@item.OSFAInternalStock" /><span class="hidden sizeValue">OSFA</span></span><br />
+                                    <span class="decrementButton"><input type="button" class="smallButton" value="-" onclick="decrementTotal(this)" /></span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.txtValue').blur(function () {
+            updateTotal(this);
+        });
+    });
+    function decrementTotal(that) {
+        var currentTotal = $(that).closest('td').find('.txtValue').val();
+        var itemId = $(that).closest('tr').find('.itemId').text();
+        var sizeValue = $(that).closest('td').find('.sizeValue').text();
+        if (currentTotal == '0' || currentTotal == '') {
+            //do nothing
+        } else {
+            currentTotal--;
+
+            showLoading();
+            $.ajax({
+                type: "POST",
+                url: '/Inventory/UpdateMasterBulkOrderItemInternalInventory',
+                contentType: false,
+                processData: false,
+                data: JSON.stringify({
+                    id: itemId, inventoryValue: currentTotal, sizeValue: sizeValue
+                }),
+                contentType: "application/json",
+                success: function (result) {
+                    if (result == "") {
+                        //do nothing
+                        displayPopupNotification('error.', 'error', false);
+                    } else {
+                        hideLoading();
+                        $(that).closest('td').find('.txtValue').val(currentTotal);
+                    }
+                },
+                error: function (xhr, status, p3, p4) {
+                    displayPopupNotification('Error.', 'error', false);
+                }
+            });
+        }
+    }
+    function incrementTotal(that) {
+        var currentTotal = $(that).closest('td').find('.txtValue').val();
+        var itemId = $(that).closest('tr').find('.itemId').text();
+        var sizeValue = $(that).closest('td').find('.sizeValue').text();
+        currentTotal++;
+
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: '/Inventory/UpdateMasterBulkOrderItemInternalInventory',
+            contentType: false,
+            processData: false,
+            data: JSON.stringify({
+                id: itemId, inventoryValue: currentTotal, sizeValue: sizeValue
+            }),
+            contentType: "application/json",
+            success: function (result) {
+                if (result == "") {
+                    //do nothing
+                    displayPopupNotification('error.', 'error', false);
+                } else {
+                    hideLoading();
+                    $(that).closest('td').find('.txtValue').val(currentTotal);
+                }
+            },
+            error: function (xhr, status, p3, p4) {
+                displayPopupNotification('Error.', 'error', false);
+            }
+        });
+
+    }
+    function updateTotal(that) {
+        var currentTotal = $(that).closest('td').find('.txtValue').val();
+        var itemId = $(that).closest('tr').find('.itemId').text();
+        var sizeValue = $(that).closest('td').find('.sizeValue').text();
+
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: '/Inventory/UpdateMasterBulkOrderItemInternalInventory',
+            contentType: false,
+            processData: false,
+            data: JSON.stringify({
+                id: itemId, inventoryValue: currentTotal, sizeValue: sizeValue
+            }),
+            contentType: "application/json",
+            success: function (result) {
+                if (result == "") {
+                    //do nothing
+                    displayPopupNotification('error.', 'error', false);
+                } else {
+                    hideLoading();
+                    $(that).closest('td').find('.txtValue').val(currentTotal);
+                }
+            },
+            error: function (xhr, status, p3, p4) {
+                displayPopupNotification('Error.', 'error', false);
+            }
+        });
+    }  
+    
+</script>
+<style type="text/css">
+
+</style>

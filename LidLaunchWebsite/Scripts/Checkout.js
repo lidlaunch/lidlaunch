@@ -150,6 +150,9 @@ function validateCreditCardFields() {
     return true;
 
 }
+
+var attemptOrderWithoutArtwork = false;
+
 function processPayment() {
     var isBulkOrder = false;
 
@@ -212,8 +215,10 @@ function processPayment() {
     var file = null;
 
     if (isBulkOrder) {
-        files = $('#bulkArtwork')[0].files;
-        file = files[0];
+        if (!attemptOrderWithoutArtwork) {
+            files = $('#bulkArtwork')[0].files;
+            file = files[0];
+        }        
         orderNotes = $('#txtDetails').val();
         if (artworkPreExisting) {
             orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
@@ -254,9 +259,6 @@ function processPayment() {
         contentType: false,
         processData: false,
         data: data,
-        //data: JSON.stringify({
-        //    "creditCard": creditCardJson, "cartItems": items, "billingAddress": billingAddressJson, "shippingAddress": shippingAddressJson, "shippingRecipient": shippingRecipient, "shippingPrice": shippingcost, "email": email, "isBulkOrder": isBulkOrder
-        //}),
         success: function (result) {
             if (result == "ccerror") {
                 hideLoading();
@@ -292,10 +294,14 @@ function processPayment() {
             }
         },
         error: function (error) {
-            displayPopupNotification('Please Contact Us. There was an issue processing your order.', 'error', false);
+            if (!attemptOrderWithoutArtwork) {
+                attemptOrderWithoutArtwork = true;
+                processPayment();
+            } else {
+                displayPopupNotification('Please Contact Us. There was an issue processing your order.', 'error', false);
+            }            
         }
     });
-
 }
 function proceedToPayWithPaypal() {
     var isBulkOrder = false;

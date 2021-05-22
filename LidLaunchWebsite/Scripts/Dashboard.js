@@ -368,24 +368,27 @@ function RequestPayout() {
     });
 }
 function CreateBatch() {
-    showLoading();
-    $.ajax({
-        type: "POST",
-        url: '/Dashboard/CreateBatchOrder',
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-            if (data > 0) {
-                window.location = "/Dashboard/BatchOrder?batchId=" + data;
-            } else {
+    var proceed = confirm("Are you sure you want to create a batch?");
+    if (proceed) {
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: '/Dashboard/CreateBatchOrder',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data > 0) {
+                    window.location = "/Dashboard/BatchOrder?batchId=" + data;
+                } else {
+                    displayPopupNotification('Create batch failed please try again.', 'error', false);
+                }
+            },
+            error: function (err) {
                 displayPopupNotification('Create batch failed please try again.', 'error', false);
             }
-        },
-        error: function (err) {
-            displayPopupNotification('Create batch failed please try again.', 'error', false);
-        }
-        //error: displayPopupNotification('User create failed please try again.', 'error', false)
-    });
+            //error: displayPopupNotification('User create failed please try again.', 'error', false)
+        });
+    }
 }
 function saveTracking(that) {
     var orderProductId = $(that).closest('tr').find('.orderProductId').text();
@@ -489,28 +492,31 @@ function updateBulkOrderPaid(bulkOrderId, orderPaid, that) {
 }
 
 function updateOrderRefunded(bulkOrderId) {
-    showLoading();
-    $.ajax({
-        type: "POST",
-        url: '/Dashboard/UpdateBulkOrderRefunded',
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({
-            "bulkOrderId": bulkOrderId
-        }),
-        dataType: "json",
-        success: function (result) {
-            if (result == "") {
-                //do nothing
-                displayPopupNotification('Error marking order as refunded.', 'error', false);
-            } else {
-                //set the url for the file link and show the link 
-                showBulkOrderDetailsPopup(bulkOrderId);
-            }           
-        },
-        error: function (err) {
-            displayPopupNotification('Error updating order as refunded.', 'error', false);
-        }
-    });
+    var proceed = confirm("Are you sure you want to mark this order as REFUNDED?");
+    if (proceed) {
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: '/Dashboard/UpdateBulkOrderRefunded',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+                "bulkOrderId": bulkOrderId
+            }),
+            dataType: "json",
+            success: function (result) {
+                if (result == "") {
+                    //do nothing
+                    displayPopupNotification('Error marking order as refunded.', 'error', false);
+                } else {
+                    //set the url for the file link and show the link 
+                    showBulkOrderDetailsPopup(bulkOrderId);
+                }
+            },
+            error: function (err) {
+                displayPopupNotification('Error updating order as refunded.', 'error', false);
+            }
+        });
+    }
 }
 
 
@@ -610,6 +616,30 @@ function saveBulkOrderEdit(bulkOrderId) {
             displayPopupNotification('Sorry there was an error creating your order.', 'error', false);
         }
     });
+}
+
+function updateAdminReviewFinished(bulkOrderId) {
+    var proceed = confirm("Are you 100% sure that this review is finished? Has everything been addressed?");
+    if (proceed) {
+        $.ajax({
+            type: "POST",
+            url: '/Dashboard/UpdateAdminReviewFinished?bulkOrderId=' + bulkOrderId,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result == "") {
+                    //do nothing
+                    displayPopupNotification('Sorry there was an clearing admin/designer review.', 'error', false);
+                } else {
+                    //set the url for the file link and show the link 
+                    showBulkOrderDetailsPopup(bulkOrderId);
+                }
+            },
+            error: function (xhr, status, p3, p4) {
+                displayPopupNotification('Sorry there was an clearing admin/designer review.', 'error', false);
+            }
+        });
+    }
 }
 
 

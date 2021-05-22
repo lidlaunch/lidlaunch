@@ -242,9 +242,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Classes\BulkData.cs" />
     <Compile Include="Classes\BulkOrderAttachmentData.cs" />
+    <Compile Include="Classes\SSActivewear.cs" />
     <Compile Include="Controllers\BulkOrderAttachmentController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
+    <Compile Include="Controllers\InventoryController.cs" />
+    <Compile Include="Controllers\ReportingController.cs" />
+    <Compile Include="Models\Boxes.cs" />
     <Compile Include="Models\BulkOrderBatchMissingItems.cs" />
+    <Compile Include="Models\CostEstimate.cs" />
     <Compile Include="Models\MasterBulkOrderItem.cs" />
     <Compile Include="Models\BulkOrderLog.cs" />
     <Compile Include="Models\BulkOrderAttachment.cs" />
@@ -891,6 +896,8 @@
     <Content Include="Views\Dashboard\BlankSources.cshtml" />
     <Content Include="Views\BulkOrderAttachment\ViewAttachments.cshtml" />
     <Content Include="Views\BulkOrderAttachment\AttachmentEdit.cshtml" />
+    <Content Include="Views\Inventory\View.cshtml" />
+    <Content Include="Views\Reporting\GetExpensesByDateRange.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

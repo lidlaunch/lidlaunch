@@ -1517,6 +1517,7 @@ namespace LidLaunchWebsite.Classes
                                 batch.BatchId = Convert.ToInt32(dr["Id"].ToString());
                                 batch.DateBatched = Convert.ToDateTime(dr["DateBatched"].ToString());
                                 batch.Status = Convert.ToString(dr["Status"].ToString());
+                                batch.InternalStockUpdated = Convert.ToBoolean(dr["InternalStockUpdated"].ToString());
                                 lstBatches.Add(batch);
                             }           
 
@@ -1532,6 +1533,88 @@ namespace LidLaunchWebsite.Classes
             catch (Exception ex)
             {
                 return lstBatches;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public OrderBatch GetBulkOrderBatch(int batchId)
+        {
+            var data = new SQLData();
+            OrderBatch batch = new OrderBatch();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetBulkOrderBatch", data.conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.Parameters.AddWithValue("@batchId", @batchId);
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            DataRow dr = ds.Tables[0].Rows[0];
+                                
+                            batch.BatchId = Convert.ToInt32(dr["Id"].ToString());
+                            batch.DateBatched = Convert.ToDateTime(dr["DateBatched"].ToString());
+                            batch.Status = Convert.ToString(dr["Status"].ToString());
+                            batch.InternalStockUpdated = Convert.ToBoolean(dr["InternalStockUpdated"].ToString());                               
+
+                        }
+
+                    }
+
+
+                }
+
+                return batch;
+            }
+            catch (Exception ex)
+            {
+                return batch;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool UpdateBulkOrderBatchInterntalStockUpdated(int batchId)
+        {
+            var data = new SQLData();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderBatchInterntalStockUpdated", data.conn);
+                    sqlComm.Parameters.AddWithValue("@batchId ", batchId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
             finally
             {
@@ -2057,7 +2140,7 @@ namespace LidLaunchWebsite.Classes
             var data = new SQLData();
             List<MasterBulkOrderItem> lstItems = new List<MasterBulkOrderItem>();
             try
-            {                
+            {
                 DataSet ds = new DataSet();
                 using (data.conn)
                 {
@@ -2096,12 +2179,24 @@ namespace LidLaunchWebsite.Classes
                                 item.ThumbnailpreviewImagePath = Convert.ToString(dr["ThumbnailpreviewImagePath"].ToString());
                                 item.PreviewImagePath = Convert.ToString(dr["PreviewImagePath"].ToString());
                                 item.DistributorLink = Convert.ToString(dr["DistributorLink"].ToString());
-                                item.FrontEndName = Convert.ToString(dr["FrontEndName"].ToString());                                
+                                item.FrontEndName = Convert.ToString(dr["FrontEndName"].ToString());
                                 item.DisplayOrder = Convert.ToInt32(dr["DisplayOrder"].ToString());
+                                item.OSFAInternalStock = Convert.ToInt32(dr["OSFAInternalStock"].ToString());
+                                item.SMInternalStock = Convert.ToInt32(dr["SMInternalStock"].ToString());
+                                item.LXLInternalStock = Convert.ToInt32(dr["LXLInternalStock"].ToString());
+                                item.XLXXLInternalStock = Convert.ToInt32(dr["XLXXLInternalStock"].ToString());
+                                item.OSFAExternalStock = Convert.ToInt32(dr["OSFAExternalStock"].ToString());
+                                item.SMExternalStock = Convert.ToInt32(dr["SMExternalStock"].ToString());
+                                item.LXLExternalStock = Convert.ToInt32(dr["LXLExternalStock"].ToString());
+                                item.XLXXLExternalStock = Convert.ToInt32(dr["XLXXLExternalStock"].ToString());
+                                item.OSFASku = Convert.ToString(dr["OSFASku"].ToString());
+                                item.SMSku = Convert.ToString(dr["SMSku"].ToString());
+                                item.LXLSku = Convert.ToString(dr["LXLSku"].ToString());
+                                item.XLXXLSku = Convert.ToString(dr["XLXXLSku"].ToString());
                                 lstItems.Add(item);
 
                             }
-                            
+
                         }
 
                     }
@@ -2121,6 +2216,88 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
+
+
+        public MasterBulkOrderItem GetMasterBulkOrderItem(int id)
+        {
+            var data = new SQLData();
+            MasterBulkOrderItem item = new MasterBulkOrderItem();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("GetMasterBulkOrderItem", data.conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.Parameters.AddWithValue("@id", id);
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+
+                    da.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            DataRow dr = ds.Tables[0].Rows[0];
+                            item.Id = Convert.ToInt32(dr["Id"].ToString());
+                            item.ItemName = Convert.ToString(dr["ItemName"].ToString());
+                            item.ItemStyle = Convert.ToString(dr["ItemStyle"].ToString());
+                            item.OSFA = Convert.ToBoolean(dr["OSFA"].ToString());
+                            item.OSFAStock = Convert.ToBoolean(dr["OSFAStock"].ToString());
+                            item.LXL = Convert.ToBoolean(dr["LXL"].ToString());
+                            item.LXLStock = Convert.ToBoolean(dr["LXLStock"].ToString());
+                            item.SM = Convert.ToBoolean(dr["SM"].ToString());
+                            item.SMStock = Convert.ToBoolean(dr["SMStock"].ToString());
+                            item.XLXXL = Convert.ToBoolean(dr["XLXXL"].ToString());
+                            item.XLXXLStock = Convert.ToBoolean(dr["XLXXLStock"].ToString());
+                            item.ItemColor = Convert.ToString(dr["ItemColor"].ToString());
+                            item.Manufacturer = Convert.ToString(dr["Manufacturer"].ToString());
+                            item.Available = Convert.ToBoolean(dr["Available"].ToString());
+                            item.BasePrice = Convert.ToDecimal(dr["BasePrice"].ToString());
+                            item.Cost = Convert.ToDecimal(dr["Cost"].ToString());
+                            item.SKU = Convert.ToString(dr["SKU"].ToString());
+                            item.ThumbnailpreviewImagePath = Convert.ToString(dr["ThumbnailpreviewImagePath"].ToString());
+                            item.PreviewImagePath = Convert.ToString(dr["PreviewImagePath"].ToString());
+                            item.DistributorLink = Convert.ToString(dr["DistributorLink"].ToString());
+                            item.FrontEndName = Convert.ToString(dr["FrontEndName"].ToString());
+                            item.DisplayOrder = Convert.ToInt32(dr["DisplayOrder"].ToString());
+                            item.OSFAInternalStock = Convert.ToInt32(dr["OSFAInternalStock"].ToString());
+                            item.SMInternalStock = Convert.ToInt32(dr["SMInternalStock"].ToString());
+                            item.LXLInternalStock = Convert.ToInt32(dr["LXLInternalStock"].ToString());
+                            item.XLXXLInternalStock = Convert.ToInt32(dr["XLXXLInternalStock"].ToString());
+                            item.OSFAExternalStock = Convert.ToInt32(dr["OSFAExternalStock"].ToString());
+                            item.SMExternalStock = Convert.ToInt32(dr["SMExternalStock"].ToString());
+                            item.LXLExternalStock = Convert.ToInt32(dr["LXLExternalStock"].ToString());
+                            item.XLXXLExternalStock = Convert.ToInt32(dr["XLXXLExternalStock"].ToString());
+                            item.OSFASku = Convert.ToString(dr["OSFASku"].ToString());
+                            item.SMSku = Convert.ToString(dr["SMSku"].ToString());
+                            item.LXLSku = Convert.ToString(dr["LXLSku"].ToString());
+                            item.XLXXLSku = Convert.ToString(dr["XLXXLSku"].ToString());
+
+
+
+                        }
+
+                    }
+                }
+
+                return item;
+            }
+                catch (Exception ex)
+            {
+                return item;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+            
 
         public List<MasterBulkOrderItem> GetMasterBulkOrderItemsForDropDown(bool inStockOnly)
         {
@@ -2168,6 +2345,18 @@ namespace LidLaunchWebsite.Classes
                                 item.DistributorLink = Convert.ToString(dr["DistributorLink"].ToString());
                                 item.FrontEndName = Convert.ToString(dr["FrontEndName"].ToString());
                                 item.DisplayOrder = Convert.ToInt32(dr["DisplayOrder"].ToString());
+                                item.OSFAInternalStock = Convert.ToInt32(dr["OSFAInternalStock"].ToString());
+                                item.SMInternalStock = Convert.ToInt32(dr["SMInternalStock"].ToString());
+                                item.LXLInternalStock = Convert.ToInt32(dr["LXLInternalStock"].ToString());
+                                item.XLXXLInternalStock = Convert.ToInt32(dr["XLXXLInternalStock"].ToString());
+                                item.OSFAExternalStock = Convert.ToInt32(dr["OSFAExternalStock"].ToString());
+                                item.SMExternalStock = Convert.ToInt32(dr["SMExternalStock"].ToString());
+                                item.LXLExternalStock = Convert.ToInt32(dr["LXLExternalStock"].ToString());
+                                item.XLXXLExternalStock = Convert.ToInt32(dr["XLXXLExternalStock"].ToString());
+                                item.OSFASku = Convert.ToString(dr["OSFASku"].ToString());
+                                item.SMSku = Convert.ToString(dr["SMSku"].ToString());
+                                item.LXLSku = Convert.ToString(dr["LXLSku"].ToString());
+                                item.XLXXLSku = Convert.ToString(dr["XLXXLSku"].ToString());
                                 lstItems.Add(item);
 
                             }
@@ -2208,6 +2397,42 @@ namespace LidLaunchWebsite.Classes
                     sqlComm.Parameters.AddWithValue("@xlxxlstock", item.XLXXLStock);
                     sqlComm.Parameters.AddWithValue("@osfastock", item.OSFAStock);
                     sqlComm.Parameters.AddWithValue("@available", item.Available);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool UpdateMasterBulkOrderItemInternalInventory(MasterBulkOrderItem item)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateMasterBulkOrderItemInternalInventory", data.conn);
+                    sqlComm.Parameters.AddWithValue("@id", item.Id);
+                    sqlComm.Parameters.AddWithValue("@OSFAInternalStock", item.OSFAInternalStock);
+                    sqlComm.Parameters.AddWithValue("@SMInternalStock", item.SMInternalStock);
+                    sqlComm.Parameters.AddWithValue("@LXLInternalStock", item.LXLInternalStock);
+                    sqlComm.Parameters.AddWithValue("@XLXXLInternalStock", item.XLXXLInternalStock);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();

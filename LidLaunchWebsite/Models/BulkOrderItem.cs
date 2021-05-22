@@ -15,5 +15,7 @@ namespace LidLaunchWebsite.Models
         public Design Design { get; set; }
         public int MasterItemId { get; set; }
         public string ItemThumbnail { get; set; }
+        public int InternalStock { get; set; }
+        public int ExtrernalStock { get; set; }
     }
 }

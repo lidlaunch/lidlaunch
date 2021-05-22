@@ -109,6 +109,10 @@
                         <td>Admin Review:</td>
                         <td>@Model.BulkOrder.AdminReviewComment</td>
                     </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="button" class="smallButton" value="Complete Review" onclick="updateAdminReviewFinished(@Model.BulkOrder.Id)"/></td>
+                    </tr>
                 }
                 <tr class="hidden">
                     <td>Released To Digitizer:</td>
