@@ -1580,11 +1580,41 @@ namespace LidLaunchWebsite.Controllers
             return success.ToString();
         }
 
-        //public string CreateBulkReworkBatch()
-        //{
-        //    BulkData data = new BulkData();
+        public string MarkDesignDeleted(string designId, string bulkOrderId)
+        {
+            var success = false;
+            var json = "";
+            if (checkLoggedIn())
+            {
+                DesignData designData = new DesignData();
+                BulkData bulkData = new BulkData();
+                success = designData.MarkDesignDeleted(Convert.ToInt32(designId));
+                if (success)
+                {
+                    var addBulkOrderLogSuccess = bulkData.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Design Deleted: Design Id: " + designId);
+                }
+                json = new JavaScriptSerializer().Serialize(success);
+            }            
+            return json;
+        }
 
-        //}
+        public string UnapproveDesign(string designId, string bulkOrderId)
+        {
+            var success = false;
+            var json = "";
+            if (checkLoggedIn())
+            {
+                DesignData designData = new DesignData();
+                BulkData bulkData = new BulkData();
+                success = designData.UnapproveDesign(Convert.ToInt32(designId));
+                if (success)
+                {
+                    var addBulkOrderLogSuccess = bulkData.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Design Unapproved: Design Id: " + designId);
+                }
+                json = new JavaScriptSerializer().Serialize(success);
+            }
+            return json;
+        }
 
         public ActionResult AddNote(int bulkOrderId, int bulkOrderItemId, int designId, int parentBulkOrderId, bool revision, string customerAdded, bool shipping)
         {
@@ -1708,9 +1738,13 @@ namespace LidLaunchWebsite.Controllers
             return PartialView(model);
         }
 
-        public ActionResult SetBulkDesign()
+        public ActionResult SetBulkDesign(string bulkOrderId)
         {
-            return PartialView();
+            dynamic model = new ExpandoObject();
+
+            model.BulkOrderId = Convert.ToInt32(bulkOrderId); 
+
+            return PartialView(model);
         }
 
         public string SetBulkOrderDesign(string bulkOrderId, string designId)
@@ -1718,6 +1752,14 @@ namespace LidLaunchWebsite.Controllers
             BulkData data = new BulkData();
             data.UpdateBulkOrderDesign(Convert.ToInt32(bulkOrderId), Convert.ToInt32(designId));
             var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Bulk Order Design Set To ID: " + designId);
+            return "true";
+        }
+
+        public string SetBulkOrderDesignAdditional(string bulkOrderId, string designId)
+        {
+            BulkData data = new BulkData();
+            data.UpdateBulkOrderDesignAdditional(Convert.ToInt32(bulkOrderId), Convert.ToInt32(designId));
+            var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Additional Bulk Order Design Added: " + designId);
             return "true";
         }
 

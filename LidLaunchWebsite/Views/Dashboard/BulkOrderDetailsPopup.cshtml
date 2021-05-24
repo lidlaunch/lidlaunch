@@ -333,52 +333,54 @@
         </div>
         <div id="bulkOrderDesigns">
             <h3>Designs</h3>
-            <a href="javascript:void(0);" onclick="$('#bulkDesignSelectHolder').load(selectBulkDesignUrl);"><input type="button" class="smallButton" value="SELECT PRE-EXISTING DESIGN" /></a>
-            <a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: 0, fromDigitizing: false, bulkOrderId: @Model.BulkOrder.Id });"><input type="button" class="smallButton" value="Add Design" /></a>
-            <table>
-                <thead>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>Name</td>
-                        <td>Art Source</td>
-                        <td>Embroidery File</td>
-                        <td>Transparent Preview</td>
-                        <td>Production File</td>
-                        <td>EMB File</td>
-                        <td>Add Note</td>
-                        <td>Edit</td>
-                    </tr>
-                </thead>
+            <a href="javascript:void(0);" onclick="$('#bulkDesignSelectHolder').load(selectBulkDesignUrl, { bulkOrderId: @Model.BulkOrder.Id });" class="left"><input type="button" class="smallButton" value="ADD PRE-EXISTING DESIGN" /></a>
+            <a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: 0, fromDigitizing: false, bulkOrderId: @Model.BulkOrder.Id });" class="left" style="margin-left:20px"><input type="button" class="smallButton" value="Add Design" /></a>
+            <table style="width:600px; clear:both;">
                 <tbody>
                     @foreach (LidLaunchWebsite.Models.Design design in Model.BulkOrder.lstDesigns)
                     {
-                        <tr>
-                            @if (!design.InternallyApproved)
+                    <tr>
+                        <td><b>@design.Name</b></td>
+                        @if (!design.InternallyApproved)
+                        {
+                            <td><input type="button" onclick="internallyApproveDigitizing(@design.Id, @Model.BulkOrder.Id)" value="Approve" class="smallButton" /></td>
+                        }
+                        else
+                        {
+                            if (!design.CustomerApproved)
                             {
-                                <td><input type="button" onclick="internallyApproveDigitizing(@design.Id, @Model.BulkOrder.Id)" value="Approve" class="smallButton" /></td>
+                                <td>Internally Approved</td>
                             }
                             else
                             {
-                                if (!design.CustomerApproved)
-                                {
-                                    <td>Internally Approved</td>
-                                }
-                                else
-                                {
-                                    <td>Internally Approved / Customer Approved</td>
-                                }
+                                <td>Internally Approved/<br />Customer Approved</td>
                             }
+                        }
+                        @if (!design.CustomerApproved)
+                        {
                             <td><input type="button" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.BulkOrder.Id, revision: true, customerAdded: false, shipping: false });" class="smallButton" value="Request External Revision" /></td>
-                            <td>@design.Name</td>
-                            <td><a href="~/Images/BulkOrderArtwork/@design.ArtSource" target="_blank">Art Source</a></td>
-                            <td><a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName" target="_blank">@design.DigitizedFile</a></td>
-                            <td><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" /></a></td>
-                            <td><a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">@design.DigitizedProductionSheet</a></td>
-                            <td><a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">@design.EMBFile</a></td>
-                            <td><a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.BulkOrder.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a></td>
-                            <td><a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, fromDigitizing: false, bulkOrderId: @Model.BulkOrder.Id });"><input type="button" class="smallButton" value="Edit Design" /></a></td>
-                        </tr>
+                        }
+                        else
+                        {
+                            <td>
+                                <a href="javascript:void(0);" onclick="unapproveDesign(@design.Id, @Model.BulkOrder.Id)"><input type="button" class="smallButton" value="Unapprove" /></a>
+                            </td>
+                        }
+                    </tr>
+                    <tr>
+
+                        <td><a href="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" class="TransparentPreviewName" target="_blank"><img src="~/Images/DesignImages/Digitizing/Preview/@design.DigitizedPreview" height="200" /></a></td>
+                        <td>
+                            <a href="~/Images/DesignImages/Digitizing/Info/@design.DigitizedProductionSheet" class="InfoFileName" target="_blank">PDF File</a><br />
+                            <a href="~/Images/DesignImages/Digitizing/EMB/@design.EMBFile" class="EMBFileName" target="_blank">EMB File</a><br />
+                            <a href="~/Images/DesignImages/Digitizing/DST/@design.DigitizedFile" class="EmbroideryFileName" target="_blank">DST File</a><br />
+                        </td>
+                        <td>
+                            <a href="javascript:void(0);" onclick="$('#noteHolder').load(addNoteUrl, { bulkOrderId: 0, bulkOrderItemId: 0, designId: @design.Id, parentBulkOrderId: @Model.BulkOrder.Id, revision: false, customerAdded: false, shipping: false });"><input type="button" value="Add Note" class="smallButton" /></a>
+                            <a href="javascript:void(0);" onclick="$('#uploadDesignHolder').load(uploadBulkDesignUrl, { designId: @design.Id, fromDigitizing: false, bulkOrderId: @Model.BulkOrder.Id });"><input type="button" class="smallButton" value="Edit" /></a>
+                            <a href="javascript:void(0);" onclick="deleteDesign(@design.Id, @Model.BulkOrder.Id)"><input type="button" class="smallButton" value="Delete" /></a>
+                        </td>
+                    </tr>
                         if (design.lstCombinedNotes.Count > 0)
                         {
                             foreach (LidLaunchWebsite.Models.Note note in design.lstCombinedNotes)
@@ -386,23 +388,22 @@
                                 if (note.CustomerAdded)
                                 {
                                     <tr>
-                                        <td></td>
-                                        <td></td>
                                         <td colspan="3"><i class="noteDate">CUSTOMER REVISION REQUESTED @note.CreatedDate</i> : @note.Text</td>
-                                        <td>@note.Attachment</td>
                                     </tr>
                                 }
                                 else
                                 {
                                     <tr>
-                                        <td></td>
-                                        <td></td>
                                         <td colspan="3"><i class="noteDate">SENT TO OUTSOURCED DIGITIZER @note.CreatedDate</i> : @note.Text</td>
-                                        <td>@note.Attachment</td>
                                     </tr>
                                 }
                             }
                         }
+                        <tr>
+                            <td colspan="3" style="background-color:#000;">
+
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -428,7 +429,7 @@
 
         <div id="generalEmailPopup" style="display:none;">
             <div id="generalEmailPopupInner">
-                This is a general order email that also includes a link for the customer to view their order. (use this for responded to order questions and revision requests)<br />
+                This is a general order email that also includes a link for the customer to view their order. (use this for responding to order questions and revision requests)<br />
                 <textarea id="emailText" type="text" placeholder="Email details here..." style="width:90%; height:100px;"></textarea><br />
                 <input type="button" class="smallButton" value="Send General Order Email" onclick="sendGeneralEmail('@Model.BulkOrder.Id', '@Model.BulkOrder.CustomerEmail', $('#emailText').val(), '@Model.BulkOrder.PaymentGuid');" />
                 <input type="button" class="smallButton" value="Cancel" onclick="$('#generalEmailPopup').hide()" />
@@ -568,4 +569,5 @@
         }
 
     });
+    
 </script>

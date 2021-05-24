@@ -653,12 +653,45 @@ namespace LidLaunchWebsite.Controllers
                 foreach(Design design in bulkOrder.lstDesigns.Where(d => d.InternallyApproved).ToList())
                 {
                     returnHtml += "<div id='bulkDesignOption'>";
-                    returnHtml += "<div><b>Order ID: BO-" + bulkOrder.Id + " : " + bulkOrder.OrderDate + "</b></div>";
+                    returnHtml += "<div><b>Order ID: BO-" + bulkOrder.Id + " : " + bulkOrder.OrderDate.ToString("dd/MM/yyyy") + "</b></div>";
                     returnHtml += "<div><img src='../Images/DesignImages/Digitizing/Preview/" + design.DigitizedPreview + "'/></div>";
                     returnHtml += "<div><input type='button' onclick='selectDesign(" + bulkOrderId + ", " + design.Id + ");' class='smallButton' value='Use This Design'/></div>";
                     returnHtml += "</div>";
                 }
                 
+            }
+            return returnHtml;
+        }
+
+        public string GetPreExistingDesignInternal(string searchString, string bulkOrderId)
+        {
+            BulkData data = new BulkData();
+            List<BulkOrder> lstBulkOrders = data.GetBulkOrderData("");
+            searchString = searchString.ToLower().Replace("bo-", "");
+            int searchStringIntValue = 0;
+            int.TryParse(searchString, out searchStringIntValue);
+            if (searchStringIntValue == 0)
+            {
+                lstBulkOrders = lstBulkOrders.Where(b => b.CustomerEmail.ToLower() == searchString.ToLower().Trim()).ToList();
+            }
+            else
+            {
+                lstBulkOrders = lstBulkOrders.Where(b => b.Id == searchStringIntValue).ToList();
+            }
+
+
+            var returnHtml = "";
+            foreach (BulkOrder bulkOrder in lstBulkOrders)
+            {
+                foreach (Design design in bulkOrder.lstDesigns)
+                {
+                    returnHtml += "<div id='bulkDesignOption'>";
+                    returnHtml += "<div><b>Order ID: BO-" + bulkOrder.Id + " : " + bulkOrder.OrderDate.ToString("dd/MM/yyyy") + " : " + design.Name + "</b></div>";
+                    returnHtml += "<div><img src='../Images/DesignImages/Digitizing/Preview/" + design.DigitizedPreview + "'/></div>";
+                    returnHtml += "<div><a href='../Images/DesignImages/Digitizing/Info/" + design.DigitizedProductionSheet + "' target='_blank'>VIEW PDF</a></div>";
+                    returnHtml += "<div><input type='button' onclick='selectDesign(" + bulkOrderId + ", " + design.Id + ");' class='smallButton' value='Use This Design'/></div>";                    
+                    returnHtml += "</div>";
+                }
             }
             return returnHtml;
         }

@@ -177,7 +177,7 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
-        public bool DeleteDesign(int designId)
+        public bool MarkDesignDeleted(int designId)
         {
             var data = new SQLData();
             try
@@ -187,6 +187,38 @@ namespace LidLaunchWebsite.Classes
                 using (data.conn)
                 {
                     SqlCommand sqlComm = new SqlCommand("DeleteDesign", data.conn);
+                    sqlComm.Parameters.AddWithValue("@id", designId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+        public bool UnapproveDesign(int designId)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UnapproveDesign", data.conn);
                     sqlComm.Parameters.AddWithValue("@id", designId);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;

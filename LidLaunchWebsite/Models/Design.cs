@@ -31,5 +31,6 @@ namespace LidLaunchWebsite.Models
         public bool StitchoutApproved { get; set; }
         public bool PredigitizingApproved { get; set; }
         public int StichCount { get; set; }
+        public bool Deleted { get; set; }
     }
 }

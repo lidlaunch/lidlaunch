@@ -329,6 +329,17 @@
     <Content Include="Images\CenterPlacement.jpg" />
     <Content Include="Images\Check.png" />
     <Content Include="Images\CheckGray.png" />
+    <Content Include="Images\ClassicCaps\hat_01.jpg" />
+    <Content Include="Images\ClassicCaps\hat_02.jpg" />
+    <Content Include="Images\ClassicCaps\hat_03.jpg" />
+    <Content Include="Images\ClassicCaps\hat_04.jpg" />
+    <Content Include="Images\ClassicCaps\hat_05.jpg" />
+    <Content Include="Images\ClassicCaps\hat_06.jpg" />
+    <Content Include="Images\ClassicCaps\hat_07.jpg" />
+    <Content Include="Images\ClassicCaps\hat_08.jpg" />
+    <Content Include="Images\ClassicCaps\hat_09.jpg" />
+    <Content Include="Images\ClassicCaps\hat_10.jpg" />
+    <Content Include="Images\ClassicCaps\hat_11.jpg" />
     <Content Include="Images\ColorPicker.jpg" />
     <Content Include="Images\Conversion.png" />
     <Content Include="Images\CustomerReviews1.jpg" />
@@ -522,6 +533,7 @@
     <Content Include="Images\LogoSmall.png" />
     <Content Include="Images\LogoSmallBlack.jpg" />
     <Content Include="Images\LogoSmallBlack.png" />
+    <Content Include="Images\MadeUSALogo.png" />
     <Content Include="Images\min.png" />
     <Content Include="Images\miscIcon.png" />
     <Content Include="Images\MoreColors.png" />

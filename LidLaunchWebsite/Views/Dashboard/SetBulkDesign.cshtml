@@ -4,12 +4,72 @@
 <div id="setBulkDesignPopup">
     <div id="setBulkDesignPopupInner">
         <span onclick="$('#setBulkDesignPopup').hide();" class="closeButton" style="position:absolute; top:5px;right:5px;">X</span>
-        <input id="txtBulkDesignEmail" type="text" placeholder="search by email..." />
-        <div><input type="button" value="Search Designs" class="smallButton" onclick="searchBulkDesigns()" /></div>
-        <div>
-            <table id="designImageHolder">
+        <input id="txtBulkDesignSearch" type="text" placeholder="Email or Order ID..." />
+        <div><input type="button" value="Search Designs" class="smallButton" onclick="searchPreExistingDesigns($('#txtBulkDesignSearch').val())" /></div>
+        <div id="preExistingArtSearchResults">
 
-            </table>
         </div>
     </div>
 </div>
+
+
+
+
+<script type="text/javascript">
+    function searchPreExistingDesigns(searchString) {
+        $('#preExistingArtSearchResults').empty();
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: '/Bulk/GetPreExistingDesignInternal',
+            contentType: false,
+            processData: false,
+            data: JSON.stringify({
+                searchString: searchString, bulkOrderId: @Model.BulkOrderId
+            }),
+            contentType: "application/json",
+            success: function (result) {
+                if (result == "") {
+                    //do nothing
+                    displayPopupNotification('error.', 'error', false);
+                } else {
+                    hideLoading();
+                    $('#preExistingArtSearchResults').append(result);
+                }
+            },
+            error: function (xhr, status, p3, p4) {
+                displayPopupNotification('Error.', 'error', false);
+            }
+        });
+    }
+    function selectDesign(bulkOrderId, designId) {
+        //are you sure prompt
+        var proceed = confirm("Are you sure this is the design you would like to choose?");
+        if (proceed) {
+            $.ajax({
+                type: "POST",
+                url: '/Dashboard/SetBulkOrderDesignAdditional',
+                contentType: false,
+                processData: false,
+                data: JSON.stringify({
+                    bulkOrderId: bulkOrderId,
+                    designId: designId
+                }),
+                contentType: "application/json",
+                success: function (result) {
+                    if (result == "") {
+                        //do nothing
+                        displayPopupNotification('Error adding design to this order.', 'error', false);
+                    } else {
+                        //set the url for the file link and show the link
+                        //reload bulk order window
+                        showBulkOrderDetailsPopup(@Model.BulkOrderId);
+                    }
+                },
+                error: function (xhr, status, p3, p4) {
+                    displayPopupNotification('Error.', 'error', false);
+                }
+            });
+        }
+    }
+</script>

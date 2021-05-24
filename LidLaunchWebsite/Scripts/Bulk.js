@@ -1494,3 +1494,53 @@ function UpdateAdminReviewFinished(bulkOrderId, fromBulkPopup) {
         }
     });
 }
+
+function deleteDesign(designId, bulkOrderId) {
+    var proceed = confirm("Are you sure you want to delete this design?");
+    if (proceed) {
+        $.ajax({
+            type: "POST",
+            url: '/Dashboard/MarkDesignDeleted?designId=' + designId + '&bulkOrderId=' + bulkOrderId,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result == "") {
+                    //do nothing
+                    displayPopupNotification('Delete Design Failed.', 'error', false);
+                } else {
+                    //set the url for the file link and show the link 
+                    showBulkOrderDetailsPopup(bulkOrderId);
+
+                }
+            },
+            error: function (xhr, status, p3, p4) {
+                displayPopupNotification('Delete Design Failed.', 'error', false);
+            }
+        });
+    }
+}
+
+function unapproveDesign(designId, bulkOrderId) {
+    var proceed = confirm("Are you sure you want to unapprove this design?");
+    if (proceed) {
+        $.ajax({
+            type: "POST",
+            url: '/Dashboard/UnapproveDesign?designId=' + designId + '&bulkOrderId=' + bulkOrderId,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result == "") {
+                    //do nothing
+                    displayPopupNotification('Unapprove Design Failed.', 'error', false);
+                } else {
+                    //set the url for the file link and show the link 
+                    showBulkOrderDetailsPopup(bulkOrderId);
+
+                }
+            },
+            error: function (xhr, status, p3, p4) {
+                displayPopupNotification('Unapprove Design Failed.', 'error', false);
+            }
+        });
+    }
+}

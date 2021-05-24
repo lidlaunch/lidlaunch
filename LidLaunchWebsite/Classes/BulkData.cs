@@ -534,66 +534,71 @@ namespace LidLaunchWebsite.Classes
                 {
 
                     Design design = new Design();
-                    design.Id = Convert.ToInt32(dr3["Id"].ToString());
-                    design.ArtSource = Convert.ToString(dr3["ArtSource"].ToString());
-                    design.PreviewImage = Convert.ToString(dr3["PreviewImage"].ToString());
-                    design.DigitizedFile = Convert.ToString(dr3["DigitizedFile"].ToString());
-                    design.DigitizedProductionSheet = Convert.ToString(dr3["DigitizedProductionSheet"].ToString());
-                    design.EMBFile = Convert.ToString(dr3["EMBFile"].ToString());
-                    design.DigitizedPreview = Convert.ToString(dr3["DigitizedPreview"].ToString());
-                    design.Width = Convert.ToDecimal(dr3["Width"].ToString());
-                    design.Height = Convert.ToDecimal(dr3["Height"].ToString());
-                    design.X = Convert.ToDecimal(dr3["X"].ToString());
-                    design.Y = Convert.ToDecimal(dr3["Y"].ToString());
-                    design.EmbroideredWidth = Convert.ToDecimal(dr3["EmbroideredWidth"].ToString());
-                    design.EmbroideredHeight = Convert.ToDecimal(dr3["EmbroideredHeight"].ToString());
-                    design.EmbroideredX = Convert.ToDecimal(dr3["EmbroideredX"].ToString());
-                    design.EmbroideredY = Convert.ToDecimal(dr3["EmbroideredY"].ToString());
-                    design.CustomerApproved = Convert.ToBoolean(dr3["CustomerApproved"].ToString());
-                    design.InternallyApproved = Convert.ToBoolean(dr3["InternallyApproved"].ToString());
-                    design.Revision = Convert.ToBoolean(dr3["Revision"].ToString());
-                    design.RevisionStatus = Convert.ToString(dr3["RevisionStatus"].ToString());
-                    if(design.Revision)
+                    design.Deleted = Convert.ToBoolean(dr3["Deleted"].ToString());
+                    if (!design.Deleted)
                     {
-                        if (design.RevisionStatus == "")
+                        design.Id = Convert.ToInt32(dr3["Id"].ToString());
+                        design.ArtSource = Convert.ToString(dr3["ArtSource"].ToString());
+                        design.PreviewImage = Convert.ToString(dr3["PreviewImage"].ToString());
+                        design.DigitizedFile = Convert.ToString(dr3["DigitizedFile"].ToString());
+                        design.DigitizedProductionSheet = Convert.ToString(dr3["DigitizedProductionSheet"].ToString());
+                        design.EMBFile = Convert.ToString(dr3["EMBFile"].ToString());
+                        design.DigitizedPreview = Convert.ToString(dr3["DigitizedPreview"].ToString());
+                        design.Width = Convert.ToDecimal(dr3["Width"].ToString());
+                        design.Height = Convert.ToDecimal(dr3["Height"].ToString());
+                        design.X = Convert.ToDecimal(dr3["X"].ToString());
+                        design.Y = Convert.ToDecimal(dr3["Y"].ToString());
+                        design.EmbroideredWidth = Convert.ToDecimal(dr3["EmbroideredWidth"].ToString());
+                        design.EmbroideredHeight = Convert.ToDecimal(dr3["EmbroideredHeight"].ToString());
+                        design.EmbroideredX = Convert.ToDecimal(dr3["EmbroideredX"].ToString());
+                        design.EmbroideredY = Convert.ToDecimal(dr3["EmbroideredY"].ToString());
+                        design.CustomerApproved = Convert.ToBoolean(dr3["CustomerApproved"].ToString());
+                        design.InternallyApproved = Convert.ToBoolean(dr3["InternallyApproved"].ToString());
+                        design.Revision = Convert.ToBoolean(dr3["Revision"].ToString());
+                        design.RevisionStatus = Convert.ToString(dr3["RevisionStatus"].ToString());
+                        if (design.Revision)
                         {
-                            design.RevisionStatus = "1:Pending";
-                        }
-                    }
-                    design.Name = Convert.ToString(dr3["Name"].ToString());
-
-                    design.lstNotes = new List<Note>();
-                    design.lstRevisionNotes = new List<Note>();                    
-                    if (ds.Tables[5].Rows.Count > 0)
-                    {
-                        DataRow[] drsDesignNotes = ds.Tables[5].Select("DesignId = " + design.Id.ToString());
-                        foreach (DataRow drNote in drsDesignNotes)
-                        {
-                            if (Convert.ToInt32(drNote["DesignId"].ToString()) == design.Id)
+                            if (design.RevisionStatus == "")
                             {
-                                Note note = new Note();
-                                note.Id = Convert.ToInt32(drNote["Id"].ToString());
-                                note.Text = Convert.ToString(drNote["Text"].ToString());
-                                note.CustomerAdded = Convert.ToBoolean(drNote["CustomerAdded"].ToString());
-                                note.Attachment = Convert.ToString(drNote["Attachment"].ToString());
-                                note.CreatedDate = Convert.ToDateTime(drNote["CreatedDate"].ToString());
-                                note.CreatedUserId = Convert.ToInt32(drNote["CreatedUserId"].ToString());
-                                if (Convert.ToBoolean(drNote["CustomerAdded"].ToString()))
-                                {
-                                    design.lstRevisionNotes.Add(note);
-                                } else
-                                {
-                                    design.lstNotes.Add(note);
-                                }                                    
+                                design.RevisionStatus = "1:Pending";
                             }
                         }
-                    }
-                    design.lstCombinedNotes = new List<Note>();
-                    design.lstCombinedNotes.AddRange(design.lstNotes);
-                    design.lstCombinedNotes.AddRange(design.lstRevisionNotes);
-                    design.lstCombinedNotes = design.lstCombinedNotes.OrderByDescending(dn => dn.CreatedDate).ToList();
+                        design.Name = Convert.ToString(dr3["Name"].ToString());
 
-                    bulkOrder.lstDesigns.Add(design);
+                        design.lstNotes = new List<Note>();
+                        design.lstRevisionNotes = new List<Note>();
+                        if (ds.Tables[5].Rows.Count > 0)
+                        {
+                            DataRow[] drsDesignNotes = ds.Tables[5].Select("DesignId = " + design.Id.ToString());
+                            foreach (DataRow drNote in drsDesignNotes)
+                            {
+                                if (Convert.ToInt32(drNote["DesignId"].ToString()) == design.Id)
+                                {
+                                    Note note = new Note();
+                                    note.Id = Convert.ToInt32(drNote["Id"].ToString());
+                                    note.Text = Convert.ToString(drNote["Text"].ToString());
+                                    note.CustomerAdded = Convert.ToBoolean(drNote["CustomerAdded"].ToString());
+                                    note.Attachment = Convert.ToString(drNote["Attachment"].ToString());
+                                    note.CreatedDate = Convert.ToDateTime(drNote["CreatedDate"].ToString());
+                                    note.CreatedUserId = Convert.ToInt32(drNote["CreatedUserId"].ToString());
+                                    if (Convert.ToBoolean(drNote["CustomerAdded"].ToString()))
+                                    {
+                                        design.lstRevisionNotes.Add(note);
+                                    }
+                                    else
+                                    {
+                                        design.lstNotes.Add(note);
+                                    }
+                                }
+                            }
+                        }
+                        design.lstCombinedNotes = new List<Note>();
+                        design.lstCombinedNotes.AddRange(design.lstNotes);
+                        design.lstCombinedNotes.AddRange(design.lstRevisionNotes);
+                        design.lstCombinedNotes = design.lstCombinedNotes.OrderByDescending(dn => dn.CreatedDate).ToList();
+
+                        bulkOrder.lstDesigns.Add(design);
+                    }                    
                 }
                 
             }
@@ -1009,6 +1014,39 @@ namespace LidLaunchWebsite.Classes
                 using (data.conn)
                 {
                     SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderDesign", data.conn);
+                    sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
+                    sqlComm.Parameters.AddWithValue("@designId", designId);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    data.conn.Open();
+                    sqlComm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (data.conn != null)
+                {
+                    data.conn.Close();
+                }
+            }
+        }
+
+        public bool UpdateBulkOrderDesignAdditional(int bulkOrderId, int designId)
+        {
+            var data = new SQLData();
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (data.conn)
+                {
+                    SqlCommand sqlComm = new SqlCommand("UpdateBulkOrderDesignAdditional", data.conn);
                     sqlComm.Parameters.AddWithValue("@bulkOrderId", bulkOrderId);
                     sqlComm.Parameters.AddWithValue("@designId", designId);
 
