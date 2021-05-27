@@ -3042,23 +3042,23 @@ input[type=text], input[type=password], select, input[type=number] {
         overflow-x: scroll;
     }
     #setBulkDesignPopupInner {
-        width: 100vw;
+        width: 50vw;
         padding: 10px 0;
     }
     #setBulkDesignPopup {
         position: fixed;
-        width: 50vw;
+        width: 100vw;
     }
     #notePopupInner {
         width: 50vw;
         padding: 10px 0;
     }
     #notePopUp {
-        position: absolute;
+        position: fixed;
         width: 100vw;
     }
     #addBulkReworkPopup {
-        position: absolute;
+        position: fixed;
         width: 100vw;
     }
 }
