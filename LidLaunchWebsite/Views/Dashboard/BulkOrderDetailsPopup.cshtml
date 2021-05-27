@@ -453,7 +453,7 @@
                     {
                         if (Model.BulkOrder.BackStitching)
                         {
-                            if (Model.BulkOrder.lstDesigns.Any(d => d.Name.ToUpper() == "BACK"))
+                            if (Model.BulkOrder.lstDesigns.Any(d => d.Name.ToUpper() == "BACK" && d.CustomerApproved))
                             {
                                 <img src="~/Images/NotInternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.BulkOrder.Id, true);" />
                             }
@@ -462,7 +462,6 @@
                         {
                             <img src="~/Images/NotInternallyApproved.png" style="max-height:80px;max-width:80px; cursor:pointer;" onclick="InternallyApproveBulkOrder(@Model.BulkOrder.Id, true);" />
                         }
-
                     }
                 }
             </div>
