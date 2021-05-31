@@ -342,6 +342,10 @@
                                 <td><a href="https://lidlaunch.com/bulk/orderstatus?id=@bulkOrder.PaymentGuid" target="_blank" class="ViewBulkLink"><input type="button" value="CSTLINK" class="smallButton" /></a></td>
                                 <td><span onclick="showBulkOrderDetailsPopup(@bulkOrder.Id);"><input type="button" value="VIEW" class="smallButton" /></span></td>
                             </tr>
+                            if (bulkOrder.AdminReview)
+                            {
+                                <tr><td></td><td colspan="10" style="background:#000; color:#fff; width:600px;">@bulkOrder.AdminReviewComment</td></tr>
+                            }
                         }
                     </tbody>
                 </table>
