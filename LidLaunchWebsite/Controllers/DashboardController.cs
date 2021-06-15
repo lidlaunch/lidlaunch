@@ -937,7 +937,7 @@ namespace LidLaunchWebsite.Controllers
             BulkData bulkData = new BulkData();
             EmailFunctions email = new EmailFunctions();
 
-            var success = email.sendEmail(customerEmail, "LidLaunch Customer", email.colorConfirmationEmail(bulkOrderId, noteText), "Order #" + bulkOrderId + " Color Confirmation Request", "");
+            var success = email.sendEmail(customerEmail, "LidLaunch Customer", email.colorConfirmationEmail(bulkOrderId, noteText), "Order #" + bulkOrderId + " Color Confirmation Request", "support@lidlaunch.com");
             if (success)
             {
                 bulkData.UpdateColorConfirmationEmailSent(Convert.ToInt32(bulkOrderId));
@@ -954,7 +954,7 @@ namespace LidLaunchWebsite.Controllers
             BulkData bulkData = new BulkData();
             EmailFunctions email = new EmailFunctions();
 
-            var success = email.sendEmail(customerEmail, "LidLaunch Customer", email.generalBulkOrderEmail(emailText, paymentGuid), "Your Order #" + bulkOrderId, "");
+            var success = email.sendEmail(customerEmail, "LidLaunch Customer", email.generalBulkOrderEmail(emailText, paymentGuid), "Your Order #" + bulkOrderId, "support@lidlaunch.com");
             if (success)
             {
                 var addBulkOrderLogSuccess = bulkData.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Email Sent To Customer From Website: " + emailText);
@@ -1520,12 +1520,13 @@ namespace LidLaunchWebsite.Controllers
                 EmailFunctions email = new EmailFunctions();
 
                 var developmentMode = Convert.ToBoolean(ConfigurationManager.AppSettings["DevelopmentMode"]);
+                var digitizerEmail = Convert.ToString(ConfigurationManager.AppSettings["ExternalDigitizerEmailAddress"]);
                 if (developmentMode)
                 {
                     email.sendEmail("robertwhamm@yahoo.com", "Dope Custom Designs", "The artwork is now available for order #" + bulkOrderId, "Order #" + bulkOrderId + " Artwork", "digitizing@lidlaunch.com");
                 } else
                 {
-                    email.sendEmail("ronnie.dcd@gmail.com", "Dope Custom Designs", "The artwork is now available for order #" + bulkOrderId, "Order #" + bulkOrderId + " Artwork", "digitizing@lidlaunch.com");
+                    email.sendEmail(digitizerEmail, "Dope Custom Designs", "The artwork is now available for order #" + bulkOrderId, "Order #" + bulkOrderId + " Artwork", "digitizing@lidlaunch.com");
                 }
                 
 
@@ -1697,13 +1698,14 @@ namespace LidLaunchWebsite.Controllers
                 if(!customerAdded)
                 {
                     var developmentMode = Convert.ToBoolean(ConfigurationManager.AppSettings["DevelopmentMode"]);
+                    var digitizerEmail = Convert.ToString(ConfigurationManager.AppSettings["ExternalDigitizerEmailAddress"]);
 
                     if (developmentMode)
                     {
                         email.sendEmail("digitizing@lidlaunch.com", "LidLaunch", text, parentBulkOrderId + " : Revision Request", "robertwhamm@yahoo.com");
                     } else
                     {
-                        email.sendEmail("digitizing@lidlaunch.com", "LidLaunch", text, parentBulkOrderId + " : Revision Request", "ronnie.dcd@gmail.com");
+                        email.sendEmail("digitizing@lidlaunch.com", "LidLaunch", text, parentBulkOrderId + " : Revision Request", digitizerEmail);
                     }
                     
                 }                

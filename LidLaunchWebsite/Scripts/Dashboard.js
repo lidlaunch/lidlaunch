@@ -473,22 +473,31 @@ function saveHatType() {
 }
 
 
-function updateBulkOrderPaid(bulkOrderId, orderPaid, that) {
-    $.ajax({
-        type: "POST",
-        url: '/Dashboard/UpdateBulkOrderPaid',
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({
-            "bulkOrderId": bulkOrderId, "orderPaid": orderPaid
-        }),
-        dataType: "json",
-        success: function (data) {
-            window.location.reload();
-        },
-        error: function (err) {
-            displayPopupNotification('Error updating order paid.', 'error', false);
-        }
-    });
+function updateBulkOrderPaid(bulkOrderId, orderPaid) {
+    var proceed = confirm("Are you sure you want to mark this order as PAID/UNPAID?");
+    if (proceed) {
+        $.ajax({
+            type: "POST",
+            url: '/Dashboard/UpdateBulkOrderPaid',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+                "bulkOrderId": bulkOrderId, "orderPaid": orderPaid
+            }),
+            dataType: "json",
+            success: function (result) {
+                if (result == "") {
+                    //do nothing
+                    displayPopupNotification('Error marking order as paid/unpaid.', 'error', false);
+                } else {
+                    //set the url for the file link and show the link 
+                    showBulkOrderDetailsPopup(bulkOrderId);
+                }
+            },
+            error: function (err) {
+                displayPopupNotification('Error updating order paid.', 'error', false);
+            }
+        });
+    }
 }
 
 function updateOrderRefunded(bulkOrderId) {
