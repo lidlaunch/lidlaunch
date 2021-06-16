@@ -1,0 +1,97 @@
+﻿@model List<LidLaunchWebsite.Models.Expense>
+@{
+    ViewBag.Title = "ViewExpenses";
+}
+<div class="centerInner">
+
+
+    <h2>ViewExpenses</h2>
+    Date From: <input id="txtDateFrom" type="date" value="@DateTime.Now" />
+    Date To: <input id="txtDateTo" type="date" value="@DateTime.Now" />
+    <input type="button" onclick="loadExpenses()" value="LOAD" class="smallButton" />
+    <input type="button" onclick="$('#expenseEditHolder').load(attachmentEditUrl, { expenseId: 0 });" class="smallButton" value="Create Expense" />
+    <table>
+        <thead>
+            <tr>
+                <td>Type</td>
+                <td>Amount</td>
+                <td>DateFrom</td>
+                <td>DateTo</td>
+                <td>Title</td>
+                <td>Description</td>
+                <td>Attachment</td>
+                <td>Edit</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="9"><b>Total: @Model.Sum(e => e.Amount)</b></td>
+            </tr>
+            <tr>
+                <td colspan="9"><b>Advertising: @Model.Where(e => e.Type == "Advertising").Sum(e => e.Amount)</b></td>
+            </tr>
+            <tr>
+                <td colspan="9"><b>EquipmentInstallment: @Model.Where(e => e.Type == "EquipmentInstallment").Sum(e => e.Amount)</b></td>
+            </tr>
+            <tr>
+                <td colspan="9"><b>EquipmentOneTime: @Model.Where(e => e.Type == "EquipmentOneTime").Sum(e => e.Amount)</b></td>
+            </tr>
+            <tr>
+                <td colspan="9"><b>Rent: @Model.Where(e => e.Type == "Rent").Sum(e => e.Amount)</b></td>
+            </tr>
+            <tr>
+                <td colspan="9"><b>Blanks: @Model.Where(e => e.Type == "Blanks").Sum(e => e.Amount)</b></td>
+            </tr>
+            <tr>
+                <td colspan="9"><b>ProductionSupplies: @Model.Where(e => e.Type == "ProductionSupplies").Sum(e => e.Amount)</b></td>
+            </tr>
+            <tr>
+                <td colspan="9"><b>Payroll: @Model.Where(e => e.Type == "Payroll").Sum(e => e.Amount)</b></td>
+            </tr>
+            <tr>
+                <td colspan="9"><b>Shipping: @Model.Where(e => e.Type == "Shipping").Sum(e => e.Amount)</b></td>
+            </tr>
+            <tr>
+                <td colspan="9"><b>ShippingSupplies: @Model.Where(e => e.Type == "ShippingSupplies").Sum(e => e.Amount)</b></td>
+            </tr>
+            <tr>
+                <td colspan="9"><b>Digitizing: @Model.Where(e => e.Type == "Digitizing").Sum(e => e.Amount)</b></td>
+            </tr>
+            <tr>
+                <td colspan="9"><b>Utilities: @Model.Where(e => e.Type == "Utilities").Sum(e => e.Amount)</b></td>
+            </tr>
+            <tr>
+                <td colspan="9"><b>Services: @Model.Where(e => e.Type == "Services").Sum(e => e.Amount)</b></td>
+            </tr>
+            <tr>
+                <td colspan="9"><b>OfficeSupplies: @Model.Where(e => e.Type == "OfficeSupplies").Sum(e => e.Amount)</b></td>
+            </tr>
+
+            @foreach (LidLaunchWebsite.Models.Expense expense in Model)
+            {
+                <tr>
+                    <td>@expense.Type</td>
+                    <td>@expense.Amount</td>
+                    <td>@expense.DateFrom.ToString("MM/dd/yyyy")</td>
+                    <td>@expense.DateTo.ToString("MM/dd/yyyy")</td>
+                    <td>@expense.Title</td>
+                    <td>@expense.Description</td>
+                    <td><a href="~/Images/ExpenseAttachment/@expense.Attachment" target="_blank">@expense.Attachment</a></td>
+                    <td><input type="button" onclick="$('#expenseEditHolder').load(attachmentEditUrl, { expenseId: @expense.Id });" class="smallButton" value="Edit" /></td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    <div id="expenseEditHolder">
+
+    </div>
+    <script type="text/javascript">
+    var attachmentEditUrl = '@Url.Action("EditExpense", "Expense")';
+    function loadExpenses() {
+        var dateFrom = $('#txtDateFrom').val();
+        var dateTo = $('#txtDateTo').val();
+        window.location = '/Expense/ViewExpenses?dateFrom=' + dateFrom + '&dateTo=' + dateTo;
+    }
+    </script>
+</div>

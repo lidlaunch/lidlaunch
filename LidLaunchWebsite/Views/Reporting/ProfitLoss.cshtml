@@ -1,0 +1,359 @@
+﻿@model LidLaunchWebsite.Models.ProfitLoss
+@{
+    ViewBag.Title = "ProfitLoss";
+}
+
+
+<style type="text/css">
+    .tinyText {
+     font-size:12px;
+    }
+    .profitLoss {
+        width: 600px;
+        border-collapse: collapse;
+    }
+    .profitLoss td {
+        padding-top: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .profitLoss tr.border td {
+        padding:0 10px;
+    }
+    .profitLoss tr.border {
+        border-bottom: 3px solid #000;
+        border-collapse: collapse;
+    }
+    .rightAlign {
+        text-align: right;
+    }
+</style>
+
+<div class="centerInner">
+    <div>
+        <h2>Profit Loss</h2>
+
+        <table>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td><b>From:</b> </td>
+                            <td><input type="date" id="dtFrom" /></td>
+                        </tr>
+                        <tr>
+                            <td><b>To:</b> </td>
+                            <td><input type="date" id="dtTo" /></td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <input type="button" class="smallButton" value="View" onclick="rundata()" />
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <table style="font-size:18px; margin-top:30px;" class="profitLoss">
+                        <tr>
+                            <td colspan="2" style="text-align:center;"><b>LIDLAUNCH LLC<br />PROFIT/LOSS STATEMENT<br />@Model.CostEstimate.DateFrom - @Model.CostEstimate.DateTo</b></td>
+                        </tr>
+                        <tr class="border" style="background:black; color: #fff; line-height:40px;">
+                            <td>Revenue:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.CostEstimate.TotalOrderRevenue).ToString("#,##0")</td>
+                        </tr>
+
+                        <tr>
+                            <td>Advertising:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.Expenses.Where(e => e.Type == "Advertising").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Facebook/Google/Agency Fees</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>EquipmentInstallment:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.Expenses.Where(e => e.Type == "EquipmentInstallment").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Equipment Lease/Loan Payments</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>EquipmentOneTime:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.Expenses.Where(e => e.Type == "EquipmentOneTime").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">One Time Cash Payments For Equipment (Computers/Machines/Etc)</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>Rent:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.Expenses.Where(e => e.Type == "Rent").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Building Rent Payments</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>Blanks:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.Expenses.Where(e => e.Type == "Blanks").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Blank Hat Costs</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>ProductionSupplies:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.Expenses.Where(e => e.Type == "ProductionSupplies").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Thread/Needles/Backing/Etc</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>Payroll:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.Expenses.Where(e => e.Type == "Payroll").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Employee Payroll</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>Shipping:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.Expenses.Where(e => e.Type == "Shipping").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Shipping Costs Paid</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>ShippingSupplies:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.Expenses.Where(e => e.Type == "ShippingSupplies").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Uline Invoices/Packing Materials</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>Digitizing:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(@Model.Expenses.Where(e => e.Type == "Digitizing").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Digitizng Outsourcing Paid</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>Utilities:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.Expenses.Where(e => e.Type == "Utilities").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Power/Water/Internet/Trash</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>Services:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.Expenses.Where(e => e.Type == "Services").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Server Hosting/Email/Adobe/Etc</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>Insurance:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.Expenses.Where(e => e.Type == "Insurance").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Statefarm Business Insurance</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>OfficeSupplies:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.Expenses.Where(e => e.Type == "OfficeSupplies").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Paper/Pens/Post-Its/Etc</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>Legal:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.Expenses.Where(e => e.Type == "Legal").Sum(e => e.Amount)).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Lawyer Fees/Government Fees</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>PayPal Fees:</td>
+                            <td class="rightAlign">$@Convert.ToInt32(Model.CostEstimate.PayPalTranscationFeesTotal).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Credit Card Processing Fees</span></td>
+                            <td></td>
+                        </tr>
+
+
+                        <tr class="border" style="background:black; color: #fff;  line-height:40px;">
+                            <td>Total Expenses:</td>
+                            <td class="rightAlign">$@Convert.ToInt32((Model.Expenses.Sum(e => e.Amount) + @Model.CostEstimate.PayPalTranscationFeesTotal)).ToString("#,##0")</td>
+                        </tr>
+
+
+                        <tr class="border" style="background:#39b91c; color: #fff;  line-height:40px;">
+                            <td>Profit:</td>
+                            <td class="rightAlign">$@Convert.ToInt32((Model.CostEstimate.TotalOrderRevenue - (Model.Expenses.Sum(e => e.Amount) + @Model.CostEstimate.PayPalTranscationFeesTotal))).ToString("#,##0")</td>
+                        </tr>
+
+                    </table>
+                </td>
+                <td>
+                    <table style="font-size:18px; margin-top:30px;" class="profitLoss">
+                        <tr style="background:black; color: #fff;">
+                            <td colspan="2" style="text-align:center;"><b>Order Statistics<br />@Model.CostEstimate.DateFrom - @Model.CostEstimate.DateTo</b></td>
+                        </tr>
+                        <tr>
+                            <td>Total Orders:</td>
+                            <td class="rightAlign">@Convert.ToInt32(Model.CostEstimate.TotalOrders).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Total Number of Orders</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>Total Hats:</td>
+                            <td class="rightAlign">@Convert.ToInt32(Model.CostEstimate.TotalHats).ToString("#,##0")</td>
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Total Number of Hats Stitched</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>Average Order Value:</td>
+                            @if (Model.CostEstimate.TotalOrders != 0)
+                            {
+                                <td class="rightAlign">@Math.Round(Model.CostEstimate.TotalOrderRevenue / Model.CostEstimate.TotalOrders, 2)</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Revenue / Number of Orders</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>Average Order Hat Count:</td>
+                            @if (Model.CostEstimate.TotalOrders != 0)
+                            {
+                                <td class="rightAlign">@Math.Round(Convert.ToDecimal(Model.CostEstimate.TotalHats) / Model.CostEstimate.TotalOrders, 2)</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }                            
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Total Hats / Number of Orders</span></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td>Average Marketing Spend Per Order:</td>
+                            @if (Model.CostEstimate.TotalOrders != 0)
+                            {
+                                <td class="rightAlign">@Math.Round(Model.Expenses.Where(e => e.Type == "Advertising").Sum(e => e.Amount) / Model.CostEstimate.TotalOrders, 2)</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }                            
+                        </tr>
+                        <tr class="border">
+                            <td><span class="tinyText">Advertising Spend / Number of Orders</span></td>
+                            <td></td>
+                        </tr>
+
+
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+    <div style="height:400px; overflow-y:scroll; margin-top:20px;">
+        <h2>Expenses</h2>
+        <table>
+            <thead>
+                <tr style="font-weight:bold;">
+                    <td>Type</td>
+                    <td>Amount</td>
+                    <td>Title</td>
+                    <td>Description</td>
+                    <td>Date</td>
+                    <td>Attachment</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (LidLaunchWebsite.Models.Expense expense in Model.Expenses)
+                {
+                    <tr>
+                        <td>@expense.Type</td>
+                        <td>@expense.Amount</td>
+                        <td>@expense.Title</td>
+                        <td>@expense.Description</td>
+                        <td>@expense.DateFrom.ToString("MM/dd/yyyy") - @expense.DateTo.ToString("MM/dd/yyyy")</td>
+                        @if (expense.Attachment != "")
+                        {
+                            <td><a href="~/Images/ExpenseAttachment/@expense.Attachment" target="_blank">View</a></td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function rundata() {
+        window.location = 'ProfitLoss?dateFrom=' + $('#dtFrom').val() + '&dateTo=' + $('#dtTo').val();
+    }
+
+    function calculateProfit() {
+        var totalRemainingRevenue = $('#totalRemainingRevenue').text();
+        var adSpend = $('#txtAdSpend').val();
+        var payroll = $('#txtPayroll').val();
+        var overhead = $('#txtOverhead').val();
+        var monthlyServices = $('#txtMonthlyServices').val();
+        var profit = parseFloat(totalRemainingRevenue) - parseFloat(adSpend) - parseFloat(payroll) - parseFloat(overhead) - parseFloat(monthlyServices);
+        $('#profit').text('PROFIT: ' + profit);
+    }
+</script>
+
+
+

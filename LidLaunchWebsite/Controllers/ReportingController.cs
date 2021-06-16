@@ -18,6 +18,14 @@ namespace LidLaunchWebsite.Controllers
 
         public ActionResult GetExpensesByDateRange(string dateFrom, string dateTo)
         {
+            CostEsimate costEsimate = GetCostEstimate(dateFrom, dateTo);            
+
+            return View(costEsimate);
+
+        }
+
+        private CostEsimate GetCostEstimate(string dateFrom, string dateTo)
+        {
             CostEsimate costEsimate = new CostEsimate();
             if (dateFrom != null && dateTo != null && dateFrom != "" && dateTo != "" && checkAdminLoggedIn())
             {
@@ -51,18 +59,18 @@ namespace LidLaunchWebsite.Controllers
                     foreach (BulkOrderItem item in bulkOrder.lstItems)
                     {
                         MasterBulkOrderItem masterItem = new MasterBulkOrderItem();
-                        if(item.MasterItemId != 0)
+                        if (item.MasterItemId != 0)
                         {
                             masterItem = lstMasterItems.First(i => i.Id == item.MasterItemId);
-                        }                        
+                        }
 
                         if (masterItem != null && masterItem.Manufacturer != null && masterItem.Manufacturer != "")
                         {
-                            if(masterItem.Manufacturer.ToUpper() != "LIDLAUNCH")
+                            if (masterItem.Manufacturer.ToUpper() != "LIDLAUNCH")
                             {
                                 totalHatCost += masterItem.Cost * item.ItemQuantity;
                                 totalHats += item.ItemQuantity;
-                            }                            
+                            }
                         }
                         if (masterItem != null && masterItem.Manufacturer != null && masterItem.Manufacturer != "")
                         {
@@ -71,7 +79,7 @@ namespace LidLaunchWebsite.Controllers
                                 if (item.ItemName.ToUpper() == "SHIPPING")
                                 {
                                     totalShippingRevenue += item.ItemCost;
-                                }                                    
+                                }
                             }
                         }
                     }
@@ -139,13 +147,25 @@ namespace LidLaunchWebsite.Controllers
                 costEsimate.DateFrom = dateFrom;
                 costEsimate.DateTo = dateTo;
             }
+
+            return costEsimate;
+        }
+        public ActionResult ProfitLoss(string dateFrom, string dateTo)
+        {
+            ExpenseData expenseData = new ExpenseData();
+            ProfitLoss model = new ProfitLoss();
+            if (checkAdminLoggedIn())
+            {
+                model.CostEstimate = GetCostEstimate(dateFrom, dateTo);
+                model.Expenses = expenseData.GetExpenses(Convert.ToDateTime(dateFrom), Convert.ToDateTime(dateTo));
+                model.Expenses = model.Expenses.OrderBy(e => e.DateFrom).ToList();
+            }
+            else
+            {
+                return RedirectToAction("Login", "User");
+            }
             
-
-
-
-
-            return View(costEsimate);
-
+            return View(model);
         }
         public bool checkAdminLoggedIn()
         {

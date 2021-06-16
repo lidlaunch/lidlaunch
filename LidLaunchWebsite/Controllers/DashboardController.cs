@@ -30,7 +30,7 @@ namespace LidLaunchWebsite.Controllers
                 {
                     DashboardData data = new DashboardData();
                     DesignerDashboard dashboard = data.GetDesignerDashboard((Int32)Session["DesignerId"]);
-                    Session["PayoutAmmount"] = dashboard.TotalAvailableForPayout;
+                    Session["PayoutAmount"] = dashboard.TotalAvailableForPayout;
                     return View(dashboard);
                 }
                 else
@@ -330,7 +330,7 @@ namespace LidLaunchWebsite.Controllers
             DesignerData designerData = new DesignerData();
             Designer designer = designerData.GetDesigner((Int32)Session["UserID"]);
 
-            var payoutId = dashboardData.CreateDesignerPayout(designer.Id, (decimal)Session["PayoutAmmount"], designer.PaypalAddress);
+            var payoutId = dashboardData.CreateDesignerPayout(designer.Id, (decimal)Session["PayoutAmount"], designer.PaypalAddress);
 
             if (payoutId > 0)
             {                
@@ -338,8 +338,8 @@ namespace LidLaunchWebsite.Controllers
                 User user = new User();
                 UserData userData = new UserData();
                 user = userData.GetUser((Int32)Session["UserID"]);
-                var success = email.sendEmail(user.Email, user.FirstName + ' ' + user.LastName, email.payoutEmail(designer.PaypalAddress, Session["PayoutAmmount"].ToString()), "Your Payout Request Has Been Submitted", designer.PaypalAddress);
-                Session["PayoutAmmount"] = null;
+                var success = email.sendEmail(user.Email, user.FirstName + ' ' + user.LastName, email.payoutEmail(designer.PaypalAddress, Session["PayoutAmount"].ToString()), "Your Payout Request Has Been Submitted", designer.PaypalAddress);
+                Session["PayoutAmount"] = null;
             }
 
             var json = new JavaScriptSerializer().Serialize(payoutId);
