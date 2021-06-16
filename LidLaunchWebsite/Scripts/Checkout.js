@@ -155,153 +155,175 @@ var attemptOrderWithoutArtwork = false;
 
 function processPayment() {
     var isBulkOrder = false;
-
-    if ($('#isBulkOrder').text() == "true") {
-        isBulkOrder = true;
-    }
-
     var items = "";
-
-    if (isBulkOrder) {
-        items = JSON.stringify(currentBulkProductList);
-    } else {
-        items = $('#productList').text();
-    }
-
-    var shippingcost = $('#shippingCost').text();
-    var email = $('#txtCustomerEmail').val();
-    //shipping info
-    var shipFirstName = $('#txtShippingFirstName').val();
-    var shipLastName = $('#txtShippingLastName').val();
-
-    var shipAddress = $('#txtShippingAddress').val();
-    var shipCity = $('#txtShippingCity').val();
-    var shipState = $('#selShippingState').children("option:selected").val();
-    var shipZip = $('#txtShippingZip').val();
-    var shipPhone = $('#txtPhone').val();
-
-    var billFirstName = $('#txtBillingFirstName').val();
-    var billLastName = $('#txtBillingLastName').val();
-
-    var billAddress = $('#txtBillingAddress').val();
-    var billCity = $('#txtBillingCity').val();
-    var billState = $('#selBillingState').children("option:selected").val();
-    var billZip = $('#txtBillingZip').val();
-    var billPhone = $('#txtBillingPhone').val();
-
-    var backStitching = $('#chkBackStitching').prop("checked");
-    var leftSideStitching = $('#chkLeftSideStitching').prop("checked");
-    var rightSideStitching = $('#chkRightSideStitching').prop("checked");
-    var backStitchingComment = $('#txtBackStitching').val();
-    var rightSideStitchingComment = $('#txtRightSideStitching').val();
-    var leftSideStitchingComment = $('#txtLeftSideStitching').val();
-
-    var shippingAddressJson = '{ "ShipToState" : "' + shipState + '", "ShipToStreet" : "' + shipAddress + '", "ShipToZip" : "' + shipZip + '", "ShipToCity" : "' + shipCity + '", "ShipToPhone" : "' + shipPhone + '", "ShipToFirstName" : "' + shipFirstName + '", "ShipToLastName" : "' + shipLastName + '" }';
-    var billingAddressJson = "";
-    if ($('#rdUseSameAsShipping').prop('checked') == true) {
-        billingAddressJson = '{ "State" : "' + shipState + '", "Street" : "' + shipAddress + '", "Zip" : "' + shipZip + '", "City" : "' + shipCity + '", "PhoneNum" : "' + shipPhone + '" , "FirstName" : "' + shipFirstName + '", "LastName" : "' + shipLastName + '"}';
-    } else {
-        billingAddressJson = '{ "State" : "' + billState + '", "Street" : "' + billAddress + '", "Zip" : "' + billZip + '", "City" : "' + billCity + '", "PhoneNum" : "' + billPhone + '" , "FirstName" : "' + billFirstName + '", "LastName" : "' + billLastName + '"}';
-    }
-
-    var ccV = $('#txtSecurityCode').val();
-    var ccExpMM = $('#selExpirationMonth').children("option:selected").val();
-    var ccExpYY = $('#selExpirationYear').children("option:selected").val();
-    var ccNumber = $('#txtCardNumber').val().replace(/\s/g, '');
-
-    var files = [];
-    var orderNotes = '';
-    var artworkPlacement = '';
-    var file = null;
-
-    if (isBulkOrder) {
-        if (!attemptOrderWithoutArtwork) {
-            files = $('#bulkArtwork')[0].files;
-            file = files[0];
-        }        
-        orderNotes = $('#txtDetails').val();
-        if (artworkPreExisting) {
-            orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
-        }
-        artworkPlacement = $('#artPlacement').text();
-    }
-
-    var totalPurchaseAmount = $('#lblTotal').text();
-
     var data = new FormData();
-    data.append("file" + 0, file);
-    data.append("cartItems", items);
-    data.append("billingAddress", billingAddressJson);
-    data.append("shippingAddress", shippingAddressJson);
-    data.append("ccNumber", ccNumber);
-    data.append("ccExpMM", ccExpMM);
-    data.append("ccExpYY", ccExpYY);
-    data.append("ccV", ccV);
-    data.append("orderTotal", totalPurchaseAmount);
-    data.append("email", email);
-    data.append("isBulkOrder", isBulkOrder);
-    data.append("orderNotes", orderNotes);
-    data.append("artworkPlacement", artworkPlacement);
-    data.append("shippingCost", shippingcost);
-    data.append("backStitching", backStitching);
-    data.append("leftSideStitching", leftSideStitching);
-    data.append("rightSideStitching", rightSideStitching);
-    data.append("backStitchingComment", backStitchingComment);
-    data.append("leftSideStitchingComment", leftSideStitchingComment);
-    data.append("rightSideStitchingComment", rightSideStitchingComment);
-    showLoading();
+    var continueToOrderSubmit = true;
+    try {
+        if ($('#isBulkOrder').text() == "true") {
+            isBulkOrder = true;
+        }
 
 
 
-    $.ajax({
-        type: "POST",
-        url: '/Cart/PaymentWithCreditCard',
-        contentType: false,
-        processData: false,
-        data: data,
-        success: function (result) {
-            if (result == "ccerror") {
-                hideLoading();
-                displayPopupNotification('Error processing payment, please check your credit card details and try again.', 'error', false);
-            } else {
-                if (isBulkOrder) {
-                    fbq('track', 'Purchase', {
-                        content_name: 'Bulk Hat Order',
-                        content_category: 'Bulk Hat Order',
-                        content_ids: '0',
-                        content_type: 'product',
-                        value: totalPurchaseAmount,
-                        currency: 'USD'
-                    });
-                    // navigate to bulk order payment confirmation screen
-                    setTimeout(function () {
-                        window.location = 'https://lidlaunch.com/bulk/payment?id=' + result;
-                    }, 1500);
+        if (isBulkOrder) {
+            items = JSON.stringify(currentBulkProductList);
+        } else {
+            items = $('#productList').text();
+        }
+
+        var shippingcost = $('#shippingCost').text();
+        var email = $('#txtCustomerEmail').val();
+        //shipping info
+        var shipFirstName = $('#txtShippingFirstName').val();
+        var shipLastName = $('#txtShippingLastName').val();
+
+        var shipAddress = $('#txtShippingAddress').val();
+        var shipCity = $('#txtShippingCity').val();
+        var shipState = $('#selShippingState').children("option:selected").val();
+        var shipZip = $('#txtShippingZip').val();
+        var shipPhone = $('#txtPhone').val();
+
+        var billFirstName = $('#txtBillingFirstName').val();
+        var billLastName = $('#txtBillingLastName').val();
+
+        var billAddress = $('#txtBillingAddress').val();
+        var billCity = $('#txtBillingCity').val();
+        var billState = $('#selBillingState').children("option:selected").val();
+        var billZip = $('#txtBillingZip').val();
+        var billPhone = $('#txtBillingPhone').val();
+
+        var backStitching = $('#chkBackStitching').prop("checked");
+        var leftSideStitching = $('#chkLeftSideStitching').prop("checked");
+        var rightSideStitching = $('#chkRightSideStitching').prop("checked");
+        var backStitchingComment = $('#txtBackStitching').val();
+        var rightSideStitchingComment = $('#txtRightSideStitching').val();
+        var leftSideStitchingComment = $('#txtLeftSideStitching').val();
+
+        var shippingAddressJson = '{ "ShipToState" : "' + shipState + '", "ShipToStreet" : "' + shipAddress + '", "ShipToZip" : "' + shipZip + '", "ShipToCity" : "' + shipCity + '", "ShipToPhone" : "' + shipPhone + '", "ShipToFirstName" : "' + shipFirstName + '", "ShipToLastName" : "' + shipLastName + '" }';
+        var billingAddressJson = "";
+        if ($('#rdUseSameAsShipping').prop('checked') == true) {
+            billingAddressJson = '{ "State" : "' + shipState + '", "Street" : "' + shipAddress + '", "Zip" : "' + shipZip + '", "City" : "' + shipCity + '", "PhoneNum" : "' + shipPhone + '" , "FirstName" : "' + shipFirstName + '", "LastName" : "' + shipLastName + '"}';
+        } else {
+            billingAddressJson = '{ "State" : "' + billState + '", "Street" : "' + billAddress + '", "Zip" : "' + billZip + '", "City" : "' + billCity + '", "PhoneNum" : "' + billPhone + '" , "FirstName" : "' + billFirstName + '", "LastName" : "' + billLastName + '"}';
+        }
+
+        var ccV = $('#txtSecurityCode').val();
+        var ccExpMM = $('#selExpirationMonth').children("option:selected").val();
+        var ccExpYY = $('#selExpirationYear').children("option:selected").val();
+        var ccNumber = $('#txtCardNumber').val().replace(/\s/g, '');
+
+        var files = [];
+        var orderNotes = '';
+        var artworkPlacement = '';
+        var file = null;
+
+        if (isBulkOrder) {
+            if (!attemptOrderWithoutArtwork) {
+                files = $('#bulkArtwork')[0].files;
+                file = files[0];
+            }
+            orderNotes = $('#txtDetails').val();
+            if (artworkPreExisting) {
+                orderNotes = 'ARTWORK PRE-EXISTING : ' + orderNotes;
+            }
+            artworkPlacement = $('#artPlacement').text();
+        }
+
+        var totalPurchaseAmount = $('#lblTotal').text();
+
+
+        data.append("file" + 0, file);
+        data.append("cartItems", items);
+        data.append("billingAddress", billingAddressJson);
+        data.append("shippingAddress", shippingAddressJson);
+        data.append("ccNumber", ccNumber);
+        data.append("ccExpMM", ccExpMM);
+        data.append("ccExpYY", ccExpYY);
+        data.append("ccV", ccV);
+        data.append("orderTotal", totalPurchaseAmount);
+        data.append("email", email);
+        data.append("isBulkOrder", isBulkOrder);
+        data.append("orderNotes", orderNotes);
+        data.append("artworkPlacement", artworkPlacement);
+        data.append("shippingCost", shippingcost);
+        data.append("backStitching", backStitching);
+        data.append("leftSideStitching", leftSideStitching);
+        data.append("rightSideStitching", rightSideStitching);
+        data.append("backStitchingComment", backStitchingComment);
+        data.append("leftSideStitchingComment", leftSideStitchingComment);
+        data.append("rightSideStitchingComment", rightSideStitchingComment);
+        showLoading();
+    }
+    catch (err) {
+        continueToOrderSubmit = false;
+    }
+      
+
+
+    if (continueToOrderSubmit) {
+        $.ajax({
+            type: "POST",
+            url: '/Cart/PaymentWithCreditCard',
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (result) {
+                if (result == "ccerror") {
+                    hideLoading();
+                    displayPopupNotification('Error processing payment, please check your credit card details and try again.', 'error', false);
                 } else {
-                    fbq('track', 'Purchase', {
-                        content_name: 'Web Hat Order',
-                        content_category: 'Web Hat Order',
-                        content_ids: '0',
-                        content_type: 'product',
-                        value: totalPurchaseAmount,
-                        currency: 'USD'
-                    });
-                    // navigate to the normal payment confirmation screen
-                    setTimeout(function () {
-                        window.location = 'https://lidlaunch.com/cart/payment?PaymentCode=' + result;
-                    }, 1500);
+                    if (isBulkOrder) {
+                        try {
+                            fbq('track', 'Purchase', {
+                                content_name: 'Bulk Hat Order',
+                                content_category: 'Bulk Hat Order',
+                                content_ids: '0',
+                                content_type: 'product',
+                                value: totalPurchaseAmount,
+                                currency: 'USD'
+                            });
+                        }
+                        catch (err) {
+                            //error writing back to facebook..
+                        }
+                        // navigate to bulk order payment confirmation screen
+                        setTimeout(function () {
+                            window.location = 'https://lidlaunch.com/bulk/payment?id=' + result;
+                        }, 1500);
+                    } else {
+                        try {
+                            fbq('track', 'Purchase', {
+                                content_name: 'Web Hat Order',
+                                content_category: 'Web Hat Order',
+                                content_ids: '0',
+                                content_type: 'product',
+                                value: totalPurchaseAmount,
+                                currency: 'USD'
+                            });
+                        }
+                        catch (err) {
+                            //error writing back to facebook..
+                        }
+                        // navigate to the normal payment confirmation screen
+                        setTimeout(function () {
+                            window.location = 'https://lidlaunch.com/cart/payment?PaymentCode=' + result;
+                        }, 1500);
+                    }
+                }
+            },
+            error: function (error) {
+                if (!attemptOrderWithoutArtwork) {
+                    attemptOrderWithoutArtwork = true;
+                    processPayment();
+                } else {
+                    displayPopupNotification('Please Contact Us. There was an issue processing your order.', 'error', false);
                 }
             }
-        },
-        error: function (error) {
-            if (!attemptOrderWithoutArtwork) {
-                attemptOrderWithoutArtwork = true;
-                processPayment();
-            } else {
-                displayPopupNotification('Please Contact Us. There was an issue processing your order.', 'error', false);
-            }            
-        }
-    });
+        });
+    } else {
+        //submit order with payment issues???
+        displayPopupNotification('Please Contact Us. There was an issue processing your order.', 'error', false);
+    }    
 }
 function proceedToPayWithPaypal() {
     var isBulkOrder = false;

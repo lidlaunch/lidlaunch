@@ -72,7 +72,7 @@
             <table>
                 <tr>
                     <td>Customer:</td>
-                    <td>@Model.BulkOrder.CustomerName - @Model.BulkOrder.CustomerEmail</td>
+                    <td>@Model.BulkOrder.CustomerName - @Model.BulkOrder.CustomerEmail - @Model.BulkOrder.CustomerPhone </td>
                 </tr>
                 <tr>
                     <td>Shipping Address:</td>
@@ -486,7 +486,7 @@
             <div class="bottomBarLink">
                 <input type="button" class="smallButton" value="Edit Bulk Order" onclick="showLoading(); $('#bulkOrderEditHolder').load(bulkOrderEditUrl, { bulkOrderId: @Model.BulkOrder.Id });" />
             </div>
-            @if (!Model.BulkOrder.OrderRefunded)
+            @if (!Model.BulkOrder.OrderRefunded && Model.BulkOrder.OrderPaid)
             {
                 <div class="bottomBarLink">
                     <input type="button" class="smallButton" value="Mark Order Refunded" onclick="updateOrderRefunded('@Model.BulkOrder.Id');" />
@@ -505,6 +505,12 @@
             {
                 <div class="bottomBarLink">
                     <a href="~/Bulk/PrintBulkOrderBatchBulkOrders?bulkBatchId=@Model.BulkOrder.BulkOrderBatchId&bulkOrderId=@Model.BulkOrder.Id" target="_blank"><input type="button" value="Reprint Order" class="smallButton" /></a>
+                </div>
+            }
+            @if (!Model.BulkOrder.OrderPaid)
+            {
+                <div class="bottomBarLink">
+                    <input type="button" value="Mark Order Paid" class="smallButton" onclick="updateBulkOrderPaid(@Model.BulkOrder.Id, false);"/>
                 </div>
             }
 
