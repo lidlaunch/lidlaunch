@@ -1,0 +1,150 @@
+﻿@model LidLaunchWebsite.Models.Expense
+<style type="text/css">
+    #expenseEditPopup {
+        background: rgba(0,0,0,0.5);
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        display: block;
+        top: 0;
+        right: 0;
+    }
+
+    #expenseEditPopupInner {
+        width: 450px;
+        height: 400px;
+        background: #fff;
+        margin-top: 50px;
+        display: block;
+        padding: 10px;
+        margin: 100px auto;
+    }
+
+    #expenseEditInner {
+        width: 400px;
+        margin: 0 auto;
+    }
+</style>
+<div id="expenseEditPopup">
+    <div id="expenseEditPopupInner">
+        <div id="expenseEditInner">
+            <h2>Edit Expense</h2>
+
+            <table>
+                <tr>
+                    <td>
+                        TYPE
+                    </td>
+                    <td>
+                        <select id="selType">
+                            <option value="Advertising">Advertising</option>
+                            <option value="Benefits">Benefits</option>
+                            <option value="Blanks">Blanks</option>
+                            <option value="Digitizing">Digitizing</option>
+                            <option value="EquipmentInstallment">EquipmentInstallment</option>
+                            <option value="EquipmentOneTime">EquipmentOneTime</option>
+                            <option value="Insurance">Insurance</option>
+                            <option value="Legal">Legal</option>
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="Meals">Meals</option>
+                            <option value="Misc">Misc</option>
+                            <option value="OfficeSupplies">OfficeSupplies</option>
+                            <option value="Payroll">Payroll</option>
+                            <option value="ProductionSupplies">ProductionSupplies</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Services">Services</option>
+                            <option value="Shipping">Shipping</option>
+                            <option value="ShippingSupplies">ShippingSupplies</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Travel">Travel</option>
+                            <option value="Utilities">Utilities</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>AMOUNT</td>
+                    <td><input id="txtAmount" type="text" value="@Model.Amount" /></td>
+                </tr>
+                <tr>
+                    <td>DATE</td>
+                    <td><input id="txtDateFrom" type="date" value="@Model.DateFrom" /></td>
+                </tr>
+                @*<tr>
+                    <td>DATE TO</td>
+                    <td><input id="txtDateTo" type="date" value="@Model.DateTo" /></td>
+                </tr>*@
+                <tr>
+                    <td>TITLE</td>
+                    <td><input id="txtTitle" type="text" value="@Model.Title" /></td>
+                </tr>
+                <tr>
+                    <td>DESCRIPTION</td>
+                    <td><input id="txtDescription" type="text" value="@Model.Description" /></td>
+                </tr>
+                <tr>
+                    <td>ATTACHMENT</td>
+                    <td><input type="file" id="attachmentFile" value="@Model.Attachment" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" onclick="saveExpense()" value="SAVE" class="smallButton"/>
+                    </td>
+                    <td>
+                        <input type="button" onclick="$('#expenseEditPopup').hide();" value="CANCEL" class="smallButton" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function saveExpense() {
+        var expenseId = @Model.Id;
+        var type = $('#selType').val();
+        var amount = $('#txtAmount').val();
+        var dateFrom = $('#expenseEditPopup #txtDateFrom').val();
+        var dateTo = dateFrom;
+        var title = $('#txtTitle').val();
+        var description = $('#txtDescription').val();
+        var attachment = $('#attachmentFile')[0].files;
+
+        //if (attachment.length > 0) {
+            var data = new FormData();
+            data.append("id", expenseId);
+            data.append("type", type);
+            data.append("amount", amount);
+            data.append("dateFrom", dateFrom);
+            data.append("dateTo", dateTo);
+            data.append("title", title);
+            data.append("description", description);
+            data.append("attachment", attachment[0]);
+
+            showLoading();
+            $.ajax({
+                type: "POST",
+                url: '/Expense/SaveExpense',
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (result) {
+                    if (result == "") {
+                        //do nothing
+                        displayPopupNotification('Sorry there was an error saving the attachment.', 'error', false);
+                    } else {
+                        //reload the attachment panel
+                        location.reload();                        
+                    }
+                },
+                error: function (xhr, status, p3, p4) {
+                    displayPopupNotification('Sorry there was an error saving the attachment.', 'error', false);
+                }
+            });
+
+        //} else {
+        //    displayPopupNotification('Please select the attachment before saving.', 'error', false);
+        //}
+    }
+</script>
+

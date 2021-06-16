@@ -100,7 +100,7 @@ namespace LidLaunchWebsite.Classes
                 }
             }
         }
-        public int CreateDesignerPayout (int designerId, decimal payoutAmmount, string paypalAddress)
+        public int CreateDesignerPayout (int designerId, decimal payoutAmount, string paypalAddress)
         {
             var data = new SQLData();
             var payoutId = 0;
@@ -113,8 +113,8 @@ namespace LidLaunchWebsite.Classes
                     SqlParameter returnParameter = sqlComm.Parameters.Add("payoutId", SqlDbType.Int);
                     returnParameter.Direction = ParameterDirection.ReturnValue;
                     sqlComm.Parameters.AddWithValue("@designerId", designerId);
-                    sqlComm.Parameters.AddWithValue("@payoutAmmount", payoutAmmount);
-                    sqlComm.Parameters.AddWithValue("@payoutPaypalAddress", payoutAmmount);
+                    sqlComm.Parameters.AddWithValue("@payoutAmount", payoutAmount);
+                    sqlComm.Parameters.AddWithValue("@payoutPaypalAddress", payoutAmount);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();
