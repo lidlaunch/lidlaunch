@@ -148,7 +148,7 @@ namespace LidLaunchWebsite.Controllers
                 }
                 else
                 {
-                    var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderShippedEmail(trackingNumber), "LidLaunch Order Shipped", "");
+                    var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderShippedEmail(trackingNumber), "LidLaunch Order #BO-" + bulkOrderId + " Shipped", "");
                     return emailSuccess.ToString();
                 }
                 
