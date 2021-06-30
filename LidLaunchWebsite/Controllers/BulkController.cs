@@ -122,7 +122,7 @@ namespace LidLaunchWebsite.Controllers
                 }
                 var dateFrom = data.AddBusinessDays(DateTime.Now, 10).ToString("MM/dd/yyyy");
                 var dateTo = data.AddBusinessDays(DateTime.Now, 14).ToString("MM/dd/yyyy");
-                var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderPaymentEmail(items, bulkOrder.OrderTotal.ToString(), bulkOrder.Id.ToString(), bulkOrder.PaymentGuid, dateFrom + " - " + dateTo), "LidLaunch Payment Confirmation", "");
+                var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderPaymentEmail(items, bulkOrder.OrderTotal.ToString(), bulkOrder.Id.ToString(), bulkOrder.PaymentGuid, dateFrom + " - " + dateTo), "LidLaunch Payment Confirmation", "", "");
                 var addBulkOrderLogSuccess = data.AddBulkOrderLog(bulkOrder.Id, 0, "Payment Received");
             }
             
@@ -148,7 +148,9 @@ namespace LidLaunchWebsite.Controllers
                 }
                 else
                 {
-                    var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderShippedEmail(trackingNumber), "LidLaunch Order #BO-" + bulkOrderId + " Shipped", "");
+                    //uncomment for trust pilot roll out...
+                    //var emailSuccess = emailFunc.sendEmai(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderShippedEmail(trackingNumber), "LidLaunch Order #BO-" + bulkOrderId + " Shipped", "", "lidlaunch.com+db98b13610@invite.trustpilot.com");
+                    var emailSuccess = emailFunc.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, emailFunc.bulkOrderShippedEmail(trackingNumber), "LidLaunch Order #BO-" + bulkOrderId + " Shipped", "", "");
                     return emailSuccess.ToString();
                 }
                 
@@ -209,7 +211,7 @@ namespace LidLaunchWebsite.Controllers
                 BulkData bulkData = new BulkData();
                 BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
                 EmailFunctions email = new EmailFunctions();
-                email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.revisionRequestedEmail(text), "Order " + bulkOrderId + " : Artwork Revision Request", "digitizing@lidlaunch.com");
+                email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.revisionRequestedEmail(text), "Order " + bulkOrderId + " : Artwork Revision Request", "digitizing@lidlaunch.com", "");
                 var addBulkOrderLogSuccess = data.AddBulkOrderLog(bulkOrder.Id, Convert.ToInt32(Session["UserID"]), "Digitizing Revision: " + (customerAdded ? "Customer Requested" : "Internally Requested") + " :: " + text);
             }
             return success.ToString();
@@ -226,7 +228,7 @@ namespace LidLaunchWebsite.Controllers
                 EmailFunctions email = new EmailFunctions();
                 if (!bulkOrder.lstDesigns.Any(d => !d.InternallyApproved))
                 {
-                    email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "");
+                    email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingPreviewUploaded(bulkOrder.PaymentGuid), "View & Approve Your Stitch Previews", "", "");
                     var addBulkOrderLogSuccess = data.AddBulkOrderLog(bulkOrder.Id, Convert.ToInt32(Session["UserID"]), "Digitzing Approved Interally : DesignId = " + id.ToString());
                 }
             }
@@ -261,7 +263,7 @@ namespace LidLaunchWebsite.Controllers
                 BulkData bulkData = new BulkData();
                 BulkOrder bulkOrder = bulkData.GetBulkOrder(Convert.ToInt32(bulkOrderId), "", "");
                 EmailFunctions email = new EmailFunctions();
-                email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingApproved(), "You Have Approved Your Artwork Previews", "");
+                email.sendEmail(bulkOrder.CustomerEmail, bulkOrder.CustomerName, email.digitizingApproved(), "You Have Approved Your Artwork Previews", "", "");
                 var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), 0, "Customer Approved Digitzing For Design Id: " + id);
             }
             return success.ToString();
@@ -356,7 +358,7 @@ namespace LidLaunchWebsite.Controllers
                     try
                     {
                         EmailFunctions emailFunc = new EmailFunctions();
-                        var emailSuccess = emailFunc.sendEmail(email, shipToName, emailFunc.bulkOrderEmail(cartItems, orderTotal, orderId.ToString(), paymentGuid), "LidLaunch Order Confirmation", "");
+                        var emailSuccess = emailFunc.sendEmail(email, shipToName, emailFunc.bulkOrderEmail(cartItems, orderTotal, orderId.ToString(), paymentGuid), "LidLaunch Order Confirmation", "", "");
                     }
                     catch (Exception ex)
                     {

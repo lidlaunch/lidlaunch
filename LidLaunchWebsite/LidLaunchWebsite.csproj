@@ -311,6 +311,9 @@
   <ItemGroup>
     <Content Include="Classes\Important Scripts.txt" />
     <Content Include="Content\Checkout.css" />
+    <Content Include="Content\Packages\jquery-ui.js" />
+    <Content Include="Content\Packages\jquery-1.12.4.js" />
+    <Content Include="Content\Packages\jquery-ui.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -363,7 +366,9 @@
     <Content Include="Images\Examples\Example7.jpg" />
     <Content Include="Images\Examples\Example8.jpg" />
     <Content Include="Images\Examples\Example9.jpg" />
+    <Content Include="Images\Expand.png" />
     <Content Include="Images\expeditingFeeIcon.png" />
+    <Content Include="Images\facebookIcon.png" />
     <Content Include="Images\fam.jpg" />
     <Content Include="Images\Fam2.jpg" />
     <Content Include="Images\Fam3.jpg" />
@@ -526,6 +531,7 @@
     <Content Include="Images\Icons\ms-icon-150x150.png" />
     <Content Include="Images\Icons\ms-icon-310x310.png" />
     <Content Include="Images\Icons\ms-icon-70x70.png" />
+    <Content Include="Images\instaIcon.png" />
     <Content Include="Images\InternallyApproved.png" />
     <Content Include="Images\LeftOpPlacement.jpg" />
     <Content Include="Images\LeftPlacement.jpg" />

@@ -1941,8 +1941,8 @@ input[type=text], input[type=password], select, input[type=number] {
     }
 
 .hatBrandStyleRegion {
-    margin: 20px;
-    height: 36px;
+    padding: 20px;
+    min-height: 36px;    
 }
 
 .hatStyleSelectArea {
@@ -1966,6 +1966,7 @@ input[type=text], input[type=password], select, input[type=number] {
     display: inline-block;
     width: 100%;
     cursor: pointer;
+    border-bottom: 1px solid #eee;
 }
 .beanieColorCell {
     width:50px;
@@ -1975,6 +1976,16 @@ input[type=text], input[type=password], select, input[type=number] {
     color: #39b91c;
     font-weight: bold;
     font-size: 30px;
+    line-height: 50px;
+    height: 50px;
+    padding-left: 10px;
+}
+
+.hatTitle .icon {
+    height:50px;
+}
+.hatTitle .icon img {
+    width:79px;
 }
 
 #ClassicCaps.hatBrand {
@@ -2003,6 +2014,12 @@ input[type=text], input[type=password], select, input[type=number] {
 
 .hatStyleImage {
     width: 100%;
+}
+
+.hatDescription {
+    background:#eee;
+    padding:10px;
+    max-width:700px;
 }
 
 .hatStyleSetQty {
@@ -3271,16 +3288,7 @@ input[type=text], input[type=password], select, input[type=number] {
 
     .hatBrandStyleRegion .hatTitle .title {
         font-size: 16px;
-    }
-
-    .hatBrandStyleRegion .hatTitle .left {
-        width: 60%;
-    }
-
-    .hatBrandStyleRegion .hatTitle .right {
-        width: 40%;
-        text-align: right;
-        font-size: 12px;
+        line-height: 32px;
     }
 
     .hatStyleSelectArea .hatStyleImage img {
