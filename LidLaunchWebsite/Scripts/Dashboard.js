@@ -368,7 +368,7 @@ function RequestPayout() {
     });
 }
 function CreateBatch() {
-    var proceed = confirm("Are you sure you want to create a batch?");
+    var proceed = confirm("Are you sure you want to create a batch? ONLY DO THIS IF YOU ARE GOING TO BE ORDERING HATS NOW.");
     if (proceed) {
         showLoading();
         $.ajax({
@@ -572,6 +572,7 @@ function saveBulkOrderEdit(bulkOrderId) {
     var artworkPosition = $('.placementSelected').attr('id');
     var artSource = $('#editArtworkUpload')[0].files;
     var orderTotal = $('#txtOrderTotal').val();
+    var paymentDate = $('#dtPaymentDate').val();
     var bulkOrderItems = '[';
     var itemLength = $('#bulkOrderItemsEdit').find('.bulkOrderItemRow').length;
     var shipToAddress = $('#txtShipToAddress').val();
@@ -600,6 +601,7 @@ function saveBulkOrderEdit(bulkOrderId) {
     data.append("artworkPosition", artworkPosition);
     data.append("bulkOrderId", bulkOrderId);
     data.append("orderTotal", orderTotal);
+    data.append("paymentDate", paymentDate);
     data.append("shipToAddress", shipToAddress);
     data.append("shipToCity", shipToCity);
     data.append("shipToState", shipToState);

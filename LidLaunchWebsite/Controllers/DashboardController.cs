@@ -1443,7 +1443,7 @@ namespace LidLaunchWebsite.Controllers
 
         }
 
-        public string UpdateBulkOrder(string items, string customerEmail, string artworkPosition, string bulkOrderId, string orderTotal, string shipToAddress, string shipToCity, string shipToState, string shipToZip)
+        public string UpdateBulkOrder(string items, string customerEmail, string artworkPosition, string bulkOrderId, string orderTotal, string paymentDate, string shipToAddress, string shipToCity, string shipToState, string shipToZip)
         {
             List<BulkOrderItem> lstItems = new List<BulkOrderItem>();
             lstItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<BulkOrderItem>>(items);
@@ -1479,7 +1479,12 @@ namespace LidLaunchWebsite.Controllers
                 var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Artwork Position Changed FROM >> " + bulkOrder.ArtworkPosition + " TO >> " + artworkPosition);
             }
 
-            data.UpdateBulkOrder(Convert.ToInt32(bulkOrderId), customerEmail, artworkPosition, Convert.ToDecimal(orderTotal));
+            if (bulkOrder.PaymentDate != Convert.ToDateTime(paymentDate))
+            {
+                var addBulkOrderLogSuccess = data.AddBulkOrderLog(Convert.ToInt32(bulkOrderId), Convert.ToInt32(Session["UserId"]), "Bulk Order Payment Date Changed FROM >> " + bulkOrder.PaymentDate + " TO >> " + paymentDate);
+            }
+
+            data.UpdateBulkOrder(Convert.ToInt32(bulkOrderId), customerEmail, artworkPosition, Convert.ToDecimal(orderTotal), Convert.ToDateTime(paymentDate));
 
             if(bulkOrder.ShipToAddress == shipToAddress && bulkOrder.ShipToCity == shipToCity && bulkOrder.ShipToState == bulkOrder.ShipToState && bulkOrder.ShipToZip == shipToZip) {
                 //do nothing
