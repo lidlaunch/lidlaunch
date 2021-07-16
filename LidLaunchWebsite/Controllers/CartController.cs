@@ -229,7 +229,7 @@ namespace LidLaunchWebsite.Controllers
                         } else
                         {                            
                             string paymentError = "Credit Card Payment Error: " + "Issue with credit card transaction. Customer Information: " + email + " - " + shipAddress.ShipToFirstName + " " + shipAddress.ShipToLastName + " ::: Items - " + cartItems + " ::: TOTAL = " + orderTotal + " :::::: RESPONSE FROM PAYFLOW = " + Resp.TransactionResponse.RespMsg.ToString();
-                            emailFunc.sendEmail("robert@lidlaunch.com", "LidLaunch", paymentError, "Payment Processing Error", "");
+                            emailFunc.sendEmail("robert@lidlaunch.com", "LidLaunch", paymentError, "Payment Processing Error", "", "");
                             Logger.Log(paymentError);
                             return "ccerror";
                         }                                     
@@ -239,7 +239,7 @@ namespace LidLaunchWebsite.Controllers
                 else
                 {
                     string paymentError = "Credit Card Payment Error: " + "Issue with credit card transaction. Customer Information: " + email + " - " + shipAddress.ShipToFirstName + " " + shipAddress.ShipToLastName + " ::: Items - " + cartItems + " ::: TOTAL = " + orderTotal + " :::::: RESPONSE FROM PAYFLOW WAS NULL";
-                    emailFunc.sendEmail("robert@lidlaunch.com", "LidLaunch", paymentError, "Payment Processing Error", "");
+                    emailFunc.sendEmail("robert@lidlaunch.com", "LidLaunch", paymentError, "Payment Processing Error", "", "");
                     Logger.Log(paymentError);
                     return "ccerror";
 
@@ -248,7 +248,7 @@ namespace LidLaunchWebsite.Controllers
             catch (Exception ex)
             {
                 string paymentError = "Credit Card Payment Error: " + "Issue with credit card transaction. Customer Information: " + email + " - " + shippingAddress + " ::: Items - " + cartItems + " ::: TOTAL = " + orderTotal + " EXCEPTION MESSAGE: " + ex.Message.ToString() + " :: " + ex.InnerException.Message.ToString();
-                emailFunc.sendEmail("robert@lidlaunch.com", "LidLaunch", paymentError, "Payment Processing Error", "");
+                emailFunc.sendEmail("robert@lidlaunch.com", "LidLaunch", paymentError, "Payment Processing Error", "", "");
                 Logger.Log(paymentError);
                 return "ccerror";
             }
@@ -485,7 +485,7 @@ namespace LidLaunchWebsite.Controllers
                     try
                     {
                         EmailFunctions emailFunc = new EmailFunctions();
-                        var emailSuccess = emailFunc.sendEmail(email, firstName + " " + lastName, emailFunc.orderEmail(cart.lstProducts, total, orderId.ToString()), "LidLaunch Order Confirmation", "");
+                        var emailSuccess = emailFunc.sendEmail(email, firstName + " " + lastName, emailFunc.orderEmail(cart.lstProducts, total, orderId.ToString()), "LidLaunch Order Confirmation", "", "");
                     }
                     catch (Exception ex)
                     {

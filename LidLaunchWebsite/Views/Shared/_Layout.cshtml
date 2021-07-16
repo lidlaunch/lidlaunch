@@ -24,12 +24,13 @@
     <meta name="msapplication-TileImage" content="~/Images/Icons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/css")
+
+    @Styles.Render("~/Content/checkout.css")
+    @Styles.Render("~/Content/site.css?v2")
+    @Styles.Render("~/Content/Packages/jquery-ui.css")
+    @Scripts.Render("~/Content/Packages/jquery-1.12.4.js")
+    @Scripts.Render("~/Content/Packages/jquery-ui.js")
     @Scripts.Render("~/Scripts/User.js")
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/cupertino/jquery-ui.css" />
-    <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
     @Scripts.Render("~/Scripts/CommonFunctions.js")
     @Scripts.Render("~/Scripts/HatCreation.js")
     @Scripts.Render("~/Scripts/Designer.js")

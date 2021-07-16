@@ -7,6 +7,9 @@
     var firstName = $('#txtShippingFirstName').val();
     var lastName = $('#txtShippingLastName').val();
 
+    $('#txtCustomerEmail').val(email.trim());
+    email = email.trim();
+
     if (validateShippingInfo(firstName, lastName, shipAddress, shipCity, shipState, shipZip, email)) {
         $('#shipingSection').hide();
         setShipToSummary();

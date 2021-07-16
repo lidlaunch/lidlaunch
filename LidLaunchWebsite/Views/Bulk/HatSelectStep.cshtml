@@ -53,12 +53,16 @@
             <div class="hatBrandStyleOptions clear" id="classicCapStyles">
                 <div class="hatBrandStyleRegion clear">
                     <div class="hatTitle" onclick="$('#USA100').toggle();">
+                        <div class="icon left"><img src="~/Images/ClassicCaps/hat_01.jpg" /></div>
                         <div class="title left">USA100 Trucker Snapback</div>
-                        <div class="right">Expand/Collapse</div>
+                        <div class="right"><img src="~/Images/Expand.png" height="30"/></div>
                     </div>
                     <div class="hatStyleSelectArea" id="USA100" style="display:none;">
                         <div class="hatStyleImage">
                             <img src="~/Images/ClassicCaps/hat_01.jpg" />
+                        </div>
+                        <div class="hatDescription">
+                            For those that want a 100% American made product this is the hat for you. These hats are manufactured in Texas!
                         </div>
                         <div class="hatSizePriceChart">
                             <table class="sizeTable">
@@ -102,11 +106,11 @@
                                                 <td class="colorOption">@item.ItemColor</td>
                                                 @if (item.OSFAStock && item.OSFA)
                                                 {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                                 else
                                                 {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                             </tr>                                           
                                         }
@@ -128,12 +132,16 @@
             <div class="hatBrandStyleOptions clear" id="flexFitStyles">
                 <div class="hatBrandStyleRegion clear">
                     <div class="hatTitle" onclick="$('#FlexFit6277').toggle();">
+                        <div class="icon left"><img src="~/Images/FlexFit6277/hat_01.jpg" /></div>
                         <div class="title left">Original FlexFit 6277 Fitted</div>
-                        <div class="right">Expand/Collapse</div>
+                        <div class="right"><img src="~/Images/Expand.png" height="30" /></div>
                     </div>
                     <div class="hatStyleSelectArea" id="FlexFit6277" style="display:none;">
                         <div class="hatStyleImage">
                             <img src="~/Images/FlexFit6277/hat_01.jpg" />
+                        </div>
+                        <div class="hatDescription">
+                            The Original FlexFit fitted hat. These are one of our best sellers and are extremely comfortable.
                         </div>
                         <div class="hatSizePriceChart">
                             <table class="sizeTable">
@@ -191,27 +199,27 @@
                                                 <td class="colorOption">@item.ItemColor</td>
                                                 @if (item.SMStock && item.SM)
                                                 {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                                 else
                                                 {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                                 @if (item.LXLStock && item.LXL)
                                                 {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                                 else
                                                 {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                                 @if (item.XLXXLStock && item.XLXXLStock)
                                                 {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                                 else
                                                 {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                             </tr>
                                             if (count >= (Model.FlexFit6277Items.Count / 2))
@@ -231,162 +239,17 @@
                     </div><!--/hatStyleSelectArea-->
                 </div><!--/hatBrandStyleRegion-->
                 <div class="hatBrandStyleRegion clear">
-                    <div class="hatTitle" onclick="$('#FlexFitTrucker').toggle();">
-                        <div class="title left">FlexFit Trucker Mesh Fitted</div>
-                        <div class="right">Expand/Collapse</div>
-                    </div>
-                    <div class="hatStyleSelectArea" id="FlexFitTrucker" style="display:none;">
-                        <div class="hatStyleImage">
-                            <img src="~/Images/FlexFit6511/hat_01.jpg" />
-                        </div>
-                        <div class="hatSizePriceChart">
-                            <table class="sizeTable">
-                                <tr class="sizeTableHeader">
-                                    <td>ONE SIZE</td>
-                                </tr>
-                                <tr>
-                                    <td>6 7/8"-7 1/2"</td>
-                                </tr>
-                            </table>
-                            <table class="priceTable">
-                                <tr class="priceTableHeader">
-                                    <td>1-47</td>
-                                    <td>48</td>
-                                    <td>96</td>
-                                    <td>144</td>
-                                    <td>288</td>
-                                    <td>432+</td>
-                                </tr>
-                                <tr>
-                                    <td>$15</td>
-                                    <td>$14</td>
-                                    <td>$13</td>
-                                    <td>$12</td>
-                                    <td>$11</td>
-                                    <td>$10</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="hatStyleSetQty">
-                            <table style="width:50%; float:left;">
-                                <thead>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td>OSFA</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{
-                                        var count2 = 0;
-                                        foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.FlexFit6511Items)
-                                        {
-                                            <tr>
-                                                <td class="hatPreviewImage"><img src='~/Images/@item.ThumbnailpreviewImagePath' /><span class="masterItemId hidden">@item.Id</span></td>
-                                                <td class="colorOption">@item.ItemColor</td>
-                                                @if (item.OSFAStock && item.OSFA)
-                                                {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
-                                                }
-                                                else
-                                                {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
-                                                }
-                                            </tr>
-                                            if (count2 >= (Model.FlexFit6511Items.Count / 2))
-                                            {
-                                                count2 = 0;
-                                                @Html.Raw("</tbody></table><table style='width: 50%; float:left;'><thead><tr><td></td><td></td><td>OSFA</td></thead><tbody>")
-                                            }
-                                            else
-                                            {
-                                                count2++;
-                                            }
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-                        </div><!--/hatStyleSetQty-->
-                    </div><!--/hatStyleSelectArea-->
-                </div><!--/hatBrandStyleRegion-->
-                <div class="hatBrandStyleRegion clear">
-                    <div class="hatTitle" onclick="$('#FlexFit110').toggle();">
-                        <div class="title left">FlexFit 110 Trucker Snapback</div>
-                        <div class="right">Expand/Collapse</div>
-                    </div>
-                    <div class="hatStyleSelectArea" id="FlexFit110" style="display:none;">
-                        <div class="hatStyleImage">
-                            <img src="~/Images/FlexFit110/hat_01.jpg" />
-                        </div>
-                        <div class="hatSizePriceChart">
-                            <table class="sizeTable">
-                                <tr class="sizeTableHeader">
-                                    <td>ONE SIZE</td>
-                                </tr>
-                                <tr>
-                                    <td>6 1/2"-7 7/8"</td>
-                                </tr>
-                            </table>
-                            <table class="priceTable">
-                                <tr class="priceTableHeader">
-                                    <td>1-47</td>
-                                    <td>48</td>
-                                    <td>96</td>
-                                    <td>144</td>
-                                    <td>288</td>
-                                    <td>432+</td>
-                                </tr>
-                                <tr>
-                                    <td>$15</td>
-                                    <td>$14</td>
-                                    <td>$13</td>
-                                    <td>$12</td>
-                                    <td>$11</td>
-                                    <td>$10</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="hatStyleSetQty">
-                            <table style="width:50%; float:left;">
-                                <thead>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td>OSFA</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{
-                                        foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.FlexFit110Items)
-                                        {
-                                            <tr>
-                                                <td class="hatPreviewImage"><img src='~/Images/@item.ThumbnailpreviewImagePath' /><span class="masterItemId hidden">@item.Id</span></td>
-                                                <td class="colorOption">@item.ItemColor</td>
-                                                @if (item.OSFAStock && item.OSFA)
-                                                {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
-                                                }
-                                                else
-                                                {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
-                                                }
-                                            </tr>
-
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-                        </div><!--/hatStyleSetQty-->
-                    </div><!--/hatStyleSelectArea-->
-                </div><!--/hatBrandStyleRegion-->
-                <div class="hatBrandStyleRegion clear">
                     <div class="hatTitle" onclick="$('#FlexFit210').toggle();">
+                        <div class="icon left"><img src="~/Images/FlexFit210/hat_01.jpg" /></div>
                         <div class="title left">FlexFit Flat Bill Fitted</div>
-                        <div class="right">Expand/Collapse</div>
+                        <div class="right"><img src="~/Images/Expand.png" height="30" /></div>
                     </div>
                     <div class="hatStyleSelectArea" id="FlexFit210" style="display:none;">
                         <div class="hatStyleImage">
                             <img src="~/Images/FlexFit210/hat_01.jpg" />
+                        </div>
+                        <div class="hatDescription">
+                            For those that prefer the flat bill look, these FlexFit fitted hats are a very nice and classy look.
                         </div>
                         <div class="hatSizePriceChart">
                             <table class="sizeTable">
@@ -437,19 +300,176 @@
                                                 <td class="colorOption">@item.ItemColor</td>
                                                 @if (item.SMStock && item.SM)
                                                 {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                                 else
                                                 {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                                 @if (item.LXLStock && item.LXL)
                                                 {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                                 else
                                                 {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
+                                                }
+                                            </tr>
+
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div><!--/hatStyleSetQty-->
+                    </div><!--/hatStyleSelectArea-->
+                </div><!--/hatBrandStyleRegion-->
+                <div class="hatBrandStyleRegion clear">
+                    <div class="hatTitle" onclick="$('#FlexFitTrucker').toggle();">
+                        <div class="icon left"><img src="~/Images/FlexFit6511/hat_01.jpg" /></div>
+                        <div class="title left">FlexFit Trucker Mesh Fitted</div>
+                        <div class="right"><img src="~/Images/Expand.png" height="30" /></div>
+                    </div>
+                    <div class="hatStyleSelectArea" id="FlexFitTrucker" style="display:none;">
+                        <div class="hatStyleImage">
+                            <img src="~/Images/FlexFit6511/hat_01.jpg" />
+                        </div>
+                        <div class="hatDescription">
+                            If you love trucker hats but do not like a snapback closure these fitted truckers are the perfect hat for you! They come in a convenient one size fits most sizing.
+                        </div>
+                        <div class="hatSizePriceChart">
+                            <table class="sizeTable">
+                                <tr class="sizeTableHeader">
+                                    <td>ONE SIZE</td>
+                                </tr>
+                                <tr>
+                                    <td>6 7/8"-7 1/2"</td>
+                                </tr>
+                            </table>
+                            <table class="priceTable">
+                                <tr class="priceTableHeader">
+                                    <td>1-47</td>
+                                    <td>48</td>
+                                    <td>96</td>
+                                    <td>144</td>
+                                    <td>288</td>
+                                    <td>432+</td>
+                                </tr>
+                                <tr>
+                                    <td>$15</td>
+                                    <td>$14</td>
+                                    <td>$13</td>
+                                    <td>$12</td>
+                                    <td>$11</td>
+                                    <td>$10</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="hatStyleSetQty">
+                            <table style="width:50%; float:left;">
+                                <thead>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>OSFA</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        var count2 = 0;
+                                        foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.FlexFit6511Items)
+                                        {
+                                            <tr>
+                                                <td class="hatPreviewImage"><img src='~/Images/@item.ThumbnailpreviewImagePath' /><span class="masterItemId hidden">@item.Id</span></td>
+                                                <td class="colorOption">@item.ItemColor</td>
+                                                @if (item.OSFAStock && item.OSFA)
+                                                {
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
+                                                }
+                                            </tr>
+                                            if (count2 >= (Model.FlexFit6511Items.Count / 2))
+                                            {
+                                                count2 = 0;
+                                                @Html.Raw("</tbody></table><table style='width: 50%; float:left;'><thead><tr><td></td><td></td><td>OSFA</td></thead><tbody>")
+                                            }
+                                            else
+                                            {
+                                                count2++;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div><!--/hatStyleSetQty-->
+                    </div><!--/hatStyleSelectArea-->
+                </div><!--/hatBrandStyleRegion-->
+                <div class="hatBrandStyleRegion clear">
+                    <div class="hatTitle" onclick="$('#FlexFit110').toggle();">
+                        <div class="icon left"><img src="~/Images/FlexFit110/hat_01.jpg" /></div>
+                        <div class="title left">FlexFit 110 Trucker Snapback</div>
+                        <div class="right"><img src="~/Images/Expand.png" height="30" /></div>
+                    </div>
+                    <div class="hatStyleSelectArea" id="FlexFit110" style="display:none;">
+                        <div class="hatStyleImage">
+                            <img src="~/Images/FlexFit110/hat_01.jpg" />
+                        </div>
+                        <div class="hatDescription">
+                            These hats are our current favorite option. The flexible inner band and snapback closure is the perfect combination of comfort and flexibility. If you have not been able to wear a snapback hat due to them being too small, we recommend giving these a try!
+                        </div>
+                        <div class="hatSizePriceChart">
+                            <table class="sizeTable">
+                                <tr class="sizeTableHeader">
+                                    <td>ONE SIZE</td>
+                                </tr>
+                                <tr>
+                                    <td>6 1/2"-7 7/8"</td>
+                                </tr>
+                            </table>
+                            <table class="priceTable">
+                                <tr class="priceTableHeader">
+                                    <td>1-47</td>
+                                    <td>48</td>
+                                    <td>96</td>
+                                    <td>144</td>
+                                    <td>288</td>
+                                    <td>432+</td>
+                                </tr>
+                                <tr>
+                                    <td>$15</td>
+                                    <td>$14</td>
+                                    <td>$13</td>
+                                    <td>$12</td>
+                                    <td>$11</td>
+                                    <td>$10</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="hatStyleSetQty">
+                            <table style="width:50%; float:left;">
+                                <thead>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>OSFA</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.FlexFit110Items)
+                                        {
+                                            <tr>
+                                                <td class="hatPreviewImage"><img src='~/Images/@item.ThumbnailpreviewImagePath' /><span class="masterItemId hidden">@item.Id</span></td>
+                                                <td class="colorOption">@item.ItemColor</td>
+                                                @if (item.OSFAStock && item.OSFA)
+                                                {
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                             </tr>
 
@@ -471,181 +491,17 @@
             </div>
             <div class="hatBrandStyleOptions clear" id="yupoongStyles">
                 <div class="hatBrandStyleRegion clear">
-                    <div class="hatTitle" onclick="$('#6089FlatbillSnapback').toggle();">
-                        <div class="title left">Flat Bill Snapback</div>
-                        <div class="right">Expand/Collapse</div>
-                    </div>
-                    <div class="hatStyleSelectArea" id="6089FlatbillSnapback" style="display:none;">
-                        <div class="hatStyleImage">
-                            <img src="~/Images/Yupoong/6089/hat_01.jpg" />
-                        </div>
-                        <div class="hatSizePriceChart">
-                            <table class="sizeTable">
-                                <tr class="sizeTableHeader">
-                                    <td>ONE SIZE</td>
-                                </tr>
-                                <tr>
-                                    <td>6 5/8"-7 5/8"</td>
-                                </tr>
-                            </table>
-                            <table class="priceTable">
-                                <tr class="priceTableHeader">
-                                    <td>1-23</td>
-                                    <td>24</td>
-                                    <td>48</td>
-                                    <td>96</td>
-                                    <td>144</td>
-                                    <td>288+</td>
-                                </tr>
-                                <tr>
-                                    <td>$15</td>
-                                    <td>$14</td>
-                                    <td>$13</td>
-                                    <td>$12</td>
-                                    <td>$11</td>
-                                    <td>$10</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6"><i>Multicam +$2 More</i></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6"><i>These hats have a signature Yupoong green undervisor.<br/>The Multicam variants do not.</i></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="hatStyleSetQty">
-                            <table style="width:50%; float:left;">
-                                <thead>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td>OSFA</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{
-                                        var count3 = 0;
-                                        foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.Yupoong6089Items)
-                                        {
-                                            <tr>
-                                                <td class="hatPreviewImage"><img src='~/Images/@item.ThumbnailpreviewImagePath' /><span class="masterItemId hidden">@item.Id</span></td>
-                                                <td class="colorOption">@item.ItemColor</td>
-                                                @if (item.OSFAStock && item.OSFA)
-                                                {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
-                                                }
-                                                else
-                                                {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
-                                                }
-                                            </tr>
-                                            if (count3 >= (Model.Yupoong6089Items.Count / 2))
-                                            {
-                                                count3 = 0;
-                                                @Html.Raw("</tbody></table><table style='width: 50%; float:left;'><thead><tr><td></td><td></td><td>OSFA</td></thead><tbody>")
-                                            }
-                                            else
-                                            {
-                                                count3++;
-                                            }
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-
-                        </div><!--/hatStyleSetQty-->
-                    </div><!--/hatStyleSelectArea-->
-                </div><!--/hatBrandStyleRegion-->
-                <div class="hatBrandStyleRegion clear">
-                    <div class="hatTitle" onclick="$('#DadCap').toggle();">
-                        <div class="title left">Dad Cap</div>
-                        <div class="right">Expand/Collapse</div>
-                    </div>
-                    <div class="hatStyleSelectArea" id="DadCap" style="display:none;">
-                        <div class="hatStyleImage">
-                            <img src="~/Images/Yupoong/DadCap/hat_01.jpg" />
-                        </div>
-                        <div class="hatSizePriceChart">
-                            <table class="sizeTable">
-                                <tr class="sizeTableHeader">
-                                    <td>ONE SIZE</td>
-                                </tr>
-                                <tr>
-                                    <td>6 5/8"-7 5/8"</td>
-                                </tr>
-                            </table>
-                            <table class="priceTable">
-                                <tr class="priceTableHeader">
-                                    <td>1-23</td>
-                                    <td>24</td>
-                                    <td>48</td>
-                                    <td>96</td>
-                                    <td>144</td>
-                                    <td>288+</td>
-                                </tr>
-                                <tr>
-                                    <td>$15</td>
-                                    <td>$14</td>
-                                    <td>$13</td>
-                                    <td>$12</td>
-                                    <td>$11</td>
-                                    <td>$10</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6"><i>Multicam +$2 More</i></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="hatStyleSetQty">
-                            <table style="width:50%; float:left;">
-                                <thead>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td>OSFA</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{
-                                        var count4 = 0;
-                                        foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.YupoongDadCapItems)
-                                        {
-                                            <tr>
-                                                <td class="hatPreviewImage"><img src='~/Images/@item.ThumbnailpreviewImagePath' /><span class="masterItemId hidden">@item.Id</span></td>
-                                                <td class="colorOption">@item.ItemColor</td>
-                                                @if (item.OSFAStock && item.OSFA)
-                                                {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
-                                                }
-                                                else
-                                                {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
-                                                }
-                                            </tr>
-                                            if (count4 >= (Model.YupoongDadCapItems.Count / 2))
-                                            {
-                                                count4 = 0;
-                                                @Html.Raw("</tbody></table><table style='width: 50%; float:left;'><thead><tr><td></td><td></td><td>OSFA</td></thead><tbody>")
-                                            }
-                                            else
-                                            {
-                                                count4++;
-                                            }
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-                        </div><!--/hatStyleSetQty-->
-                    </div><!--/hatStyleSelectArea-->
-                </div><!--/hatBrandStyleRegion-->
-                <div class="hatBrandStyleRegion clear">
                     <div class="hatTitle" onclick="$('#6606TruckerSnapback').toggle();">
+                        <div class="icon left"><img src="~/Images/Yupoong/TruckerSnapback/hat_01.jpg" /></div>
                         <div class="title left">Trucker Snapback</div>
-                        <div class="right">Expand/Collapse</div>
+                        <div class="right"><img src="~/Images/Expand.png" height="30"/></div>
                     </div>
                     <div class="hatStyleSelectArea" id="6606TruckerSnapback" style="display:none;">
                         <div class="hatStyleImage">
                             <img src="~/Images/Yupoong/TruckerSnapback/hat_01.jpg" />
+                        </div>
+                        <div class="hatDescription">
+                            A classic trucker hat with great materials, fit and finish. You can't go wrong.
                         </div>
                         <div class="hatSizePriceChart">
                             <table class="sizeTable">
@@ -697,11 +553,11 @@
                                                 <td class="colorOption">@item.ItemColor</td>
                                                 @if (item.OSFAStock && item.OSFA)
                                                 {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                                 else
                                                 {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                             </tr>
                                             if (count5 >= (Model.Yupoong6606Items.Count / 2))
@@ -722,12 +578,16 @@
                 </div><!--/hatBrandStyleRegion-->
                 <div class="hatBrandStyleRegion clear">
                     <div class="hatTitle" onclick="$('#6006').toggle();">
+                        <div class="icon left"><img src="~/Images/Yupoong/6006/hat_01.jpg" /></div>
                         <div class="title left">Flat Bill Trucker Snapback</div>
-                        <div class="right">Expand/Collapse</div>
+                        <div class="right"><img src="~/Images/Expand.png" height="30"/></div>
                     </div>
                     <div class="hatStyleSelectArea" id="6006" style="display:none;">
                         <div class="hatStyleImage">
                             <img src="~/Images/Yupoong/6006/hat_01.jpg" />
+                        </div>
+                        <div class="hatDescription">
+                            A classic 5 panel flat bill trucker hat that looks and fits great.
                         </div>
                         <div class="hatSizePriceChart">
                             <table class="sizeTable">
@@ -779,11 +639,11 @@
                                                 <td class="colorOption">@item.ItemColor</td>
                                                 @if (item.OSFAStock && item.OSFA)
                                                 {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                                 else
                                                 {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                             </tr>
                                             if (count6 >= (Model.Yupoong6006Items.Count / 2))
@@ -803,13 +663,193 @@
                     </div><!--/hatStyleSelectArea-->
                 </div><!--/hatBrandStyleRegion-->
                 <div class="hatBrandStyleRegion clear">
+                    <div class="hatTitle" onclick="$('#6089FlatbillSnapback').toggle();">
+                        <div class="icon left"><img src="~/Images/Yupoong/6089/hat_01.jpg" /></div>
+                        <div class="title left">Flat Bill Snapback</div>
+                        <div class="right"><img src="~/Images/Expand.png" height="30"/></div>
+                    </div>
+                    <div class="hatStyleSelectArea" id="6089FlatbillSnapback" style="display:none;">
+                        <div class="hatStyleImage">
+                            <img src="~/Images/Yupoong/6089/hat_01.jpg" />
+                        </div>
+                        <div class="hatDescription">
+                            Yupoong's flagship flat bill solid back hats. These hats are very classy and will be sure to turn heads.
+                        </div>
+                        <div class="hatSizePriceChart">
+                            <table class="sizeTable">
+                                <tr class="sizeTableHeader">
+                                    <td>ONE SIZE</td>
+                                </tr>
+                                <tr>
+                                    <td>6 5/8"-7 5/8"</td>
+                                </tr>
+                            </table>
+                            <table class="priceTable">
+                                <tr class="priceTableHeader">
+                                    <td>1-23</td>
+                                    <td>24</td>
+                                    <td>48</td>
+                                    <td>96</td>
+                                    <td>144</td>
+                                    <td>288+</td>
+                                </tr>
+                                <tr>
+                                    <td>$15</td>
+                                    <td>$14</td>
+                                    <td>$13</td>
+                                    <td>$12</td>
+                                    <td>$11</td>
+                                    <td>$10</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6"><i>Multicam +$2 More</i></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6"><i>These hats have a signature Yupoong green undervisor.<br />The Multicam variants do not.</i></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="hatStyleSetQty">
+                            <table style="width:50%; float:left;">
+                                <thead>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>OSFA</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        var count3 = 0;
+                                        foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.Yupoong6089Items)
+                                        {
+                                            <tr>
+                                                <td class="hatPreviewImage"><img src='~/Images/@item.ThumbnailpreviewImagePath' /><span class="masterItemId hidden">@item.Id</span></td>
+                                                <td class="colorOption">@item.ItemColor</td>
+                                                @if (item.OSFAStock && item.OSFA)
+                                                {
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
+                                                }
+                                            </tr>
+                                            if (count3 >= (Model.Yupoong6089Items.Count / 2))
+                                            {
+                                                count3 = 0;
+                                                @Html.Raw("</tbody></table><table style='width: 50%; float:left;'><thead><tr><td></td><td></td><td>OSFA</td></thead><tbody>")
+                                            }
+                                            else
+                                            {
+                                                count3++;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div><!--/hatStyleSetQty-->
+                    </div><!--/hatStyleSelectArea-->
+                </div><!--/hatBrandStyleRegion-->
+                <div class="hatBrandStyleRegion clear">
+                    <div class="hatTitle" onclick="$('#DadCap').toggle();">
+                        <div class="icon left"><img src="~/Images/Yupoong/DadCap/hat_01.jpg" /></div>
+                        <div class="title left">Dad Cap</div>
+                        <div class="right"><img src="~/Images/Expand.png" height="30"/></div>
+                    </div>
+                    <div class="hatStyleSelectArea" id="DadCap" style="display:none;">
+                        <div class="hatStyleImage">
+                            <img src="~/Images/Yupoong/DadCap/hat_01.jpg" />
+                        </div>
+                        <div class="hatDescription">
+                            These unstructured hats are popular amongst women and people that prefer a cap with no structure and a low profile.
+                        </div>
+                        <div class="hatSizePriceChart">
+                            <table class="sizeTable">
+                                <tr class="sizeTableHeader">
+                                    <td>ONE SIZE</td>
+                                </tr>
+                                <tr>
+                                    <td>6 5/8"-7 5/8"</td>
+                                </tr>
+                            </table>
+                            <table class="priceTable">
+                                <tr class="priceTableHeader">
+                                    <td>1-23</td>
+                                    <td>24</td>
+                                    <td>48</td>
+                                    <td>96</td>
+                                    <td>144</td>
+                                    <td>288+</td>
+                                </tr>
+                                <tr>
+                                    <td>$15</td>
+                                    <td>$14</td>
+                                    <td>$13</td>
+                                    <td>$12</td>
+                                    <td>$11</td>
+                                    <td>$10</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6"><i>Multicam +$2 More</i></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="hatStyleSetQty">
+                            <table style="width:50%; float:left;">
+                                <thead>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>OSFA</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        var count4 = 0;
+                                        foreach (LidLaunchWebsite.Models.MasterBulkOrderItem item in Model.YupoongDadCapItems)
+                                        {
+                                            <tr>
+                                                <td class="hatPreviewImage"><img src='~/Images/@item.ThumbnailpreviewImagePath' /><span class="masterItemId hidden">@item.Id</span></td>
+                                                <td class="colorOption">@item.ItemColor</td>
+                                                @if (item.OSFAStock && item.OSFA)
+                                                {
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
+                                                }
+                                            </tr>
+                                            if (count4 >= (Model.YupoongDadCapItems.Count / 2))
+                                            {
+                                                count4 = 0;
+                                                @Html.Raw("</tbody></table><table style='width: 50%; float:left;'><thead><tr><td></td><td></td><td>OSFA</td></thead><tbody>")
+                                            }
+                                            else
+                                            {
+                                                count4++;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div><!--/hatStyleSetQty-->
+                    </div><!--/hatStyleSelectArea-->
+                </div><!--/hatBrandStyleRegion-->
+                <div class="hatBrandStyleRegion clear">
                     <div class="hatTitle" onclick="$('#ShortBeanies').toggle();">
+                        <div class="icon left"><img src="~/Images/Yupoong/ShortBeanies.jpg" /></div>
                         <div class="title left">Beanies</div>
-                        <div class="right">Expand/Collapse</div>
+                        <div class="right"><img src="~/Images/Expand.png" height="30"/></div>
                     </div>
                     <div class="hatStyleSelectArea" id="ShortBeanies" style="display:none;">
                         <div class="hatStyleImage">
                             <img src="~/Images/Yupoong/ShortBeanies.jpg" />
+                        </div>
+                        <div class="hatDescription">
+                            Keep your noggin warm with a beanie.
                         </div>
                         <div class="hatSizePriceChart">
                             <table class="sizeTable">
@@ -855,11 +895,11 @@
                                                 <td class="colorOption">@item.ItemColor</td>
                                                 @if (item.OSFAStock && item.OSFA)
                                                 {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                                 else
                                                 {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                             </tr>
                                             if (count7 >= (Model.YupoongShortBeanieItems.Count / 2))
@@ -880,12 +920,16 @@
                 </div><!--/hatBrandStyleRegion-->
                 <div class="hatBrandStyleRegion clear">
                     <div class="hatTitle" onclick="$('#CuffedBeanies').toggle();">
+                        <div class="icon left"><img src="~/Images/Yupoong/CuffedBeanies.jpg" /></div>
                         <div class="title left">Cuffed Beanies</div>
-                        <div class="right">Expand/Collapse</div>
+                        <div class="right"><img src="~/Images/Expand.png" height="30"/></div>
                     </div>
                     <div class="hatStyleSelectArea" id="CuffedBeanies" style="display:none;">
                         <div class="hatStyleImage">
                             <img src="~/Images/Yupoong/CuffedBeanies.jpg" />
+                        </div>
+                        <div class="hatDescription">
+                            Keep your noggin warm with a cuffed beanie.
                         </div>
                         <div class="hatSizePriceChart">
                             <table class="sizeTable">
@@ -931,11 +975,11 @@
                                                 <td class="colorOption">@item.ItemColor</td>
                                                 @if (item.OSFAStock && item.OSFA)
                                                 {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                                 else
                                                 {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                             </tr>
                                             if (count8 >= (Model.YupoongCuffedBeanieItems.Count / 2))
@@ -962,11 +1006,13 @@
                     <img src="~/Images/richardson.gif" height="60" />
                 </div>
             </div>
+            <div style="padding:20px; font-size:18px; background:#eee;">Richardson Hats are on a nationwide backorder with no clear end in sight. We <b>highly recommend</b> the <b>Yupoong Trucker Snapback</b> hats as an alternative as they are nearly the same hats (fit, finish, materials).</div>
             <div class="hatBrandStyleOptions clear" id="richardsonStyles">
                 <div class="hatBrandStyleRegion clear">
                     <div class="hatTitle" onclick="$('#Richardson112').toggle();">
+                        <div class="icon left"><img src="~/Images/RichardsonHats/hat_01.jpg" /></div>
                         <div class="title left">Richardson 112 Trucker Snapback</div>
-                        <div class="right">Expand/Collapse</div>
+                        <div class="right"><img src="~/Images/Expand.png" height="30"/></div>
                     </div>
                     <div class="hatStyleSelectArea" id="Richardson112" style="display:none;">
                         <div class="hatStyleImage">
@@ -1019,11 +1065,11 @@
                                                 <td class="colorOption">@item.ItemColor</td>
                                                 @if (item.OSFAStock && item.OSFA)
                                                 {
-                                                    <td><input class="colorQty" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                                 else
                                                 {
-                                                    <td><input class="colorQty hidden" type="text" value="0" onChange="updateBulkTotals();" /></td>
+                                                    <td><input class="colorQty hidden" type="number" value="0" onChange="updateBulkTotals();" /></td>
                                                 }
                                             </tr>
                                             if (count9 >= (Model.Richardson112Items.Count / 2))

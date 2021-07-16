@@ -104,6 +104,10 @@
                     <td>Shipped:</td>
                     <td><input type="text" placeholder="tracking #" id="txtTrackingNumber" value="@Model.TrackingNumber" /></td>
                 </tr>
+                <tr>
+                    <td>Payment Date:</td>
+                    <td><input type="date" id="dtPaymentDate" value="@Model.PaymentDate.ToString("yyyy-MM-dd")" /></td>
+                </tr>
             </table>  
         </div><!--/bulkOrderDetails-->
         <div id="bulkOrderItems">

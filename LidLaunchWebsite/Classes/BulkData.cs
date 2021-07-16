@@ -839,7 +839,7 @@ namespace LidLaunchWebsite.Classes
             }
         }
 
-        public bool UpdateBulkOrder(int bulkOrderId, string customerEmail, string artworkPosition, decimal orderTotal)
+        public bool UpdateBulkOrder(int bulkOrderId, string customerEmail, string artworkPosition, decimal orderTotal, DateTime paymentDate)
         {
             var data = new SQLData();
             try
@@ -852,6 +852,7 @@ namespace LidLaunchWebsite.Classes
                     sqlComm.Parameters.AddWithValue("@customerEmail", customerEmail);
                     sqlComm.Parameters.AddWithValue("@artworkPosition", artworkPosition);
                     sqlComm.Parameters.AddWithValue("@orderTotal", orderTotal);
+                    sqlComm.Parameters.AddWithValue("@paymentDate", paymentDate);
 
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     data.conn.Open();
